@@ -1,6 +1,6 @@
-# Ecuador Localization - Odoo 18.0
+# Ecuador Localization - Odoo 17.0
 
-Módulos de localización para Ecuador compatibles con Odoo 18.0.
+Módulos de localización para Ecuador compatibles con Odoo 17.0.
 
 ## Módulos:
 - **l10n_ec_sri**: Configuración SRI
