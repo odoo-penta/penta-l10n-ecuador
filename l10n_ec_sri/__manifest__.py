@@ -1,6 +1,6 @@
 {
     'name': 'Ecuador - sri.Replace('_', ' ').Trim()',
-    'version': '18.0.1.0.0',
+    'version': '17.0.1.0.0',
     'category': 'Localization',
     'summary': 'Auto-generated module l10n_ec_sri',
     'author': 'Odoo PENTA',
