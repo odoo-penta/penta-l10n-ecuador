@@ -1,0 +1,5 @@
+# Code Owners para localización Ecuador
+* @odoo-penta/lead-devs
+
+# Módulos específicos
+l10n_ec_* @odoo-penta/lead-devs
