@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.cash</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="10"/>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app string="Cash Box" data-string="Cash Box" name="pentalab_cb_point_of_sale" groups="pentalab_cb_point_of_sale.group_cash_box_admin">
+                    <block title="Cash" id="cash_setting_container">
+                        <setting id="credit_note" help="Allows the generation of credit notes for invoices in the cash register sessions" documentation="">
+                            <field name="allow_credit_note_cash"/>
+                        </setting>
+                        <setting id="imbalance" help="The maximum amount of cash imbalance allowed before a warning is raised" documentation="">
+                            <field name="cash_imbalance_limit"/>
+                        </setting>
+                        <setting id="advance" help="Allows the use of advances for invoices in cashier sessions" documentation="">
+                            <field name="allow_advance_cash"/>
+                        </setting>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_cash_config_settings" model="ir.actions.act_window">
+        <field name="name">Settings</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_id" ref="pentalab_cb_point_of_sale.res_config_settings_view_form"/>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+        <field name="context">{'module' : 'pentalab_cb_point_of_sale', 'bin_size': False}</field>
+    </record>
+
+</odoo>

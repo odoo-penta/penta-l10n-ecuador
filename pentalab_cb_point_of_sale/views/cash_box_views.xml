@@ -1,0 +1,286 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <!-- CASH BOX -->
+        <record id="view_cash_box_kanban" model="ir.ui.view">
+            <field name="name">cash.box.kanban</field>
+            <field name="model">cash.box</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_dashboard">
+                    <field name="name"/>
+                    <field name="currency_id"/>
+                    <field name="warehouse_id"/>
+                    <field name="responsible_ids"/>
+                    <field name="state"/>
+                    <templates>
+                        <t t-name="card">
+                            <div class="o_kanban_card o_kanban_global_click">
+                                <div class="o_kanban_card_header d-flex justify-content-between align-items-center">
+                                    <strong class="text-primary">
+                                        <t t-esc="record.name.value"/>
+                                    </strong>
+                                    <span t-if="record.state.raw_value == 'open'" class="badge bg-success">Opened</span>
+                                    <span t-if="record.state.raw_value == 'closed'" class="badge bg-secondary">Closed</span>
+                                </div>
+                                <div class="mt-2">
+                                    <div>
+                                        <strong>Warehouse: </strong>
+                                        <t t-esc="record.warehouse_id.value"/>
+                                    </div>
+                                    <div>
+                                        <strong>Currency: </strong>
+                                        <t t-esc="record.currency_id.value"/>
+                                    </div>
+                                </div>
+                                <!-- Botones de accion -->
+                                <div class="mt-3 text-end">
+                                    <t t-if="record.state.raw_value === 'closed'">
+                                        <button string="Open Cash Box" name="action_open" type="object" class="btn btn-sm btn-primary"/>
+                                    </t>
+                                    <t t-if="record.state.raw_value === 'open'">
+                                        <button string="Close Cash Box" name="action_close" type="object" class="btn btn-sm btn-primary"/>
+                                    </t>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="view_cash_box_list" model="ir.ui.view">
+            <field name="name">cash.box.list</field>
+            <field name="model">cash.box</field>
+            <field name="arch" type="xml">
+                <list string="Cash Box">
+                    <field name="currency_id" column_invisible="True"/>
+                    <field name="name" decoration-bf="1"/>
+                    <field name="warehouse_id"/>
+                    <field name="journal_id"/>
+                    <field name="responsible_ids" widget="many2many_tags"/>
+                    <field name="state" widget="badge"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_cash_box_form" model="ir.ui.view">
+            <field name="name">cash.box.form</field>
+            <field name="model">cash.box</field>
+            <field name="arch" type="xml">
+                <form string="Cash Box">
+                    <header>
+                        <button string="Open" invisible="state not in ('closed') or not is_administrator" name="action_open" type="object" class="btn btn-sm btn-primary"/>
+                        <button string="Close" invisible="state not in ('open') or not is_administrator" name="action_close" type="object" class="btn btn-sm btn-primary"/>
+                        <field name="state" widget="statusbar" statusbar_visible="open,closed"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="not is_cash_box_admin" placeholder="Cash"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="is_cash_box_admin" invisible="1"/>
+                                <field name="is_administrator" invisible="1"/>
+                                <field name="code" readonly="not is_cash_box_admin"/>
+                                <field name="warehouse_id" readonly="not is_cash_box_admin" options="{'no_create': True}"/>
+                            </group>
+                            <group>
+                                <field name="journal_id" readonly="not is_cash_box_admin" options="{'no_create': True}"/>
+                                <field name="current_session_id"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name="sessions" string="Sessions">
+                                <field name="session_ids"/>
+                            </page>
+                            <page name="settings" string="Settings" groups="pentalab_cb_point_of_sale.group_cash_box_admin">
+                                <group>
+                                    <group>
+                                        <field name="close_account_id" options="{'no_create': True}"/>
+                                        <field name="gain_account_id" options="{'no_create': True}"/>
+                                        <field name="loss_account_id" options="{'no_create': True}"/>
+                                        <field name="close_journal_id" options="{'no_create': True}"/>
+                                        <field name="l10n_ec_sri_payment_id"/>
+                                        <field name="responsible_ids" widget="many2many_tags" readonly="not is_cash_box_admin" options="{'no_open': True, 'no_create': True}"/>
+                                        <field name="cashier_ids" widget="many2many_tags" readonly="not is_cash_box_admin" options="{'no_open': True, 'no_create': True}"/>
+                                    </group>
+                                    <group>
+                                        <field name="session_seq_id"/>
+                                        <field name="movement_seq_id"/>
+                                        <field name="payment_method_ids" widget="many2many_tags" readonly="not is_cash_box_admin" options="{'no_open': True, 'no_create': True}"/>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_cash_box_search" model="ir.ui.view">
+            <field name="name">cash.box.search</field>
+            <field name="model">cash.box</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="warehouse_id"/>
+                    <separator/>
+                    <filter name="open_cash" string="Open" domain="[('state', '=', 'open')]"/>
+                    <filter name="closed_cash" string="Closed" domain="[('state', '=', 'closed')]"/>
+                    <separator/>
+                    <filter name="warehouse_id" string="Warehouse" context="{'group_by': 'warehouse_id'}"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_cash_box" model="ir.actions.act_window">
+            <field name="name">Cash Boxes</field>
+            <field name="res_model">cash.box</field>
+            <field name="view_mode">kanban,list,form</field>
+        </record>
+
+        <!-- CASH BOX SESSION -->
+        <record id="view_cash_box_session_list" model="ir.ui.view">
+            <field name="name">cash.box.session.list</field>
+            <field name="model">cash.box.session</field>
+            <field name="arch" type="xml">
+                <list string="Cash Box Session" create="false">
+                    <field name="currency_id" column_invisible="True"/>
+                    <field name="name"/>
+                    <field name="cash_id"/>
+                    <field name="responsible_ids" widget="many2many_tags"/>
+                    <field name="opening_date"/>
+                    <field name="closing_date"/>
+                    <field name="initial_balance"/>
+                    <field name="final_balance"/>
+                    <field name="closing_balance"/>
+                    <field name="state" widget="badge"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_cash_box_session_form" model="ir.ui.view">
+            <field name="name">cash.box.session.form</field>
+            <field name="model">cash.box.session</field>
+            <field name="arch" type="xml">
+                <form string="Cash Box Session" create="false">
+                    <header>
+                        <button name="action_new_sale" string="Sale" type="object" class="btn btn-primary" invisible="state not in ('in_progress')"/>
+                        <button name="action_new_credit_note" string="Credit Note" type="object" class="btn btn-primary" invisible="state not in ('in_progress') or not allow_credit"/>
+                        <button name="action_new_payment" string="Payment" type="object" class="btn btn-primary" invisible="state not in ('in_progress')"/>
+                        <button name="action_new_quotation" string="Quotation" type="object" class="btn btn-primary" invisible="state not in ('in_progress')"/>
+                        <field name="state" widget="statusbar" statusbar_visible="in_progress,closed"/>
+                    </header>
+                    <sheet>
+                        <div name="button_box" class="oe_button_box">
+                            <button name="open_journal_items_view"
+                                class="oe_stat_button"
+                                icon="fa-bars"
+                                type="object"
+                                invisible="state != 'closed'">
+                                <div class="o_stat_info">
+                                    <span class="o_stat_text">Journal Items</span>
+                                </div>
+                            </button>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="allow_credit" invisible="1"/>
+                                <field name="name"/>
+                                <field name="cash_id"/>
+                                <field name="responsible_ids" widget="many2many_tags"/>
+                                <field name="opening_date"/>
+                                <field name="closing_date"/>
+                                <field name="opening_note"/>
+                            </group>
+                            <group>
+                                <field name="initial_balance"/>
+                                <field name="final_balance"/>
+                                <field name="closing_balance"/>
+                                <field name="close_move_id"/>
+                                <field name="diff_move_id"/>
+                                <field name="closing_note"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name="movements" string="Movements">
+                                <field name="movement_ids"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_cash_box_session_search" model="ir.ui.view">
+            <field name="name">cash.box.session.search</field>
+            <field name="model">cash.box.session</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="opening_date"/>
+                    <field name="closing_date"/>
+                    <separator/>
+                    <filter name="in_progress_session" string="In progress" domain="[('state', '=', 'in_progress')]"/>
+                    <filter name="closed_session" string="Closed" domain="[('state', '=', 'closed')]"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_cash_box_session" model="ir.actions.act_window">
+            <field name="name">Sessions</field>
+            <field name="res_model">cash.box.session</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+        <!-- CASH BOX SESSION MOVEMENT -->
+        <record id="view_cash_box_session_movement_list" model="ir.ui.view">
+            <field name="name">cash.box.session.movement.list</field>
+            <field name="model">cash.box.session.movement</field>
+            <field name="arch" type="xml">
+                <list string="Cash Box Session Movement">
+                    <field name="currency_id" column_invisible="True"/>
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <field name="operation_type"/>
+                    <field name="amount"/>
+                    <field name="cashier_id"/>
+                    <field name="state" widget="badge"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_cash_box_session_movement_form" model="ir.ui.view">
+            <field name="name">cash.box.session.movement.form</field>
+            <field name="model">cash.box.session.movement</field>
+            <field name="arch" type="xml">
+                <form string="Cash Box Session Movement">
+                    <field name="state" widget="statusbar"/>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="currency_id" invisible="True"/>
+                                <field name="cashier_id"/>
+                                <field name="name"/>
+                                <field name="partner_id"/>
+                            </group>
+                            <group>
+                                <field name="operation_type"/>
+                                <field name="invoice_id" invisible="operation_type not in ('invoice', 'quote')"/>
+                                <field name="credit_note_id" invisible="operation_type != 'refund'"/>
+                                <field name="payment_id" invisible="operation_type != 'payment'"/>
+                                <field name="order_id" invisible="operation_type not in ('invoice', 'quote')"/>
+                                <field name="amount"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

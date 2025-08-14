@@ -1,0 +1,55 @@
+# -*- coding: utf-8 -*-
+#################################################################################
+# Author      : PentaLab (<https://pentalab.tech>)
+# Copyright(c): 2025
+# All Rights Reserved.
+#
+# This module is copyright property of the author mentioned above.
+# You can`t redistribute it and/or modify it.
+#
+#################################################################################
+
+{
+    "name": "Cash Management",
+    'summary': 'Cash management by branch',
+    "version": "18.0.1.0",
+    'description': """
+        Allows you to manage cash registers by branch with income, expenses and accounting closing.
+        ==============================================
+    """,
+    'author': 'PentaLab',
+    'maintainer': 'PentaLab',
+    'contributors': ['AntonyPineda <vini16.av@gmail.com>'],
+    'website': 'https://pentalab.tech/',
+    'license': 'OPL-1',
+    'category': 'Sales/Sales',
+    'depends': [
+        'sale',
+        'stock',
+        'point_of_sale',
+    ],
+    'data': [
+        'data/ir_sequence.xml',
+        'data/cash_reports.xml',
+        'data/coins.xml',
+        
+        'security/cash_box_groups.xml',
+        'security/cash_box_rules.xml',
+        'security/ir.model.access.csv',
+        
+        'report/report_cash_closing.xml',
+        'report/reports.xml',
+        
+        'wizard/cash_box_wizard_view.xml',
+        'wizard/res_config_settings_views.xml',
+        
+        'views/cash_box_views.xml',
+        'views/coin_views.xml',
+        'views/account_payment_views.xml',
+        'views/cash_menuitems.xml',
+    ],
+    'demo': [
+    ],
+    'installable': True,
+    'application': True,
+}
