@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <!-- Wizard -->
+  <record id="view_pentalab_invoice_report_wizard_form" model="ir.ui.view">
+    <field name="name">pentalab.invoice.report.wizard.form</field>
+    <field name="model">pentalab.invoice.report.wizard</field>
+    <field name="arch" type="xml">
+      <form string="Parámetros - Anexo de compras">
+        <group>
+          <group>
+            <field name="date_from"/>
+            <field name="date_to"/>
+          </group>
+          <group>
+            <field name="journal_ids" widget="many2many_tags"/>
+          </group>
+        </group>
+        <footer>
+          <button string="Ver en pantalla" name="action_show" type="object" class="btn-primary"/>
+          <button string="Cerrar" special="cancel" class="btn-link"/>
+        </footer>
+      </form>
+    </field>
+  </record>
+
+  <!-- Lista -->
+  <record id="view_pentalab_invoice_report_line_list" model="ir.ui.view">
+    <field name="name">pentalab.invoice.report.line.list</field>
+    <field name="model">pentalab.invoice.report.line</field>
+    <field name="arch" type="xml">
+      <list string="Anexos de Compras" create="false" edit="false" delete="false">
+        <field name="company_name"/>
+        <field name="invoice_date"/>
+        <field name="date"/>
+        <field name="move_name"/>
+        <field name="journal_name"/>
+        <field name="doc_type_name"/>
+        <field name="ref"/>
+        <field name="purchase_order_name"/>
+        <field name="auth_number"/>
+        <field name="partner_vat"/>
+        <field name="partner_name"/>
+        <field name="payterm_name"/>
+        <field name="paymethod_name"/>
+        <field name="default_code"/>
+        <field name="product_name"/>
+        <field name="parent_categ_name"/>
+        <field name="categ_name"/>
+        <field name="quantity" sum="Cantidad"/>
+        <field name="price_unit"/>
+        <field name="taxes"/>
+        <field name="price_subtotal" sum="Subtotal"/>
+        <field name="price_total" sum="Total"/>
+        <field name="currency_id"/>
+      </list>
+    </field>
+  </record>
+
+  <!-- Acción para exportar a XLSX desde el menú de impresión -->
+  <record id="pentalab_invoice_report_xlsx" model="ir.actions.report">
+    <field name="name">Reporte de Facturas (XLSX)</field>
+    <field name="model">pentalab.invoice.report.wizard</field>
+    <field name="report_type">xlsx</field>
+    <field name="report_name">pentalab_report.invoice_report_xlsx</field>
+    <field name="report_file">invoice_report_xlsx</field>
+    <field name="binding_model_id" ref="model_pentalab_invoice_report_wizard"/>
+    <field name="binding_type">report</field>
+  </record>
+
+</odoo>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Vista del Wizard -->
+        <record id="view_pentalab_report_wizard_form" model="ir.ui.view">
+            <field name="name">pentalab.report.wizard.form</field>
+            <field name="model">pentalab.report.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Informe Pentalab">
+                    <group>
+                        <field name="company_id"/>
+                        <field name="date_from"/>
+                        <field name="date_to"/>
+                        <field name="type"/>
+                        <field name="partner_id"/>
+                    </group>
+                    <footer>
+                        <button string="Generar Reporte"
+                                type="object"
+                                name="action_generate_report"
+                                class="btn-primary"/>
+                        <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                    </footer>
+
+                    <!-- Sección para mostrar o descargar el archivo ya generado (opcional) -->
+                    <group>
+                        <field name="file_data" filename="file_name" readonly="1"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <!-- Acción para abrir el Wizard -->
+        <record id="action_pentalab_report_wizard" model="ir.actions.act_window">
+            <field name="name">Informe Pentalab</field>
+            <field name="res_model">pentalab.report.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <!-- Menú (o submenú) donde abrir el wizard -->
+        <menuitem id="menu_reports_informe_pentalab"
+                  name="Reportes Pentalab"
+                  parent="account.menu_finance_reports"
+                  sequence="5"/>
+        <menuitem id="menu_action_informe_pentalab"
+                  name="Vencido por cobrar"
+                  parent="menu_reports_informe_pentalab"
+                  action="action_pentalab_report_wizard"
+                  sequence="1"/>
+    </data>
+</odoo>

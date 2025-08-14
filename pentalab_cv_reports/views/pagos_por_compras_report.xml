@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+
+    <!-- Acción del reporte -->
+    <record id="action_pagos_por_compras" model="ir.actions.act_window">
+        <field name="name">Pagos por Compras</field>
+        <field name="res_model">pagos.por.compras</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+    </record>
+
+    <!-- Menú para el reporte -->
+    <menuitem
+        id="menu_pagos_por_compras"
+        name="Pagos por Compras"
+        parent="pentalab_report.menu_reports_informe_pentalab"
+        action="action_pagos_por_compras"
+        sequence="20"/>
+
+    <!-- Vista List del reporte -->
+    <record id="view_pagos_por_compras_list" model="ir.ui.view">
+        <field name="name">pagos.por.compras.list</field>
+        <field name="model">pagos.por.compras</field>
+        <field name="type">list</field>
+        <field name="arch" type="xml">
+            <list export_xlsx="1">
+                <field name="x_date" string="Fecha"/>
+                <field name="x_journal" string="Diario"/>  <!-- Enlace al diario -->
+                <field name="x_move_name" string="Nombre del Asiento"/>  <!-- Enlace al asiento -->
+                <field name="x_reference" string="Referencia"/>
+                <field name="x_account" string="Cuenta"/>  <!-- Enlace a la cuenta -->
+                <field name="x_partner_name" string="Proveedor"/>  <!-- Enlace al proveedor -->
+                <field name="x_tag" string="Etiqueta"/>
+                <field name="x_credit" string="Crédito"/>
+                <field name="x_debit" string="Débito"/>
+                <field name="x_account_type" string="Tipo de Cuenta"/>
+                <field name="x_payment_type" string="Tipo de Pago"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Vista Form del reporte -->
+    <record id="view_pagos_por_compras_form" model="ir.ui.view">
+        <field name="name">pagos.por.compras.form</field>
+        <field name="model">pagos.por.compras</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="x_date" string="Fecha"/>
+                        <field name="x_journal" string="Diario"/>  <!-- Enlace al diario -->
+                        <field name="x_move_name" string="Nombre del Asiento"/>  <!-- Enlace al asiento -->
+                        <field name="x_reference" string="Referencia"/>
+                        <field name="x_account" string="Cuenta"/>  <!-- Enlace a la cuenta -->
+                        <field name="x_partner_name" string="Proveedor"/>  <!-- Enlace al proveedor -->
+                        <field name="x_tag" string="Etiqueta"/>
+                        <field name="x_credit" string="Crédito"/>
+                        <field name="x_debit" string="Débito"/>
+                        <field name="x_account_type" string="Tipo de Cuenta"/>
+                        <field name="x_payment_type" string="Tipo de Pago"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Acción para el reporte PDF -->
+    <record id="action_report_pagos_por_compras_pdf" model="ir.actions.report">
+        <field name="name">Reporte Pagos por Compras</field>
+        <field name="model">pagos.por.compras</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">pentalab_report.report_pagos_por_compras_template</field>
+        <field name="print_report_name">'Pagos por Compras - %s' % (object._get_report_base_filename())</field>
+    </record>
+
+    <!-- Plantilla QWeb para el reporte PDF -->
+    <template id="report_pagos_por_compras_template">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <h2>Pagos por Compras</h2>
+                    <table class="table table-condensed">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Diario</th>
+                                <th>Nombre del Asiento</th>
+                                <th>Referencia</th>
+                                <th>Cuenta</th>
+                                <th>Proveedor</th>
+                                <th>Etiqueta</th>
+                                <th>Crédito</th>
+                                <th>Débito</th>
+                                <th>Tipo de Cuenta</th>
+                                <th>Tipo de Pago</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="docs" t-as="record">
+                                <tr>
+                                    <td><t t-esc="record.x_date"/></td>
+                                    <td><t t-esc="record.x_journal.name or ''"/></td>  <!-- Muestra el nombre del diario -->
+                                    <td><t t-esc="record.x_move_name.name or ''"/></td>  <!-- Muestra el nombre del asiento -->
+                                    <td><t t-esc="record.x_reference"/></td>
+                                    <td><t t-esc="record.x_account.name or ''"/></td>  <!-- Muestra el nombre de la cuenta -->
+                                    <td><t t-esc="record.x_partner_name.name or ''"/></td>  <!-- Muestra el nombre del proveedor -->
+                                    <td><t t-esc="record.x_tag"/></td>
+                                    <td><t t-esc="record.x_credit"/></td>
+                                    <td><t t-esc="record.x_debit"/></td>
+                                    <td><t t-esc="record.x_account_type"/></td>
+                                    <td><t t-esc="record.x_payment_type"/></td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

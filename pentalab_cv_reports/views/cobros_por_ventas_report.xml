@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Acción del reporte pentalab_report.menu_reports_informe_pentalab -->
+    <record id="action_cobros_por_ventas" model="ir.actions.act_window">
+        <field name="name">Cobros por Ventas</field>
+        <field name="res_model">cobros.por.ventas</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+    </record>
+    
+    <!-- Menú para el reporte -->
+    <menuitem
+        id="menu_cobros_por_ventas"
+        name="Cobros por Ventas"
+        parent="pentalab_report.menu_reports_informe_pentalab"
+        action="action_cobros_por_ventas"
+        sequence="10"/>
+    
+
+    <!-- Vista List del reporte -->
+    <record id="view_cobros_por_ventas_list" model="ir.ui.view">
+        <field name="name">cobros.por.ventas.list</field>
+        <field name="model">cobros.por.ventas</field>
+        <field name="type">list</field>
+        <field name="arch" type="xml">
+            <list export_xlsx="1">
+                <field name="x_date" string="Fecha"/>
+                <field name="x_journal" string="Diario"/>
+                <field name="x_move_name" string="Nombre del Asiento"/>
+                <field name="x_reference" string="Referencia"/>
+                <field name="x_account" string="Cuenta"/>
+                <field name="x_partner_name" string="Cliente"/>
+                <field name="x_tag" string="Etiqueta"/>
+                <field name="x_debit" string="Débito"/>
+                <field name="x_credit" string="Crédito"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Vista Form del reporte -->
+    <record id="view_cobros_por_ventas_form" model="ir.ui.view">
+        <field name="name">cobros.por.ventas.form</field>
+        <field name="model">cobros.por.ventas</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="x_date" string="Fecha"/>
+                        <field name="x_journal" string="Diario"/>
+                        <field name="x_move_name" string="Nombre del Asiento"/>
+                        <field name="x_reference" string="Referencia"/>
+                        <field name="x_account" string="Cuenta"/>
+                        <field name="x_partner_name" string="Cliente"/>
+                        <field name="x_tag" string="Etiqueta"/>
+                        <field name="x_debit" string="Débito"/>
+                        <field name="x_credit" string="Crédito"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Acción para el reporte PDF -->
+    <record id="action_report_cobros_por_ventas_pdf" model="ir.actions.report">
+        <field name="name">Reporte Cobros por Ventas</field>
+        <field name="model">cobros.por.ventas</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">pentalab_report.report_cobros_por_ventas_template</field>
+        <field name="print_report_name">'Cobros por Ventas - %s' % (object._get_report_base_filename())</field>
+    </record>
+
+    <!-- Plantilla QWeb para el reporte PDF -->
+    <template id="report_cobros_por_ventas_template">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <h2>Cobros por Ventas</h2>
+                    <table class="table table-condensed">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Diario</th>
+                                <th>Nombre del Asiento</th>
+                                <th>Referencia</th>
+                                <th>Cuenta</th>
+                                <th>Cliente</th>
+                                <th>Etiqueta</th>
+                                <th>Débito</th>
+                                <th>Crédito</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="docs" t-as="record">
+                                <tr>
+                                    <td><t t-esc="record.x_date"/></td>
+                                    <td><t t-esc="record.x_journal"/></td>
+                                    <td><t t-esc="record.x_move_name"/></td>
+                                    <td><t t-esc="record.x_reference"/></td>
+                                    <td><t t-esc="record.x_account"/></td>
+                                    <td><t t-esc="record.x_partner_name"/></td>
+                                    <td><t t-esc="record.x_tag"/></td>
+                                    <td><t t-esc="record.x_debit"/></td>
+                                    <td><t t-esc="record.x_credit"/></td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

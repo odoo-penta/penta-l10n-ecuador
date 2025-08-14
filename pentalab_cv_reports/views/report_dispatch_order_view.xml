@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Vista tipo lista para dispatch.report -->
+    <record id="dispatch_report_list_view" model="ir.ui.view">
+        <field name="name">dispatch.report.list</field>
+        <field name="model">dispatch.report</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="picking_id"/>
+                <field name="order_id"/>
+                <field name="invoice_id"/>
+                <field name="user_id"/>
+                <field name="partner_id"/>
+                <field name="vat"/>
+                <field name="street"/>
+                <field name="street2"/>
+                <field name="city"/>
+                <field name="state_id"/>
+                <field name="order_name"/>
+                <field name="order_date"/>
+                <field name="picking_name"/>
+                <field name="picking_date"/>
+                <field name="invoice_number"/>
+                <field name="default_code"/>
+                <field name="product_id"/>
+                <field name="product_variant"/>
+                <field name="weight"/>
+                <field name="location_id"/>
+                <field name="warehouse_id"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Acción de servidor que ejecuta action_generate_report() -->
+    <record id="action_dispatch_report_server" model="ir.actions.server">
+        <field name="name">Generar Reporte de Despachos</field>
+        <!-- Referencia al modelo dispatch.report creado arriba -->
+        <field name="model_id" ref="model_dispatch_report"/>
+        <field name="state">code</field>
+        <!-- Importante: la instrucción completa en una sola línea -->
+        <field name="code">action = env['dispatch.report'].action_generate_report();</field>
+    </record>
+
+    <!-- Acción de ventana para abrir la lista ya generada -->
+    <record id="action_dispatch_report" model="ir.actions.act_window">
+        <field name="name">Reporte de Despachos</field>
+        <field name="res_model">dispatch.report</field>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="dispatch_report_list_view"/>
+    </record>
+
+    <!-- Menú que llama al servidor para generar el reporte y mostrarlo -->
+    <menuitem id="menu_dispatch_report"
+              name="Reporte de Despachos"
+              parent="menu_pentalab_reports"
+              action="action_dispatch_report_server"
+              sequence="15"/>
+</odoo>

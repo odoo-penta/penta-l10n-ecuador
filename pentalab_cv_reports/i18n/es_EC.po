@@ -1,0 +1,456 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* pentalab_report
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-07-18 17:46+0000\n"
+"PO-Revision-Date: 2025-07-18 12:49-0500\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: es_EC\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.6\n"
+
+#. module: pentalab_report
+#: model:ir.actions.report,print_report_name:pentalab_report.action_report_cobros_por_ventas_pdf
+msgid "'Cobros por Ventas - %s' % (object._get_report_base_filename())"
+msgstr ""
+
+#. module: pentalab_report
+#: model:ir.actions.report,print_report_name:pentalab_report.action_generate_reports_xlsx
+msgid "'GenerateReport'"
+msgstr "'ReporteGenerado'"
+
+#. module: pentalab_report
+#: model:ir.model.fields,field_description:pentalab_report.field_pentalab_report_wizard__file_data
+msgid "Archivo XLSX"
+msgstr ""
+
+#. module: pentalab_report
+#: model:ir.model.fields,field_description:pentalab_report.field_stock_quant__product_category
+#: model_terms:ir.ui.view,arch_db:pentalab_report.view_inventory_by_location_list
+msgid "Artículo"
+msgstr ""
+
+#. module: pentalab_report
+#: model_terms:ir.ui.view,arch_db:pentalab_report.view_generate_reports_wizard_form
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. module: pentalab_report
+#: model_terms:ir.ui.view,arch_db:pentalab_report.view_pentalab_report_wizard_form
+msgid "Cancelar"
+msgstr ""
+
+#. module: pentalab_report
+#: model_terms:ir.ui.view,arch_db:pentalab_report.view_inventory_by_location_list
+msgid "Cantidad a la mano"
+msgstr ""
+
+#. module: pentalab_report
+#: model:ir.model.fields,field_description:pentalab_report.field_cobros_por_ventas__x_partner_name
+#: model_terms:ir.ui.view,arch_db:pentalab_report.report_cobros_por_ventas_template
+#: model_terms:ir.ui.view,arch_db:pentalab_report.view_cobros_por_ventas_form
+#: model_terms:ir.ui.view,arch_db:pentalab_report.view_cobros_por_ventas_list
+msgid "Cliente"
+msgstr ""
+
+#. module: pentalab_report
+#: model:ir.actions.act_window,name:pentalab_report.action_cobros_por_ventas
+#: model:ir.ui.menu,name:pentalab_report.menu_cobros_por_ventas
+#: model_terms:ir.ui.view,arch_db:pentalab_report.report_cobros_por_ventas_template
+msgid "Cobros por Ventas"
+msgstr ""
+
+#. module: pentalab_report
+#: model:ir.model.fields,field_description:pentalab_report.field_pentalab_report_wizard__company_id
+msgid "Compañía"
+msgstr ""
+
+#. module: pentalab_report
+#: model:ir.model.fields,field_description:pentalab_report.field_stock_quant__standard_price
+msgid "Cost"
+msgstr "Costo"
+
+#. module: pentalab_report
+#: model_terms:ir.ui.view,arch_db:pentalab_report.view_inventory_by_location_list
+msgid "Costo"
+msgstr ""
+
+#. module: pentalab_report
+#: model:ir.model.fields,field_description:pentalab_report.field_generate_reports_wizard__create_uid
+#: model:ir.model.fields,field_description:pentalab_report.field_pentalab_report_wizard__create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: pentalab_report
+#: model:ir.model.fields,field_description:pentalab_report.field_generate_reports_wizard__create_date
+#: model:ir.model.fields,field_description:pentalab_report.field_pentalab_report_wizard__create_date
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: pentalab_report
+#: model:ir.model.fields,field_description:pentalab_report.field_cobros_por_ventas__x_credit
+#: model:ir.model.fields,field_description:pentalab_report.field_pagos_por_compras__x_credit
+#: model_terms:ir.ui.view,arch_db:pentalab_report.report_cobros_por_ventas_template
+#: model_terms:ir.ui.view,arch_db:pentalab_report.view_cobros_por_ventas_form
+#: model_terms:ir.ui.view,arch_db:pentalab_report.view_cobros_por_ventas_list
+msgid "Crédito"
+msgstr ""
+
+#. module: pentalab_report
+#: model:ir.model.fields,field_description:pentalab_report.field_cobros_por_ventas__x_account
+#: model:ir.model.fields,field_description:pentalab_report.field_pagos_por_compras__x_account
+#: model_terms:ir.ui.view,arch_db:pentalab_report.report_cobros_por_ventas_template
+#: model_terms:ir.ui.view,arch_db:pentalab_report.view_cobros_por_ventas_form
+#: model_terms:ir.ui.view,arch_db:pentalab_report.view_cobros_por_ventas_list
+msgid "Cuenta"
+msgstr ""
+
+#. module: pentalab_report
+#: model:ir.model.fields,field_description:pentalab_report.field_account_payment__move_line_ids
+msgid "Cuotas de Facturas"
+msgstr ""
+
+#. module: pentalab_report
+#: model:ir.model.fields,field_description:pentalab_report.field_account_payment__partner_id
+msgid "Customer/Vendor"
+msgstr "Cliente/proveedor"
+
+#. module: pentalab_report
+#: model:ir.model.fields,field_description:pentalab_report.field_stock_quant__default_code
+msgid "Código del producto"
+msgstr ""
+
+#. module: pentalab_report
+#: model:ir.model.fields,field_description:pentalab_report.field_generate_reports_wizard__date_end
+msgid "Date end"
+msgstr "Fecha fin"
+
+#. module: pentalab_report
+#: model:ir.model.fields,field_description:pentalab_report.field_generate_reports_wizard__date_start
+msgid "Date start"
+msgstr "Fecha inicio"
+
+#. module: pentalab_report
+#: model:ir.model.fields,field_description:pentalab_report.field_pentalab_report_wizard__date_from
+msgid "Desde"
+msgstr ""
+
+#. module: pentalab_report
+#: model:ir.model.fields,field_description:pentalab_report.field_cobros_por_ventas__x_journal
+#: model:ir.model.fields,field_description:pentalab_report.field_pagos_por_compras__x_journal
+#: model_terms:ir.ui.view,arch_db:pentalab_report.report_cobros_por_ventas_template
+#: model_terms:ir.ui.view,arch_db:pentalab_report.view_cobros_por_ventas_form
+#: model_terms:ir.ui.view,arch_db:pentalab_report.view_cobros_por_ventas_list
+msgid "Diario"
+msgstr ""
+
+#. module: pentalab_report
+#: model:ir.model.fields,field_description:pentalab_report.field_cobros_por_ventas__display_name
+#: model:ir.model.fields,field_description:pentalab_report.field_generate_reports_wizard__display_name
+#: model:ir.model.fields,field_description:pentalab_report.field_pagos_por_compras__display_name
+#: model:ir.model.fields,field_description:pentalab_report.field_pentalab_report_wizard__display_name
+msgid "Display Name"
+msgstr "Nombre"
+
+#. module: pentalab_report
+#: model:ir.model.fields,field_description:pentalab_report.field_cobros_por_ventas__x_debit
+#: model:ir.model.fields,field_description:pentalab_report.field_pagos_por_compras__x_debit
+#: model_terms:ir.ui.view,arch_db:pentalab_report.report_cobros_por_ventas_template
+#: model_terms:ir.ui.view,arch_db:pentalab_report.view_cobros_por_ventas_form
+#: model_terms:ir.ui.view,arch_db:pentalab_report.view_cobros_por_ventas_list
+msgid "Débito"
+msgstr ""
+
+#. module: pentalab_report
+#: model:ir.model.fields,field_description:pentalab_report.field_cobros_por_ventas__x_tag
+#: model:ir.model.fields,field_description:pentalab_report.field_pagos_por_compras__x_tag
+#: model_terms:ir.ui.view,arch_db:pentalab_report.report_cobros_por_ventas_template
+#: model_terms:ir.ui.view,arch_db:pentalab_report.view_cobros_por_ventas_form
+#: model_terms:ir.ui.view,arch_db:pentalab_report.view_cobros_por_ventas_list
+msgid "Etiqueta"
+msgstr ""
+
+#. module: pentalab_report
+#: model:ir.model.fields,field_description:pentalab_report.field_cobros_por_ventas__x_date
+#: model:ir.model.fields,field_description:pentalab_report.field_pagos_por_compras__x_date
+#: model_terms:ir.ui.view,arch_db:pentalab_report.report_cobros_por_ventas_template
+#: model_terms:ir.ui.view,arch_db:pentalab_report.view_cobros_por_ventas_form
+#: model_terms:ir.ui.view,arch_db:pentalab_report.view_cobros_por_ventas_list
+msgid "Fecha"
+msgstr ""
+
+#. module: pentalab_report
+#: model_terms:ir.ui.view,arch_db:pentalab_report.view_pentalab_report_wizard_form
+msgid "Generar Reporte"
+msgstr ""
+
+#. module: pentalab_report
+#: model_terms:ir.ui.view,arch_db:pentalab_report.view_generate_reports_wizard_form
+msgid "Generate"
+msgstr "Generar"
+
+#. module: pentalab_report
+#: model:ir.actions.act_window,name:pentalab_report.action_generate_reports_wizard
+msgid "Generate Reports"
+msgstr "Generar Reportes"
+
+#. module: pentalab_report
+#: model:ir.ui.menu,name:pentalab_report.menu_action_reports_report
+msgid "Generate reports"
+msgstr "Generar reportes"
+
+#. module: pentalab_report
+#: model:ir.actions.report,name:pentalab_report.action_generate_reports_xlsx
+msgid "GenerateReports"
+msgstr "ReportesGenerado"
+
+#. module: pentalab_report
+#: model:ir.model.fields,field_description:pentalab_report.field_stock_quant__product_group
+#: model_terms:ir.ui.view,arch_db:pentalab_report.view_inventory_by_location_list
+msgid "Grupo"
+msgstr ""
+
+#. module: pentalab_report
+#: model:ir.model.fields,field_description:pentalab_report.field_pentalab_report_wizard__date_to
+msgid "Hasta"
+msgstr ""
+
+#. module: pentalab_report
+#: model:ir.model.fields,field_description:pentalab_report.field_cobros_por_ventas__id
+#: model:ir.model.fields,field_description:pentalab_report.field_generate_reports_wizard__id
+#: model:ir.model.fields,field_description:pentalab_report.field_pagos_por_compras__id
+#: model:ir.model.fields,field_description:pentalab_report.field_pentalab_report_wizard__id
+msgid "ID"
+msgstr ""
+
+#. module: pentalab_report
+#: model:ir.actions.act_window,name:pentalab_report.action_pentalab_report_wizard
+#: model_terms:ir.ui.view,arch_db:pentalab_report.view_pentalab_report_wizard_form
+msgid "Informe Pentalab"
+msgstr ""
+
+#. module: pentalab_report
+#: model:ir.actions.act_window,name:pentalab_report.action_pentalab_inventory_by_location
+#: model:ir.ui.menu,name:pentalab_report.menu_pentalab_inventory_by_location
+#: model_terms:ir.ui.view,arch_db:pentalab_report.view_inventory_by_location_list
+msgid "Inventario por almacén"
+msgstr ""
+
+#. module: pentalab_report
+#: model:ir.model.fields,field_description:pentalab_report.field_account_payment__journal_code
+msgid "Journal Code"
+msgstr "Código diario"
+
+#. module: pentalab_report
+#: model:ir.model.fields,field_description:pentalab_report.field_generate_reports_wizard__write_uid
+#: model:ir.model.fields,field_description:pentalab_report.field_pentalab_report_wizard__write_uid
+msgid "Last Updated by"
+msgstr "Última actualización por"
+
+#. module: pentalab_report
+#: model:ir.model.fields,field_description:pentalab_report.field_generate_reports_wizard__write_date
+#: model:ir.model.fields,field_description:pentalab_report.field_pentalab_report_wizard__write_date
+msgid "Last Updated on"
+msgstr "Última actualización el"
+
+#. module: pentalab_report
+#: model:ir.model.fields,field_description:pentalab_report.field_stock_quant__product_line
+#: model_terms:ir.ui.view,arch_db:pentalab_report.view_inventory_by_location_list
+msgid "Línea"
+msgstr ""
+
+#. module: pentalab_report
+#: model:ir.model.fields,field_description:pentalab_report.field_pentalab_report_wizard__file_name
+msgid "Nombre del Archivo"
+msgstr ""
+
+#. module: pentalab_report
+#: model:ir.model.fields,field_description:pentalab_report.field_cobros_por_ventas__x_move_name
+#: model:ir.model.fields,field_description:pentalab_report.field_pagos_por_compras__x_move_name
+#: model_terms:ir.ui.view,arch_db:pentalab_report.report_cobros_por_ventas_template
+#: model_terms:ir.ui.view,arch_db:pentalab_report.view_cobros_por_ventas_form
+#: model_terms:ir.ui.view,arch_db:pentalab_report.view_cobros_por_ventas_list
+msgid "Nombre del Asiento"
+msgstr ""
+
+#. module: pentalab_report
+#: model:ir.model.fields,field_description:pentalab_report.field_stock_quant__product_name
+msgid "Nombre del producto"
+msgstr ""
+
+#. module: pentalab_report
+#: model:ir.model.fields,field_description:pentalab_report.field_stock_quant__list_price
+msgid "PVP"
+msgstr ""
+
+#. module: pentalab_report
+#: model:ir.model,name:pentalab_report.model_account_payment
+msgid "Payments"
+msgstr "Pagos"
+
+#. module: pentalab_report
+#: model:ir.model.fields.selection,name:pentalab_report.selection__pentalab_report_wizard__type__out_invoice
+msgid "Por Cobrar"
+msgstr ""
+
+#. module: pentalab_report
+#: model:ir.model.fields.selection,name:pentalab_report.selection__pentalab_report_wizard__type__advance_account_customer_id
+msgid "Por Cobrar y Por Pagar Anticipo de Clientes"
+msgstr ""
+
+#. module: pentalab_report
+#: model:ir.model.fields.selection,name:pentalab_report.selection__pentalab_report_wizard__type__in_invoice
+msgid "Por Pagar"
+msgstr ""
+
+#. module: pentalab_report
+#: model_terms:ir.ui.view,arch_db:pentalab_report.view_inventory_by_location_list
+msgid "Precio"
+msgstr ""
+
+#. module: pentalab_report
+#: model:ir.model.fields,help:pentalab_report.field_stock_quant__list_price
+msgid "Price at which the product is sold to customers."
+msgstr "Precio al que se vende el producto a los clientes."
+
+#. module: pentalab_report
+#: model_terms:ir.ui.view,arch_db:pentalab_report.view_inventory_by_location_list
+msgid "Producto"
+msgstr ""
+
+#. module: pentalab_report
+#: model:ir.model.fields,field_description:pentalab_report.field_pagos_por_compras__x_partner_name
+msgid "Proveedor"
+msgstr ""
+
+#. module: pentalab_report
+#: model:ir.model.fields.selection,name:pentalab_report.selection__generate_reports_wizard__report_type__purchase
+msgid "Purchase"
+msgstr "Compra"
+
+#. module: pentalab_report
+#: model:ir.model,name:pentalab_report.model_stock_quant
+msgid "Quants"
+msgstr "Cants"
+
+#. module: pentalab_report
+#: model:ir.model.fields,field_description:pentalab_report.field_cobros_por_ventas__x_reference
+#: model:ir.model.fields,field_description:pentalab_report.field_pagos_por_compras__x_reference
+#: model_terms:ir.ui.view,arch_db:pentalab_report.report_cobros_por_ventas_template
+#: model_terms:ir.ui.view,arch_db:pentalab_report.view_cobros_por_ventas_form
+#: model_terms:ir.ui.view,arch_db:pentalab_report.view_cobros_por_ventas_list
+msgid "Referencia"
+msgstr ""
+
+#. module: pentalab_report
+#: model_terms:ir.ui.view,arch_db:pentalab_report.view_inventory_by_location_list
+msgid "Referencia interna"
+msgstr ""
+
+#. module: pentalab_report
+#: model_terms:ir.ui.view,arch_db:pentalab_report.view_generate_reports_wizard_form
+msgid "Report Generator"
+msgstr "Gnereador de reporte"
+
+#. module: pentalab_report
+#: model:ir.model.fields,field_description:pentalab_report.field_generate_reports_wizard__report_type
+msgid "Report Type"
+msgstr "Tipo reporte"
+
+#. module: pentalab_report
+#: model:ir.actions.report,name:pentalab_report.action_report_cobros_por_ventas_pdf
+msgid "Reporte Cobros por Ventas"
+msgstr ""
+
+#. module: pentalab_report
+#: model:ir.model,name:pentalab_report.model_cobros_por_ventas
+msgid "Reporte de Cobros por Ventas"
+msgstr ""
+
+#. module: pentalab_report
+#: model:ir.model,name:pentalab_report.model_pagos_por_compras
+msgid "Reporte de Pagos por Compras"
+msgstr ""
+
+#. module: pentalab_report
+#: model:ir.ui.menu,name:pentalab_report.menu_pentalab_reports
+#: model:ir.ui.menu,name:pentalab_report.menu_reports_informe_pentalab
+msgid "Reportes Pentalab"
+msgstr ""
+
+#. module: pentalab_report
+#: model:ir.ui.menu,name:pentalab_report.menu_reports_report
+msgid "Reports"
+msgstr "Reportes"
+
+#. module: pentalab_report
+#: model:ir.model,name:pentalab_report.model_report_pentalab_report_reports_report
+msgid "Reports report"
+msgstr "Reportes reporte"
+
+#. module: pentalab_report
+#: model:ir.model.fields,help:pentalab_report.field_generate_reports_wizard__report_type
+msgid "Select the type of report to generate."
+msgstr "Seleccione el tipo de reporte a generar."
+
+#. module: pentalab_report
+#: model:ir.model.fields,field_description:pentalab_report.field_pentalab_report_wizard__partner_id
+msgid "Socio"
+msgstr ""
+
+#. module: pentalab_report
+#: model:ir.model.fields,field_description:pentalab_report.field_pentalab_report_wizard__type
+msgid "Tipo"
+msgstr ""
+
+#. module: pentalab_report
+#: model:ir.model.fields,field_description:pentalab_report.field_cobros_por_ventas__x_account_type
+#: model:ir.model.fields,field_description:pentalab_report.field_pagos_por_compras__x_account_type
+msgid "Tipo de Cuenta"
+msgstr ""
+
+#. module: pentalab_report
+#: model:ir.model.fields,field_description:pentalab_report.field_cobros_por_ventas__x_payment_type
+#: model:ir.model.fields,field_description:pentalab_report.field_pagos_por_compras__x_payment_type
+msgid "Tipo de Pago"
+msgstr ""
+
+#. module: pentalab_report
+#: model:ir.model.fields,field_description:pentalab_report.field_stock_quant__store_location
+#: model_terms:ir.ui.view,arch_db:pentalab_report.view_inventory_by_location_list
+msgid "Ubicación"
+msgstr ""
+
+#. module: pentalab_report
+#: model:ir.model.fields,help:pentalab_report.field_stock_quant__standard_price
+msgid ""
+"Value of the product (automatically computed in AVCO).\n"
+"        Used to value the product when the purchase cost is not known (e.g. inventory adjustment).\n"
+"        Used to compute margins on sale orders."
+msgstr ""
+"Valor del producto (calculado automáticamente en AVCO).\n"
+"Se utiliza para valorar el producto cuando se desconoce el coste de compra (p. ej., ajuste de inventario).\n"
+"Se utiliza para calcular los márgenes en los pedidos de venta."
+
+#. module: pentalab_report
+#: model:ir.ui.menu,name:pentalab_report.menu_action_informe_pentalab
+msgid "Vencido por cobrar"
+msgstr ""
+
+#. module: pentalab_report
+#: model:ir.model,name:pentalab_report.model_pentalab_report_wizard
+msgid "Wizard para Informe Pentalab"
+msgstr ""
+
+#. module: pentalab_report
+#: model:ir.model,name:pentalab_report.model_generate_reports_wizard
+msgid "Wizard to generate reports"
+msgstr "Asistente para generar reportes"

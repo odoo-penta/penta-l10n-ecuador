@@ -1,0 +1,21 @@
+<odoo>
+    <record id="view_stock_by_location_list" model="ir.ui.view">
+        <field name="name">stock.quant.stock.by.location.list</field>
+        <field name="model">stock.quant</field>
+        <field name="type">list</field>
+        <field name="arch" type="xml">
+            <list string="Stock por bodega">
+                <field name="product_name" string="Producto"/>
+                <field name="warehouse_id" string="Almacén"/>
+                <field name="store_location" string="Ubicación"/>
+                <field name="packaging_name" string="Embalaje"/>
+                <field name="main_category_id" string="Categoría Padre"/>
+                <field name="category_id" string="Categoría"/>
+                <field name="subcategory_id" string="Subcatecoría"/>
+                <field name="default_code" string="Referencia interna"/>
+                <field name="quantity" string="Cantidad a la mano"/>
+                <field name="attributes_and_variants" string="Atributos y Variantes"/>
+            </list>
+        </field>
+    </record>
+</odoo>

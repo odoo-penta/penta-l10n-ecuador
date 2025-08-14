@@ -1,0 +1,13 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_pentalab_report_wizard,pentalab_report_wizard,model_pentalab_report_wizard,base.group_user,1,1,1,1
+access_cobros_por_ventas,cobros.por.ventas.acces,model_cobros_por_ventas,base.group_user,1,1,1,1
+access_pagos_por_compras,pagos.por.compras.access,model_pagos_por_compras,base.group_user,1,1,1,1
+access_generate_reports_wizard,generate.reports.wizard,model_generate_reports_wizard,base.group_user,1,1,1,1
+access_report_a1_wizard,report.a1.wizard,model_report_a1_wizard,base.group_user,1,1,1,1
+access_stock_quant_aggregated,stock.quant.aggregated,model_stock_quant_aggregated,base.group_user,1,0,0,0
+access_export_inventory_month_wizard,export.inventory.month.wizard,model_export_inventory_month_wizard,base.group_user,1,1,1,1
+access_pentalab_invoice_report_line,pentalab_invoice_report_line,model_pentalab_invoice_report_line,base.group_user,1,0,0,0
+access_pentalab_invoice_report_wizard,pentalab_invoice_report_wizard,model_pentalab_invoice_report_wizard,base.group_user,1,1,1,0
+access_stock_picking_report,access.stock.picking.report,model_stock_picking_report,base.group_user,1,1,1,1
+access_stock_picking_report_manager,access.stock.picking.report.manager,model_stock_picking_report,base.group_user,1,1,1,1
+access_dispatch_report_user,access.dispatch.report.user,model_dispatch_report,base.group_user,1,1,1,1

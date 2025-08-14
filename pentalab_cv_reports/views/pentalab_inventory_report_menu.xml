@@ -1,0 +1,32 @@
+<odoo>
+    <record id="action_pentalab_inventory_by_location" model="ir.actions.act_window">
+        <field name="name">Inventario por almacén</field>
+        <field name="res_model">stock.quant.aggregated</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{}</field>
+        <field name="domain">[]</field>
+        <field name="view_id" ref="view_inventory_by_location_list"/>
+    </record>
+    <record id="action_pentalab_stock_by_location" model="ir.actions.act_window">
+        <field name="name">Stock por bodega</field>
+        <field name="res_model">stock.quant</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{}</field>
+        <field name="domain">[('location_id.usage', '=', 'internal')]</field>
+        <field name="view_id" ref="view_stock_by_location_list"/>
+    </record>
+    <menuitem id="menu_pentalab_reports" 
+        name="Reportes Pentalab"
+        parent="stock.menu_warehouse_report" 
+        sequence="9999"/>
+    <menuitem id="menu_pentalab_inventory_by_location"
+        name="Inventario por almacén"
+        parent="menu_pentalab_reports"
+        action="action_pentalab_inventory_by_location"
+        sequence="1"/>
+    <menuitem id="menu_pentalab_stock_by_location"
+        name="Stock por bodega"
+        parent="menu_pentalab_reports"
+        action="action_pentalab_stock_by_location"
+        sequence="2"/>
+</odoo>

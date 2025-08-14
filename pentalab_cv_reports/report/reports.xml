@@ -1,0 +1,18 @@
+<odoo>
+
+    <record id="action_generate_reports_xlsx" model="ir.actions.report">
+        <field name="name">GenerateReports</field>
+        <field name="model">generate.reports.wizard</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">pentalab_report.reports_report</field>
+        <field name="print_report_name">'ReporteCompras'</field>
+    </record>
+
+    <record id="action_report_ventas_a1_xlsx" model="ir.actions.report">
+        <field name="name">VentasA1</field>
+        <field name="model">report.a1.wizard</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">pentalab_report.report_ventas_a1</field>
+        <field name="print_report_name">'VENTASA1'</field>
+    </record>
+</odoo>
