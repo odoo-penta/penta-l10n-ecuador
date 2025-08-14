@@ -10,11 +10,11 @@
 #################################################################################
 
 {
-    "name": "Cash Management",
-    'summary': 'Cash management by branch',
+    "name": "POS",
+    'summary': 'POS in backend',
     "version": "18.0.1.0",
     'description': """
-        Allows you to manage cash registers by branch with income, expenses and accounting closing.
+        Adds a new POS sales menu that processes everything in real time on the backend.
         ==============================================
     """,
     'author': 'PentaLab',
