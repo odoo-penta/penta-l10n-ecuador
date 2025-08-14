@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Acción del reporte pentalab_report.menu_reports_informe_pentalab -->
+    <!-- Acción del reporte pentalab_cb_reports.menu_reports_informe_pentalab -->
     <record id="action_cobros_por_ventas" model="ir.actions.act_window">
         <field name="name">Cobros por Ventas</field>
         <field name="res_model">cobros.por.ventas</field>
@@ -13,7 +13,7 @@
     <menuitem
         id="menu_cobros_por_ventas"
         name="Cobros por Ventas"
-        parent="pentalab_report.menu_reports_informe_pentalab"
+        parent="pentalab_cb_reports.menu_reports_informe_pentalab"
         action="action_cobros_por_ventas"
         sequence="10"/>
     
@@ -67,7 +67,7 @@
         <field name="name">Reporte Cobros por Ventas</field>
         <field name="model">cobros.por.ventas</field>
         <field name="report_type">qweb-pdf</field>
-        <field name="report_name">pentalab_report.report_cobros_por_ventas_template</field>
+        <field name="report_name">pentalab_cb_reports.report_cobros_por_ventas_template</field>
         <field name="print_report_name">'Cobros por Ventas - %s' % (object._get_report_base_filename())</field>
     </record>
 

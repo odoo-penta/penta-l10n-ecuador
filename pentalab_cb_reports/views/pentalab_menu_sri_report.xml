@@ -19,28 +19,28 @@
         <field name="view_id" ref="view_pentalab_sri_report_retention_code_list"/>
 
     <menuitem
-        id="menu_sri_pentalab_reports"
+        id="menu_sri_pentalab_cb_reportss"
         name="Reportes SRI Pentalab"
         sequence="9999"/>
     
     <menuitem
-        id="menu_sri_pentalab_reports_a1"
+        id="menu_sri_pentalab_cb_reportss_a1"
         name="Facturas de venta"
-        parent="menu_sri_pentalab_reports"
+        parent="menu_sri_pentalab_cb_reportss"
         action="action_pentalab_sri_report_invonce_sale"
         sequence="1"/>
 
     <menuitem
-        id="menu_sri_pentalab_reports_a2"
+        id="menu_sri_pentalab_cb_reportss_a2"
         name="Código de retenciones aplicadas"
-        parent="menu_sri_pentalab_reports"
+        parent="menu_sri_pentalab_cb_reportss"
         action="action_pentalab_sri_report_retention_code"
         sequence="2"/>
 
     <menuitem 
-        id="menu_sri_pentalab_reports_a3"
+        id="menu_sri_pentalab_cb_reportss_a3"
         name="Facturas de compra con retenciones y formas de pago"
-        parent="menu_sri_pentalab_reports"
+        parent="menu_sri_pentalab_cb_reportss"
         action="action_pentalab_sri_report_invoice_retention_purchase"
         sequence="3"/>
 

@@ -62,7 +62,7 @@
     <field name="name">Reporte de Facturas (XLSX)</field>
     <field name="model">pentalab.invoice.report.wizard</field>
     <field name="report_type">xlsx</field>
-    <field name="report_name">pentalab_report.invoice_report_xlsx</field>
+    <field name="report_name">pentalab_cb_reports.invoice_report_xlsx</field>
     <field name="report_file">invoice_report_xlsx</field>
     <field name="binding_model_id" ref="model_pentalab_invoice_report_wizard"/>
     <field name="binding_type">report</field>

@@ -214,7 +214,7 @@ class generateReportsWizard(models.TransientModel):
     def print_report(self):
         if self.report_type == 'uafe':
             return self.generate_uafe_reports()
-        return self.env.ref('pentalab_report.action_generate_reports_xlsx').report_action(self)
+        return self.env.ref('pentalab_cb_reports.action_generate_reports_xlsx').report_action(self)
     
     def generate_uafe_reports(self):
         # Inicializar variables globales
@@ -582,4 +582,4 @@ class ReportA1Wizard(models.TransientModel):
     document_type = fields.Selection(selection=lambda self: self._get_selection_opcions(), default='0', required=True)
     
     def print_report(self):
-        return self.env.ref('pentalab_report.action_report_ventas_a1_xlsx').report_action(self)
+        return self.env.ref('pentalab_cb_reports.action_report_ventas_a1_xlsx').report_action(self)

@@ -38,7 +38,7 @@
 
     <menuitem id="menu_stock_picking_report"
               name="Reporte de Despachos Consolidado"
-              parent="menu_pentalab_reports"
+              parent="menu_pentalab_cb_reportss"
               action="action_stock_picking_report_server"
               sequence="20"/>
 </odoo>

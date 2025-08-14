@@ -52,7 +52,7 @@
     <!-- Menú que llama al servidor para generar el reporte y mostrarlo -->
     <menuitem id="menu_dispatch_report"
               name="Reporte de Despachos"
-              parent="menu_pentalab_reports"
+              parent="menu_pentalab_cb_reportss"
               action="action_dispatch_report_server"
               sequence="15"/>
 </odoo>

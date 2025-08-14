@@ -7,7 +7,7 @@
         <field name="arch" type="xml">
             <list string="Facturas de venta">
                 <header>
-                    <button name="%(pentalab_report.action_open_export_wizard)d"
+                    <button name="%(pentalab_cb_reports.action_open_export_wizard)d"
                             string="Exportar XLSX"
                             type="action"
                             class="btn-primary"/>

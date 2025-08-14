@@ -15,18 +15,18 @@
         <field name="domain">[('location_id.usage', '=', 'internal')]</field>
         <field name="view_id" ref="view_stock_by_location_list"/>
     </record>
-    <menuitem id="menu_pentalab_reports" 
+    <menuitem id="menu_pentalab_cb_reportss" 
         name="Reportes Pentalab"
         parent="stock.menu_warehouse_report" 
         sequence="9999"/>
     <menuitem id="menu_pentalab_inventory_by_location"
         name="Inventario por almacén"
-        parent="menu_pentalab_reports"
+        parent="menu_pentalab_cb_reportss"
         action="action_pentalab_inventory_by_location"
         sequence="1"/>
     <menuitem id="menu_pentalab_stock_by_location"
         name="Stock por bodega"
-        parent="menu_pentalab_reports"
+        parent="menu_pentalab_cb_reportss"
         action="action_pentalab_stock_by_location"
         sequence="2"/>
 </odoo>
