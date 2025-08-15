@@ -7,6 +7,7 @@ import io
 import unicodedata
 from collections import defaultdict
 from odoo.tools.misc import xlsxwriter
+from odoo.tools import remove_accents, sanitize_text
 
 class generateReportsWizard(models.TransientModel):
     _name = 'generate.reports.wizard'
@@ -56,23 +57,6 @@ class generateReportsWizard(models.TransientModel):
     total_tarjeta = fields.Integer(string='Total en Tarjeta', readonly=True)
     total_valores_bienes = fields.Integer(string='Total Valores y Bienes', readonly=True)
     total_valor_total = fields.Integer(string='Total General', readonly=True)
-    
-    def remove_accents(self, texto):
-        return ''.join(
-            c for c in unicodedata.normalize('NFKD', texto)
-            if not unicodedata.combining(c)
-        )
-    
-    def sanitize_text(self, text):
-        if not text:
-            return ''
-        # Quitar tildes
-        text = self.remove_accents(text)
-        # Quitar guiones y caracteres especiales (mantener letras, números y espacios)
-        import re
-        text = re.sub(r'[^A-Za-z0-9\s]', '', text)
-        # Opcional: convertir a mayúsculas
-        return text.upper().strip()
     
     def get_invoices_from_payments(self, date_start, date_end, uafe_domain=None):
         # 1️⃣ Todos los pagos validados en el rango de fechas
@@ -201,7 +185,7 @@ class generateReportsWizard(models.TransientModel):
     def _get_identification_type(self, value):
         if not value or not isinstance(value, str):
             return ''
-        v = self.remove_accents(value).lower()
+        v = remove_accents(value).lower()
         if v.startswith('ruc'):
             return 'R'
         elif v.startswith('cedula'):
@@ -302,10 +286,10 @@ class generateReportsWizard(models.TransientModel):
             worksheet.write(row, 0, 'N' if customer.company_type == 'person' else 'J')
             worksheet.write(row, 1, self._get_identification_type(customer.l10n_latam_identification_type_id.name) or '')
             worksheet.write(row, 2, customer.vat or '')
-            worksheet.write(row, 3, self.sanitize_text(customer.name) or '')
-            worksheet.write(row, 4, self.sanitize_text(customer.display_name) or '')
+            worksheet.write(row, 3, sanitize_text(customer.name) or '')
+            worksheet.write(row, 4, sanitize_text(customer.display_name) or '')
             worksheet.write(row, 5, customer.country_id.code or '')
-            worksheet.write(row, 6, self.sanitize_text(customer.street) or '')
+            worksheet.write(row, 6, sanitize_text(customer.street) or '')
             worksheet.write(row, 7, state)
             worksheet.write(row, 8, f"{state}{city}" if state and city else '')
             worksheet.write(row, 9, f"{state}{city}{parish}" if state and city and parish else '')
@@ -373,7 +357,7 @@ class generateReportsWizard(models.TransientModel):
                     row = worksheet.dim_rowmax + 1
                     worksheet.write(row, 0, self._get_identification_type(invoice.partner_id.l10n_latam_identification_type_id.name) or '')
                     worksheet.write(row, 1, invoice.partner_id.vat or '')
-                    worksheet.write(row, 2, self.sanitize_text(invoice.name) or '')
+                    worksheet.write(row, 2, sanitize_text(invoice.name) or '')
                     worksheet.write(row, 3, 'VEN')
                     worksheet.write(row, 4, 'NAP')
                     worksheet.write(row, 5, '0')
@@ -386,7 +370,7 @@ class generateReportsWizard(models.TransientModel):
                     worksheet.write(row, 9, '')
                     worksheet.write(row, 10, '')
                     worksheet.write(row, 11, '')
-                    worksheet.write(row, 12, self.sanitize_text(line.product_id.product_brand_id.name) if line.product_id.product_brand_id else '')
+                    worksheet.write(row, 12, sanitize_text(line.product_id.product_brand_id.name) if line.product_id.product_brand_id else '')
                     # CHASIS - N LOTE
                     worksheet.write(row, 13, serial_number)
                     worksheet.write(row, 14, '')
@@ -396,11 +380,11 @@ class generateReportsWizard(models.TransientModel):
                     # Atributos del producto
                     for atrib in line.product_id.product_template_attribute_value_ids:
                         if atrib.attribute_id.name == 'Año':
-                            worksheet.write(row, 9, self.sanitize_text(atrib.name) or '')
+                            worksheet.write(row, 9, sanitize_text(atrib.name) or '')
                         elif atrib.attribute_id.name == 'Modelo Homologado ANT':
-                            worksheet.write(row, 11, self.sanitize_text(atrib.name) or '')
+                            worksheet.write(row, 11, sanitize_text(atrib.name) or '')
                         elif atrib.attribute_id.name == 'Cilindraje':
-                            worksheet.write(row, 14, self.sanitize_text(atrib.name) or '')
+                            worksheet.write(row, 14, sanitize_text(atrib.name) or '')
                     worksheet.write(row, 18, state)
                     worksheet.write(row, 19, f"{state}{city}" if state and city else '')
                     worksheet.write(row, 20, f"{state}{city}{parish}" if state and city and parish else '')
@@ -467,9 +451,9 @@ class generateReportsWizard(models.TransientModel):
                 row = worksheet.dim_rowmax + 1
                 worksheet.write(row, 0, self._get_identification_type(payment.partner_id.l10n_latam_identification_type_id.name) or '')
                 worksheet.write(row, 1, payment.partner_id.vat or '')
-                worksheet.write(row, 2, self.sanitize_text(invoice.name) or '')
+                worksheet.write(row, 2, sanitize_text(invoice.name) or '')
                 worksheet.write(row, 3, payment.date.strftime('%d/%m/%Y') if payment.date else '')
-                worksheet.write(row, 4, self.sanitize_text(payment.name) or '')
+                worksheet.write(row, 4, sanitize_text(payment.name) or '')
                 worksheet.write(row, 5, '192')
                 payment_amount = abs(int(payment.amount_total))
                 # cliente
@@ -504,7 +488,7 @@ class generateReportsWizard(models.TransientModel):
                 self.total_valor_total += payment_amount + retention_total
                 worksheet.write(row, 11, retention_total)
                 worksheet.write(row, 12, payment_amount + retention_total)
-                worksheet.write(row, 13, self.sanitize_text(payment.currency_id.name))
+                worksheet.write(row, 13, sanitize_text(payment.currency_id.name))
                 worksheet.write(row, 14, '0')
                 worksheet.write(row, 15, '0')
                 worksheet.write(row, 16, '0')
@@ -550,7 +534,7 @@ class generateReportsWizard(models.TransientModel):
         worksheet.write(1, 0, '25921')
         worksheet.write(1, 1, self.month or '')
         worksheet.write(1, 2, datetime.today().strftime('%Y%m%d'))
-        worksheet.write(1, 3, self.sanitize_text(self.env.user.login) or '')
+        worksheet.write(1, 3, sanitize_text(self.env.user.login) or '')
         worksheet.write(1, 4, self.total_reg_clientes)
         worksheet.write(1, 5, self.total_reg_operaciones)
         worksheet.write(1, 6, self.total_reg_transacciones)

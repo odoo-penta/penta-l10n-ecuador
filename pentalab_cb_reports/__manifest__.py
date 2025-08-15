@@ -15,7 +15,6 @@
     "version": "18.0.0.1",
     'description': """
         Add new reports needed in the accounting section.
-        ==============================================
     """,
     'author': 'PentaLab',
     'maintainer': 'PentaLab',
