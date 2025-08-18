@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
     <record id="view_pentalab_sri_report_invonce_sale_list" model="ir.ui.view">
-        <field name="field_name">pentalab.report.view.sri.report.invonce.sale.list</field>
+        <field name="name">pentalab.report.view.sri.report.invonce.sale.list</field>
         <field name="model">account.move</field>
-        <field name="type">list</field>
         <field name="arch" type="xml">
             <list string="Facturas de venta">
                 <header>
-                    <button name="%(pentalab_cb_reports.action_open_export_wizard)d"
+                    <button name="%(l10n_ec_reports_penta.action_open_export_wizard)d"
                             string="Exportar XLSX"
                             type="action"
                             class="btn-primary"/>
                 </header>
                 <field name="invoice_date" string="Fecha de emisión"/>
                 <field name="l10n_latam_document_type_id" string="Tipo de documento"/>
-                <field name="partner_id.l10n_latam_identification_type_id[1]" string="Cliente"/>
+                <field name="partner_id" string="Cliente"/>
                 <field name="name" string="Factura"/>
                 <field name="amount_total" string="Total"/>
                 <field name="state" string="Estado"/>
             </list>
+        </field>
     </record>
 
 </odoo>

@@ -6,7 +6,7 @@
         <field name="arch" type="xml">
             <list string="Inventario por almacén">
                 <header>
-                    <button name="%(pentalab_cb_reports.action_open_export_wizard)d"
+                    <button name="%(l10n_ec_reports_penta.action_open_export_wizard)d"
                             string="Exportar XLSX"
                             type="action"
                             class="btn-primary"/>

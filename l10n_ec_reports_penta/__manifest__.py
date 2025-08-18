@@ -23,7 +23,6 @@
     'license': 'OPL-1',
     "category": "Accounting/Accounting",
     "depends": [
-        'base',
         'account',
         'report_xlsx'],
     "data": [
@@ -34,20 +33,20 @@
         
         'wizard/generate_reports.xml',
         
+        "views/pentalab_report_wizard_view.xml",
         "views/cobros_por_ventas_report.xml",
         'views/export_inventory_wizard_view.xml',
         "views/invoice_report_views.xml",
         "views/invoice_report_menu.xml",
         "views/pagos_por_compras_report.xml",
+        "views/pentalab_stock_report_view.xml",
         "views/pentalab_inventory_report_view.xml",
         "views/pentalab_inventory_report_menu.xml",
-        "views/pentalab_menu_sri_report.xml",
-        "views/pentalab_report_wizard_view.xml",
-        "views/pentalab_stock_report_view.xml",
+        "views/view_pentalab_sri_report_invonce_sale_list.xml",
+        #"views/pentalab_menu_sri_report.xml",
         "views/report_dispatch_consolidated_view.xml",
         "views/report_dispatch_order_view.xml",
         "views/res_config_settings_views.xml",
-        "views/view_pentalab_sri_report_invonce_sale_list.xml"
     ],
     "installable": True,
     'application': False,

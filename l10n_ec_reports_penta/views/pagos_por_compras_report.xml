@@ -15,7 +15,7 @@
     <menuitem
         id="menu_pagos_por_compras"
         name="Pagos por Compras"
-        parent="pentalab_cb_reports.menu_reports_informe_pentalab"
+        parent="l10n_ec_reports_penta.menu_reports_informe_pentalab"
         action="action_pagos_por_compras"
         sequence="20"/>
 
@@ -72,7 +72,7 @@
         <field name="name">Reporte Pagos por Compras</field>
         <field name="model">pagos.por.compras</field>
         <field name="report_type">qweb-pdf</field>
-        <field name="report_name">pentalab_cb_reports.report_pagos_por_compras_template</field>
+        <field name="report_name">l10n_ec_reports_penta.report_pagos_por_compras_template</field>
         <field name="print_report_name">'Pagos por Compras - %s' % (object._get_report_base_filename())</field>
     </record>
 

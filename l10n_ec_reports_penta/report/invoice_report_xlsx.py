@@ -2,7 +2,7 @@
 from odoo import models
 
 class PentalabInvoiceReportXlsx(models.AbstractModel):
-    _name = "report.pentalab_cb_reports.invoice_report_xlsx"
+    _name = "report.l10n_ec_reports_penta.invoice_report_xlsx"
     _description = "XLSX - Reporte de Facturas"
     _inherit = "report.report_xlsx.abstract"
 

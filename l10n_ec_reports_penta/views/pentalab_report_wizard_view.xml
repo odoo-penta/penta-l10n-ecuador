@@ -3,7 +3,7 @@
     <data>
 
         <!-- Vista del Wizard -->
-        <record id="view_pentalab_cb_reports_wizard_form" model="ir.ui.view">
+        <record id="view_l10n_ec_reports_penta_wizard_form" model="ir.ui.view">
             <field name="name">pentalab.report.wizard.form</field>
             <field name="model">pentalab.report.wizard</field>
             <field name="arch" type="xml">
@@ -32,7 +32,7 @@
         </record>
 
         <!-- Acción para abrir el Wizard -->
-        <record id="action_pentalab_cb_reports_wizard" model="ir.actions.act_window">
+        <record id="action_l10n_ec_reports_penta_wizard" model="ir.actions.act_window">
             <field name="name">Informe Pentalab</field>
             <field name="res_model">pentalab.report.wizard</field>
             <field name="view_mode">form</field>
@@ -47,7 +47,7 @@
         <menuitem id="menu_action_informe_pentalab"
                   name="Vencido por cobrar"
                   parent="menu_reports_informe_pentalab"
-                  action="action_pentalab_cb_reports_wizard"
+                  action="action_l10n_ec_reports_penta_wizard"
                   sequence="1"/>
     </data>
 </odoo>

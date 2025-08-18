@@ -6,7 +6,7 @@
 from odoo import api, models
 
 class ReportVentasA1(models.AbstractModel):
-    _name = 'report.pentalab_cb_reports.report_ventas_a1'
+    _name = 'report.l10n_ec_reports_penta.report_ventas_a1'
     _inherit = 'report.report_xlsx.abstract'
     _description = 'Report ventas A1'
     
