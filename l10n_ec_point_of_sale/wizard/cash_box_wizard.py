@@ -405,7 +405,7 @@ class CashBoxClosedWizard(models.TransientModel):
     
     @api.depends('final_balance')
     def _compute_exceeds_limit(self):
-        limit_amount = float(self.env['ir.config_parameter'].sudo().get_param('pentalab_cb_point_of_sale.cash_imbalance_limit'))
+        limit_amount = float(self.env['ir.config_parameter'].sudo().get_param('l10n_ec_point_of_sale.cash_imbalance_limit'))
         for record in self:
             record.exceeds_limit = False
             if limit_amount > 0.0:
@@ -531,7 +531,7 @@ class CashBoxClosedWizard(models.TransientModel):
         
     def print_report(self):
         self.ensure_one()
-        return self.env.ref('pentalab_cb_point_of_sale.action_cash_closing_report').report_action(self)
+        return self.env.ref('l10n_ec_point_of_sale.action_cash_closing_report').report_action(self)
     
     def _get_payment_summary(self, movement_ids=None):
         """ Obtiene un resumen de los pagos realizados por movimiento """
@@ -591,7 +591,7 @@ class CashBoxSaleWizard(models.TransientModel):
     
     @api.depends('partner_id')
     def _compute_has_advance(self):
-        param = self.env['ir.config_parameter'].sudo().get_param('pentalab_cb_point_of_sale.allow_advance_cash')
+        param = self.env['ir.config_parameter'].sudo().get_param('l10n_ec_point_of_sale.allow_advance_cash')
         for record in self:
             if record.partner_id:
                 record.has_advance = param

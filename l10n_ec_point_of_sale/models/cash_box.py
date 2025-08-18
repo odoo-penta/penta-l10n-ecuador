@@ -46,12 +46,12 @@ class CashBox(models.Model):
     @api.depends('name')
     def _compute_is_cash_box_admin(self):
         for rec in self:
-            rec.is_cash_box_admin = self.env.user.has_group('pentalab_cb_point_of_sale.group_cash_box_admin')
+            rec.is_cash_box_admin = self.env.user.has_group('l10n_ec_point_of_sale.group_cash_box_admin')
             
     @api.depends_context('uid')
     def _compute_is_administrator(self):
         for rec in self:
-            if self.env.user.has_group('pentalab_cb_point_of_sale.group_cash_box_admin'):
+            if self.env.user.has_group('l10n_ec_point_of_sale.group_cash_box_admin'):
                 rec.is_administrator = True
             else:
                 rec.is_administrator = self.env.user in rec.responsible_ids
@@ -268,7 +268,7 @@ class CashBoxSession(models.Model):
         
     @api.depends()
     def _compute_allow_credit(self):
-        param = self.env['ir.config_parameter'].sudo().get_param('pentalab_cb_point_of_sale.allow_credit_note_cash')
+        param = self.env['ir.config_parameter'].sudo().get_param('l10n_ec_point_of_sale.allow_credit_note_cash')
         for record in self:
             record.allow_credit = param 
     

@@ -6,7 +6,7 @@
 from odoo import api, models
 
 class ReportCashClosing(models.AbstractModel):
-    _name = 'report.report_cash_closing_template.report_cash_closing_template'
+    _name = 'report.report_cash_closing_template'
     _description = 'Cash Closing Report'
 
     @api.model

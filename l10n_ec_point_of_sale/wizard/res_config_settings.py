@@ -12,15 +12,15 @@ class ResConfigSettings(models.TransientModel):
     cash_imbalance_limit = fields.Float(
         string="Cash Imbalance Limit",
         help="The maximum amount of cash imbalance allowed before a warning is raised.",
-        config_parameter='pentalab_cb_point_of_sale.cash_imbalance_limit',
+        config_parameter='l10n_ec_point_of_sale.cash_imbalance_limit',
     )
     allow_credit_note_cash = fields.Boolean(
         string="Allow credit note",
         help="If checked, it allows the generation of credit notes for invoices in the cash register sessions.",
-        config_parameter="pentalab_cb_point_of_sale.allow_credit_note_cash"
+        config_parameter="l10n_ec_point_of_sale.allow_credit_note_cash"
     )
     allow_advance_cash = fields.Boolean(
         string="Allow advance",
         help="If checked, allows the use of advances for invoices in cashier sessions.",
-        config_parameter="pentalab_cb_point_of_sale.allow_advance_cash"
+        config_parameter="l10n_ec_point_of_sale.allow_advance_cash"
     )
