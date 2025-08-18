@@ -1,10 +1,9 @@
-from odoo import models, fields, api
+from odoo import models, fields
 from datetime import datetime, date
 import calendar
 import zipfile
 import base64
 import io
-import unicodedata
 from collections import defaultdict
 from odoo.tools.misc import xlsxwriter
 from odoo.tools import remove_accents, sanitize_text
@@ -58,119 +57,71 @@ class generateReportsWizard(models.TransientModel):
     total_valores_bienes = fields.Integer(string='Total Valores y Bienes', readonly=True)
     total_valor_total = fields.Integer(string='Total General', readonly=True)
     
-    def get_invoices_from_payments(self, date_start, date_end, uafe_domain=None):
-        # 1️⃣ Todos los pagos validados en el rango de fechas
-        payments = self.env['account.payment'].search([
-            ('date', '>=', date_start),
-            ('date', '<=', date_end),
-            ('state', '=', 'posted')
-        ])
-        # 2️⃣ Pagos que tengan facturas directas
-        direct_invoice_payments = payments.filtered(lambda p: p.invoice_ids)
-        # 3️⃣ Obtener facturas directas de esos pagos
-        invoices_from_direct_payments = direct_invoice_payments.mapped('invoice_ids')
-        # 4️⃣ Facturas desde líneas contables relacionadas a pagos (POS o asientos contables)
-        move_lines = payments.mapped('move_line_ids')
-        invoice_lines = move_lines.filtered(lambda l: l.move_id.move_type in ['out_invoice', 'in_invoice', 'out_refund', 'in_refund'])
-        invoices_from_lines = invoice_lines.mapped('move_id')
-        # 5️⃣ Combinar todas las facturas y eliminar duplicados
-        all_invoices = (invoices_from_direct_payments | invoices_from_lines)
-        # 6️⃣ Filtrar según uafe_domain
-        if uafe_domain == 'customer':
-            all_invoices = all_invoices.filtered(lambda inv: inv.partner_id.customer_rank > 0)
-        elif uafe_domain == 'supplier':
-            all_invoices = all_invoices.filtered(lambda inv: inv.partner_id.supplier_rank > 0)
-        # cualquier otro valor o None → no filtra, devuelve ambos
-        # 7️⃣ Ordenar por fecha
-        all_invoices = all_invoices.sorted(key=lambda inv: inv.date)
-        return all_invoices
-
+    def _total_payments_by_partner(self, moves):
+        totals = {}
+        processed = set()
+        # Recorrer pagos tipo account.move
+        for move in moves:
+            for line in move.line_ids:
+                matched_lines = line.matched_debit_ids | line.matched_credit_ids
+                for matched in matched_lines:
+                    # Identificador único para evitar duplicados
+                    key = (matched.id,)
+                    if key in processed:
+                        continue
+                    processed.add(key)
+                    reconciled_line = matched.debit_move_id if matched.debit_move_id.move_id.move_type in ('out_invoice','in_invoice') else matched.credit_move_id
+                    if reconciled_line.move_id.move_type in ('out_invoice','in_invoice'):
+                        inv = reconciled_line.move_id
+                        partner = inv.partner_id
+                        totals.setdefault(partner.id, {'partner': partner, 'total': 0.0})
+                        totals[partner.id]['total'] += matched.amount
+        return totals
     
-    def get_payments_and_invoices(self, date_start, date_end, uafe_domain):
+    def _get_data_for_reports(self, date_start, date_end, uafe_domain):
         # Definir filtros según uafe_domain
+        m_partner_domain = ['|', ('customer_rank', '>', 0), ('supplier_rank', '>', 0)]
         if uafe_domain == "customer":
-            partner_domain = [('partner_id.customer_rank', '>', 0)]
-            invoice_types = ['out_invoice']
+            m_partner_domain = [('customer_rank', '>', 0)]
         elif uafe_domain == "supplier":
-            partner_domain = [('partner_id.supplier_rank', '>', 0)]
-            invoice_types = ['in_invoice']
-        else:
-            partner_domain = ['|', ('partner_id.customer_rank', '>', 0), ('partner_id.supplier_rank', '>', 0)]
-            invoice_types = ['out_invoice', 'in_invoice']
-        # -------------------
-        # 1. Facturas en el rango y con partner filtrado
-        # -------------------
-        invoices = self.env['account.move'].search(
-            [('date', '>=', date_start),
-            ('date', '<=', date_end),
-            ('state', '=', 'posted'),
-            ('move_type', 'in', invoice_types)] + partner_domain
-        )
-        # -------------------
-        # 5. Retornar resultados
-        # -------------------
-        return invoices
-
-    def _get_invoices_data(self):
-        # Generar data para reporte
-        account_move = self.env['account.move']
-        domain = [
-            ('state', '=', 'posted'),
-            ('move_type', '=', 'out_invoice'),
-        ]
-        if self.report_type == 'uafe':
-            sales_amount_threshold = self.env.company.sales_amount_report_uafe or 0.0
-            year = int(self.year)
-            month = int(self.month)
-            last_day = calendar.monthrange(year, month)[1]
-            domain += [
-                ('invoice_date', '>=', date(year, month, 1)),
-                ('invoice_date', '<=', date(year, month, last_day)),
+            m_partner_domain = [('supplier_rank', '>', 0)]
+        # Obtener asientos de pagos entre fechas y con facturas relacinadas
+        moves = self.env['account.move'].search(
+            [
+                ('date', '>=', date_start),
+                ('date', '<=', date_end),
+                ('state', '=', 'posted'),
+                ('move_type', '=', 'entry'),
+                ('line_ids.partner_id', 'in', self.env['res.partner'].search(m_partner_domain).ids)
             ]
-            if self.domain_uafe == 'customer':
-                domain += [('partner_id.customer_rank', '>', 0)]
-            elif self.domain_uafe == 'supplier':
-                domain += [('partner_id.supplier_rank', '>', 0)]
-            invoices = account_move.search(domain, order='invoice_date asc')
-            invoices = invoices.filtered(lambda inv: any(
-                line.product_id.categ_id.divide_quantity
-                for line in inv.invoice_line_ids
-            ))
-            # nueva logica
-            new_invoices = self.get_payments_and_invoices(date(year, month, 1), date(year, month, last_day), self.domain_uafe)
-            new2_invoices = self.get_invoices_from_payments(date(year, month, 1), date(year, month, last_day), self.domain_uafe)
-            print("======= LENS ======")
-            print(len(invoices))
-            print(len(new_invoices))
-            print(len(new2_invoices))
-            print("===================")
-            if sales_amount_threshold > 0.0:
-                # Agrupar y sumar por proveedor
-                partner_totals = defaultdict(float)
-                partner_invoices = defaultdict(list)
-                for inv in invoices:
-                    partner_id = inv.partner_id.id
-                    partner_totals[partner_id] += inv.amount_total
-                    partner_invoices[partner_id].append(inv)
-                # Filtrar proveedores cuya suma supere el monto configurado
-                filtered_invoices = account_move
-                for partner_id, total in partner_totals.items():
-                    if partner_id in (30487, 30588):
-                        print("Partner ID: %s" % partner_id)
-                        print("Partner Name: %s" % self.env['res.partner'].browse(partner_id).name)
-                        print("Total: %s" % total)
-                        print("==============")
-                    if total >= sales_amount_threshold:
-                        filtered_invoices += account_move.browse([inv.id for inv in partner_invoices[partner_id]])
-                return filtered_invoices
-            else:
-                return invoices
-        else:
-            domain += [
-                ('invoice_date', '>=', self.date_start),
-                ('invoice_date', '<=', self.date_end),
-            ]
-            return account_move.search(domain, order='invoice_date asc')
+        ).filtered(lambda m: m.has_reconciled_entries)
+        # Obtener facturas relacionadas a pagos y asientos de pagos
+        invoice_ids_from_moves = []
+        for move in moves:
+            for line in move.line_ids:
+                # Revisar si la línea tiene pagos conciliados
+                matched_lines = line.matched_debit_ids | line.matched_credit_ids
+                for matched in matched_lines:
+                    reconciled_line = matched.debit_move_id if matched.debit_move_id.move_id.move_type in ('out_invoice','in_invoice') else matched.credit_move_id
+                    # Asegurarse que la línea pertenece a una factura
+                    if reconciled_line.move_id.move_type in ('out_invoice','in_invoice') and 'RC' not in reconciled_line.move_id.name:
+                        invoice_ids_from_moves.append(reconciled_line.move_id.id)
+        invoices_from_moves = self.env['account.move'].browse(list(set(invoice_ids_from_moves)))
+        # Unir todas las facturas
+        invoice_ids = list(set(invoices_from_moves.ids))
+        invoices = self.env['account.move'].browse(invoice_ids)
+        total_partners = self._total_payments_by_partner(invoices_from_moves)
+        # Filtrar facturas solo de clientes que superen el valor definido
+        sales_amount_threshold = self.env.company.sales_amount_report_uafe or 0.0
+        if sales_amount_threshold > 0.0:
+            partners_over_limit = {partner_id:data for partner_id, data in total_partners.items() if data['total'] > sales_amount_threshold}
+            invoices = invoices.filtered(lambda inv: inv.partner_id.id in partners_over_limit)
+            # Reasignar total_partners solo con los que cumplen
+            total_partners = partners_over_limit
+        return {
+            'invoices': invoices,
+            'payments_by_partner': total_partners,
+        }
         
     def _get_retentions_data(self, invoice):
         # Obtener datos de retenciones de la factura
@@ -214,12 +165,17 @@ class generateReportsWizard(models.TransientModel):
         self.total_valores_bienes = 0
         self.total_valor_total = 0
         zip_buffer = io.BytesIO()
+        # Mapear datos necesarios para el reporte
+        year = int(self.year)
+        month = int(self.month)
+        last_day = calendar.monthrange(year, month)[1]
+        datas = self._get_data_for_reports(date(year, month, 1), date(year, month, last_day), self.domain_uafe)
         with zipfile.ZipFile(zip_buffer, 'w') as zip_file:
             report_files = {
-                'DETALLECLIENTE.xlsx': self._generate_detalle_cliente(),
-                'DETALLEOPERACION.xlsx': self._generate_detalle_operacion(),
-                'DETALLETRANSACCION.xlsx': self._generate_detalle_transaccion(),
-                'CABECERA.xlsx': self._generate_cabecera(),
+                'DETALLECLIENTE.xlsx': self._generate_detalle_cliente(datas),
+                'DETALLEOPERACION.xlsx': self._generate_detalle_operacion(datas),
+                'DETALLETRANSACCION.xlsx': self._generate_detalle_transaccion(datas),
+                'CABECERA.xlsx': self._generate_cabecera(datas),
             }
 
             for filename, content in report_files.items():
@@ -241,7 +197,7 @@ class generateReportsWizard(models.TransientModel):
             'target': 'self',
         }
     
-    def _generate_detalle_cliente(self):
+    def _generate_detalle_cliente(self, datas):
         output = io.BytesIO()
         workbook = xlsxwriter.Workbook(output, {'in_memory': True})
         worksheet = workbook.add_worksheet("Detalle Cliente")
@@ -266,9 +222,8 @@ class generateReportsWizard(models.TransientModel):
         # Obtener facturas entre fechas
         invoiced_data = {}
         customers = self.env['res.partner']
-        invoices = self._get_invoices_data()
         # Mapear clientes y valores facturados
-        for invoice in invoices:
+        for invoice in datas['invoices']:
             if invoice.partner_id not in customers:
                 customers |= invoice.partner_id
             if invoice.partner_id.id not in invoiced_data:
@@ -299,7 +254,7 @@ class generateReportsWizard(models.TransientModel):
         output.seek(0)
         return output.read()
     
-    def _generate_detalle_operacion(self):
+    def _generate_detalle_operacion(self, datas):
         output = io.BytesIO()
         workbook = xlsxwriter.Workbook(output, {'in_memory': True})
         worksheet = workbook.add_worksheet("Detalle Operacion")
@@ -332,15 +287,15 @@ class generateReportsWizard(models.TransientModel):
         for col, header in enumerate(headers):
             worksheet.write(0, col, header)
         # Obtener facturas entre fechas
-        invoices = self._get_invoices_data()
         operation_count = 0
-        for invoice in invoices:
+        for invoice in datas['invoices']:
             customer = invoice.partner_id
             state =  str(customer.state_id.code).zfill(2) if customer.state_id and customer.state_id.code else ''
             city = str(customer.city_id.code).zfill(2) if customer.city_id and customer.city_id.code else ''
             parish = str(customer.parroquia_id.code).zfill(2) if customer.parroquia_id and customer.parroquia_id.code else ''
+            count_line = 1
             for line in invoice.invoice_line_ids:
-                unit_price = line.price_subtotal / line.quantity if line.quantity else 0
+                unit_price = line.price_total / line.quantity if line.quantity else 0
                 quantity = int(line.quantity)
                 partial_total = 0  # Para controlar el total acumulado
                 # Si es rastreable por numeros de serie
@@ -357,7 +312,11 @@ class generateReportsWizard(models.TransientModel):
                     row = worksheet.dim_rowmax + 1
                     worksheet.write(row, 0, self._get_identification_type(invoice.partner_id.l10n_latam_identification_type_id.name) or '')
                     worksheet.write(row, 1, invoice.partner_id.vat or '')
-                    worksheet.write(row, 2, sanitize_text(invoice.name) or '')
+                    if len(invoice.invoice_line_ids) > 1:
+                        inv_name = sanitize_text(invoice.name + str(count_line)) or ''
+                    else:
+                        inv_name = sanitize_text(invoice.name) or ''
+                    worksheet.write(row, 2, inv_name)
                     worksheet.write(row, 3, 'VEN')
                     worksheet.write(row, 4, 'NAP')
                     worksheet.write(row, 5, '0')
@@ -389,12 +348,13 @@ class generateReportsWizard(models.TransientModel):
                     worksheet.write(row, 19, f"{state}{city}" if state and city else '')
                     worksheet.write(row, 20, f"{state}{city}{parish}" if state and city and parish else '')
                     operation_count += 1
+                    count_line += 1
         self.total_reg_operaciones = operation_count
         workbook.close()
         output.seek(0)
         return output.read()
     
-    def _generate_detalle_transaccion(self):
+    def _generate_detalle_transaccion(self, datas):
         output = io.BytesIO()
         workbook = xlsxwriter.Workbook(output, {'in_memory': True})
         worksheet = workbook.add_worksheet("Detalle Transaccion")
@@ -431,11 +391,14 @@ class generateReportsWizard(models.TransientModel):
         for col, header in enumerate(headers):
             worksheet.write(0, col, header)
         # Obtener facturas entre fechas
-        invoices = self._get_invoices_data()
+        year = int(self.year)
+        month = int(self.month)
+        last_day = calendar.monthrange(year, month)[1]
         # Mapear pagos de facturas
         transaction_count = 0
-        for invoice in invoices:
+        for invoice in datas['invoices']:
             move_payments = []
+            total_payment_amount = 0.0
             # mapear pagos directos
             result = invoice.open_payments()
             payment_id = result.get('res_id')
@@ -446,66 +409,100 @@ class generateReportsWizard(models.TransientModel):
             if invoice.invoice_payments_widget and invoice.invoice_payments_widget['content']:
                 for pays in invoice.invoice_payments_widget['content']:
                     move_payments.append(pays['move_id'])
+            processed_moves = set()
+            list_payments = []
             for move_payment in move_payments:
+                # Asegurarnos de tener un ID
+                if hasattr(move_payment, 'id'):
+                    move_payment = move_payment.id
+                # Evitar duplicados
+                if move_payment in processed_moves:
+                    continue
+                processed_moves.add(move_payment)
                 payment = self.env['account.move'].browse(move_payment)
-                row = worksheet.dim_rowmax + 1
-                worksheet.write(row, 0, self._get_identification_type(payment.partner_id.l10n_latam_identification_type_id.name) or '')
-                worksheet.write(row, 1, payment.partner_id.vat or '')
-                worksheet.write(row, 2, sanitize_text(invoice.name) or '')
-                worksheet.write(row, 3, payment.date.strftime('%d/%m/%Y') if payment.date else '')
-                worksheet.write(row, 4, sanitize_text(payment.name) or '')
-                worksheet.write(row, 5, '192')
-                payment_amount = abs(int(payment.amount_total))
-                # cliente
-                if invoice.move_type in ('out_invoice', 'out_refund'):
-                    self.total_debitos += payment_amount
-                # proveedor
+                if payment.date >= date(year, month, 1) and payment.date <= date(year, month, last_day):
+                    list_payments.append(payment)
+                    # Sumar el total del pago
+                    total_payment_amount += payment.amount_total
+            total_invoice_lines = 0
+            for line in invoice.invoice_line_ids:
+                if line.quantity > 1:
+                    total_invoice_lines += line.quantity
                 else:
-                    self.total_creditos += payment_amount
-                worksheet.write(row, 6, payment_amount if invoice.move_type in ('out_invoice', 'out_refund') else 0)
-                worksheet.write(row, 7, payment_amount if invoice.move_type not in ('out_invoice', 'out_refund') else 0)
-                worksheet.write(row, 8, '0')
-                worksheet.write(row, 9, '0')
-                worksheet.write(row, 10, '0')
-                if payment.journal_id.type == 'cash':
-                    worksheet.write(row, 8, payment_amount)
-                    self.total_efectivo += payment_amount
-                elif payment.journal_id.type == 'bank':
-                    worksheet.write(row, 9, payment_amount)
-                    self.total_cheque += payment_amount
-                elif payment.journal_id.type == 'credit':
-                    worksheet.write(row, 10, payment_amount)
-                    self.total_tarjeta += payment_amount
-                retention_total = 0
-                # Retenciones
-                retentions = self._get_retentions_data(invoice)
-                for retention in retentions:
-                    for line in retention.l10n_ec_withhold_line_ids:
-                        for tax in line.tax_ids:
-                            if tax.amount_type == 'percent':
-                                retention_total += tax.amount
-                self.total_valores_bienes += retention_total
-                self.total_valor_total += payment_amount + retention_total
-                worksheet.write(row, 11, retention_total)
-                worksheet.write(row, 12, payment_amount + retention_total)
-                worksheet.write(row, 13, sanitize_text(payment.currency_id.name))
-                worksheet.write(row, 14, '0')
-                worksheet.write(row, 15, '0')
-                worksheet.write(row, 16, '0')
-                worksheet.write(row, 17, '0')
-                worksheet.write(row, 18, '259211002')
-                worksheet.write(row, 19, 'PRS')
-                worksheet.write(row, 20, 'N')
-                worksheet.write(row, 21, 'NO APLICA')
-                worksheet.write(row, 22, 'NO APLICA')
-                worksheet.write(row, 23, 'NO APLICA')
-                transaction_count += 1
+                    total_invoice_lines += 1
+            payment_amount = int(total_payment_amount / total_invoice_lines) if total_invoice_lines > 0 else 0
+            count_line = 1
+            remaining_payments = list_payments.copy()
+            for line in invoice.invoice_line_ids:
+                quantity = int(line.quantity)
+                for i in range(quantity):
+                    row = worksheet.dim_rowmax + 1
+                    worksheet.write(row, 0, self._get_identification_type(invoice.partner_id.l10n_latam_identification_type_id.name) or '')
+                    worksheet.write(row, 1, invoice.partner_id.vat or '')
+                    if len(invoice.invoice_line_ids) > 1:
+                        inv_name = sanitize_text(invoice.name + str(count_line)) or ''
+                    else:
+                        inv_name = sanitize_text(invoice.name) or ''
+                    worksheet.write(row, 2, inv_name)
+                    worksheet.write(row, 3, invoice.date.strftime('%d/%m/%Y') if invoice.date else '')
+                    if remaining_payments:
+                        payment = remaining_payments.pop(0)
+                    else:
+                        payment = list_payments[-1]  # si se acabaron los pagos, usar el último
+                    # aqui consumir un pago de la variable list_payments
+                    worksheet.write(row, 4, sanitize_text(payment.name) or '')
+                    worksheet.write(row, 5, '192')
+                    # cliente
+                    if invoice.move_type in ('out_invoice', 'out_refund'):
+                        self.total_debitos += payment_amount
+                    # proveedor
+                    else:
+                        self.total_creditos += payment_amount
+                    worksheet.write(row, 6, payment_amount if invoice.move_type in ('out_invoice', 'out_refund') else 0)
+                    worksheet.write(row, 7, payment_amount if invoice.move_type not in ('out_invoice', 'out_refund') else 0)
+                    worksheet.write(row, 8, '0')
+                    worksheet.write(row, 9, '0')
+                    worksheet.write(row, 10, '0')
+                    if payment.journal_id.type == 'cash':
+                        worksheet.write(row, 8, payment_amount)
+                        self.total_efectivo += payment_amount
+                    elif payment.journal_id.type == 'bank':
+                        worksheet.write(row, 9, payment_amount)
+                        self.total_cheque += payment_amount
+                    elif payment.journal_id.type == 'credit':
+                        worksheet.write(row, 10, payment_amount)
+                        self.total_tarjeta += payment_amount
+                    retention_total = 0
+                    # Retenciones
+                    retentions = self._get_retentions_data(invoice)
+                    for retention in retentions:
+                        for line in retention.l10n_ec_withhold_line_ids:
+                            for tax in line.tax_ids:
+                                if tax.amount_type == 'percent':
+                                    retention_total += tax.amount
+                    self.total_valores_bienes += retention_total
+                    self.total_valor_total += payment_amount + retention_total
+                    worksheet.write(row, 11, retention_total)
+                    worksheet.write(row, 12, payment_amount + retention_total)
+                    worksheet.write(row, 13, sanitize_text(payment.currency_id.name))
+                    worksheet.write(row, 14, '0')
+                    worksheet.write(row, 15, '0')
+                    worksheet.write(row, 16, '0')
+                    worksheet.write(row, 17, '0')
+                    worksheet.write(row, 18, '259211002')
+                    worksheet.write(row, 19, 'PRS')
+                    worksheet.write(row, 20, 'N')
+                    worksheet.write(row, 21, 'NO APLICA')
+                    worksheet.write(row, 22, 'NO APLICA')
+                    worksheet.write(row, 23, 'NO APLICA')
+                    transaction_count += 1
+                    count_line += 1
         self.total_reg_transacciones = transaction_count
         workbook.close()
         output.seek(0)
         return output.read()
     
-    def _generate_cabecera(self):
+    def _generate_cabecera(self, datas):
         output = io.BytesIO()
         workbook = xlsxwriter.Workbook(output, {'in_memory': True})
         worksheet = workbook.add_worksheet("Detalle Transaccion")
@@ -544,7 +541,7 @@ class generateReportsWizard(models.TransientModel):
         worksheet.write(1, 10, self.total_efectivo)
         worksheet.write(1, 11, self.total_cheque)
         worksheet.write(1, 12, self.total_tarjeta)
-        worksheet.write(1, 13, self.total_valores_bienes)  # Si aplicas este en tu lógica
+        worksheet.write(1, 13, self.total_valores_bienes)
         worksheet.write(1, 14, self.total_valor_total)
         workbook.close()
         output.seek(0)
