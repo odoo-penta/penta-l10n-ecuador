@@ -415,6 +415,7 @@ class generateReportsWizard(models.TransientModel):
         last_day = calendar.monthrange(year, month)[1]
         # Mapear pagos de facturas
         transaction_count = 0
+        process_payments = {}
         for invoice in datas['invoices']:
             move_payments = []
             total_payment_amount = 0.0
@@ -506,6 +507,11 @@ class generateReportsWizard(models.TransientModel):
                     else:
                         payment = list_payments[-1] # si se acabaron los pagos, usar el último
                         reuse_counter += 1
+                    if payment.id not in process_payments:
+                        process_payments[payment.id] = 0
+                    else:
+                        process_payments[payment.id] += 1
+                        reuse_counter = process_payments[payment.id]
                     # aqui consumir un pago de la variable list_payments
                     if reuse_counter > 0:
                         worksheet.write(row, 4, sanitize_text(payment.name + str(reuse_counter)) or '')
