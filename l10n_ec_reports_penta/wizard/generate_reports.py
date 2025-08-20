@@ -468,7 +468,6 @@ class generateReportsWizard(models.TransientModel):
                                     if rec_line.credit_move_id.move_id.id == invoice.id:
                                         # Obtenemos el numero de conciliación
                                         matching_number = line.matching_number
-                                        
                                         # Buscamos las líneas de conciliación relacionadas al numero de conciliación y al pago
                                         d_lines = self.env['account.move.line'].search([
                                             ('move_id', '=', payment.id),
@@ -476,7 +475,7 @@ class generateReportsWizard(models.TransientModel):
                                         ])
                                         matching_number = line.matching_number
                                         # Sumamos los valores de las líneas de debito
-                                        d_total_lines = sum(c_lines.mapped('debit'))
+                                        d_total_lines = sum(d_lines.mapped('debit'))
                                         if rec_line.amount < c_total_lines:
                                             d_total_lines = rec_line.amount
                                         total_payment_amount += d_total_lines
