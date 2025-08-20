@@ -515,10 +515,10 @@ class generateReportsWizard(models.TransientModel):
                     worksheet.write(row, 5, '192')
                     # cliente
                     if invoice.move_type in ('out_invoice', 'out_refund'):
-                        self.total_debitos += payment_amount
+                        self.total_creditos += payment_amount
                     # proveedor
                     else:
-                        self.total_creditos += payment_amount
+                        self.total_debitos += payment_amount
                     worksheet.write(row, 6, payment_amount if invoice.move_type not in ('out_invoice', 'out_refund') else 0)
                     worksheet.write(row, 7, payment_amount if invoice.move_type in ('out_invoice', 'out_refund') else 0)
                     worksheet.write(row, 8, '0')
