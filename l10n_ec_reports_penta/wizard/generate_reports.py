@@ -79,6 +79,15 @@ class generateReportsWizard(models.TransientModel):
         return totals
     
     def _get_data_for_reports(self, date_start, date_end, uafe_domain):
+        # Filtrar facturas que tengan líneas con números de serie
+        def _has_serial_number(inv):
+            for line in inv.invoice_line_ids:
+                if (
+                    line.product_id.is_storable
+                    and line.product_id.tracking in ('serial', 'lot')
+                ):
+                    return True
+            return False
         # Definir filtros según uafe_domain
         m_partner_domain = ['|', ('customer_rank', '>', 0), ('supplier_rank', '>', 0)]
         if uafe_domain == "customer":
@@ -102,14 +111,24 @@ class generateReportsWizard(models.TransientModel):
                 # Revisar si la línea tiene pagos conciliados
                 matched_lines = line.matched_debit_ids | line.matched_credit_ids
                 for matched in matched_lines:
+                    debit_move = matched.debit_move_id.move_id
+                    credit_move = matched.credit_move_id.move_id
+                    # Si el asiento es de factura
+                    if debit_move.move_type in ('out_invoice', 'in_invoice') and 'RC' not in debit_move.name:
+                        invoice_ids_from_moves.append(debit_move.id)
+                    elif credit_move.move_type in ('out_invoice', 'in_invoice') and 'RC' not in credit_move.name:
+                        invoice_ids_from_moves.append(credit_move.id)
+                    """
                     reconciled_line = matched.debit_move_id if matched.debit_move_id.move_id.move_type in ('out_invoice','in_invoice') else matched.credit_move_id
                     # Asegurarse que la línea pertenece a una factura
-                    if reconciled_line.move_id.move_type in ('out_invoice','in_invoice') and 'RC' not in reconciled_line.move_id.name:
+                    if reconciled_line.move_id.move_type in ('out_invoice','in_invoice', 'entry') and 'RC' not in reconciled_line.move_id.name:
                         invoice_ids_from_moves.append(reconciled_line.move_id.id)
+                    """
         invoices_from_moves = self.env['account.move'].browse(list(set(invoice_ids_from_moves)))
         # Unir todas las facturas
         invoice_ids = list(set(invoices_from_moves.ids))
         invoices = self.env['account.move'].browse(invoice_ids)
+        invoices = invoices.filtered(_has_serial_number)
         total_partners = self._total_payments_by_partner(invoices_from_moves)
         # Filtrar facturas solo de clientes que superen el valor definido
         sales_amount_threshold = self.env.company.sales_amount_report_uafe or 0.0
@@ -266,7 +285,7 @@ class generateReportsWizard(models.TransientModel):
         worksheet.set_column('E:E', 25)
         worksheet.set_column('F:F', 30)
         worksheet.set_column('G:G', 20)
-        worksheet.set_column('H:H', 17)
+        worksheet.set_column('H:H', 20)
         worksheet.set_column('I:I', 17)
         worksheet.set_column('J:J', 30)
         worksheet.set_column('K:K', 30)
@@ -300,11 +319,11 @@ class generateReportsWizard(models.TransientModel):
                 partial_total = 0  # Para controlar el total acumulado
                 # Si es rastreable por numeros de serie
                 serial_numbers = self.env['stock.lot']
-                if line.product_id.is_storable and line.product_id.tracking == 'serial':
+                if line.product_id.is_storable and line.product_id.tracking in ('serial', 'lot'):
                     serial_numbers = invoice.stock_lot_ids.filtered(lambda l, product=line.product_id: l.product_id == product)
                 for i in range(quantity):
                     if i == quantity - 1:
-                        price = round(line.price_subtotal - partial_total, 2)
+                        price = round(line.price_total - partial_total, 2)
                     else:
                         price = round(unit_price, 2)
                         partial_total += price
@@ -321,8 +340,8 @@ class generateReportsWizard(models.TransientModel):
                     worksheet.write(row, 4, 'NAP')
                     worksheet.write(row, 5, '0')
                     worksheet.write(row, 6, '0')
-                    worksheet.write(row, 7, price or 0)
-                    self.total_operaciones += price or 0
+                    worksheet.write(row, 7, int(price) or 0)
+                    self.total_operaciones += int(price) or 0
                     format_date = invoice.invoice_date.strftime('%Y%m%d') if invoice.invoice_date else ''
                     worksheet.write(row, 8, format_date)
                     # Mapear datos vacios
@@ -401,7 +420,8 @@ class generateReportsWizard(models.TransientModel):
             total_payment_amount = 0.0
             # mapear pagos directos
             result = invoice.open_payments()
-            payment_id = result.get('res_id')
+            retentions = self._get_retentions_data(invoice)
+            payment_id = result.get('res_id', False)
             if isinstance(payment_id, int) and payment_id > 0:
                 pay = self.env['account.payment'].browse(payment_id)
                 move_payments.append(pay.move_id)
@@ -420,10 +440,46 @@ class generateReportsWizard(models.TransientModel):
                     continue
                 processed_moves.add(move_payment)
                 payment = self.env['account.move'].browse(move_payment)
+                # Validar fechas de reporte
                 if payment.date >= date(year, month, 1) and payment.date <= date(year, month, last_day):
                     list_payments.append(payment)
-                    # Sumar el total del pago
-                    total_payment_amount += payment.amount_total
+                    # Validar que no sea una retencion
+                    if payment.id not in retentions.ids:
+                        for line in payment.line_ids:
+                            # Comporbamos si la línea está reconciliada
+                            if line.reconciled:
+                                # Obtenemos los matched lines
+                                for rec_line in line.matched_debit_ids + line.matched_credit_ids:
+                                    # Verificamos si la factura está relacionada (DEBITO)
+                                    if rec_line.debit_move_id.move_id.id == invoice.id:
+                                        # Obtenemos el numero de conciliación
+                                        matching_number = line.matching_number
+                                        # Buscamos las líneas de conciliación relacionadas al numero de conciliación y al pago
+                                        c_lines = self.env['account.move.line'].search([
+                                            ('move_id', '=', payment.id),
+                                            ('matching_number', '=', matching_number)
+                                        ])
+                                        # Sumamos los valores de las líneas de crédito
+                                        c_total_lines = sum(c_lines.mapped('credit'))
+                                        if rec_line.amount < c_total_lines:
+                                            c_total_lines = rec_line.amount
+                                        total_payment_amount += c_total_lines
+                                    # Verificamos si la factura está relacionada (CREDITO)
+                                    if rec_line.credit_move_id.move_id.id == invoice.id:
+                                        # Obtenemos el numero de conciliación
+                                        matching_number = line.matching_number
+                                        
+                                        # Buscamos las líneas de conciliación relacionadas al numero de conciliación y al pago
+                                        d_lines = self.env['account.move.line'].search([
+                                            ('move_id', '=', payment.id),
+                                            ('matching_number', '=', matching_number)
+                                        ])
+                                        matching_number = line.matching_number
+                                        # Sumamos los valores de las líneas de debito
+                                        d_total_lines = sum(c_lines.mapped('debit'))
+                                        if rec_line.amount < c_total_lines:
+                                            d_total_lines = rec_line.amount
+                                        total_payment_amount += d_total_lines
             total_invoice_lines = 0
             for line in invoice.invoice_line_ids:
                 if line.quantity > 1:
@@ -433,6 +489,7 @@ class generateReportsWizard(models.TransientModel):
             payment_amount = int(total_payment_amount / total_invoice_lines) if total_invoice_lines > 0 else 0
             count_line = 1
             remaining_payments = list_payments.copy()
+            reuse_counter = 0
             for line in invoice.invoice_line_ids:
                 quantity = int(line.quantity)
                 for i in range(quantity):
@@ -448,9 +505,13 @@ class generateReportsWizard(models.TransientModel):
                     if remaining_payments:
                         payment = remaining_payments.pop(0)
                     else:
-                        payment = list_payments[-1]  # si se acabaron los pagos, usar el último
+                        payment = list_payments[-1] # si se acabaron los pagos, usar el último
+                        reuse_counter += 1
                     # aqui consumir un pago de la variable list_payments
-                    worksheet.write(row, 4, sanitize_text(payment.name) or '')
+                    if reuse_counter > 0:
+                        worksheet.write(row, 4, sanitize_text(payment.name + str(reuse_counter)) or '')
+                    else:
+                        worksheet.write(row, 4, sanitize_text(payment.name) or '')
                     worksheet.write(row, 5, '192')
                     # cliente
                     if invoice.move_type in ('out_invoice', 'out_refund'):
@@ -458,11 +519,13 @@ class generateReportsWizard(models.TransientModel):
                     # proveedor
                     else:
                         self.total_creditos += payment_amount
-                    worksheet.write(row, 6, payment_amount if invoice.move_type in ('out_invoice', 'out_refund') else 0)
-                    worksheet.write(row, 7, payment_amount if invoice.move_type not in ('out_invoice', 'out_refund') else 0)
+                    worksheet.write(row, 6, payment_amount if invoice.move_type not in ('out_invoice', 'out_refund') else 0)
+                    worksheet.write(row, 7, payment_amount if invoice.move_type in ('out_invoice', 'out_refund') else 0)
                     worksheet.write(row, 8, '0')
                     worksheet.write(row, 9, '0')
                     worksheet.write(row, 10, '0')
+                    # Cambiar o aplicar logica cuando tengamos definidos los pagos por diario
+                    """
                     if payment.journal_id.type == 'cash':
                         worksheet.write(row, 8, payment_amount)
                         self.total_efectivo += payment_amount
@@ -472,18 +535,19 @@ class generateReportsWizard(models.TransientModel):
                     elif payment.journal_id.type == 'credit':
                         worksheet.write(row, 10, payment_amount)
                         self.total_tarjeta += payment_amount
+                    """
                     retention_total = 0
                     # Retenciones
-                    retentions = self._get_retentions_data(invoice)
                     for retention in retentions:
-                        for line in retention.l10n_ec_withhold_line_ids:
-                            for tax in line.tax_ids:
-                                if tax.amount_type == 'percent':
-                                    retention_total += tax.amount
+                        if retention.date >= date(year, month, 1) and retention.date <= date(year, month, last_day):
+                            for line in retention.l10n_ec_withhold_line_ids:
+                                for tax in line.tax_ids:
+                                    if tax.amount_type == 'percent':
+                                        retention_total += line.l10n_ec_withhold_tax_amount
                     self.total_valores_bienes += retention_total
-                    self.total_valor_total += payment_amount + retention_total
-                    worksheet.write(row, 11, retention_total)
-                    worksheet.write(row, 12, payment_amount + retention_total)
+                    self.total_valor_total += int(payment_amount) + int(retention_total)
+                    worksheet.write(row, 11, int(retention_total))
+                    worksheet.write(row, 12, int(payment_amount) + int(retention_total))
                     worksheet.write(row, 13, sanitize_text(payment.currency_id.name))
                     worksheet.write(row, 14, '0')
                     worksheet.write(row, 15, '0')
