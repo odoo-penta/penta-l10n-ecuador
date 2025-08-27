@@ -9,8 +9,6 @@ from odoo.exceptions import UserError
 
 ACCOUNT_TYPE_SELECTION = [
     ('asset_receivable', 'Por cobrar'),
-    ('liability_payable', 'Por pagar'),
-    ('liability_credit_card', 'Tarjeta de crédito'),
 ]
 
 class PentalabReportAntiguedadWizard(models.TransientModel):
