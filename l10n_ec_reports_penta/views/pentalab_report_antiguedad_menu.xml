@@ -1,0 +1,8 @@
+<odoo>
+    <!-- Acción que abre el wizard -->
+    <menuitem id="menu_pentalab_report_antiguedad_wizard"
+              name="Antigüedad por cuenta"
+              parent="l10n_ec_reports_penta.menu_reports_informe_pentalab"
+              action="action_pentalab_report_antiguedad_wizard"
+              sequence="99"/>
+</odoo>

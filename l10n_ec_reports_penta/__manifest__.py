@@ -14,7 +14,7 @@
     'summary': 'Pentalab accounting reports',
     "version": "18.0.0.1",
     'description': """
-        Add new reports needed in the accounting section.
+        Add new reports needed in the accounting section
     """,
     'author': 'PentaLab',
     'maintainer': 'PentaLab',
@@ -47,6 +47,8 @@
         "views/report_dispatch_consolidated_view.xml",
         "views/report_dispatch_order_view.xml",
         "views/res_config_settings_views.xml",
+        'views/pentalab_report_antiguedad_wizard.xml',
+        'views/pentalab_report_antiguedad_menu.xml',
     ],
     "installable": True,
     'application': False,

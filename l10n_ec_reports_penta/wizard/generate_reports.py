@@ -6,7 +6,7 @@ import base64
 import io
 from collections import defaultdict
 from odoo.tools.misc import xlsxwriter
-from odoo.tools import remove_accents, sanitize_text
+from odoo.tools import remove_accents, sanitize_text, extract_numbers
 
 class generateReportsWizard(models.TransientModel):
     _name = 'generate.reports.wizard'
@@ -242,13 +242,8 @@ class generateReportsWizard(models.TransientModel):
         invoiced_data = {}
         customers = self.env['res.partner']
         # Mapear clientes y valores facturados
-        for invoice in datas['invoices']:
-            if invoice.partner_id not in customers:
-                customers |= invoice.partner_id
-            if invoice.partner_id.id not in invoiced_data:
-                invoiced_data[invoice.partner_id.id] = invoice.amount_total
-            else:
-                invoiced_data[invoice.partner_id.id] += invoice.amount_total
+        partners = [d['partner'] for d in datas['payments_by_partner'].values()]
+        customers = self.env['res.partner'].browse([p.id for p in partners])
         # Enviar total clientes
         self.total_reg_clientes = len(customers)
         # Mapear datos de clientes
@@ -268,7 +263,7 @@ class generateReportsWizard(models.TransientModel):
             worksheet.write(row, 8, f"{state}{city}" if state and city else '')
             worksheet.write(row, 9, f"{state}{city}{parish}" if state and city and parish else '')
             worksheet.write(row, 10, customer.industry_id and customer.industry_id.code or '')
-            worksheet.write(row, 11, int(invoiced_data.get(customer.id, 0.0)) or 0)
+            worksheet.write(row, 11, int(datas['payments_by_partner'].get(customer.id, {}).get('total', 0.00)) or 0)
         workbook.close()
         output.seek(0)
         return output.read()
@@ -307,11 +302,14 @@ class generateReportsWizard(models.TransientModel):
             worksheet.write(0, col, header)
         # Obtener facturas entre fechas
         operation_count = 0
-        for invoice in datas['invoices']:
+        invoices = datas['invoices']
+        invoices_sorted = sorted(invoices, key=lambda inv: (inv.partner_id.vat or '', inv.name or ''))
+        for invoice in invoices_sorted:
             customer = invoice.partner_id
             state =  str(customer.state_id.code).zfill(2) if customer.state_id and customer.state_id.code else ''
             city = str(customer.city_id.code).zfill(2) if customer.city_id and customer.city_id.code else ''
             parish = str(customer.parroquia_id.code).zfill(2) if customer.parroquia_id and customer.parroquia_id.code else ''
+            use_inv = []
             count_line = 1
             for line in invoice.invoice_line_ids:
                 unit_price = line.price_total / line.quantity if line.quantity else 0
@@ -331,10 +329,11 @@ class generateReportsWizard(models.TransientModel):
                     row = worksheet.dim_rowmax + 1
                     worksheet.write(row, 0, self._get_identification_type(invoice.partner_id.l10n_latam_identification_type_id.name) or '')
                     worksheet.write(row, 1, invoice.partner_id.vat or '')
-                    if len(invoice.invoice_line_ids) > 1:
-                        inv_name = sanitize_text(invoice.name + str(count_line)) or ''
-                    else:
-                        inv_name = sanitize_text(invoice.name) or ''
+                    inv_name = extract_numbers(sanitize_text(invoice.name)) or ''
+                    if inv_name in use_inv:
+                        inv_name = inv_name + str(count_line)
+                        count_line += 1
+                    use_inv.append(inv_name)
                     worksheet.write(row, 2, inv_name)
                     worksheet.write(row, 3, 'VEN')
                     worksheet.write(row, 4, 'NAP')
@@ -367,7 +366,6 @@ class generateReportsWizard(models.TransientModel):
                     worksheet.write(row, 19, f"{state}{city}" if state and city else '')
                     worksheet.write(row, 20, f"{state}{city}{parish}" if state and city and parish else '')
                     operation_count += 1
-                    count_line += 1
         self.total_reg_operaciones = operation_count
         workbook.close()
         output.seek(0)
@@ -416,7 +414,9 @@ class generateReportsWizard(models.TransientModel):
         # Mapear pagos de facturas
         transaction_count = 0
         process_payments = {}
-        for invoice in datas['invoices']:
+        invoices = datas['invoices']
+        invoices_sorted = sorted(invoices, key=lambda inv: (inv.partner_id.vat or '', inv.name or ''))
+        for invoice in invoices_sorted:
             move_payments = []
             total_payment_amount = 0.0
             # mapear pagos directos
@@ -489,6 +489,7 @@ class generateReportsWizard(models.TransientModel):
             payment_amount = int(total_payment_amount / total_invoice_lines) if total_invoice_lines > 0 else 0
             count_line = 1
             remaining_payments = list_payments.copy()
+            use_inv = []
             reuse_counter = 0
             for line in invoice.invoice_line_ids:
                 quantity = int(line.quantity)
@@ -496,12 +497,14 @@ class generateReportsWizard(models.TransientModel):
                     row = worksheet.dim_rowmax + 1
                     worksheet.write(row, 0, self._get_identification_type(invoice.partner_id.l10n_latam_identification_type_id.name) or '')
                     worksheet.write(row, 1, invoice.partner_id.vat or '')
-                    if len(invoice.invoice_line_ids) > 1:
-                        inv_name = sanitize_text(invoice.name + str(count_line)) or ''
-                    else:
-                        inv_name = sanitize_text(invoice.name) or ''
+                    inv_name = extract_numbers(sanitize_text(invoice.name)) or ''
+                    if inv_name in use_inv:
+                        inv_name = inv_name + str(count_line)
+                        count_line += 1
+                    use_inv.append(inv_name)
                     worksheet.write(row, 2, inv_name)
-                    worksheet.write(row, 3, invoice.date.strftime('%d/%m/%Y') if invoice.date else '')
+                    format_date = line.date.strftime('%Y%m%d') if line.date else ''
+                    worksheet.write(row, 3, format_date)
                     if remaining_payments:
                         payment = remaining_payments.pop(0)
                     else:
@@ -514,9 +517,9 @@ class generateReportsWizard(models.TransientModel):
                         reuse_counter = process_payments[payment.id]
                     # aqui consumir un pago de la variable list_payments
                     if reuse_counter > 0:
-                        worksheet.write(row, 4, sanitize_text(payment.name + str(reuse_counter)) or '')
+                        worksheet.write(row, 4, extract_numbers(sanitize_text(payment.name + str(reuse_counter)) or ''))
                     else:
-                        worksheet.write(row, 4, sanitize_text(payment.name) or '')
+                        worksheet.write(row, 4, extract_numbers(sanitize_text(payment.name) or ''))
                     worksheet.write(row, 5, '192')
                     # cliente
                     if invoice.move_type in ('out_invoice', 'out_refund'):
@@ -565,7 +568,6 @@ class generateReportsWizard(models.TransientModel):
                     worksheet.write(row, 22, 'NO APLICA')
                     worksheet.write(row, 23, 'NO APLICA')
                     transaction_count += 1
-                    count_line += 1
         self.total_reg_transacciones = transaction_count
         workbook.close()
         output.seek(0)

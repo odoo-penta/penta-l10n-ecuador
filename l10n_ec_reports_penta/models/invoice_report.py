@@ -41,7 +41,7 @@ class PentalabInvoiceReportLine(models.Model):
 
     @property
     def _table_query(self):
-        # OJO: Forzamos SOLO asientos publicados y SOLO diarios de tipo 'purchase'
+        # SOLO asientos publicados y SOLO diarios de tipo 'purchase'
         return """
             SELECT
                 aml.id AS id,
@@ -51,26 +51,53 @@ class PentalabInvoiceReportLine(models.Model):
                 j.id    AS journal_id,
                 rp.id   AS partner_id,
 
-                -- Cabecera
-                rc.name AS company_name,
+                -- Cabecera (name -> texto seguro)
+                CASE WHEN pg_typeof(rc.name)::text = 'jsonb'
+                    THEN COALESCE((rc.name::jsonb)->>'es_EC', (rc.name::jsonb)->>'en_US', rc.name::text)
+                    ELSE rc.name::text END AS company_name,
+
                 am.invoice_date AS invoice_date,
                 am.date AS date,
                 am.name AS move_name,
-                j.name AS journal_name,
-                ldt.name AS doc_type_name,
+
+                CASE WHEN pg_typeof(j.name)::text = 'jsonb'
+                    THEN COALESCE((j.name::jsonb)->>'es_EC', (j.name::jsonb)->>'en_US', j.name::text)
+                    ELSE j.name::text END AS journal_name,
+
+                CASE WHEN pg_typeof(ldt.name)::text = 'jsonb'
+                    THEN COALESCE((ldt.name::jsonb)->>'es_EC', (ldt.name::jsonb)->>'en_US', ldt.name::text)
+                    ELSE ldt.name::text END AS doc_type_name,
+
                 am.ref AS ref,
                 COALESCE(pol_po.po_names, am.invoice_origin) AS purchase_order_name,
                 am.l10n_ec_authorization_number AS auth_number,
                 rp.vat AS partner_vat,
-                rp.name AS partner_name,
-                apt.name AS payterm_name,
+
+                CASE WHEN pg_typeof(rp.name)::text = 'jsonb'
+                    THEN COALESCE((rp.name::jsonb)->>'es_EC', (rp.name::jsonb)->>'en_US', rp.name::text)
+                    ELSE rp.name::text END AS partner_name,
+
+                CASE WHEN pg_typeof(apt.name)::text = 'jsonb'
+                    THEN COALESCE((apt.name::jsonb)->>'es_EC', (apt.name::jsonb)->>'en_US', apt.name::text)
+                    ELSE apt.name::text END AS payterm_name,
+
                 paym.paymethod_names AS paymethod_name,
 
                 -- Línea
                 pp.default_code AS default_code,
-                ptmpl.name AS product_name,
-                pc_parent.name AS parent_categ_name,
-                pc.name AS categ_name,
+
+                CASE WHEN pg_typeof(ptmpl.name)::text = 'jsonb'
+                    THEN COALESCE((ptmpl.name::jsonb)->>'es_EC', (ptmpl.name::jsonb)->>'en_US', ptmpl.name::text)
+                    ELSE ptmpl.name::text END AS product_name,
+
+                CASE WHEN pg_typeof(pc_parent.name)::text = 'jsonb'
+                    THEN COALESCE((pc_parent.name::jsonb)->>'es_EC', (pc_parent.name::jsonb)->>'en_US', pc_parent.name::text)
+                    ELSE pc_parent.name::text END AS parent_categ_name,
+
+                CASE WHEN pg_typeof(pc.name)::text = 'jsonb'
+                    THEN COALESCE((pc.name::jsonb)->>'es_EC', (pc.name::jsonb)->>'en_US', pc.name::text)
+                    ELSE pc.name::text END AS categ_name,
+
                 aml.quantity AS quantity,
                 aml.price_unit AS price_unit,
                 taxes.names AS taxes,
@@ -92,9 +119,10 @@ class PentalabInvoiceReportLine(models.Model):
             LEFT JOIN product_category pc       ON pc.id = ptmpl.categ_id
             LEFT JOIN product_category pc_parent ON pc_parent.id = pc.parent_id
 
-            -- Nombres de PO desde la línea de compra vinculada
+            -- Nombres de PO desde la línea de compra vinculada (name a texto)
             LEFT JOIN (
-                SELECT pol.id AS line_id, string_agg(DISTINCT po2.name, ', ') AS po_names
+                SELECT pol.id AS line_id,
+                    string_agg(DISTINCT po2.name::text, ', ') AS po_names
                 FROM purchase_order_line pol
                 JOIN purchase_order po2 ON po2.id = pol.order_id
                 GROUP BY pol.id
@@ -103,15 +131,14 @@ class PentalabInvoiceReportLine(models.Model):
             -- Impuestos (nombres concatenados; soporta jsonb o varchar)
             LEFT JOIN (
                 SELECT rel.account_move_line_id AS line_id,
-                       string_agg(
-                           CASE
-                               WHEN pg_typeof(tax.name)::text = 'jsonb' THEN
-                                   COALESCE( (tax.name::jsonb)->>'es_EC', (tax.name::jsonb)->>'en_US', tax.name::text )
-                               ELSE
-                                   tax.name::text
-                           END,
-                           ', '
-                       ) AS names
+                    string_agg(
+                        CASE
+                            WHEN pg_typeof(tax.name)::text = 'jsonb' THEN
+                                COALESCE( (tax.name::jsonb)->>'es_EC', (tax.name::jsonb)->>'en_US', tax.name::text )
+                            ELSE tax.name::text
+                        END,
+                        ', '
+                    ) AS names
                 FROM account_move_line_account_tax_rel rel
                 JOIN account_tax tax ON tax.id = rel.account_tax_id
                 GROUP BY rel.account_move_line_id
@@ -120,17 +147,17 @@ class PentalabInvoiceReportLine(models.Model):
             -- Métodos de pago usados (simple: nombre del diario del pago)
             LEFT JOIN (
                 SELECT inv.id AS inv_id,
-                       string_agg(DISTINCT aj.name::text, ', ') AS paymethod_names
+                    string_agg(DISTINCT aj.name::text, ', ') AS paymethod_names
                 FROM account_move inv
                 LEFT JOIN account_move_line invaml
-                  ON invaml.move_id = inv.id AND invaml.display_type IS NULL
+                ON invaml.move_id = inv.id AND invaml.display_type IS NULL
                 LEFT JOIN account_partial_reconcile apr
-                  ON apr.debit_move_id = invaml.id OR apr.credit_move_id = invaml.id
+                ON apr.debit_move_id = invaml.id OR apr.credit_move_id = invaml.id
                 LEFT JOIN account_move_line payaml
-                  ON payaml.id = CASE
-                      WHEN apr.debit_move_id = invaml.id THEN apr.credit_move_id
-                      ELSE apr.debit_move_id
-                  END
+                ON payaml.id = CASE
+                    WHEN apr.debit_move_id = invaml.id THEN apr.credit_move_id
+                    ELSE apr.debit_move_id
+                END
                 LEFT JOIN account_move paymove ON paymove.id = payaml.move_id
                 LEFT JOIN account_payment ap    ON ap.move_id = paymove.id
                 LEFT JOIN account_journal aj    ON aj.id = paymove.journal_id
@@ -139,9 +166,9 @@ class PentalabInvoiceReportLine(models.Model):
             ) AS paym ON paym.inv_id = am.id
 
             WHERE
-                aml.display_type IS NULL
-                AND am.state = 'posted'          -- Solo publicados
-                AND j.type = 'purchase'          -- Solo diarios de Compras
+                COALESCE(aml.display_type, 'product') NOT IN ('line_note','payment_term','tax','line_section')
+                AND am.state = 'posted'
+                AND j.type = 'purchase'
         """
 
     def init(self):

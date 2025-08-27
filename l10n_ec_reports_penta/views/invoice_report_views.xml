@@ -1,46 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-  <!-- Wizard -->
-  <record id="view_pentalab_invoice_report_wizard_form" model="ir.ui.view">
-    <field name="name">pentalab.invoice.report.wizard.form</field>
-    <field name="model">pentalab.invoice.report.wizard</field>
-    <field name="arch" type="xml">
-      <form string="Parámetros - Anexo de compras">
-        <group>
-          <group>
-            <field name="date_from"/>
-            <field name="date_to"/>
-          </group>
-          <group>
-            <field name="journal_ids" widget="many2many_tags"/>
-          </group>
-        </group>
-        <footer>
-          <button string="Ver en pantalla" name="action_show" type="object" class="btn-primary"/>
-          <button string="Cerrar" special="cancel" class="btn-link"/>
-        </footer>
-      </form>
-    </field>
+  <!-- Menús -->
+  <!-- Contabilidad -> Reportes -->
+  <menuitem id="menu_pentalab_reports_root"
+            name="Reportes"
+            parent="account.menu_finance"
+            sequence="60"/>
+  <!-- Reportes -> Reportes Pentalab -->
+  <menuitem id="menu_pentalab_reports_group"
+            name="Reportes Pentalab"
+            parent="menu_pentalab_reports_root"
+            sequence="61"/>
+
+  <!-- Acción (wizard) -->
+  <record id="action_pentalab_anexo_compras_wizard" model="ir.actions.act_window">
+    <field name="name">Anexo de compras</field>
+    <field name="res_model">pentalab.invoice.report.wizard</field>
+    <field name="view_mode">form</field>
+    <field name="target">new</field>
   </record>
 
-  <!-- Lista -->
+  <!-- Reportes Pentalab -> Anexo de compras -->
+  <menuitem id="menu_pentalab_anexo_compras"
+            name="Anexo de compras"
+            parent="menu_pentalab_reports_group"
+            action="action_pentalab_anexo_compras_wizard"
+            sequence="1"/>
+
+  <!-- Vista LIST del reporte -->
   <record id="view_pentalab_invoice_report_line_list" model="ir.ui.view">
     <field name="name">pentalab.invoice.report.line.list</field>
     <field name="model">pentalab.invoice.report.line</field>
     <field name="arch" type="xml">
-      <list string="Anexos de Compras" create="false" edit="false" delete="false">
-        <field name="company_name"/>
+      <list string="Anexo de Compras" create="false" edit="false" delete="false">
+        <field name="company_id"/>
         <field name="invoice_date"/>
         <field name="date"/>
         <field name="move_name"/>
-        <field name="journal_name"/>
+        <field name="journal_id"/>
         <field name="doc_type_name"/>
         <field name="ref"/>
         <field name="purchase_order_name"/>
         <field name="auth_number"/>
         <field name="partner_vat"/>
-        <field name="partner_name"/>
+        <field name="partner_id"/>
         <field name="payterm_name"/>
         <field name="paymethod_name"/>
         <field name="default_code"/>
@@ -57,15 +61,27 @@
     </field>
   </record>
 
-  <!-- Acción para exportar a XLSX desde el menú de impresión -->
-  <record id="pentalab_invoice_report_xlsx" model="ir.actions.report">
-    <field name="name">Reporte de Facturas (XLSX)</field>
+  <!-- Wizard form -->
+  <record id="view_pentalab_invoice_report_wizard_form" model="ir.ui.view">
+    <field name="name">pentalab.invoice.report.wizard.form</field>
     <field name="model">pentalab.invoice.report.wizard</field>
-    <field name="report_type">xlsx</field>
-    <field name="report_name">l10n_ec_reports_penta.invoice_report_xlsx</field>
-    <field name="report_file">invoice_report_xlsx</field>
-    <field name="binding_model_id" ref="model_pentalab_invoice_report_wizard"/>
-    <field name="binding_type">report</field>
+    <field name="arch" type="xml">
+      <form string="Parámetros - Anexo de compras">
+        <group>
+          <group>
+            <field name="date_from"/>
+            <field name="date_to"/>
+          </group>
+          <group>
+            <field name="journal_ids" widget="many2many_tags"/>
+          </group>
+        </group>
+        <footer>
+          <button string="Ver" name="action_show" type="object" class="btn-primary"/>
+          <button string="Cerrar" special="cancel" class="btn-link"/>
+        </footer>
+      </form>
+    </field>
   </record>
 
 </odoo>
