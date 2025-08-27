@@ -24,7 +24,8 @@
     "category": "Accounting/Accounting",
     "depends": [
         'account',
-        'report_xlsx'],
+        'report_xlsx',
+        'l10n_latam_invoice_document'],
     "data": [
         "security/ir.model.access.csv",
         
@@ -33,6 +34,8 @@
         
         'wizard/generate_reports.xml',
         
+        'report/account_move_inventory_report.xml',
+        "views/account_move_inventory_report_action.xml",
         "views/pentalab_report_wizard_view.xml",
         "views/cobros_por_ventas_report.xml",
         'views/export_inventory_wizard_view.xml',

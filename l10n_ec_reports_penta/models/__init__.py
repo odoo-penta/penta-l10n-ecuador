@@ -1,3 +1,4 @@
+from . import account_move
 from . import account_payment
 from . import cobros_por_ventas
 from . import export_inventory_wizard
