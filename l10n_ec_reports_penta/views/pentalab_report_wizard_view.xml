@@ -44,10 +44,12 @@
                   name="Reportes Pentalab"
                   parent="account.menu_finance_reports"
                   sequence="5"/>
+        <!--
         <menuitem id="menu_action_informe_pentalab"
                   name="Vencido por cobrar"
                   parent="menu_reports_informe_pentalab"
                   action="action_l10n_ec_reports_penta_wizard"
                   sequence="1"/>
+        -->
     </data>
 </odoo>
