@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="stock_picking_report_list_view" model="ir.ui.view">
+        <field name="name">stock.picking.report.list</field>
+        <field name="model">stock.picking.report</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="origin_location"/>
+                <field name="destination_location"/>
+                <field name="company_vat"/>
+                <field name="carrier"/>
+                <field name="vehicle_plate"/>
+                <field name="driver_name"/>
+                <field name="document_date"/>
+                <field name="document_number" widget="url" options="{'url_field': 'picking_id', 'model': 'stock.picking', 'id_field': 'picking_id'}"/>
+                <field name="waybill_number"/>
+                <field name="transfer_reason"/>
+                <field name="customer_name" widget="url" options="{'url_field': 'partner_id', 'model': 'res.partner', 'id_field': 'partner_id'}"/>
+                <field name="total_quantity" sum="Total Cantidad"/>
+                <field name="total_weight" sum="Total Peso"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_stock_picking_report_server" model="ir.actions.server">
+        <field name="name">Generar Reporte de Despachos</field>
+        <field name="model_id" ref="model_stock_picking_report"/>
+        <field name="state">code</field>
+        <field name="code">action = env['stock.picking.report'].action_generate_report();</field>
+    </record>
+
+    <record id="action_stock_picking_report" model="ir.actions.act_window">
+        <field name="name">Reporte Consolidado de Órdenes de Despacho</field>
+        <field name="res_model">stock.picking.report</field>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="stock_picking_report_list_view"/>
+    </record>
+
+    <menuitem id="menu_stock_picking_report"
+              name="Reporte de Despachos Consolidado"
+              parent="menu_l10n_ec_reports_penta"
+              action="action_stock_picking_report_server"
+              sequence="20"/>
+</odoo>

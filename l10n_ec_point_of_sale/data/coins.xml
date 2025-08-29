@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data noupdate="1">
+        <!-- Monedas -->
+        <record id="coin_001" model="cash.box.coin">
+            <field name="value">0.01</field>
+        </record>
+        <record id="coin_005" model="cash.box.coin">
+            <field name="value">0.05</field>
+        </record>
+        <record id="coin_010" model="cash.box.coin">
+            <field name="value">0.10</field>
+        </record>
+        <record id="coin_025" model="cash.box.coin">
+            <field name="value">0.25</field>
+        </record>
+        <record id="coin_050" model="cash.box.coin">
+            <field name="value">0.50</field>
+        </record>
+        <record id="coin_1" model="cash.box.coin">
+            <field name="value">1.00</field>
+        </record>
+        <!-- Billetes -->
+        <record id="coin_5" model="cash.box.coin">
+            <field name="value">5.00</field>
+        </record>
+        <record id="coin_10" model="cash.box.coin">
+            <field name="value">10.00</field>
+        </record>
+        <record id="coin_20" model="cash.box.coin">
+            <field name="value">20.00</field>
+        </record>
+        <record id="coin_50" model="cash.box.coin">
+            <field name="value">50.00</field>
+        </record>
+        <record id="coin_100" model="cash.box.coin">
+            <field name="value">100.00</field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,5 +1,5 @@
 {
-    'name': 'Ecuador - withholding.Replace('_', ' ').Trim()',
+    'name': 'Ecuador - withholding',
     'version': '18.0.1.0.0',
     'category': 'Localization',
     'summary': 'Auto-generated module l10n_ec_withholding',

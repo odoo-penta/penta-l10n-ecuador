@@ -1,5 +1,5 @@
 {
-    'name': 'Ecuador - einvoice.Replace('_', ' ').Trim()',
+    'name': 'Ecuador - einvoice',
     'version': '18.0.1.0.0',
     'category': 'Localization',
     'summary': 'Auto-generated module l10n_ec_einvoice',

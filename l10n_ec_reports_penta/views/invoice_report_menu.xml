@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="action_pentalab_invoice_report_wizard" model="ir.actions.act_window">
+    <field name="name">Anexo de compras</field>
+    <field name="res_model">pentalab.invoice.report.wizard</field>
+    <field name="view_mode">form</field>
+    <field name="target">new</field>
+  </record>
+  <menuitem id="menu_pentalab_invoice_report_wizard" name="Anexo de compras"
+            parent="menu_reports_informe_pentalab" action="action_pentalab_invoice_report_wizard" sequence="20"/>
+</odoo>

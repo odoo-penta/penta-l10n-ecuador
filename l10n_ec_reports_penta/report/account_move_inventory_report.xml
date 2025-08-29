@@ -1,0 +1,176 @@
+<odoo>
+  <template id="report_account_move_inventory_document">
+    <t t-name="l10n_ec_reports_penta.report_account_move_inventory_document">
+      <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="o">
+          <t t-call="web.external_layout">
+            <t t-set="o" t-value="o.with_context(lang=lang or o.partner_id.lang)"/>
+
+            <!-- Encabezado principal -->
+            <div class="mt-5 clearfix">
+              <div class="page mb-4">
+                <h2 class="mb-2">
+                  Asiento contable
+                  <span t-if="o.name and o.name != '/'"> - <t t-esc="o.name"/></span>
+                </h2>
+
+
+                <!-- Subtítulo con 3 columnas: Referencia, Fecha, Diario -->
+                <div class="row mb-4">
+                  <div class="col">
+                    <strong>Referencia:</strong><br/>
+                    <span t-field="o.ref"/>
+                  </div>
+                  <div class="col">
+                    <strong>Fecha:</strong><br/>
+                    <span t-field="o.date"/>
+                  </div>
+                  <div class="col">
+                    <strong>Diario:</strong><br/>
+                    <span t-field="o.journal_id"/>
+                  </div>
+                </div>
+
+                <table class="table table-sm table-borderless" name="je_line_table">
+                <!-- <table class="table table-sm table-bordered"> -->
+                  <thead>
+                    <tr>
+                      <th>Cuenta</th>
+                      <th>Contacto</th>
+                      <th>Descripción</th>
+                      <th class="text-end">Débito</th>
+                      <th class="text-end">Crédito</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <t t-foreach="o.line_ids" t-as="line">
+                      <tr>
+                        <td><t t-esc="(line.account_id.code or '') + ' - ' + (line.account_id.name or '')"/></td>
+                        <td><t t-esc="line.partner_id.name or ''"/></td>
+                        <td><t t-esc="line.name or ''"/></td>
+                        <td class="text-end"><span t-field="line.debit"/></td>
+                        <td class="text-end"><span t-field="line.credit"/></td>
+                      </tr>
+                    </t>
+                  </tbody>
+                </table>
+
+                <!-- Totales -->
+                <div class="row mt-4">
+                  <div class="col-12">
+                    <table class="table table-sm table-borderless">
+                      <tr>
+                        <td class="text-end"><strong>Total Débito:</strong></td>
+                        <td class="text-end">
+                          <span t-esc="('%.2f' % sum(j.debit for j in o.line_ids))"/>
+                        </td>
+                        <td class="text-end"><strong>Total Crédito:</strong></td>
+                        <td class="text-end">
+                          <span t-esc="('%.2f' % sum(j.credit for j in o.line_ids))"/>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+
+                <t t-if="o.valuation_moves_ids">
+                  <t t-foreach="o.valuation_moves_ids" t-as="val_move">
+                    <div class="page-break"/>
+                    <h2 class="mb-2">
+                      Asiento contable
+                      <span t-if="val_move.name and val_move.name != '/'"> - <t t-esc="val_move.name"/></span>
+                    </h2>
+                  
+                  
+                    <!-- Subtítulo con 3 columnas: Referencia, Fecha, Diario -->
+                    <div class="row mb-4">
+                      <div class="col">
+                        <strong>Referencia:</strong><br/>
+                        <span t-field="val_move.ref"/>
+                      </div>
+                      <div class="col">
+                        <strong>Fecha:</strong><br/>
+                        <span t-field="val_move.date"/>
+                      </div>
+                      <div class="col">
+                        <strong>Diario:</strong><br/>
+                        <span t-field="val_move.journal_id"/>
+                      </div>
+                    </div>
+
+                    <table class="table table-sm table-borderless" name="je_line_table">
+                    <!-- <table class="table table-sm table-bordered"> -->
+                      <thead>
+                        <tr>
+                          <th>Cuenta</th>
+                          <th>Contacto</th>
+                          <th>Descripción</th>
+                          <th class="text-end">Débito</th>
+                          <th class="text-end">Crédito</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <t t-foreach="val_move.line_ids" t-as="line">
+                          <tr>
+                            <td><t t-esc="(line.account_id.code or '') + ' - ' + (line.account_id.name or '')"/></td>
+                            <td><t t-esc="line.partner_id.name or ''"/></td>
+                            <td><t t-esc="line.name or ''"/></td>
+                            <td><t t-esc="line.debit"/></td>
+                            <td><t t-esc="line.credit"/></td>
+                          </tr>
+                        </t>
+                      </tbody>
+                    </table>
+
+                    <!-- Totales -->
+                    <div class="row mt-4">
+                      <div class="col-12">
+                        <table class="table table-sm table-borderless">
+                          <tr>
+                            <td class="text-end"><strong>Total Débito:</strong></td>
+                            <td class="text-end">
+                              <span t-esc="('%.2f' % sum(j.debit for j in val_move.line_ids))"/>
+                            </td>
+                            <td class="text-end"><strong>Total Crédito:</strong></td>
+                            <td class="text-end">
+                              <span t-esc="('%.2f' % sum(j.credit for j in val_move.line_ids))"/>
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+
+                  </t>
+                </t>
+                <t t-else="">
+                  <p>No hay asientos de valuación asociados.</p>
+                </t>
+
+                <div style="width: 100%; display: table; table-layout: fixed; margin-top: 2cm;">
+                  <div style="display: table-cell; text-align: center; vertical-align: bottom; padding: 0 5px; min-height: 50px; overflow: hidden;">
+                    <div style="border-top: 1px solid #000; margin-bottom: 0.3cm;"></div>
+                    <div>
+                      <strong>Elaborado por: </strong><br/>
+                      <span><t t-esc="o.create_uid.name"/></span>
+                      <br/>
+                      <br/>
+                    </div>
+                  </div>
+                  <div style="display: table-cell; text-align: center; vertical-align: bottom; padding: 0 5px; min-height: 50px; overflow: hidden;">
+                    <div style="border-top: 1px solid #000; margin-bottom: 0.3cm;"></div>
+                    <div>
+                      <strong>Aprobado por: </strong><br/>
+                      Nombre: ____________________________<br/>
+                      Cédula de Identidad: _______________
+                      <br/>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </t>
+        </t>
+      </t>
+    </t>
+  </template>
+</odoo>

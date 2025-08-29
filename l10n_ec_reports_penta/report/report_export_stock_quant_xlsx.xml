@@ -1,0 +1,12 @@
+<!-- reports/report_export_stock_quant_xlsx.xml -->
+<odoo>
+    <report
+        id="action_export_stock_quant_xlsx"
+        model="wizard.stock.quant.export"
+        string="Exportar Inventario XLSX"
+        report_type="xlsx"
+        name="tu_modulo.report_export_stock_quant_xlsx"
+        file="stock_quant_export"
+        print_report_name="'Inventario_Agrupado_%s_%s' % (object.month, object.year)"
+    />
+</odoo>

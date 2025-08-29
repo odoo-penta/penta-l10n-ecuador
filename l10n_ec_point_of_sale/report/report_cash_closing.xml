@@ -1,0 +1,130 @@
+<odoo>
+    <template id="report_cash_closing_template">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <t t-foreach="docs" t-as="o">
+                        <!-- Titulo -->
+                        <br/><br/><br/>
+                        <h2 class="text-center mb-4">Sales Summary</h2>
+                        <!-- Responsables -->
+                        <section class="mb-4">
+                            <div style="display: flex; justify-content: space-between;">
+                                <!-- Columna izquierda: Carga el LOGO -->
+                                <div style="width: 50%;"></div>
+                                <!-- Columna derecha: Info de caja -->
+                                <div style="width: 45%;">
+                                    <strong>Cash: </strong> <t t-out="o.cash_id.name or ''"/><br/>
+                                    <strong>Session: </strong> <t t-out="o.cash_id.current_session_id.name or ''"/><br/>
+                                    <strong>Opening date: </strong> <t t-out="o.cash_id.current_session_id.opening_date.strftime('%d/%m/%Y %H:%M:%S')"/><br/>
+                                    <strong>Opening balance:</strong> <t t-out="o.cash_id.current_session_id.initial_balance or 0.00"/><br/>
+                                </div>
+                            </div>
+                        </section>
+                        <!-- Tabla movimientos -->
+                        <section>
+                            <table class="table table-bordered table-sm table-striped" style="font-size:10px;">
+                                <thead class="table-secondary">
+                                    <tr style="background-color: #b7d3f0;">
+                                        <th colspan="11" class="text-center">
+                                            <strong>Cash movements</strong>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th rowspan="2" class="text-center">Type</th>
+                                        <th rowspan="2" class="text-center">Reference</th>
+                                        <th rowspan="2" class="text-center">Number</th>
+                                        <th rowspan="2" class="text-center">Custumer</th>
+                                        <th rowspan="2" class="text-center">Cashier</th>
+                                        <th colspan="4" class="text-center">Payments</th>
+                                        <th rowspan="2" class="text-center">Total</th>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-center">Cash</th>
+                                        <th class="text-center">Transfer/Deposit</th>
+                                        <th class="text-center">Card</th>
+                                        <th class="text-center">Credit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="o.cash_id.current_session_id.movement_ids" t-as="movement">
+                                        <tr>
+                                            <!-- TIPO -->
+                                            <td>
+                                                <t t-if="movement.operation_type == 'invoice'">
+                                                    <strong>Invoice</strong>
+                                                </t>
+                                                <t t-elif="movement.operation_type == 'refund'">
+                                                    <strong>Credit note</strong>
+                                                </t>
+                                                <t t-elif="movement.operation_type == 'payment'">
+                                                    <strong>Payment</strong>
+                                                </t>
+                                                <t t-elif="movement.operation_type == 'quote'">
+                                                    <strong>Quote</strong>
+                                                </t>
+                                                <t t-else="">
+                                                    <t t-out="movement.operation_type or '-'"/>
+                                                </t>
+                                            </td>
+                                            <!-- REFERENCIA (movimiento) -->
+                                            <td><t t-out="movement.name or '-'"/></td>
+                                            <!-- NUMERO -->
+                                            <td>
+                                                <t t-if="movement.operation_type in ('invoice', 'quote')">
+                                                    <t t-out="movement.invoice_id.name or '/'"/>
+                                                </t>
+                                                <t t-elif="movement.operation_type == 'refund'">
+                                                    <t t-out="movement.credit_note_id.name or '/'"/>
+                                                </t>
+                                                <t t-elif="movement.operation_type == 'payment'">
+                                                    <t t-out="movement.payment_id.name or '/'"/>
+                                                </t>
+                                                <t t-else="">
+                                                    <strong>/</strong>
+                                                </t>
+                                            </td>
+                                            <!-- CLIENTE -->
+                                            <td><t t-out="movement.partner_id.name or '-'"/></td>
+                                            <!-- CAJERO -->
+                                            <td><t t-out="movement.cashier_id.name or '-'"/></td>
+                                            <!-- PAGOS -->
+                                            <td class="text-center">
+                                                <t t-set="pay" t-value="payment_summary.get(movement.id, {})"/>
+                                                <t t-out="'%.2f' % pay.get('cash', 0.00)"/>
+                                            </td>
+                                            <td class="text-center">
+                                                <t t-out="'%.2f' % pay.get('transfer', 0.00)"/>
+                                            </td>
+                                            <td class="text-center">
+                                                <t t-out="'%.2f' % pay.get('card', 0.00)"/>
+                                            </td>
+                                            <td class="text-center">
+                                                <t t-out="'%.2f' % pay.get('credit', 0.00)"/>
+                                            </td>
+                                            <!-- TOTAL -->
+                                            <td class="text-center"><t t-out="'%.2f' % movement.amount or 0.00"/></td>
+                                        </tr>
+                                    </tr>
+                                    <t t-if="not o.cash_id.current_session_id.movement_ids">
+                                        <tr>
+                                            <td colspan="5" class="text-center text-muted">There are no recorded movements.</td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </section>
+                        <!-- FIRMAS -->
+                        <div class="text-center" style="margin-top: 60px;">
+                            <p><strong>Responsible</strong></p>
+                            <br/><br/>
+                            <p>_______________________________</p>
+                            <p><strong><t t-out="user_name"/></strong></p>
+                            <p>C.I.: <t t-out="user_cedula or ''"/></p>
+                        </div>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

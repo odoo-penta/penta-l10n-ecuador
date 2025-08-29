@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+
+        <record id="view_cash_box_coin_list" model="ir.ui.view">
+            <field name="name">cash.box.coin.list</field>
+            <field name="model">cash.box.coin</field>
+            <field name="arch" type="xml">
+                <list string="Cash Box">
+                    <field name="currency_id"/>
+                    <field name="name"/>
+                    <field name="value"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_cash_box_coin_form" model="ir.ui.view">
+            <field name="name">cash.box.coin.form</field>
+            <field name="model">cash.box.coin</field>
+            <field name="arch" type="xml">
+                <form string="Cash Box">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="currency_id"/>
+                                <field name="name"/>
+                                <field name="value"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_cash_box_coin" model="ir.actions.act_window">
+            <field name="name">Cash Box Coin</field>
+            <field name="res_model">cash.box.coin</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+    </data>
+</odoo>

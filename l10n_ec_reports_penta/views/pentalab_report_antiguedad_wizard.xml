@@ -1,0 +1,37 @@
+<odoo>
+    <record id="view_pentalab_report_antiguedad_wizard_form" model="ir.ui.view">
+        <field name="name">pentalab.report.antiguedad.wizard.form</field>
+        <field name="model">pentalab.report.antiguedad.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Generar Reporte Antigüedad">
+               <group>
+                    <field name="date"/>
+                </group>
+
+                <group>
+                    <field name="account_type" readonly="account_ids"/>
+                    <field name="account_ids" widget="many2many_tags" options="{'no_open': True}" readonly="account_type"/>
+                    <field name="no_commercial_only" readonly="account_ids"/>
+                </group>
+
+                <footer>
+                    <button string="Generar Reporte" type="object" name="action_generate_report" class="btn-primary"/>
+                    <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                </footer>
+
+                <group>
+                    <field name="file_name" invisible="1"/>
+                    <field name="file_data" filename="file_name" invisible="1"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_pentalab_report_antiguedad_wizard" model="ir.actions.act_window">
+        <field name="name">Generar Reporte Antigüedad</field>
+        <field name="res_model">pentalab.report.antiguedad.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>
