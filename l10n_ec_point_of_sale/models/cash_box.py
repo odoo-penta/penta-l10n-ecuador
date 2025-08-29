@@ -27,7 +27,7 @@ class CashBox(models.Model):
     state = fields.Selection([('open', 'Open'), ('closed', 'Closed')], default='closed', string="State", readonly=True)
     session_ids = fields.One2many('cash.box.session', 'cash_id', string="Sessions", readonly=True)
     current_session_id = fields.Many2one('cash.box.session', string="Current Session", readonly=True)
-    payment_method_ids = fields.Many2many('pos.payment.method', 'cash_payment_method_rel', 'cash_id', 'payment_id', string='Payment methods', domain=[('journal_id.type', 'in', ['cash', 'bank']), ('journal_id.active', '=', True)], copy=False)
+    payment_method_ids = fields.Many2many('cash.payment.method', 'cash_payment_method_rel', 'cash_id', 'payment_id', string='Payment methods', domain=[('journal_id.type', 'in', ['cash', 'bank']), ('journal_id.active', '=', True)], copy=False)
     cashier_ids = fields.Many2many('res.users', 'cash_aditional_user_rel', 'cash_id', 'user_id', string="Cashiers")
     is_cash_box_admin = fields.Boolean(compute='_compute_is_cash_box_admin', store=False)
     is_administrator = fields.Boolean(compute='_compute_is_administrator', store=False)

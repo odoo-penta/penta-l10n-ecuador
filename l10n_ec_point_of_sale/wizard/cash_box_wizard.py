@@ -215,14 +215,14 @@ class CashBoxPaymentMethodWizard(models.TransientModel):
     payment_id = fields.Many2one('cash.box.payment.wizard', string="Payment")
     quote_id = fields.Many2one('cash.box.quotation.wizard', string="Cash Box Quotation")
     payment_method_id = fields.Many2one(
-        'pos.payment.method',
+        'cash.payment.method',
         string="Payment Method", required=True,
         domain="[('id', 'in', available_payment_method_ids)]"
     )
     require_tc_data = fields.Boolean(related='payment_method_id.require_tc_data', readonly=True)
     require_bank_data = fields.Boolean(related='payment_method_id.require_bank_data', readonly=True)
     require_check_data = fields.Boolean(related='payment_method_id.require_check_data', readonly=True)
-    available_payment_method_ids = fields.Many2many('pos.payment.method', string="Available Payment Methods")
+    available_payment_method_ids = fields.Many2many('cash.payment.method', string="Available Payment Methods")
     amount = fields.Monetary(string="Amount", required=True, default=0.0)
     bank_reference = fields.Char(string="Bank Reference", help="Reference for bank payments")
     card = fields.Many2one('finance.card', string="Card")

@@ -25,7 +25,6 @@
     'depends': [
         'sale',
         'stock',
-        'point_of_sale',
     ],
     'data': [
         'data/ir_sequence.xml',
@@ -45,6 +44,7 @@
         'views/cash_box_views.xml',
         'views/coin_views.xml',
         'views/account_payment_views.xml',
+        'views/payment_method_views.xml',
         'views/cash_menuitems.xml',
     ],
     'demo': [

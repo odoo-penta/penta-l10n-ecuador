@@ -31,20 +31,3 @@ class AccountPayment(models.Model):
     number_lot = fields.Char()
     authorization_number = fields.Char(string="Authorization number")
     bank_id = fields.Many2one("res.partner.bank")
-
-class PosPaymentMethod(models.Model):
-    _inherit = 'pos.payment.method'
-
-    require_tc_data = fields.Boolean(
-        string='Requires card details',
-        help='Check if this method requires additional card information'
-    )
-    require_bank_data = fields.Boolean(
-        string='Requires bank details',
-        help='Check if this method requires a bank reference'
-    )
-    require_check_data = fields.Boolean(
-        string='Requires check details',
-        help='Check if this method requires check information'
-    )
-    card = fields.Many2one('finance.card', string="Card")

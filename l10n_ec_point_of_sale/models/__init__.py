@@ -7,3 +7,4 @@ from . import account_payment
 from . import cash_box
 from . import sale_order
 from . import coins
+from . import payment_method
