@@ -1,0 +1,98 @@
+<odoo>
+  <template id="report_account_move_document">
+    <t t-name="pentalab_account_move_report.report_account_move_document">
+      <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="o">
+          <t t-call="web.external_layout">
+            <t t-set="o" t-value="o.with_context(lang=lang or o.partner_id.lang)"/>
+
+            <!-- Encabezado con título -->
+            <div class="mt-5 clearfix">
+              <div class="page mb-4">
+                <h2 class="mb-2">
+                  Asiento contable
+                  <span t-if="o.name and o.name != '/'"> - <t t-esc="o.name"/></span>
+                </h2>
+
+                <!-- Subtítulo con 3 columnas: Referencia, Fecha, Diario -->
+                <div class="row mb-4">
+                  <div class="col">
+                    <strong>Referencia:</strong><br/>
+                    <span t-field="o.ref"/>
+                  </div>
+                  <div class="col">
+                    <strong>Fecha:</strong><br/>
+                    <span t-field="o.date"/>
+                  </div>
+                  <div class="col">
+                    <strong>Diario:</strong><br/>
+                    <span t-field="o.journal_id"/>
+                  </div>
+                </div>
+
+                <!-- Tabla de líneas contables -->
+                <table class="table table-sm table-borderless" name="je_line_table">
+                  <thead>
+                    <tr>
+                      <th>Cuenta</th>
+                      <th>Contacto</th>
+                      <th>Descripción</th>
+                      <th class="text-end">Débito</th>
+                      <th class="text-end">Crédito</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <t t-set="jelines" t-value="o.line_ids"/>
+                    <t t-foreach="jelines" t-as="jeline">
+                      <tr>
+                        <td><span t-field="jeline.account_id"/></td>
+                        <td><span t-field="jeline.partner_id"/></td>
+                        <td><span t-field="jeline.name"/></td>
+                        <td class="text-end"><span t-field="jeline.debit"/></td>
+                        <td class="text-end"><span t-field="jeline.credit"/></td>
+                      </tr>
+                    </t>
+                  </tbody>
+                </table>
+
+                <!-- Totales -->
+                <div class="row mt-4">
+                  <div class="col-12">
+                    <table class="table table-sm table-borderless">
+                      <tr>
+                        <td class="text-end"><strong>Total Débito:</strong></td>
+                        <td class="text-end">
+                          <span t-esc="('%.2f' % sum(j.debit for j in o.line_ids))"/>
+                        </td>
+                        <td class="text-end"><strong>Total Crédito:</strong></td>
+                        <td class="text-end">
+                          <span t-esc="('%.2f' % sum(j.credit for j in o.line_ids))"/>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+
+                <!-- Pie de firma -->
+                <!-- <div class="mt-5">
+                  <table class="table table-sm table-borderless">
+                    <tr>
+                      <td>Elaborado por: ____________________</td>
+                      <td>Revisado por: ____________________</td>
+                      <td>Autorizado por: ____________________</td>
+                    </tr>
+                    <tr>
+                      <td colspan="2">Recibí conforme: ____________________</td>
+                      <td>Nombre: ____________________ | CI: ________________</td>
+                    </tr>
+                  </table>
+                </div> -->
+                
+              </div>
+            </div>
+          </t>
+        </t>
+      </t>
+    </t>
+  </template>
+</odoo>
