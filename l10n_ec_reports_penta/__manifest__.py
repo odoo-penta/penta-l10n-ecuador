@@ -51,6 +51,8 @@
         "views/res_config_settings_views.xml",
         'views/pentalab_report_antiguedad_wizard.xml',
         'views/pentalab_report_antiguedad_menu.xml',
+        'views/account_move_report_action.xml',
+        'reports/account_move_report.xml',
     ],
     "installable": True,
     'application': False,
