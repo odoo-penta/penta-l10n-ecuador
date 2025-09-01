@@ -25,7 +25,7 @@
     "depends": [
         'account',
         'report_xlsx',
-        'l10n_latam_invoice_document'],
+        ],
     "data": [
         "security/ir.model.access.csv",
         
@@ -45,7 +45,6 @@
         "views/pentalab_stock_report_view.xml",
         "views/pentalab_inventory_report_view.xml",
         "views/pentalab_inventory_report_menu.xml",
-        "views/view_pentalab_sri_report_invonce_sale_list.xml",
         #"views/pentalab_menu_sri_report.xml",
         "views/report_dispatch_consolidated_view.xml",
         "views/report_dispatch_order_view.xml",
