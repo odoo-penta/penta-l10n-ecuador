@@ -8,19 +8,10 @@ from collections import defaultdict
 from odoo.tools.misc import xlsxwriter
 from odoo.tools import remove_accents, sanitize_text, extract_numbers
 
-class generateReportsWizard(models.TransientModel):
-    _name = 'generate.reports.wizard'
-    _description = 'Wizard to generate reports'
+class ReportUafeWizard(models.TransientModel):
+    _name = 'report.uafe.wizard'
+    _description = 'Wizard to generate report UAFE'
 
-    report_type = fields.Selection(
-        [('purchase', 'Purchase'), ('uafe', 'UAFE')],
-        string='Report Type',
-        default='purchase',
-        required=True,
-        help='Select the type of report to generate.'
-    )
-    date_start = fields.Date(string='Date start')
-    date_end = fields.Date(string='Date end')
     year = fields.Selection(
         selection=lambda self: [(str(y), str(y)) for y in range(datetime.now().year - 5, datetime.now().year + 2)],
         string='Year',
@@ -164,11 +155,9 @@ class generateReportsWizard(models.TransientModel):
             return 'P'
         elif v.startswith('id extranjera'):
             return 'A'
-    
+        
     def print_report(self):
-        if self.report_type == 'uafe':
-            return self.generate_uafe_reports()
-        return self.env.ref('l10n_ec_reports_penta.action_generate_reports_xlsx').report_action(self)
+        return self.generate_uafe_reports()
     
     def generate_uafe_reports(self):
         # Inicializar variables globales
@@ -617,21 +606,3 @@ class generateReportsWizard(models.TransientModel):
         workbook.close()
         output.seek(0)
         return output.read()
-    
-class ReportA1Wizard(models.TransientModel):
-    _name = 'report.a1.wizard'
-    _description = 'Wizard to generate A1 report'
-    
-    def _get_selection_opcions(self):
-        options = [('0', 'Todos')]
-        types = self.env['l10n_latam.document.type'].search([('active', '=', True)])
-        for t in types:
-            options.append((str(t.id), t.name))
-        return options
-    
-    date_start = fields.Date(string='Date start', required=True)
-    date_end = fields.Date(string='Date end', required=True)
-    document_type = fields.Selection(selection=lambda self: self._get_selection_opcions(), default='0', required=True)
-    
-    def print_report(self):
-        return self.env.ref('l10n_ec_reports_penta.action_report_ventas_a1_xlsx').report_action(self)

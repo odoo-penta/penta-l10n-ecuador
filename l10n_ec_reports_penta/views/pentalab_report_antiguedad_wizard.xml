@@ -28,7 +28,7 @@
     </record>
 
     <record id="action_pentalab_report_antiguedad_wizard" model="ir.actions.act_window">
-        <field name="name">Generar Reporte Antigüedad</field>
+        <field name="name">Antigüedad de cartera V.</field>
         <field name="res_model">pentalab.report.antiguedad.wizard</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>

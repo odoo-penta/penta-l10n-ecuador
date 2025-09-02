@@ -29,12 +29,13 @@
     "data": [
         "security/ir.model.access.csv",
         
-        'report/reports.xml',
         'report/report_export_stock_quant_xlsx.xml',
-        
-        'wizard/generate_reports.xml',
-        
         'report/account_move_inventory_report.xml',
+        
+        'wizard/report_purchase_retentions_wizard_views.xml',
+        'wizard/report_sales_a1_wizard_views.xml',
+        'wizard/report_uafe_wizard_views.xml',
+        
         "views/account_move_inventory_report_action.xml",
         "views/pentalab_report_wizard_view.xml",
         "views/cobros_por_ventas_report.xml",
@@ -50,7 +51,7 @@
         "views/report_dispatch_order_view.xml",
         "views/res_config_settings_views.xml",
         'views/pentalab_report_antiguedad_wizard.xml',
-        'views/pentalab_report_antiguedad_menu.xml',
+        'views/menuitems.xml',
         'views/account_move_report_action.xml',
         'report/account_move_report.xml',
     ],

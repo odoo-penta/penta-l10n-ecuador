@@ -1,38 +1,59 @@
-# -*- coding: utf-8 -*-
-# Part of PentaLab. See LICENSE file for full copyright and licensing details.
-# © 2025 PentaLab
-# License Odoo Proprietary License v1.0 (https://www.odoo.com/documentation/user/16.0/legal/licenses/licenses.html#odoo-proprietary-license)
+from odoo import models, fields
+from datetime import datetime, date
+import calendar
+import zipfile
+import base64
+import io
+from collections import defaultdict
+from odoo.tools.misc import xlsxwriter
+from odoo.tools import remove_accents, sanitize_text, extract_numbers
 
-from odoo import api, models
+class ReportSalesA1Wizard(models.TransientModel):
+    _name = 'report.sales.a1.wizard'
+    _description = 'Wizard to generate report sales A1'
 
-class ReportVentasA1(models.AbstractModel):
-    _name = 'report.l10n_ec_reports_penta.report_ventas_a1'
-    _inherit = 'report.report_xlsx.abstract'
-    _description = 'Report ventas A1'
+    def _get_selection_opcions(self):
+        options = [('0', 'Todos')]
+        types = self.env['l10n_latam.document.type'].search([('active', '=', True)])
+        for t in types:
+            options.append((str(t.id), t.name))
+        return options
     
-    def _get_invoices_data(self, wizard):
+    date_start = fields.Date(string='Date start', required=True)
+    date_end = fields.Date(string='Date end', required=True)
+    document_type = fields.Selection(selection=lambda self: self._get_selection_opcions(), default='0', required=True)
+    
+    def _get_invoices_data(self):
         # Generar data para reporte
         inv_domain = [
             ('state', '=', 'posted'),
-            ('invoice_date', '>=', wizard.date_start),
-            ('invoice_date', '<=', wizard.date_end),
+            ('invoice_date', '>=', self.date_start),
+            ('invoice_date', '<=', self.date_end),
         ]
-        if wizard.document_type != '0':
-            inv_domain.append(('l10n_latam_document_type_id', '=', int(wizard.document_type)))
+        if self.document_type != '0':
+            inv_domain.append(('l10n_latam_document_type_id', '=', int(self.document_type)))
         invoices = self.env['account.move'].search(inv_domain, order='invoice_date asc')
         return invoices
     
-    def _get_retentions_data(self, invoice):
-        # Obtener datos de retenciones de la factura
-        data = invoice.l10n_ec_action_view_withholds()
-        move_obj = self.env['account.move']
-        if data and data['res_id']:
-            retentions = move_obj.browse(data['res_id'])
-        else:
-            retentions = move_obj
-        return retentions
-        
-    def generate_xlsx_report(self, workbook, data, wizard):
+    def print_report(self):
+        report = self.generate_xlsx_report()
+        attachment = self.env['ir.attachment'].create({
+            'name': 'Ventas A1.xlsx',
+            'type': 'binary',
+            'datas': base64.b64encode(report),
+            'res_model': self._name,
+            'res_id': self.id,
+            'mimetype': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        })
+        return {
+            'type': 'ir.actions.act_url',
+            'url': f'/web/content/{attachment.id}?download=true',
+            'target': 'self',
+        }
+    
+    def generate_xlsx_report(self):
+        output = io.BytesIO()
+        workbook = xlsxwriter.Workbook(output, {'in_memory': True})
         worksheet = workbook.add_worksheet("Ventas A1")
         # Formatos
         bold_center = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter', 'border': 1})
@@ -42,7 +63,7 @@ class ReportVentasA1(models.AbstractModel):
         number = workbook.add_format({'num_format': '#,##0.00', 'border': 1})
         title_format = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter', 'border': 1})
         # Obtener data
-        invoices = self._get_invoices_data(wizard)
+        invoices = self._get_invoices_data()
         # Ancho de columnas
         worksheet.set_column('A:A', 6)
         worksheet.set_column('B:C', 24)
@@ -115,3 +136,6 @@ class ReportVentasA1(models.AbstractModel):
             worksheet.write(row, 23, invoice.invoice_payment_term_id.name if invoice.invoice_payment_term_id else '', border)
             worksheet.write(row, 24, invoice.l10n_ec_sri_payment_id.name if invoice.l10n_ec_sri_payment_id else '', border)
             cont += 1
+        workbook.close()
+        output.seek(0)
+        return output.read()

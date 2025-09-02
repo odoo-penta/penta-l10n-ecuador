@@ -6,6 +6,8 @@
     <field name="view_mode">form</field>
     <field name="target">new</field>
   </record>
+  <!--
   <menuitem id="menu_pentalab_invoice_report_wizard" name="Anexo de compras"
             parent="menu_reports_informe_pentalab" action="action_pentalab_invoice_report_wizard" sequence="20"/>
+  -->
 </odoo>

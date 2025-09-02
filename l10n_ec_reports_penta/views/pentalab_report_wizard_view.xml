@@ -40,10 +40,12 @@
         </record>
 
         <!-- Menú (o submenú) donde abrir el wizard -->
+        <!--
         <menuitem id="menu_reports_informe_pentalab"
                   name="Reportes Pentalab"
                   parent="account.menu_finance_reports"
                   sequence="5"/>
+        -->
         <!--
         <menuitem id="menu_action_informe_pentalab"
                   name="Vencido por cobrar"
