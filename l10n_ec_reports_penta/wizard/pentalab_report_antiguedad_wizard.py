@@ -291,15 +291,15 @@ class PentalabReportAntiguedadWizard(models.TransientModel):
 
                     row += 1
 
-            workbook.close()
-            output.seek(0)
-            file_data = base64.b64encode(output.read())
+        workbook.close()
+        output.seek(0)
+        file_data = base64.b64encode(output.read())
 
-            self.file_name = f'reporte_antiguedad_{file_tag}.xlsx'
-            self.file_data = file_data
+        self.file_name = f'reporte_antiguedad_{file_tag}.xlsx'
+        self.file_data = file_data
 
-            return {
-                'type': 'ir.actions.act_url',
-                'url': f"/web/content/?model={self._name}&id={self.id}&field=file_data&filename_field=file_name&download=true",
-                'target': 'new',
-            }
+        return {
+            'type': 'ir.actions.act_url',
+            'url': f"/web/content/?model={self._name}&id={self.id}&field=file_data&filename_field=file_name&download=true",
+            'target': 'new',
+        }
