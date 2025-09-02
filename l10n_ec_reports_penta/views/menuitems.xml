@@ -19,7 +19,4 @@
     <menuitem id="menu_reports_others" name="Otros Reportes" parent="account.menu_finance_reports" sequence="98"/>
     <menuitem id="menu_report_uafe" name="UAFE" parent="menu_reports_others" action="action_report_uafe_wizard" sequence="1" />
 
-
-    <menuitem id="menu_reports_report" name="Reports" parent="account.menu_finance_reports" sequence="6" />
-    <menuitem id="menu_action_reports_report" name="Generate reports" parent="menu_reports_report" action="action_generate_reports_wizard" sequence="1" />
 </odoo>
