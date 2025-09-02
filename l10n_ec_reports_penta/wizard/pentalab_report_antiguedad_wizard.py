@@ -211,7 +211,7 @@ class PentalabReportAntiguedadWizard(models.TransientModel):
             else:
                 domain.append(('account_id.account_type', '=', self.account_type))
                 file_tag = dict(ACCOUNT_TYPE_SELECTION).get(self.account_type, 'tipo')
-            domain.append(('amount_residual', '>', 0))
+
             lines = self.env['account.move.line'].search(domain, order='date desc')
 
             # Agrupar balances por matching_number
@@ -244,74 +244,62 @@ class PentalabReportAntiguedadWizard(models.TransientModel):
                 importe = line.debit - line.credit
                 balance_emparejamiento = matching_balances.get(matching_number, 0.0) if matching_number else 0.0
 
-                mostrar_linea = (not matching_number) or (abs(balance_emparejamiento) > 0.0001)
-                if not mostrar_linea:
-                    continue
+                mostrar_linea = (
+                    not matching_number or  # líneas sin emparejamiento
+                    abs(balance_emparejamiento) > 0.0001  # o con balance no cero
+                )
 
-                sheet.write(row, 0, line.journal_id.name or '')
-                sheet.write(row, 1, f'{line.account_id.code or ""} {line.account_id.name or ""}')
-                sheet.write(row, 2, line.partner_id.name or '')
-                sheet.write(row, 3, line.move_id.name or '')
-                sheet.write(row, 4, self._date_str(line.date))
-                sheet.write(row, 6, line.move_id.ref or '')
-                sheet.write_number(row, 7, importe, money_format)
+                if mostrar_linea:
+                    sheet.write(row, 0, line.journal_id.name or '')
+                    sheet.write(row, 1, f'{line.account_id.code or ""} {line.account_id.name or ""}')
+                    sheet.write(row, 2, line.partner_id.name or '')
+                    sheet.write(row, 3, line.move_id.name or '')
+                    sheet.write(row, 4, str(line.date or ''))
+                    sheet.write(row, 5, str(line.payment_id.bank_forecast_date or ''))
+                    sheet.write(row, 6, line.move_id.ref or '')
+                    sheet.write(row, 7, importe, money_format)
+                    sheet.write(row, 7, importe, money_format)
 
-                # --- Fechas base ---
-                is_cc = (line.account_id and line.account_id.account_type == 'liability_credit_card')
-                fecha_pago = line.date
-                fecha_prevista_cc = line.payment_id.bank_forecast_date if line.payment_id else False
-
-                # Para NO CC tomamos la fecha de vencimiento; si no hay, usamos la fecha del documento
-                fecha_venc = fecha_prevista_cc if is_cc else (line.date_maturity or line.date)
-
-                # Columna 5: "Fecha previsto banco"
-                #   CC -> bank_forecast_date
-                #   NO CC -> date_maturity (o fecha del documento si no hay vencimiento)
-                sheet.write(row, 5, self._date_str(fecha_venc))
-
-                # --- En fecha (columna 8) ---
-                #   CC -> ventana [fecha_pago, fecha_prevista_cc]
-                #   NO CC -> si cutoff_date <= fecha_venc
-                if is_cc and fecha_pago and fecha_prevista_cc and fecha_pago <= cutoff_date <= fecha_prevista_cc:
-                    sheet.write_number(row, 8, importe, money_format)
-                elif (not is_cc) and fecha_venc and cutoff_date <= fecha_venc:
-                    sheet.write_number(row, 8, importe, money_format)
-                else:
-                    sheet.write(row, 8, '')
-
-                # --- Días vencidos según tipo de cuenta ---
-                # Usamos la misma fecha_venc definida arriba
-                due_date = fecha_venc
-                dias_vencidos = int((cutoff_date - due_date).days) if due_date else 0
-                # --- Rangos ---
-                rangos = ['', '', '', '', '']
-                if 1 <= dias_vencidos <= 30:
-                    rangos[0] = importe
-                elif 31 <= dias_vencidos <= 60:
-                    rangos[1] = importe
-                elif 61 <= dias_vencidos <= 90:
-                    rangos[2] = importe
-                elif 91 <= dias_vencidos <= 120:
-                    rangos[3] = importe
-                elif dias_vencidos > 120:
-                    rangos[4] = importe
-
-                for i, valor in enumerate(rangos):
-                    if valor == '' or valor is None:
-                        sheet.write(row, 9 + i, '')
+                    # Solo se llena la columna 8 ("En fecha") si la fecha_corte está entre la fecha del pago y la prevista
+                    fecha_pago = line.date
+                    fecha_prevista = line.payment_id.bank_forecast_date
+                    if fecha_pago and fecha_prevista and fecha_pago <= cutoff_date <= fecha_prevista:
+                        sheet.write(row, 8, importe, money_format)
                     else:
-                        sheet.write_number(row, 9 + i, valor, money_format)
-                row += 1
+                        sheet.write(row, 8, '', money_format)
 
-        workbook.close()
-        output.seek(0)
-        file_data = base64.b64encode(output.read())
+                    # Cálculo de días vencidos
+                    dias_vencidos = (date.today() - line.payment_id.bank_forecast_date).days if line.payment_id.bank_forecast_date else 0
+                    dias_vencidos = int(dias_vencidos)
+                    
+                    # Inicializar columnas de rangos
+                    rangos = ['', '', '', '', '']
 
-        self.file_name = f'reporte_antiguedad_{file_tag}.xlsx'
-        self.file_data = file_data
+                    if 1 <= dias_vencidos <= 30:
+                        rangos[0] = importe
+                    elif 31 <= dias_vencidos <= 60:
+                        rangos[1] = importe
+                    elif 61 <= dias_vencidos <= 90:
+                        rangos[2] = importe
+                    elif 91 <= dias_vencidos <= 120:
+                        rangos[3] = importe
+                    elif dias_vencidos > 120:
+                        rangos[4] = importe
 
-        return {
-            'type': 'ir.actions.act_url',
-            'url': f"/web/content/?model={self._name}&id={self.id}&field=file_data&filename_field=file_name&download=true",
-            'target': 'new',
-        }
+                    for i, valor in enumerate(rangos):
+                        sheet.write(row, 9 + i, valor, money_format)
+
+                    row += 1
+
+            workbook.close()
+            output.seek(0)
+            file_data = base64.b64encode(output.read())
+
+            self.file_name = f'reporte_antiguedad_{file_tag}.xlsx'
+            self.file_data = file_data
+
+            return {
+                'type': 'ir.actions.act_url',
+                'url': f"/web/content/?model={self._name}&id={self.id}&field=file_data&filename_field=file_name&download=true",
+                'target': 'new',
+            }
