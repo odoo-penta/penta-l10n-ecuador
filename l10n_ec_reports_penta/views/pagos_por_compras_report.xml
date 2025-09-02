@@ -12,13 +12,14 @@
     </record>
 
     <!-- Menú para el reporte -->
+    <!--
     <menuitem
         id="menu_pagos_por_compras"
         name="Pagos por Compras"
         parent="l10n_ec_reports_penta.menu_reports_informe_pentalab"
         action="action_pagos_por_compras"
         sequence="20"/>
-
+    -->
     <!-- Vista List del reporte -->
     <record id="view_pagos_por_compras_list" model="ir.ui.view">
         <field name="name">pagos.por.compras.list</field>

@@ -10,13 +10,14 @@
     </record>
     
     <!-- Menú para el reporte -->
+    <!--
     <menuitem
         id="menu_cobros_por_ventas"
         name="Cobros por Ventas"
         parent="l10n_ec_reports_penta.menu_reports_informe_pentalab"
         action="action_cobros_por_ventas"
         sequence="10"/>
-    
+    -->
 
     <!-- Vista List del reporte -->
     <record id="view_cobros_por_ventas_list" model="ir.ui.view">
