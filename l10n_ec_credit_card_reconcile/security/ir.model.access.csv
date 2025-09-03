@@ -1,5 +1,4 @@
 "id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
-"access_account_cards_user","account.cards.user","model_account_cards","base.group_user",1,1,1,1
 "access_credit_card_reconcile_user","credit.card.reconcile.user","model_credit_card_reconcile","base.group_user",1,1,1,1
 "access_credit_card_reconcile_line_user","credit.card.reconcile.line.user","model_credit_card_reconcile_line","base.group_user",1,1,1,1
 "access_export_movements_wizard_user","export.movements.wizard.user","model_export_movements_wizard","base.group_user",1,1,1,1

@@ -16,8 +16,7 @@ Este módulo permite la conciliación de tarjetas de crédito:
     ],
     'data': [
         'security/ir.model.access.csv',
-        'data/account_cards_data.xml',
-        'views/account_cards_view.xml',
+        
         'views/credit_card_reconcile_view.xml',
         'views/import_movements_wizard.xml',
         'views/account_journal_inherit_view.xml',
