@@ -164,11 +164,7 @@ class PentalabReportAntiguedadWizard(models.TransientModel):
                 sheet.write(row, 4, invoice_date) # Fecha de factura
                 
                 # --- Fechas base ---
-                is_cc = (r_line.account_id and r_line.account_id.account_type == 'liability_credit_card')
-                fecha_pago = r_line.date
-                fecha_prevista_cc = r_line.payment_id.bank_forecast_date if r_line.payment_id else False
-                # Para NO CC tomamos la fecha de vencimiento; si no hay, usamos la fecha del documento
-                fecha_venc = fecha_prevista_cc if is_cc else (r_line.date_maturity or r_line.date)
+                fecha_venc = r_line.date_maturity or r_line.date
                 if fecha_venc:
                     sheet.write(row, 5, fecha_venc.strftime('%d-%m-%Y')) # Fecha de vencimiento
                 sheet.write(row, 6, ref) # Referencia
@@ -255,21 +251,21 @@ class PentalabReportAntiguedadWizard(models.TransientModel):
                     sheet.write(row, 2, line.partner_id.name or '')
                     sheet.write(row, 3, line.move_id.name or '')
                     sheet.write(row, 4, str(line.date or ''))
-                    sheet.write(row, 5, str(line.payment_id.bank_forecast_date or ''))
+                    sheet.write(row, 5, str(line.date or ''))
                     sheet.write(row, 6, line.move_id.ref or '')
                     sheet.write(row, 7, importe, money_format)
                     sheet.write(row, 7, importe, money_format)
 
                     # Solo se llena la columna 8 ("En fecha") si la fecha_corte está entre la fecha del pago y la prevista
                     fecha_pago = line.date
-                    fecha_prevista = line.payment_id.bank_forecast_date
+                    fecha_prevista = line.date
                     if fecha_pago and fecha_prevista and fecha_pago <= cutoff_date <= fecha_prevista:
                         sheet.write(row, 8, importe, money_format)
                     else:
                         sheet.write(row, 8, '', money_format)
 
                     # Cálculo de días vencidos
-                    dias_vencidos = (date.today() - line.payment_id.bank_forecast_date).days if line.payment_id.bank_forecast_date else 0
+                    dias_vencidos = (date.today() - line.date).days if line.date else 0
                     dias_vencidos = int(dias_vencidos)
                     
                     # Inicializar columnas de rangos

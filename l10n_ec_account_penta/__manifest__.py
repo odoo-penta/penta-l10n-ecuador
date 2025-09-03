@@ -16,6 +16,7 @@
         'security/ir.model.access.csv',
         'data/account_cards_data.xml',
         'views/account_cards_view.xml',
+        'views/account_journal_views.xml',
     ],
 }
 
