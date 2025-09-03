@@ -7,6 +7,7 @@ class AccountCards(models.Model):
 
     name = fields.Char(string="Nombre de la Tarjeta", required=True)
     active = fields.Boolean(string="Activo", default=True)
+    company_id = fields.Many2one('res.company', string='Compañía', required=True, default=lambda self: self.env.company)
 
 class PosPayment(models.Model):
     _inherit = 'account.payment'
