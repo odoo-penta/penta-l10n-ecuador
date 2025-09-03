@@ -79,8 +79,8 @@ class ReportSalesA1Wizard(models.TransientModel):
         row = 0
         # Encabezados
         headers = ['#', 'TIPO DE COMPROBANTE', 'TIPO DE IDENTIFICACION', 'IDENTIFICACION', 'RAZON SOCIAL', 'PARTE RELACIONADA', 'TIPO DE SUJETO', 'NRO DE DOCUMENTO',
-                    'NRO AUTORIZACION', 'FCHA EMISI.', 'BASE 0%', 'BASE 5%', 'BASE 15%', 'BASE NO OBJETO DE IVA', 'MONTO IVA 5%', 'MONTO IVA 15%', 'MONTO IVA 8%',
-                    'MONTO IVA 15', 'MONTO ICE', 'TOTAL VENTA', 'RET. IVA', 'RET. FUENTE', 'CASILLA 104', 'DIAS CREDT', 'FORMA PAGO1']
+                    'NRO AUTORIZACION', 'FCHA EMISI.', 'BASE 0%', 'BASE 5%', 'BASE 15%', 'BASE NO OBJETO DE IVA', 'MONTO IVA 5%', 'MONTO IVA 8%',
+                    'MONTO IVA 15%', 'MONTO ICE', 'TOTAL VENTA', 'RET. IVA', 'RET. FUENTE', 'CASILLA 104', 'DIAS CREDT', 'FORMA PAGO1']
         for col, header in enumerate(headers):
             worksheet.write(0, col, header, bold_center)
         cont = 1
@@ -93,7 +93,12 @@ class ReportSalesA1Wizard(models.TransientModel):
             worksheet.write(row, 3, invoice.partner_id.vat or '', border)
             worksheet.write(row, 4, invoice.partner_id.complete_name or '', border)
             worksheet.write(row, 5, 'SI' if invoice.partner_id.l10n_ec_related_party else 'NO', border)
-            worksheet.write(row, 6, invoice.partner_id.company_type or '', border)
+            subjet_type = ''
+            if invoice.partner_id.company_type == 'person':
+                subjet_type = 'Persona Natural'
+            elif invoice.partner_id.company_type == 'company':
+                subjet_type = 'Empresa'
+            worksheet.write(row, 6, subjet_type, border)
             worksheet.write(row, 7, invoice.name or '', border)
             worksheet.write(row, 8, invoice.l10n_ec_authorization_number or '', border)
             worksheet.write(row, 9, invoice.invoice_date.strftime("%d/%m/%Y") or '', border)
@@ -121,20 +126,21 @@ class ReportSalesA1Wizard(models.TransientModel):
             worksheet.write(row, 13, tax_no_base or 0.00, number)
             # Montos IVA
             worksheet.write(row, 14, round(tax_5_base * 0.05, 2) or 0.00, number)
-            worksheet.write(row, 15, round(tax_15_base * 0.15, 2), number)
-            worksheet.write(row, 16, 0.00, number)
-            worksheet.write(row, 17, round(tax_15_base * 0.15, 2), number)
+            
+            #worksheet.write(row, 15, round(tax_15_base * 0.15, 2), number)
+            worksheet.write(row, 15, 0.00, number)
+            worksheet.write(row, 16, round(tax_15_base * 0.15, 2), number)
             # Monto ICE
-            worksheet.write(row, 18, 0.00, number)
-            worksheet.write(row, 19, invoice.amount_total, number)
+            worksheet.write(row, 17, 0.00, number)
+            worksheet.write(row, 18, invoice.amount_total, number)
+            worksheet.write(row, 19, 0.00, number)
             worksheet.write(row, 20, 0.00, number)
-            worksheet.write(row, 21, 0.00, number)
             # Casilla 104
             all_tags = invoice.invoice_line_ids.mapped("tax_tag_ids.name")
             all_tags = list(set(all_tags))
-            worksheet.write(row, 22, all_tags[0] if all_tags else '', border)
-            worksheet.write(row, 23, invoice.invoice_payment_term_id.name if invoice.invoice_payment_term_id else '', border)
-            worksheet.write(row, 24, invoice.l10n_ec_sri_payment_id.name if invoice.l10n_ec_sri_payment_id else '', border)
+            worksheet.write(row, 21, all_tags[0] if all_tags else '', border)
+            worksheet.write(row, 22, invoice.invoice_payment_term_id.name if invoice.invoice_payment_term_id else '', border)
+            worksheet.write(row, 23, invoice.l10n_ec_sri_payment_id.name if invoice.l10n_ec_sri_payment_id else '', border)
             cont += 1
         workbook.close()
         output.seek(0)
