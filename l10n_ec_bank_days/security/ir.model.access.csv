@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_penta_bank_days,penta_bank_days,model_penta_bank_days,base.group_user,1,1,1,1

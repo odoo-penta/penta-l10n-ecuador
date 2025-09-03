@@ -1,0 +1,12 @@
+<odoo>
+    <menuitem id="menu_penta_bank_days_root"
+              name="Configuracion de Dias Bancarios"
+              parent="account.menu_finance_configuration"
+              sequence="100"/>
+
+    <menuitem id="menu_penta_bank_days"
+              name="Días Bancarios"
+              parent="menu_penta_bank_days_root"
+              action="action_penta_bank_days"
+              sequence="10"/>
+</odoo>
