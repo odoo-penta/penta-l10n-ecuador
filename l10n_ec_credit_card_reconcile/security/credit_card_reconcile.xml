@@ -1,0 +1,17 @@
+<odoo>
+    <!-- Regla para credit.card.reconcile -->
+    <record id="rule_credit_card_reconcile_company" model="ir.rule">
+        <field name="name">Credit Card Reconcile - Acceso por compañía activa</field>
+        <field name="model_id" ref="model_credit_card_reconcile"/>
+        <field name="domain_force">[('company_id', '=', company_id)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <!-- Regla para credit.card.reconcile.line -->
+    <record id="rule_credit_card_reconcile_line_company" model="ir.rule">
+        <field name="name">Credit Card Reconcile Line - Acceso por compañía activa</field>
+        <field name="model_id" ref="model_credit_card_reconcile_line"/>
+        <field name="domain_force">[('credit_card_reconcile_id.company_id', '=', company_id)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+</odoo>

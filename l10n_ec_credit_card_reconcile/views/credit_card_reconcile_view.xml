@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Vista tree para Credit Card Reconcile -->
+    <record id="view_credit_card_reconcile_tree" model="ir.ui.view">
+        <field name="name">credit.card.reconcile.tree</field>
+        <field name="model">credit.card.reconcile</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="fecha_corte"/>
+                <field name="diario_id"/>
+                <field name="banco_destino_id"/>
+                <field name="cuenta_destino_id"/>
+                <field name="responsable_id"/>
+                <field name="company_id"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Vista form para Credit Card Reconcile -->
+    <record id="view_credit_card_reconcile_form" model="ir.ui.view">
+        <field name="name">credit.card.reconcile.form</field>
+        <field name="model">credit.card.reconcile</field>
+        <field name="arch" type="xml">
+            <form string="Conciliación de Tarjetas de Crédito">
+                <!-- Header con botones y statusbar -->
+                <header>
+                    <!-- Estado con widget statusbar -->
+                    <field name="state" widget="statusbar" statusbar_visible="draft,in_process,done"/>
+                    <button name="action_iniciar"
+                            type="object"
+                            string="Iniciar"
+                            class="oe_highlight"
+                            invisible="state != 'draft'"
+                    />
+                    <!-- Botones en el header -->
+                    <button name="action_buscar_cobros" type="object" string="Buscar Cobros"  invisible="state != 'in_process'"/>
+                    <button name="action_exportar" type="object" string="Exportar" invisible="state != 'in_process'"/>
+                    <button name="action_importar" type="object" string="Importar" invisible="state != 'in_process'"/>
+                    <button name="action_buscar_retenciones" type="object" string="Buscar Retenciones" invisible="state != 'in_process'"/>
+                    <button name="action_crear_asientos" type="object" string="Crear Asientos" class="oe_highlight" invisible="state != 'in_process'"/>
+                    <button name="action_terminar"
+                                type="object"
+                                string="Terminar"
+                                class="oe_highlight"
+                                invisible="state != 'in_process'"
+                        />
+                        <button name="action_set_draft"
+                                type="object"
+                                string="A Borrador"
+                                class="oe_highlight"
+                                invisible="state != 'done'"
+                        />
+                </header>
+
+                <!-- Botón Inteligente -->
+                <div class="oe_button_box" name="button_box">
+                    <button type="object" name="action_ver_lineas_contables"
+                            class="oe_stat_button" icon="fa-list">
+                        <field name="total_move_lines" widget="statinfo" string="Líneas Contables"/>
+                    </button>
+                </div>
+
+
+                <sheet>
+                    <!-- Título del documento en grande/negrita -->
+                    <h1>
+                        <field name="name" readonly="1" class="oe_inline"/>
+                    </h1>
+
+                    <group>
+                        <group>
+                            <field name="fecha_corte"/>
+                            <field name="diario_id"/>
+                            <field name="tarjetas_ids" widget="many2many_tags"/>
+                        </group>
+                        <group>
+                            <field name="banco_destino_id"/>
+                            <field name="cuenta_destino_id"/>
+                            <field name="analitico"/>
+                            <field name="responsable_id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Movements">
+                            <field name="line_ids">
+                                <!-- editable="bottom" para poder editar desde abajo (opcional) -->
+                                <list editable="bottom" create="True"
+                                    decoration-danger="['|', ('lot_number','=',False), ('credit_card_voucher_number','=',False)]">
+                                    
+                                    <field name="move_line_id"/>
+                                    <field name="lot_number" optional="show"/>
+                                    <field name="credit_card_voucher_number" optional="show"/>
+                                    <field name="credit_card_type_id" optional="hide"/>
+
+                                    <field name="paid_amount" sum="Total Pagado"/>
+
+                                    <field name="payment_date" /> 
+                                    <field name="total_deposit"
+                                        sum="Total Depositado"
+                                    />
+                                    <field name="income_amount"
+                                        sum="Total Ret. Renta"
+                                    />
+                                    <field name="vat_amount"
+                                        sum="Total Ret. IVA"
+                                    />
+                                    <field name="commission"
+                                        sum="Total Comisión"
+                                    />
+                                    <field name="bank_voucher_number"/>
+                                    
+                                    <!-- Este campo se vuelve readonly si 'credit_card_withhold_id' ya existe -->
+                                    <!-- readonly="[('credit_card_withhold_id','!=',False)]" -->
+                                    <field name="withhold_sequential"
+                                        force_save="1"
+                                        />
+                                    
+                                    <!-- <field name="credit_card_withhold_allowed_ids" invisible="1"/> -->
+                                    
+                                    <!-- column_invisible para ocultar la columna cuando 'parent.state' está en 'draft' -->
+                                    <!-- <field name="credit_card_withhold_id"
+                                        column_invisible="[('parent.state','in',('draft'))]"
+                                        readonly="[('parent.state','=','done')]"/> -->
+                                    
+                                    <!-- Manejo de 'withhold_state' con widget="badge" y decoraciones según valor -->
+                                    <field name="withhold_state"
+                                        widget="badge"
+                                        decoration-success="[('withhold_state','=','done')]"
+                                        decoration-warning="[('withhold_state','=','pending')]"/>
+
+                                    <field name="invoice_supplier_sequential"
+                                        force_save="1"
+                                        />  
+    
+                                </list>
+                            </field>
+                        </page>
+
+
+                        <page string="Otra Información">
+                            <group>
+                                <field name="create_uid" readonly="1"/>
+                                <field name="create_date" readonly="1"/>
+                                <field name="write_uid" readonly="1"/>
+                                <field name="write_date" readonly="1"/>
+                            </group>
+                        </page>
+                    </notebook>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="view_credit_card_reconcile_line_list" model="ir.ui.view">
+        <field name="name">credit.card.reconcile.line.list</field>
+        <field name="model">credit.card.reconcile.line</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <!-- Encabezado conciliación -->
+                <field name="credit_card_reconcile_id" string="Número"/>
+                <field name="fecha_corte" string="Fecha de liquidación"/>
+                <field name="diario_id" string="Diario Tarjeta"/>
+                <field name="banco_destino_id" string="Banco Destino"/>
+
+                <!-- Pago cliente -->
+                <field name="move_line_id" string="N° Pago Cliente"/>
+                <field name="payment_date" string="Fecha Pago Cliente"/>
+
+                <!-- Tarjeta -->
+                <field name="card_id" string="Tarjeta"/>
+                <field name="credit_card_type_id" string="Tipo de Tarjeta"/>
+                <field name="used_card" string="Tipo de Cobro"/>
+                <field name="number_months" string="N° Meses"/>
+
+                <!-- Identificación -->
+                <field name="lot_number" string="Lote"/>
+                <field name="credit_card_voucher_number" string="Voucher"/>
+
+                <!-- Montos -->
+                <field name="paid_amount" string="Pago Cliente"/>
+                <field name="income_amount" string="Ret. Renta"/>
+                <field name="vat_amount" string="Ret. IVA"/>
+                <field name="commission" string="Comisión"/>
+                <field name="total_deposit" string="Depósito"/>
+
+                <!-- Documentos -->
+                <field name="withhold_sequential" string="N° Retención"/>
+                <field name="invoice_supplier_sequential" string="Factura Comisión"/>
+                <field name="bank_voucher_number" string="Ref. Bancaria"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_export_movements_wizard_form" model="ir.ui.view">
+        <field name="name">export.movements.wizard.form</field>
+        <field name="model">export.movements.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Exportar Movimientos">
+                <group>
+                    <field name="file_name"/>
+                    <field name="file_data" filename="file_name"/>
+                </group>
+                <footer>
+                    <button name="action_download_file" type="object" string="Descargar" class="oe_highlight"/>
+                    <button string="Cerrar" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+</odoo>
