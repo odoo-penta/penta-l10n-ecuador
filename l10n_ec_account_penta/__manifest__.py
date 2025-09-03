@@ -9,11 +9,13 @@
     'website': "https://pentalab.tech/",
     'category': 'Accounting',
     'version': '0.1',
-    'depends': ['account','l10n_ec_credit_card_reconcile'],
+    'depends': ['account'],
     'data': [
         'views/account_payment_views.xml',
         'views/account_card_map_view.xml',
         'security/ir.model.access.csv',
+        'data/account_cards_data.xml',
+        'views/account_cards_view.xml',
     ],
 }
 

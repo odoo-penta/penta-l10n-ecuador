@@ -13,10 +13,10 @@ Este módulo permite la conciliación de tarjetas de crédito:
     'depends': [
         'base',
         'account',
+        'l10n_ec_account_penta'
     ],
     'data': [
         'security/ir.model.access.csv',
-        
         'views/credit_card_reconcile_view.xml',
         'views/import_movements_wizard.xml',
         'views/account_journal_inherit_view.xml',
