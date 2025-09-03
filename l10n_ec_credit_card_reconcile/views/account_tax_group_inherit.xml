@@ -1,0 +1,12 @@
+<odoo>
+    <record id="view_account_tax_group_form_inherit_tax_type" model="ir.ui.view">
+        <field name="name">account.tax.group.form.inherit.tax.type</field>
+        <field name="model">account.tax.group</field>
+        <field name="inherit_id" ref="account.view_tax_group_form"/>
+        <field name="arch" type="xml">
+            <field name="preceding_subtotal" position="after">
+                <field name="tax_type"/>
+            </field>
+        </field>
+    </record>
+</odoo>

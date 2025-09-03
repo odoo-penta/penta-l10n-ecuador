@@ -1,0 +1,13 @@
+<odoo>
+    <record id="seq_credit_card_reconcile" model="ir.sequence">
+        <field name="name">Secuencia Conciliación de Tarjetas</field>
+        <field name="code">credit.card.reconcile</field>
+        <!-- Prefijo RTC- y relleno de 6 dígitos -->
+        <field name="prefix">RTC-</field>
+        <field name="padding">6</field>
+        <field name="number_next">1</field>
+        <field name="number_increment">1</field>
+        <!-- Normalmente 'implementation' será no_gap u otra según tu versión -->
+        <field name="implementation">no_gap</field>
+    </record>
+</odoo>
