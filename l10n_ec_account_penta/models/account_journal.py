@@ -7,9 +7,8 @@ class AccountJournal(models.Model):
     
     payment_info_type = fields.Selection(
         selection=[
-            ('', 'Ninguno'),
             ('card', 'Requires card information'),
             ('check', 'Requires check information'),
             ('bank', 'Requires bank information'),
-        ], string='Payment information', default=''
+        ], string='Payment information', default=False
     )
