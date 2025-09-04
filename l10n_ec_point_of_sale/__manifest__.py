@@ -25,6 +25,7 @@
     'depends': [
         'sale',
         'stock',
+        'l10n_ec_account_penta',
     ],
     'data': [
         'data/ir_sequence.xml',

@@ -27,9 +27,7 @@
                         <group>
                             <field name="journal_id"/>
                             <field name="l10n_ec_sri_payment_id"/>
-                            <field name="require_tc_data"/>
-                            <field name="require_bank_data"/>
-                            <field name="require_check_data"/>
+                            <field name="payment_info_type"/>
                             <field name="card"/>
                         </group>
                     </group>
