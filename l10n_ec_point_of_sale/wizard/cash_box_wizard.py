@@ -222,7 +222,7 @@ class CashBoxPaymentMethodWizard(models.TransientModel):
     available_payment_method_ids = fields.Many2many('cash.payment.method', string="Available Payment Methods")
     amount = fields.Monetary(string="Amount", required=True, default=0.0)
     bank_reference = fields.Char(string="Bank Reference", help="Reference for bank payments")
-    card = fields.Many2one('finance.card', string="Card")
+    card = fields.Many2one('account.cards', string="Card")
     card_payment_type = fields.Selection(
         [('debit', 'Debit'),
          ('current', 'Current'),

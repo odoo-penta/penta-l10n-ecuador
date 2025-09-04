@@ -6,21 +6,12 @@
 from odoo import models, fields, api, _
 
 
-class FinanceCard(models.Model):
-    _name = 'finance.card'
-    _description = 'Credit/Debit Card'
-    _order = 'name desc'
-    
-    name = fields.Char()
-    card_type = fields.Selection([('debit', 'Debit'), ('credit', 'Credit')], string="Card type")
-
-
 class AccountPayment(models.Model):
     _inherit = 'account.payment'
     
     journal_type = fields.Selection(related='journal_id.type', readonly=True, string="Journal Type")
     bank_reference = fields.Char(string="Bank reference")
-    card = fields.Many2one('finance.card', string="Card")
+    card = fields.Many2one('account.cards', string="Card")
     card_payment_type = fields.Selection(
         [('debit', 'Debit'),
          ('current', 'Current'),
