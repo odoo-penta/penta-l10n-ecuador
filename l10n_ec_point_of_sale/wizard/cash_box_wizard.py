@@ -219,9 +219,6 @@ class CashBoxPaymentMethodWizard(models.TransientModel):
         string="Payment Method", required=True,
         domain="[('id', 'in', available_payment_method_ids)]"
     )
-    require_tc_data = fields.Boolean(related='payment_method_id.require_tc_data', readonly=True)
-    require_bank_data = fields.Boolean(related='payment_method_id.require_bank_data', readonly=True)
-    require_check_data = fields.Boolean(related='payment_method_id.require_check_data', readonly=True)
     available_payment_method_ids = fields.Many2many('cash.payment.method', string="Available Payment Methods")
     amount = fields.Monetary(string="Amount", required=True, default=0.0)
     bank_reference = fields.Char(string="Bank Reference", help="Reference for bank payments")

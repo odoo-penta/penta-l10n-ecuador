@@ -171,16 +171,13 @@
                                 <list editable="bottom" delete="1">
                                     <field name="currency_id" column_invisible="True"/>
                                     <field name="payment_method_id" options="{'no_open': True, 'no_create': True}"/>
-                                    <field name="require_tc_data" column_invisible="True"/>
-                                    <field name="require_bank_data" column_invisible="True"/>
-                                    <field name="require_check_data" column_invisible="True"/>
-                                    <field name="bank_reference" readonly="not require_tc_data and not require_bank_data and not require_check_data"/>
-                                    <field name="card" readonly="not require_tc_data" options="{'no_open': True, 'no_create': True}"/>
+                                    <field name="bank_reference" readonly="payment_method_id.payment_info_type not in ('card', 'check', 'bank')"/>
+                                    <field name="card" readonly="payment_method_id.payment_info_type != 'card'" options="{'no_open': True, 'no_create': True}"/>
                                     <field name="card_payment_type" readonly="not card"/>
                                     <field name="number_months" readonly="card_payment_type not in ('deferred_with_interest', 'deferred_without_interest')"/>
-                                    <field name="number_lot" readonly="not require_tc_data"/>
-                                    <field name="authorization_number" readonly="not require_tc_data"/>
-                                    <field name="bank_id" readonly="not require_check_data" options="{'no_open': True, 'no_create': True}"/>
+                                    <field name="number_lot" readonly="payment_method_id.payment_info_type != 'card'"/>
+                                    <field name="authorization_number" readonly="payment_method_id.payment_info_type != 'card'"/>
+                                    <field name="bank_id" readonly="payment_method_id.payment_info_type != 'check'" options="{'no_open': True, 'no_create': True}"/>
                                     <field name="amount" sum="Total"/>
                                 </list>
                             </field>
@@ -241,16 +238,13 @@
                                 <list editable="bottom" delete="1">
                                     <field name="currency_id" column_invisible="True"/>
                                     <field name="payment_method_id" options="{'no_open': True, 'no_create': True}"/>
-                                    <field name="require_tc_data" column_invisible="True"/>
-                                    <field name="require_bank_data" column_invisible="True"/>
-                                    <field name="require_check_data" column_invisible="True"/>
-                                    <field name="bank_reference" readonly="not require_tc_data and not require_bank_data and not require_check_data"/>
-                                    <field name="card" readonly="not require_tc_data" options="{'no_open': True, 'no_create': True}"/>
+                                    <field name="bank_reference" readonly="payment_method_id.payment_info_type not in ('card', 'check', 'bank')"/>
+                                    <field name="card" readonly="payment_method_id.payment_info_type != 'card'" options="{'no_open': True, 'no_create': True}"/>
                                     <field name="card_payment_type" readonly="not card"/>
                                     <field name="number_months" readonly="card_payment_type not in ('deferred_with_interest', 'deferred_without_interest')"/>
-                                    <field name="number_lot" readonly="not require_tc_data"/>
-                                    <field name="authorization_number" readonly="not require_tc_data"/>
-                                    <field name="bank_id" readonly="not require_check_data" options="{'no_open': True, 'no_create': True}"/>
+                                    <field name="number_lot" readonly="payment_method_id.payment_info_type != 'card'"/>
+                                    <field name="authorization_number" readonly="payment_method_id.payment_info_type != 'card'"/>
+                                    <field name="bank_id" readonly="payment_method_id.payment_info_type != 'check'" options="{'no_open': True, 'no_create': True}"/>
                                     <field name="amount" sum="Total"/>
                                 </list>
                             </field>
@@ -310,16 +304,13 @@
                                 <list editable="bottom" delete="1">
                                     <field name="currency_id" column_invisible="True"/>
                                     <field name="payment_method_id" options="{'no_open': True, 'no_create': True}"/>
-                                    <field name="require_tc_data" column_invisible="True"/>
-                                    <field name="require_bank_data" column_invisible="True"/>
-                                    <field name="require_check_data" column_invisible="True"/>
-                                    <field name="bank_reference" readonly="not require_tc_data and not require_bank_data and not require_check_data"/>
-                                    <field name="card" readonly="not require_tc_data" options="{'no_open': True, 'no_create': True}"/>
+                                    <field name="bank_reference" readonly="payment_method_id.payment_info_type not in ('card', 'check', 'bank')"/>
+                                    <field name="card" readonly="payment_method_id.payment_info_type != 'card'" options="{'no_open': True, 'no_create': True}"/>
                                     <field name="card_payment_type" readonly="not card"/>
                                     <field name="number_months" readonly="card_payment_type not in ('deferred_with_interest', 'deferred_without_interest')"/>
-                                    <field name="number_lot" readonly="not require_tc_data"/>
-                                    <field name="authorization_number" readonly="not require_tc_data"/>
-                                    <field name="bank_id" readonly="not require_check_data" options="{'no_open': True, 'no_create': True}"/>
+                                    <field name="number_lot" readonly="payment_method_id.payment_info_type != 'card'"/>
+                                    <field name="authorization_number" readonly="payment_method_id.payment_info_type != 'card'"/>
+                                    <field name="bank_id" readonly="payment_method_id.payment_info_type != 'check'" options="{'no_open': True, 'no_create': True}"/>
                                     <field name="amount" sum="Total"/>
                                 </list>
                             </field>

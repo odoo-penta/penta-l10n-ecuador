@@ -17,8 +17,6 @@ class AccountPayment(models.Model):
         domain=[('active', '=', True)],
         ondelete='restrict',
         index=True,
-        readonly=False,
-        store=True,
     )
     card_payment_type = fields.Selection(
         selection=[

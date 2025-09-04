@@ -7,9 +7,7 @@
         <field name="inherit_id" ref="account.view_account_journal_form" />
         <field name="arch" type="xml">
             <field name="type" position="after">
-                <field name="require_tc_data"/>
-                <field name="require_bank_data"/>
-                <field name="require_check_data"/>
+                <field name="payment_info_type"/>
             </field>
         </field>
     </record>
