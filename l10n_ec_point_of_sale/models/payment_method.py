@@ -15,4 +15,5 @@ class CashPaymentMethod(models.Model):
     journal_id = fields.Many2one('account.journal', string='Journal', required=True)
     payment_info_type = fields.Selection(related='journal_id.payment_info_type', string='Payment information', store=True, readonly=True)
     l10n_ec_sri_payment_id = fields.Many2one('l10n_ec.sri.payment', string="SRI Payment Method", required=True)
-    card = fields.Many2one('finance.card', string="Card")
+    card = fields.Many2one('account.cards', string="Card")
+

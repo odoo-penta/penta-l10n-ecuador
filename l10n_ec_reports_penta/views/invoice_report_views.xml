@@ -22,11 +22,13 @@
   </record>
 
   <!-- Reportes Pentalab -> Anexo de compras -->
+  <!--
   <menuitem id="menu_pentalab_anexo_compras"
             name="Anexo de compras"
             parent="menu_pentalab_reports_group"
             action="action_pentalab_anexo_compras_wizard"
             sequence="1"/>
+  -->
 
   <!-- Vista LIST del reporte -->
   <record id="view_pentalab_invoice_report_line_list" model="ir.ui.view">
