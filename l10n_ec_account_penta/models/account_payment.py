@@ -44,15 +44,14 @@ class AccountPayment(models.Model):
     number_lot = fields.Char(store=True, readonly=False, compute="_compute_number_lot")
     authorization_number = fields.Char(string="Authorization number")
     bank_id = fields.Many2one("res.partner.bank")
-    show_bank = fields.Boolean(compute="_compute_visibility_flags", store=False)
-    show_card = fields.Boolean(compute="_compute_visibility_flags", store=False)
-    show_check = fields.Boolean(compute="_compute_visibility_flags", store=False)
-    has_used_card = fields.Boolean(compute="_compute_visibility_flags", store=False)
-    @api.depends('journal_id', 'journal_id.payment_info_type', 'used_card_id')
+    show_ref = fields.Boolean(compute="_compute_visibility_flags", store=False)
+    show_bank_cc = fields.Boolean(compute="_compute_visibility_flags", store=False)  # bank_id en card o check
+    show_card = fields.Boolean(compute="_compute_visibility_flags", store=False)     # resto solo en card
+
+    @api.depends('journal_id', 'journal_id.payment_info_type')
     def _compute_visibility_flags(self):
         for rec in self:
             ptype = rec.journal_id.payment_info_type or False
-            rec.show_bank = (ptype == 'bank')
+            rec.show_ref = ptype in ('bank', 'check')
+            rec.show_bank_cc = ptype in ('card', 'check')
             rec.show_card = (ptype == 'card')
-            rec.show_check = (ptype == 'check')
-            rec.has_used_card = bool(rec.used_card_id)
