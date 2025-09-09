@@ -92,7 +92,7 @@ class ReportSalesA1Wizard(models.TransientModel):
             tax_struct[tax_group.id]['iva'] = tax_col
             tax_col += 1
         # LLenar el resto del texto de la cabecera
-        headers += ['MONTO ICE', 'TOTAL VENTA', 'RET. IVA', 'RET. FUENTE', 'CASILLA 104', 'CASILLA 104 RETENCION', 'DIAS CREDT', 'FORMA PAGO1']
+        headers += ['TOTAL VENTA', 'RET. IVA', 'RET. FUENTE', 'CASILLA 104', 'CASILLA 104 RETENCION', 'DIAS CREDT', 'FORMA PAGO1']
         for col, header in enumerate(headers):
             worksheet.write(0, col, header, bold_center)
         # Obtener impuestos a revisar
@@ -131,24 +131,23 @@ class ReportSalesA1Wizard(models.TransientModel):
                 else:
                     worksheet.write(row, tax_struct[tax_group.id]['base'], 0.00, number)
                     worksheet.write(row, tax_struct[tax_group.id]['iva'], 0.00, number)
-            # Monto ICE
-            worksheet.write(row, tax_col, 0.00, number)
-            worksheet.write(row, tax_col+1, invoice.amount_total, number)
+            # Total venta
+            worksheet.write(row, tax_col, invoice.amount_total, number)
+            worksheet.write(row, tax_col+1, 0.00, number)
             worksheet.write(row, tax_col+2, 0.00, number)
-            worksheet.write(row, tax_col+3, 0.00, number)
             # Casilla 104
             all_tags = invoice.invoice_line_ids.mapped("tax_tag_ids.name")
             all_tags = list(set(all_tags))
-            worksheet.write(row, tax_col+4, all_tags[0] if all_tags else '', border)
+            worksheet.write(row, tax_col+3, all_tags[0] if all_tags else '', border)
             # Casilla Retenciones
             if invoice.l10n_ec_withhold_ids:
                 all_tags = invoice.l10n_ec_withhold_ids.filtered(lambda w: w.state == "posted").line_ids.mapped("tax_tag_ids.name")
                 all_tags = list(set(all_tags))
-                worksheet.write(row, tax_col+5, all_tags[0] if all_tags else '', border)
+                worksheet.write(row, tax_col+4, all_tags[0] if all_tags else '', border)
             else:
-                worksheet.write(row, tax_col+5, '', border)
-            worksheet.write(row, tax_col+6, invoice.invoice_payment_term_id.name if invoice.invoice_payment_term_id else '', border)
-            worksheet.write(row, tax_col+7, invoice.l10n_ec_sri_payment_id.name if invoice.l10n_ec_sri_payment_id else '', border)
+                worksheet.write(row, tax_col+4, '', border)
+            worksheet.write(row, tax_col+5, invoice.invoice_payment_term_id.name if invoice.invoice_payment_term_id else '', border)
+            worksheet.write(row, tax_col+6, invoice.l10n_ec_sri_payment_id.name if invoice.l10n_ec_sri_payment_id else '', border)
             cont += 1
         workbook.close()
         output.seek(0)
