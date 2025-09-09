@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_account_tax_group_form_inherit_reports" model="ir.ui.view">
+        <field name="name">account.tax.group.form.inherit.reports</field>
+        <field name="model">account.tax.group</field>
+        <field name="inherit_id" ref="account.view_tax_group_form"/>
+        <field name="arch" type="xml">
+            <field name="pos_receipt_label" position="after">
+                <field name="show_report_a1"/>
+                <field name="report_a1_name" required="show_report_a1"/>
+            </field>
+        </field>
+    </record>
+</odoo>
