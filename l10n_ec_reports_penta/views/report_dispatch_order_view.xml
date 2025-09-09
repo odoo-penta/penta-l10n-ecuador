@@ -6,27 +6,25 @@
         <field name="model">dispatch.report</field>
         <field name="arch" type="xml">
             <list>
-                <field name="picking_id"/>
-                <field name="order_id"/>
-                <field name="invoice_id"/>
                 <field name="user_id"/>
-                <field name="partner_id"/>
+                <field name="warehouse_id"/>
+                <field name="location_id"/>
                 <field name="vat"/>
+                <field name="partner_id"/>
+                <field name="state_id"/>
+                <field name="city"/>
                 <field name="street"/>
                 <field name="street2"/>
-                <field name="city"/>
-                <field name="state_id"/>
-                <field name="order_name"/>
+                <field name="order_id"/>
                 <field name="order_date"/>
-                <field name="picking_name"/>
-                <field name="picking_date"/>
-                <field name="invoice_number"/>
+                <field name="picking_id"/>                
+                <field name="invoice_id"/>
                 <field name="default_code"/>
                 <field name="product_id"/>
-                <field name="product_variant"/>
+                <field name="product_variant"/>                
                 <field name="weight"/>
-                <field name="location_id"/>
-                <field name="warehouse_id"/>
+                
+                
             </list>
         </field>
     </record>
