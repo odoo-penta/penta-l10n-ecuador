@@ -29,6 +29,7 @@ class ReportSalesA1Wizard(models.TransientModel):
             ('state', '=', 'posted'),
             ('invoice_date', '>=', self.date_start),
             ('invoice_date', '<=', self.date_end),
+            ('journal_id.type', '=', 'sale'),
         ]
         if self.document_type != '0':
             inv_domain.append(('l10n_latam_document_type_id', '=', int(self.document_type)))
@@ -72,19 +73,32 @@ class ReportSalesA1Wizard(models.TransientModel):
         worksheet.set_column('F:G', 20)
         worksheet.set_column('H:I', 22)
         worksheet.set_column('J:J', 15)
-        worksheet.set_column('N:N', 25)
-        worksheet.set_column('O:T', 15)
-        worksheet.set_column('V:X', 15)
-        worksheet.set_column('Y:Y', 30)
         row = 0
         # Encabezados
         headers = ['#', 'TIPO DE COMPROBANTE', 'TIPO DE IDENTIFICACION', 'IDENTIFICACION', 'RAZON SOCIAL', 'PARTE RELACIONADA', 'TIPO DE SUJETO', 'NRO DE DOCUMENTO',
-                    'NRO AUTORIZACION', 'FCHA EMISI.', 'BASE 0%', 'BASE 5%', 'BASE 15%', 'BASE NO OBJETO DE IVA', 'MONTO IVA 5%', 'MONTO IVA 8%',
-                    'MONTO IVA 15%', 'MONTO ICE', 'TOTAL VENTA', 'RET. IVA', 'RET. FUENTE', 'CASILLA 104', 'DIAS CREDT', 'FORMA PAGO1']
+                    'NRO AUTORIZACION', 'FCHA EMISI.']
+        # Obtener grupos de impuestos para el reporte
+        tax_groups = self.env['account.tax.group'].search([('show_report_a1', '=', True)], order="report_a1_name")
+        tax_col = 10
+        tax_struct = {}
+        # Mapear bases
+        for tax_group in tax_groups:
+            headers.append('BASE ' + tax_group.report_a1_name.upper())
+            tax_struct[tax_group.id] = {'base': tax_col}
+            tax_col += 1
+        # Mapear ivastax_col
+        for tax_group in tax_groups:
+            headers.append('MONTO ' + tax_group.report_a1_name.upper())
+            tax_struct[tax_group.id]['iva'] = tax_col
+            tax_col += 1
+        # LLenar el resto del texto de la cabecera
+        headers += ['MONTO ICE', 'TOTAL VENTA', 'RET. IVA', 'RET. FUENTE', 'CASILLA 104', 'CASILLA 104 RETENCION', 'DIAS CREDT', 'FORMA PAGO1']
         for col, header in enumerate(headers):
             worksheet.write(0, col, header, bold_center)
-        cont = 1
+        # Obtener impuestos a revisar
+        #taxs = self.env['account.tax'].search([('tax_group_id', 'in', tax_groups.ids),('type_tax_use', '=', 'sale'),('active', '=', True)], order='amount asc')
         # Mapear datos
+        cont = 1
         for invoice in invoices:
             row += 1
             worksheet.write(row, 0, cont, center)
@@ -102,45 +116,39 @@ class ReportSalesA1Wizard(models.TransientModel):
             worksheet.write(row, 7, invoice.name or '', border)
             worksheet.write(row, 8, invoice.l10n_ec_authorization_number or '', border)
             worksheet.write(row, 9, invoice.invoice_date.strftime("%d/%m/%Y") or '', border)
-            # Calcular valores con iva 0%, 5% y 15 %
-            tax_0_lines = invoice.invoice_line_ids.filtered(
-                lambda l: any(t.amount_type == 'percent' and t.amount == 0 and t.l10n_ec_code_base not in (441, 444, 541, 545) for t in l.tax_ids)
-            )
-            tax_5_lines = invoice.invoice_line_ids.filtered(
-                lambda l: any(t.amount_type == 'percent' and t.amount == 5 for t in l.tax_ids)
-            )
-            tax_15_lines = invoice.invoice_line_ids.filtered(
-                lambda l: any(t.amount_type == 'percent' and t.amount == 15 for t in l.tax_ids)
-            )
-            tax_no_lines = invoice.invoice_line_ids.filtered(
-                lambda l: any(t.l10n_ec_code_base in (441, 444, 541, 545) for t in l.tax_ids)
-            )
-            tax_0_base = sum(tax_0_lines.mapped('price_subtotal'))
-            tax_5_base = sum(tax_5_lines.mapped('price_subtotal'))
-            tax_15_base = sum(tax_15_lines.mapped('price_subtotal'))
-            tax_no_base = sum(tax_no_lines.mapped('price_subtotal'))
-            # Montos BASE
-            worksheet.write(row, 10, tax_0_base or 0.00, number)
-            worksheet.write(row, 11, tax_5_base or 0.00, number)
-            worksheet.write(row, 12, tax_15_base or 0.00, number)
-            worksheet.write(row, 13, tax_no_base or 0.00, number)
-            # Montos IVA
-            worksheet.write(row, 14, round(tax_5_base * 0.05, 2) or 0.00, number)
-            
-            #worksheet.write(row, 15, round(tax_15_base * 0.15, 2), number)
-            worksheet.write(row, 15, 0.00, number)
-            worksheet.write(row, 16, round(tax_15_base * 0.15, 2), number)
+            # Mapear impuestos BASE
+            for tax_group in tax_groups:
+                base_amount = 0.0
+                iva_amount = 0.0
+                for line in invoice.invoice_line_ids:
+                    for l_tax in line.tax_ids:
+                        if l_tax.tax_group_id == tax_group:
+                            base_amount += line.price_subtotal
+                            iva_amount  += line.price_subtotal * (l_tax.amount / 100.0)
+                if base_amount > 0.00:
+                    worksheet.write(row, tax_struct[tax_group.id]['base'], base_amount or 0.00, number)
+                    worksheet.write(row, tax_struct[tax_group.id]['iva'], iva_amount or 0.00, number)
+                else:
+                    worksheet.write(row, tax_struct[tax_group.id]['base'], 0.00, number)
+                    worksheet.write(row, tax_struct[tax_group.id]['iva'], 0.00, number)
             # Monto ICE
-            worksheet.write(row, 17, 0.00, number)
-            worksheet.write(row, 18, invoice.amount_total, number)
-            worksheet.write(row, 19, 0.00, number)
-            worksheet.write(row, 20, 0.00, number)
+            worksheet.write(row, tax_col, 0.00, number)
+            worksheet.write(row, tax_col+1, invoice.amount_total, number)
+            worksheet.write(row, tax_col+2, 0.00, number)
+            worksheet.write(row, tax_col+3, 0.00, number)
             # Casilla 104
             all_tags = invoice.invoice_line_ids.mapped("tax_tag_ids.name")
             all_tags = list(set(all_tags))
-            worksheet.write(row, 21, all_tags[0] if all_tags else '', border)
-            worksheet.write(row, 22, invoice.invoice_payment_term_id.name if invoice.invoice_payment_term_id else '', border)
-            worksheet.write(row, 23, invoice.l10n_ec_sri_payment_id.name if invoice.l10n_ec_sri_payment_id else '', border)
+            worksheet.write(row, tax_col+4, all_tags[0] if all_tags else '', border)
+            # Casilla Retenciones
+            if invoice.l10n_ec_withhold_ids:
+                all_tags = invoice.l10n_ec_withhold_ids.filtered(lambda w: w.state == "posted").line_ids.mapped("tax_tag_ids.name")
+                all_tags = list(set(all_tags))
+                worksheet.write(row, tax_col+5, all_tags[0] if all_tags else '', border)
+            else:
+                worksheet.write(row, tax_col+5, '', border)
+            worksheet.write(row, tax_col+6, invoice.invoice_payment_term_id.name if invoice.invoice_payment_term_id else '', border)
+            worksheet.write(row, tax_col+7, invoice.l10n_ec_sri_payment_id.name if invoice.l10n_ec_sri_payment_id else '', border)
             cont += 1
         workbook.close()
         output.seek(0)

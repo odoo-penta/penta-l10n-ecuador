@@ -38,6 +38,7 @@
         
         "views/account_move_inventory_report_action.xml",
         "views/pentalab_report_wizard_view.xml",
+        'views/account_tax_views.xml',
         "views/cobros_por_ventas_report.xml",
         'views/export_inventory_wizard_view.xml',
         "views/invoice_report_views.xml",
