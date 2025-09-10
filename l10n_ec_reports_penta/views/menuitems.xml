@@ -34,4 +34,11 @@
               parent="menu_reports_informe_pentalab_balance"
               action="action_pentalab_report_estado_wizard"
               sequence="2" />
+
+    <menuitem
+        id="menu_export_plan_de_cuentas"
+        name="Exportar Plan de Cuentas"
+        parent="menu_reports_informe_pentalab_balance"
+        action="action_export_account_group_tree_excel"
+        sequence="3"/>
 </odoo>
