@@ -19,5 +19,19 @@
     <!-- OTROS REPORTES -->
     <menuitem id="menu_reports_others" name="Otros Reportes" parent="account.menu_finance_reports" sequence="98"/>
     <menuitem id="menu_report_uafe" name="UAFE" parent="menu_reports_others" action="action_report_uafe_wizard" sequence="1" />
+    <menuitem id="menu_reports_informe_pentalab_balance"
+              name="Reportes Coorporativo"
+              parent="account.menu_finance_reports"
+              sequence="100" />
+    <menuitem id="menu_action_informe_pentalab_balance"
+              name="Balance General (EXCEL)"
+              parent="menu_reports_informe_pentalab_balance"
+              action="action_pentalab_report_balance_wizard"
+              sequence="1" />
 
+    <menuitem id="menu_action_informe_pentalab_estado"
+              name="Estado de resultados (EXCEL)"
+              parent="menu_reports_informe_pentalab_balance"
+              action="action_pentalab_report_estado_wizard"
+              sequence="2" />
 </odoo>

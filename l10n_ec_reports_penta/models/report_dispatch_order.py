@@ -29,6 +29,10 @@ class DispatchReport(models.TransientModel):
     weight = fields.Float(string='Peso Total')
     location_id = fields.Many2one('stock.location', string='Ubicación')
     warehouse_id = fields.Many2one('stock.warehouse', string='Almacén')
+    product_packaging_id = fields.Many2one(
+        'product.packaging',
+        string='Embalaje'
+    )
 
     @api.model
     def action_generate_report(self):
@@ -61,6 +65,17 @@ class DispatchReport(models.TransientModel):
 
                 for move_line in picking.move_line_ids:
                     product = move_line.product_id
+
+                    # ===== Determinar Embalaje =====
+                    packaging_rec = False
+                    # Preferir el embalaje elegido en la línea de venta (si viene de venta)
+                    sale_line = getattr(move_line.move_id, 'sale_line_id', False)
+                    if sale_line and getattr(sale_line, 'product_packaging_id', False):
+                        packaging_rec = sale_line.product_packaging_id
+                    # Como fallback, si existiera un product_packaging_id en el move (personalización)
+                    elif hasattr(move_line.move_id, 'product_packaging_id') and move_line.move_id.product_packaging_id:
+                        packaging_rec = move_line.move_id.product_packaging_id
+
                     data_to_create.append({
                         'picking_id': picking.id,
                         'order_id': sale_order.id if sale_order else False,
@@ -83,6 +98,7 @@ class DispatchReport(models.TransientModel):
                         'weight': move_line.quantity * product.weight if product.weight else 0.0,
                         'location_id': move_line.location_id.id,
                         'warehouse_id': picking.picking_type_id.warehouse_id.id if picking.picking_type_id.warehouse_id else False,
+                        'product_packaging_id': packaging_rec.id if packaging_rec else False,
                     })
 
             if not data_to_create:

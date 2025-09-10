@@ -13,3 +13,7 @@ from . import res_company
 from . import res_config_settings
 from . import stock_quant_aggregated
 from . import stock_quant
+from . import account_account
+from . import pentalab_report_balance_wizard
+from . import pentalab_report_estado_wizard
+from . import pentalab_report_custom
