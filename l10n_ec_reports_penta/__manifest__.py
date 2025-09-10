@@ -51,7 +51,7 @@
         "views/report_dispatch_order_view.xml",
         "views/res_config_settings_views.xml",
         'views/pentalab_report_antiguedad_wizard.xml',
-        'views/account_account_export_tree.xml'
+        'views/account_account_export_tree.xml',
         'views/menuitems.xml',
         'views/account_move_report_action.xml',
         'report/account_move_report.xml',
