@@ -3,9 +3,11 @@
     <!-- ANEXOS DE IMPUESTOS -->
     <menuitem id="menu_reports_tax_annexes" name="Anexos de Impuestos" parent="account.menu_finance_reports" sequence="96"/>
     <menuitem id="menu_action_report_sales_a1" name="A1 Ventas" parent="menu_reports_tax_annexes" action="action_report_sales_a1_wizard" sequence="1" />
-    <menuitem id="menu_action_report_sales_a2" name="A2 Compras" parent="menu_reports_tax_annexes" action="" sequence="2" />
+    <menuitem id="menu_action_report_purchase_a2" name="A2 Compras" parent="menu_reports_tax_annexes" action="action_report_purchase_a2_wizard" sequence="2" />
+    <!--
     <menuitem id="menu_action_report_sales_a3" name="A3 Retenciones compras" parent="menu_reports_tax_annexes" action="" sequence="3" />
     <menuitem id="menu_action_report_sales_retention" name="Retenciones Ventas" parent="menu_reports_tax_annexes" action="" sequence="4" />
+    -->
     <!-- REPORTES PENTA -->
     <menuitem id="menu_reports_penta" name="Reportes Penta" parent="account.menu_finance_reports" sequence="97"/>
     <menuitem id="menu_cobros_por_ventas" name="Cobros por Ventas" parent="menu_reports_penta" action="action_cobros_por_ventas" sequence="1"/>
