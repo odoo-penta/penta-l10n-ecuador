@@ -106,6 +106,7 @@ class ReportSalesA1Wizard(models.TransientModel):
                 subjet_type = 'Persona Natural'
             elif invoice.partner_id.company_type == 'company':
                 subjet_type = 'Empresa'
+
             worksheet.write(row, 6, subjet_type, formats['border'])
             worksheet.write(row, 7, invoice.name or '', formats['border'])
             worksheet.write(row, 8, invoice.l10n_ec_authorization_number or '', formats['border'])
@@ -133,6 +134,7 @@ class ReportSalesA1Wizard(models.TransientModel):
             all_tags = invoice.invoice_line_ids.mapped("tax_tag_ids.name")
             all_tags = list(set(all_tags))
             worksheet.write(row, tax_col+3, all_tags[0] if all_tags else '', formats['border'])
+
             # Casilla Retenciones
             if invoice.l10n_ec_withhold_ids:
                 all_tags = invoice.l10n_ec_withhold_ids.filtered(lambda w: w.state == "posted").line_ids.mapped("tax_tag_ids.name")
