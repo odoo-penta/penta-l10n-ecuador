@@ -20,9 +20,9 @@ class ReportSalesA1Wizard(models.TransientModel):
             options.append((str(t.id), t.name))
         return options
     
-    date_start = fields.Date(string='Date start', required=True)
-    date_end = fields.Date(string='Date end', required=True)
-    document_type = fields.Selection(selection=lambda self: self._get_selection_opcions(), default='0', required=True)
+    date_start = fields.Date(string='Desde', required=True)
+    date_end = fields.Date(string='Hasta', required=True)
+    document_type = fields.Selection(selection=lambda self: self._get_selection_opcions(), default='0', string='Tipo documento', required=True)
     
     def _get_invoices_data(self):
         # Generar data para reporte
