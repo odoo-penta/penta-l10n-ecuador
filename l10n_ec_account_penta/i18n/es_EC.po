@@ -1,0 +1,228 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* l10n_ec_account_penta
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-09-10 22:15+0000\n"
+"PO-Revision-Date: 2025-09-10 22:15+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,help:l10n_ec_account_penta.field_account_payment__journal_type
+msgid ""
+"\n"
+"        Select 'Sale' for customer invoices journals.\n"
+"        Select 'Purchase' for vendor bills journals.\n"
+"        Select 'Cash', 'Bank' or 'Credit Card' for journals that are used in customer or vendor payments.\n"
+"        Select 'General' for miscellaneous operations journals.\n"
+"        "
+msgstr ""
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields.selection,name:l10n_ec_account_penta.selection__account_payment__number_months__12
+msgid "12"
+msgstr ""
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields.selection,name:l10n_ec_account_penta.selection__account_payment__number_months__18
+msgid "18"
+msgstr ""
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields.selection,name:l10n_ec_account_penta.selection__account_payment__number_months__24
+msgid "24"
+msgstr ""
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields.selection,name:l10n_ec_account_penta.selection__account_payment__number_months__36
+msgid "36"
+msgstr ""
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields.selection,name:l10n_ec_account_penta.selection__account_payment__number_months__48
+msgid "48"
+msgstr ""
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields.selection,name:l10n_ec_account_penta.selection__account_payment__number_months__60
+msgid "60"
+msgstr ""
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_cards__active
+msgid "Activo"
+msgstr ""
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_payment__authorization_number
+msgid "Authorization number"
+msgstr "Número de autorización"
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_payment__bank_id
+msgid "Bank"
+msgstr "Banco"
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_payment__bank_reference
+msgid "Bank reference"
+msgstr "Referencia bancaria"
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_cards__company_id
+msgid "Company"
+msgstr "Compañía"
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields.selection,name:l10n_ec_account_penta.selection__account_payment__card_payment_type__corriente
+msgid "Corriente"
+msgstr ""
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_cards__create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_cards__create_date
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields.selection,name:l10n_ec_account_penta.selection__account_payment__card_payment_type__diferido_con_interés
+msgid "Diferido con interés"
+msgstr ""
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields.selection,name:l10n_ec_account_penta.selection__account_payment__card_payment_type__diferido_sin_interés
+msgid "Diferido sin interés"
+msgstr ""
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_cards__display_name
+msgid "Display Name"
+msgstr "Nombre para mostrar"
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields.selection,name:l10n_ec_account_penta.selection__account_payment__card_payment_type__débito
+msgid "Débito"
+msgstr ""
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_cards__id
+msgid "ID"
+msgstr ""
+
+#. module: l10n_ec_account_penta
+#. odoo-python
+#: code:addons/l10n_ec_account_penta/models/account_move.py:0
+msgid "It's account move not has account move lines."
+msgstr "Es un movimiento de cuenta, no tiene líneas de movimiento de cuenta."
+
+#. module: l10n_ec_account_penta
+#: model:ir.model,name:l10n_ec_account_penta.model_account_journal
+msgid "Journal"
+msgstr "Diario"
+
+#. module: l10n_ec_account_penta
+#: model:ir.model,name:l10n_ec_account_penta.model_account_move
+msgid "Journal Entry"
+msgstr "Asiento contable"
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_payment__journal_type
+msgid "Journal Type"
+msgstr "Tipo de diario"
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_cards__write_uid
+msgid "Last Updated by"
+msgstr "Última actualización por"
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_cards__write_date
+msgid "Last Updated on"
+msgstr "Última actualización el"
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields.selection,name:l10n_ec_account_penta.selection__account_journal__payment_info_type__
+msgid "Ninguno"
+msgstr ""
+
+#. module: l10n_ec_account_penta
+#. odoo-python
+#: code:addons/l10n_ec_account_penta/models/account_move.py:0
+msgid "No lines to reconcile."
+msgstr "No hay líneas para conciliar."
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_cards__name
+msgid "Nombre de la Tarjeta"
+msgstr ""
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_payment__number_lot
+msgid "Number Lot"
+msgstr "Lote de números"
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_payment__number_months
+msgid "Number of months"
+msgstr "Número de meses"
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_journal__payment_info_type
+msgid "Payment information"
+msgstr "Información de pago"
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_payment__card_payment_type
+msgid "Payment type"
+msgstr "Tipo de pago"
+
+#. module: l10n_ec_account_penta
+#: model:ir.model,name:l10n_ec_account_penta.model_account_payment
+msgid "Payments"
+msgstr "Pagos"
+
+#. module: l10n_ec_account_penta
+#. odoo-python
+#: code:addons/l10n_ec_account_penta/models/account_move.py:0
+#: model_terms:ir.ui.view,arch_db:l10n_ec_account_penta.account_move_form_inherit
+msgid "Reconcile"
+msgstr "Conciliar"
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields.selection,name:l10n_ec_account_penta.selection__account_journal__payment_info_type__bank
+msgid "Requires bank information"
+msgstr "Requiere información bancaria"
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields.selection,name:l10n_ec_account_penta.selection__account_journal__payment_info_type__card
+msgid "Requires card information"
+msgstr "Requiere información de la tarjeta"
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields.selection,name:l10n_ec_account_penta.selection__account_journal__payment_info_type__check
+msgid "Requires check information"
+msgstr "Requiere información de verificación"
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_payment__used_card_id
+msgid "Tarjeta usada"
+msgstr ""
+
+#. module: l10n_ec_account_penta
+#: model:ir.actions.act_window,name:l10n_ec_account_penta.action_account_cards_list
+#: model:ir.model,name:l10n_ec_account_penta.model_account_cards
+#: model:ir.ui.menu,name:l10n_ec_account_penta.menu_account_cards_action
+msgid "Tarjetas de Crédito"
+msgstr ""
