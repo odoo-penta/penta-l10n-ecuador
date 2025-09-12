@@ -35,6 +35,16 @@ class ReportPurchaseA2Wizard(models.TransientModel):
         invoices = self.env['account.move'].search(inv_domain, order='invoice_date asc')
         return invoices
     
+    def _get_retentions_data(self, invoice):
+        # Obtener datos de retenciones de la factura
+        data = invoice.l10n_ec_action_view_withholds()
+        move_obj = self.env['account.move']
+        if data and data['res_id']:
+            retentions = move_obj.browse(data['res_id'])
+        else:
+            retentions = move_obj
+        return retentions
+    
     def print_report(self):
         report = self.generate_xlsx_report()
         today = fields.Date.context_today(self)
@@ -140,6 +150,8 @@ class ReportPurchaseA2Wizard(models.TransientModel):
                 else:
                     worksheet.write(row, tax_struct[tax_group.id]['base'], 0.00, formats['number'])
                     worksheet.write(row, tax_struct[tax_group.id]['iva'], 0.00, formats['number'])
+            # Retenciones
+            retentions = self._get_retentions_data(invoice)
             # Cod Ret iva
             """
             worksheet.write(row, tax_col, invoice.amount_total, formats['number'])
