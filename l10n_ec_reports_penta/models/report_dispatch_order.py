@@ -4,6 +4,10 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
+def _m2o(rec):
+    """Devuelve el id si el record existe; si no, False."""
+    return rec.exists().id if rec else False
+
 class DispatchReport(models.TransientModel):
     _name = 'dispatch.report'
     _description = 'Reporte de Despachos'
@@ -29,20 +33,20 @@ class DispatchReport(models.TransientModel):
     weight = fields.Float(string='Peso Total')
     location_id = fields.Many2one('stock.location', string='Ubicación')
     warehouse_id = fields.Many2one('stock.warehouse', string='Almacén')
-    product_packaging_id = fields.Many2one(
-        'product.packaging',
-        string='Embalaje'
-    )
+
+    # Embalaje (product.packaging)
+    product_packaging_id = fields.Many2one('product.packaging', string='Embalaje')
 
     @api.model
     def action_generate_report(self):
         """Genera el reporte de despachos desde stock.picking."""
         _logger.info("Iniciando la generación del Reporte de Despachos")
         try:
+            # Limpia previos (modelo transiente)
             self.search([]).unlink()
 
             pickings = self.env['stock.picking'].search([('state', '=', 'done')])
-            _logger.info(f"Se encontraron {len(pickings)} órdenes de despacho en estado 'done'")
+            _logger.info("Pickings en done: %s", len(pickings))
 
             if not pickings:
                 return {
@@ -60,45 +64,56 @@ class DispatchReport(models.TransientModel):
 
             for picking in pickings:
                 sale_order = picking.sale_id
-                invoice = self.env['account.move'].search([('invoice_origin', '=', sale_order.name)], limit=1) if sale_order else False
+                invoice = sale_order and self.env['account.move'].search(
+                    [('invoice_origin', '=', sale_order.name)], limit=1
+                ) or False
                 partner = picking.partner_id
 
                 for move_line in picking.move_line_ids:
                     product = move_line.product_id
 
-                    # ===== Determinar Embalaje =====
-                    packaging_rec = False
-                    # Preferir el embalaje elegido en la línea de venta (si viene de venta)
+                    # --- Determinar Embalaje de la línea de venta ---
                     sale_line = getattr(move_line.move_id, 'sale_line_id', False)
-                    if sale_line and getattr(sale_line, 'product_packaging_id', False):
-                        packaging_rec = sale_line.product_packaging_id
-                    # Como fallback, si existiera un product_packaging_id en el move (personalización)
-                    elif hasattr(move_line.move_id, 'product_packaging_id') and move_line.move_id.product_packaging_id:
-                        packaging_rec = move_line.move_id.product_packaging_id
+                    packaging_rec = False
+                    if sale_line:
+                        # Intenta ambos nombres de campo según versión/base
+                        packaging_rec = getattr(sale_line, 'product_packaging_id', False) or \
+                                        getattr(sale_line, 'packaging_id', False)
+                        # Asegura que el registro exista y sea del modelo correcto
+                        if packaging_rec and packaging_rec._name != 'product.packaging':
+                            packaging_rec = False
+                        if packaging_rec:
+                            packaging_rec = packaging_rec.exists()
+
+                    # Fallback: si has personalizado packaging en el move
+                    if not packaging_rec and hasattr(move_line.move_id, 'product_packaging_id'):
+                        packaging_rec = move_line.move_id.product_packaging_id.exists()
 
                     data_to_create.append({
-                        'picking_id': picking.id,
-                        'order_id': sale_order.id if sale_order else False,
-                        'invoice_id': invoice.id if invoice else False,
-                        'user_id': sale_order.user_id.id if sale_order else False,
-                        'partner_id': partner.id,
+                        'picking_id': _m2o(picking),
+                        'order_id': _m2o(sale_order),
+                        'invoice_id': _m2o(invoice),
+                        'user_id': _m2o(sale_order.user_id) if sale_order else False,
+                        'partner_id': _m2o(partner),
                         'vat': partner.vat,
                         'street': partner.street,
                         'street2': partner.street2,
                         'city': partner.city,
-                        'state_id': partner.state_id.id if partner.state_id else False,
+                        'state_id': _m2o(partner.state_id),
                         'order_name': sale_order.name if sale_order else '',
                         'order_date': sale_order.date_order if sale_order else False,
                         'picking_name': picking.name,
                         'picking_date': picking.date_done,
                         'invoice_number': invoice.name if invoice else '',
                         'default_code': product.default_code,
-                        'product_id': product.id,
-                        'product_variant': product.product_template_attribute_value_ids._get_combination_name() if product.product_template_attribute_value_ids else '',
-                        'weight': move_line.quantity * product.weight if product.weight else 0.0,
-                        'location_id': move_line.location_id.id,
-                        'warehouse_id': picking.picking_type_id.warehouse_id.id if picking.picking_type_id.warehouse_id else False,
-                        'product_packaging_id': packaging_rec.id if packaging_rec else False,
+                        'product_id': _m2o(product),
+                        'product_variant': product.product_template_attribute_value_ids._get_combination_name()
+                            if product.product_template_attribute_value_ids else '',
+                        # Si prefieres qty_done en lugar de quantity, cámbialo aquí:
+                        'weight': (getattr(move_line, 'quantity', 0.0) or getattr(move_line, 'qty_done', 0.0)) * (product.weight or 0.0),
+                        'location_id': _m2o(move_line.location_id),
+                        'warehouse_id': _m2o(picking.picking_type_id.warehouse_id),
+                        'product_packaging_id': _m2o(packaging_rec),
                     })
 
             if not data_to_create:
@@ -114,7 +129,7 @@ class DispatchReport(models.TransientModel):
                 }
 
             self.create(data_to_create)
-            _logger.info(f"Se crearon {len(data_to_create)} registros para el reporte de despachos")
+            _logger.info("Registros creados para el reporte: %s", len(data_to_create))
 
             return {
                 'type': 'ir.actions.act_window',
@@ -125,7 +140,7 @@ class DispatchReport(models.TransientModel):
             }
 
         except Exception as e:
-            _logger.error(f"Error generando el reporte de despachos: {str(e)}")
+            _logger.exception("Error generando el reporte de despachos")
             return {
                 'type': 'ir.actions.client',
                 'tag': 'display_notification',

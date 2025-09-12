@@ -1,13 +1,10 @@
+# -*- coding: utf-8 -*-
 from odoo import models, fields
-from datetime import datetime, date
-import calendar
-import zipfile
 import base64
 import io
-from collections import defaultdict
 from odoo.tools.misc import xlsxwriter
 from odoo.addons.penta_base.reports.xlsx_formats import get_xlsx_formats
-from odoo.tools import remove_accents, sanitize_text, extract_numbers
+
 
 class ReportSalesA1Wizard(models.TransientModel):
     _name = 'report.sales.a1.wizard'
@@ -39,8 +36,10 @@ class ReportSalesA1Wizard(models.TransientModel):
     
     def print_report(self):
         report = self.generate_xlsx_report()
+        today = fields.Date.context_today(self)
+        file_name = f"VentasA1_{today.strftime('%d_%m_%Y')}.xlsx"
         attachment = self.env['ir.attachment'].create({
-            'name': 'Ventas A1.xlsx',
+            'name': file_name,
             'type': 'binary',
             'datas': base64.b64encode(report),
             'res_model': self._name,
@@ -69,28 +68,40 @@ class ReportSalesA1Wizard(models.TransientModel):
         worksheet.set_column('F:G', 20)
         worksheet.set_column('H:I', 22)
         worksheet.set_column('J:J', 15)
-        row = 0
         # Encabezados
         headers = ['#', 'TIPO DE COMPROBANTE', 'TIPO DE IDENTIFICACION', 'IDENTIFICACION', 'RAZON SOCIAL', 'PARTE RELACIONADA', 'TIPO DE SUJETO', 'NRO DE DOCUMENTO',
                     'NRO AUTORIZACION', 'FCHA EMISI.']
         # Obtener grupos de impuestos para el reporte
-        tax_groups = self.env['account.tax.group'].search([('show_report_a1', '=', True)], order="report_a1_name")
+        tax_groups = self.env['account.tax.group'].search([('show_report', '=', True)], order="report_name")
         tax_col = 10
         tax_struct = {}
         # Mapear bases
         for tax_group in tax_groups:
-            headers.append('BASE ' + tax_group.report_a1_name.upper())
+            headers.append('BASE ' + tax_group.report_name.upper())
             tax_struct[tax_group.id] = {'base': tax_col}
             tax_col += 1
         # Mapear ivastax_col
         for tax_group in tax_groups:
-            headers.append('MONTO ' + tax_group.report_a1_name.upper())
+            headers.append('MONTO ' + tax_group.report_name.upper())
             tax_struct[tax_group.id]['iva'] = tax_col
             tax_col += 1
         # LLenar el resto del texto de la cabecera
         headers += ['TOTAL VENTA', 'RET. IVA', 'RET. FUENTE', 'CASILLA 104', 'CASILLA 104 RETENCION', 'DIAS CREDT', 'FORMA PAGO1']
+        # Mapear cabecera
+        company_name = self.env.company.display_name
+        worksheet.merge_range('A1:E1', company_name)
+        date_from = self.date_start
+        worksheet.merge_range('A2:B2', 'Fecha Desde:')
+        worksheet.write('C2', date_from.strftime('%d/%m/%Y') if date_from else '')
+        date_to = self.date_end
+        worksheet.merge_range('A3:B3', 'Fecha Hasta:')
+        worksheet.write('C3', date_to.strftime('%d/%m/%Y') if date_to else '')
+        worksheet.merge_range('A4:B4', 'Reporte:')
+        worksheet.write('C4', 'VENTAS A1')
+        row = 5
+        # Mapear titulos
         for col, header in enumerate(headers):
-            worksheet.write(0, col, header, formats['header_bg'])
+            worksheet.write(row, col, header, formats['header_bg'])
         # Mapear datos
         cont = 1
         for invoice in invoices:

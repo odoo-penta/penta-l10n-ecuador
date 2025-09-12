@@ -12,6 +12,7 @@ access_dispatch_report_user,access.dispatch.report.user,model_dispatch_report,ba
 access_pentalab_report_antiguedad_wizard,pentalab_report_antiguedad_wizard,model_pentalab_report_antiguedad_wizard,base.group_user,1,1,1,1
 access_report_purchase_retentions_wizard,report.purchase.retentions.wizard,model_report_purchase_retentions_wizard,base.group_user,1,1,1,1
 access_report_sales_a1_wizard,report.sales.a1.wizard,model_report_sales_a1_wizard,base.group_user,1,1,1,1
+access_report_purchase_a2_wizard,report.purchase.a2.wizard,model_report_purchase_a2_wizard,base.group_user,1,1,1,1
 access_report_uafe_wizard,report.uafe.wizard,model_report_uafe_wizard,base.group_user,1,1,1,1
 access_pentalab_report_balance_wizard,pentalab_report_balance_wizard,model_pentalab_report_balance_wizard,base.group_user,1,1,1,1
 access_pentalab_report_estado_wizard,pentalab_report_estado_wizard,model_pentalab_report_estado_wizard,base.group_user,1,1,1,1

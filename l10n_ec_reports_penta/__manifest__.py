@@ -34,6 +34,7 @@
         
         'wizard/report_purchase_retentions_wizard_views.xml',
         'wizard/report_sales_a1_wizard_views.xml',
+        'wizard/report_purchase_a2_wizard_views.xml',
         'wizard/report_uafe_wizard_views.xml',
         
         "views/account_move_inventory_report_action.xml",
