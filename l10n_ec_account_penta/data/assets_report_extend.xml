@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Definir la nueva columna de Código del Activo -->
+        <record id="assets_report_asset_code" model="account.report.column">
+            <field name="name">Código del Activo</field>
+            <field name="expression_label">asset_code</field>
+            <field name="figure_type">string</field>
+            <field name="sequence">1</field>
+        </record>
+        
+        <!-- Extender el reporte de activos para agregar columna de código -->
+        <record id="account_asset.assets_report" model="account.report">
+            <field name="column_ids" eval="[(4, ref('assets_report_asset_code'))]"/>
+        </record>
+    </data>
+</odoo>

@@ -10,9 +10,10 @@
     'website': "https://pentalab.tech/",
     'category': 'Accounting',
     'version': '0.1',
-    'depends': ['account_accountant'],
+    'depends': ['account_accountant','account_asset', 'mail', 'account_reports'],
     'data': [
         'data/account_cards_data.xml',
+        'data/assets_report_extend.xml',
         
         'security/ir.model.access.csv',
         
@@ -20,6 +21,7 @@
         'views/account_payment_views.xml',
         'views/account_cards_view.xml',
         'views/account_journal_views.xml',
+        'views/account_asset_views.xml',
     ],
 }
 

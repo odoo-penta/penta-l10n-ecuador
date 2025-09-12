@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Extender la vista de formulario de activos para agregar el campo de código -->
+        <record id="view_account_asset_form_inherit_penta" model="ir.ui.view">
+            <field name="name">account.asset.form.penta.inherit</field>
+            <field name="model">account.asset</field>
+            <field name="inherit_id" ref="account_asset.view_account_asset_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@class='oe_title']" position="before">
+                    <group name="asset_code_group">
+                        <field name="asset_code" 
+                               placeholder="ej: EQP-001, MOB2025"
+                               class="o_field_highlight"
+                               style="font-weight: bold;"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Extender la vista de lista/árbol de activos para mostrar el código -->
+        <record id="view_account_asset_tree_inherit_penta" model="ir.ui.view">
+            <field name="name">account.asset.tree.penta.inherit</field>
+            <field name="model">account.asset</field>
+            <field name="inherit_id" ref="account_asset.view_account_asset_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="before">
+                    <field name="asset_code" string="Código" optional="show"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!--  extender la vista de modelos de activos -->
+        <record id="view_account_asset_model_tree_inherit_penta" model="ir.ui.view">
+            <field name="name">account.asset.model.tree.penta.inherit</field>
+            <field name="model">account.asset</field>
+            <field name="inherit_id" ref="account_asset.view_account_asset_model_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="before">
+                    <field name="asset_code" string="Código" optional="show"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Agregar el campo de código a la vista de búsqueda -->
+        <record id="view_account_asset_search_inherit_penta" model="ir.ui.view">
+            <field name="name">account.asset.search.penta.inherit</field>
+            <field name="model">account.asset</field>
+            <field name="inherit_id" ref="account_asset.view_account_asset_search"/>
+            <field name="arch" type="xml">
+                <!-- Hacer el campo asset_code buscable en la barra principal -->
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="asset_code" string="Código del Activo"/>
+                </xpath>
+                
+                <!-- Agregar filtros por código antes de los filtros existentes -->
+                <xpath expr="//filter[@name='current']" position="before">
+                    <filter string="Con Código" name="with_code" 
+                            domain="[('asset_code', '!=', False)]"/>
+                    <filter string="Sin Código" name="without_code" 
+                            domain="[('asset_code', '=', False)]"/>
+                    <separator/>
+                </xpath>
+                
+                <!-- Agregar groupby por código -->
+                <xpath expr="//filter[@name='model']" position="after">
+                    <filter string="Por Código" name="groupby_asset_code" 
+                            domain="[]" context="{'group_by': 'asset_code'}"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_account_asset_kanban_inherit_penta" model="ir.ui.view">
+            <field name="name">account.asset.kanban.penta.inherit</field>
+            <field name="model">account.asset</field>
+            <field name="inherit_id" ref="account_asset.view_account_asset_kanban"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='currency_id']" position="after">
+                    <field name="asset_code" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='name']" position="after">
+                    <div t-if="record.asset_code.value" class="text-muted small mb-1">
+                        <i class="fa fa-tag me-1"/> 
+                        <span t-esc="record.asset_code.value"/>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>
