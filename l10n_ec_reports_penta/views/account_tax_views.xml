@@ -6,6 +6,7 @@
         <field name="inherit_id" ref="account.view_tax_group_form"/>
         <field name="arch" type="xml">
             <field name="pos_receipt_label" position="after">
+                <field name="type_ret"/>
                 <field name="show_report"/>
                 <field name="report_name" required="show_report"/>
             </field>
