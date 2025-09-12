@@ -110,9 +110,33 @@ class ReportPurchaseA2Wizard(models.TransientModel):
         worksheet.merge_range('A4:B4', 'Reporte:')
         worksheet.write('C4', 'COMPRAS A2')
         row = 5
+        last_col = 0
         # Mapear titulos
         for col, header in enumerate(headers):
-            worksheet.write(row, col, header, formats['header_bg'])
+            worksheet.merge_range(row, col, row + 1, col, header, formats['header_bg'])
+            last_col += 1
+        # Cabecera retenciones
+        worksheet.merge_range(row, last_col, row, last_col + 5, 'RETENCIONES IVA', formats['header_bg'])
+        worksheet.write(row + 1, last_col, 'RET 10%', formats['header_bg'])
+        last_col += 1
+        worksheet.write(row + 1, last_col, 'RET 20%', formats['header_bg'])
+        last_col += 1
+        worksheet.write(row + 1, last_col, 'RET 30%', formats['header_bg'])
+        last_col += 1
+        worksheet.write(row + 1, last_col, 'RET 50%', formats['header_bg'])
+        last_col += 1
+        worksheet.write(row + 1, last_col, 'RET 70%', formats['header_bg'])
+        last_col += 1
+        worksheet.write(row + 1, last_col, 'RET 100%', formats['header_bg'])
+        last_col += 1
+        # Cabecera restante
+        headers2 = ['COD RET FUENTE', 'BASE IMP', 'PORCENTAJE DE RETENCION FUENTE', 'VALOR RETENIDO', 'COMRPOBANTE DE RETENCION', 'AUT. RET.', 'FECHA DE RETENCION',
+                    'PAGO EXTERIOR - PAGO LOCAL', 'PAIS PDE PAGO', 'PARAISO FISCAL', 'ADOBLE TRIB EN PAGO', 'SUJE. RET', 'DIARIO CONTABLE', 'FORMATO PAGO 1',
+                    'CTA CONTABLE', 'REFERENCIA']
+        # Mapear titulos 2
+        for col, header in enumerate(headers2):
+            worksheet.merge_range(row, last_col, row + 1, last_col, header, formats['header_bg'])
+            last_col += 1
         # Mapear datos
         cont = 1
         for invoice in invoices:
@@ -152,6 +176,28 @@ class ReportPurchaseA2Wizard(models.TransientModel):
                     worksheet.write(row, tax_struct[tax_group.id]['iva'], 0.00, formats['number'])
             # Retenciones
             retentions = self._get_retentions_data(invoice)
+            iva_tax_groups = self.env['account.tax.group'].search([('type_ret', 'in', ['withholding_iva_purchase', 'withholding_iva_sales'])])
+            rent_tax_groups = self.env['account.tax.group'].search([('type_ret', 'in', ['withholding_rent_purchase', 'withholding_rent_sales'])])
+            cod_ret_iva = ''
+            cod_ret_fuente = ''
+            ret_10 = ret_20 = ret_30 = ret_50 = ret_70 = ret_100 = 0.00
+            for retention in retentions:
+                for line in retention.l10n_ec_withhold_line_ids:
+                    for tax in line.tax_ids:
+                        if tax.tax_group_id:
+                            import pdb;pdb.set_trace()
+                            if tax.tax_group_id.id in iva_tax_groups.ids:
+                                if cod_ret_iva:
+                                    cod_ret_iva += ', ' + tax.l10n_ec_code_applied
+                                else:
+                                    cod_ret_iva = tax.l10n_ec_code_applied
+                                #import pdb;pdb.set_trace()
+                            elif tax.tax_group_id.id in rent_tax_groups.ids:
+                                if cod_ret_fuente:
+                                    cod_ret_fuente += ', ' + tax.l10n_ec_code_applied
+                                else:
+                                    cod_ret_fuente = tax.l10n_ec_code_applied
+                                #import pdb;pdb.set_trace()
             # Cod Ret iva
             """
             worksheet.write(row, tax_col, invoice.amount_total, formats['number'])
