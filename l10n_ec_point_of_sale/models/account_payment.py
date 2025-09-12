@@ -18,7 +18,6 @@ class FinanceCard(models.Model):
 class AccountPayment(models.Model):
     _inherit = 'account.payment'
     
-    journal_type = fields.Selection(related='journal_id.type', readonly=True, string="Journal Type")
     bank_reference = fields.Char(string="Bank reference")
     card = fields.Many2one('finance.card', string="Card")
     card_payment_type = fields.Selection(
