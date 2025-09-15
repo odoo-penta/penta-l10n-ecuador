@@ -1,0 +1,33 @@
+<odoo>
+
+    <record id="view_report_retentions_a3_wizard_form" model="ir.ui.view">
+        <field name="name">report.retentions.a3.wizard.form</field>
+        <field name="model">report.retentions.a3.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Reporte Compras (A2)">
+                <group>
+                    <field name="date_start"/>
+                    <field name="date_end"/>
+                    <field name="retention_type"/>
+                </group>
+                <group>
+                    <field name="apply_percentage_filter"/>
+                    <field name="percentage_operator" invisible='not apply_percentage_filter'/>
+                    <field name="percentage_value" invisible='not apply_percentage_filter'/>
+                </group>
+                <footer>
+                    <button name="print_report" type="object" string="Generate" class="btn-primary"/>
+                    <button string="Cancel" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_report_retentions_a3_wizard" model="ir.actions.act_window">
+        <field name="name">Reporte Retenciones (A3)</field>
+        <field name="res_model">report.retentions.a3.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

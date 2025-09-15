@@ -9,8 +9,8 @@ class AccountTaxGroup(models.Model):
     report_name = fields.Char()
     type_ret = fields.Selection(
         [
-            ('withholding_iva_purchase', 'Withholding iva purchase'),
-            ('withholding_iva_sales', 'Withholding iva sales'),
-            ('withholding_rent_purchase', 'Withholding rent purchase'),
-            ('withholding_rent_sales', 'Withholding rent sales'),
+            ('withholding_iva_purchase', 'Retencion IVA Compras'),
+            ('withholding_iva_sales', 'Retencion IVA Ventas'),
+            ('withholding_rent_purchase', 'Retencion Renta Compras'),
+            ('withholding_rent_sales', 'Retencion Renta Ventas'),
         ], default=False)
