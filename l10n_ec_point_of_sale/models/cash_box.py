@@ -39,6 +39,28 @@ class CashBox(models.Model):
     close_journal_id = fields.Many2one('account.journal', string="Close Journal", domain=[('type', 'in', ['general'])], tracking=True)
     l10n_ec_sri_payment_id = fields.Many2one('l10n_ec.sri.payment', string="SRI Payment Method", required=True)
     
+    @api.constrains('journal_id', 'close_journal_id')
+    def _check_unique_journals(self):
+        for rec in self:
+            # Mismo diario de apertura
+            if rec.journal_id:
+                other = self.env['cash.box'].search([
+                    ('id', '!=', rec.id),
+                    ('journal_id', '=', rec.journal_id.id),
+                    ('company_id', '=', rec.company_id.id)
+                ], limit=1)
+                if other:
+                    raise UserError(_("The journal '%s' is already assigned to the cash box '%s'. Please choose another journal.") % (rec.journal_id.name, other.name))
+            # Mismo diario de cierre
+            if rec.close_journal_id:
+                other = self.env['cash.box'].search([
+                    ('id', '!=', rec.id),
+                    ('close_journal_id', '=', rec.close_journal_id.id),
+                    ('company_id', '=', rec.company_id.id)
+                ], limit=1)
+                if other:
+                    raise UserError(_("The close journal '%s' is already assigned to the cash box '%s'. Please choose another journal.") % (rec.close_journal_id.name, other.name))
+
     @api.model
     def _is_admin(self):
         return self.env.user.has_group('base.group_system')
@@ -69,13 +91,13 @@ class CashBox(models.Model):
         return super().unlink()
 
     @api.model
-    def search(self, args, offset=0, limit=None, order=None, count=False):
+    def search(self, args, offset=0, limit=None, order=None):
         args = list(args)  # Copia segura para evitar efectos colaterales
         # si es administrador de sistema permite ver todas las cajas
         if not self._is_admin():
             # filtra que el usuario se encuentre entre los administradores del sistema
             args += [('responsible_ids', 'in', self.env.uid)]
-        return super().search(args, offset=offset, limit=limit, order=order, count=count)
+        return super().search(args, offset=offset, limit=limit, order=order)
     
     def open_cash(self, initial_balance):
         # abrimos la sesion
