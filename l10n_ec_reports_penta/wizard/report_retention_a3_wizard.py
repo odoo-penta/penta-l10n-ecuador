@@ -145,8 +145,8 @@ class ReportRetentionsA3Wizard(models.TransientModel):
                     worksheet.write(row, 14, invoice.date.strftime("%d/%m/%Y") or '', formats['border'])
                     # Obtener cuenta contable
                     account_name = ''
-                    for line in invoice.line_ids:
-                        if line.account_id.account_type == 'liability_payable':
+                    for line in move.line_ids:
+                        if line.tax_ids == reten.tax_ids:
                             account_name = line.account_id.code
                             break
                     worksheet.write(row, 15, account_name, formats['center'])
