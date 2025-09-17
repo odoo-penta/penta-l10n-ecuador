@@ -110,6 +110,7 @@
                                         <field name="session_seq_id"/>
                                         <field name="movement_seq_id"/>
                                         <field name="payment_method_ids" widget="many2many_tags" readonly="not is_cash_box_admin" options="{'no_open': True, 'no_create': True}"/>
+                                        <field name="analytic_account_id"/>
                                     </group>
                                 </group>
                             </page>
