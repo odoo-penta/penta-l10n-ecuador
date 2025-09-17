@@ -139,13 +139,26 @@ class ReportSalesA1Wizard(models.TransientModel):
                     worksheet.write(row, tax_struct[tax_group.id]['iva'], 0.00, formats['number'])
             # Total venta
             worksheet.write(row, tax_col, invoice.amount_total, formats['number'])
-            worksheet.write(row, tax_col+1, 0.00, formats['number'])
-            worksheet.write(row, tax_col+2, 0.00, formats['number'])
+            # Retenciones
+            iva_tax_groups = self.env['account.tax.group'].search([('type_ret', 'in', ['withholding_iva_purchase', 'withholding_iva_sales'])])
+            rent_tax_groups = self.env['account.tax.group'].search([('type_ret', 'in', ['withholding_rent_purchase', 'withholding_rent_sales'])])
+            ret_iva = 0.00
+            ret_rent = 0.00
+            for reten in invoice.l10n_ec_withhold_ids:
+                if reten.state != 'posted':
+                    continue
+                for line in reten.invoice_line_ids:
+                    for l_tax in line.tax_ids:
+                        if l_tax.tax_group_id in iva_tax_groups:
+                            ret_iva += line.l10n_ec_withhold_tax_amount
+                        if l_tax.tax_group_id in rent_tax_groups:
+                            ret_rent += line.l10n_ec_withhold_tax_amount
+            worksheet.write(row, tax_col+1, ret_iva, formats['number'])
+            worksheet.write(row, tax_col+2, ret_rent, formats['number'])
             # Casilla 104
             all_tags = invoice.invoice_line_ids.mapped("tax_tag_ids.name")
             all_tags = list(set(all_tags))
             worksheet.write(row, tax_col+3, all_tags[0] if all_tags else '', formats['border'])
-
             # Casilla Retenciones
             if invoice.l10n_ec_withhold_ids:
                 all_tags = invoice.l10n_ec_withhold_ids.filtered(lambda w: w.state == "posted").line_ids.mapped("tax_tag_ids.name")
