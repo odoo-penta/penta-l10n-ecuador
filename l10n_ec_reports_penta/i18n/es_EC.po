@@ -1,456 +1,1757 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# 	* pentalab_report
+# 	* l10n_ec_reports_penta
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-18 17:46+0000\n"
-"PO-Revision-Date: 2025-07-18 12:49-0500\n"
+"POT-Creation-Date: 2025-09-15 22:35+0000\n"
+"PO-Revision-Date: 2025-09-15 22:35+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
-"Language: es_EC\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.6\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
 
-#. module: pentalab_report
-#: model:ir.actions.report,print_report_name:pentalab_report.action_report_cobros_por_ventas_pdf
+#. module: l10n_ec_reports_penta
+#: model:ir.actions.report,print_report_name:l10n_ec_reports_penta.action_report_account_move_custom
+#: model:ir.actions.report,print_report_name:l10n_ec_reports_penta.action_report_account_move_inventory
+msgid "'Accounting Entry - %s' % (object.name)"
+msgstr "'Entrada contable - %s' % (object.name)"
+
+#. module: l10n_ec_reports_penta
+#: model:ir.actions.report,print_report_name:l10n_ec_reports_penta.action_report_cobros_por_ventas_pdf
 msgid "'Cobros por Ventas - %s' % (object._get_report_base_filename())"
 msgstr ""
 
-#. module: pentalab_report
-#: model:ir.actions.report,print_report_name:pentalab_report.action_generate_reports_xlsx
-msgid "'GenerateReport'"
-msgstr "'ReporteGenerado'"
+#. module: l10n_ec_reports_penta
+#: model:ir.actions.report,print_report_name:l10n_ec_reports_penta.action_report_pagos_por_compras_pdf
+msgid "'Pagos por Compras - %s' % (object._get_report_base_filename())"
+msgstr ""
 
-#. module: pentalab_report
-#: model:ir.model.fields,field_description:pentalab_report.field_pentalab_report_wizard__file_data
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__export_inventory_month_wizard__year__2022
+msgid "2022"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__export_inventory_month_wizard__year__2023
+msgid "2023"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__export_inventory_month_wizard__year__2024
+msgid "2024"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__export_inventory_month_wizard__year__2025
+msgid "2025"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:mail.template,body_html:l10n_ec_reports_penta.email_template_customer_statement
+msgid ""
+"<div style=\"margin: 0px; padding: 0px;\">\n"
+"                <p style=\"margin: 0px; padding: 0px;\">\n"
+"                    <t t-if=\"object.id != object.commercial_partner_id.id\">Apreciable <t t-out=\"object.name or ''\"/> (<t t-out=\"object.commercial_partner_id.name or ''\"/>),</t>\n"
+"                    <t t-else=\"\">Apreciable <t t-out=\"object.name or ''\"/>,</t>\n"
+"                    <br/>\n"
+"                    En este correo encontrarás adjunto tu estado de cuenta.\n"
+"                    <br/>\n"
+"                    Contáctanos si tienes alguna pregunta.\n"
+"                    <br/><br/>\n"
+"\n"
+"                    <!-- Obtener fecha actual -->\n"
+"                    <t t-set=\"today\" t-value=\"datetime.date.today()\"/>\n"
+"                \n"
+"                    <!-- VALOR FIJO POR DEFECTO - Puedes cambiarlo según necesites -->\n"
+"                    <t t-set=\"filter_account_type\" t-value=\"'receivable'\"/>\n"
+"                    <!-- OPCIONES: 'receivable', 'payable', 'both', 'disabled' -->\n"
+"                \n"
+"                    <!-- APLICAR FILTRO SEGÚN CONFIGURACIÓN -->\n"
+"                    <t t-if=\"filter_account_type == 'both'\">\n"
+"                        <t t-set=\"account_types\" t-value=\"['asset_receivable', 'liability_payable']\"/>\n"
+"                    </t>\n"
+"                    <t t-elif=\"filter_account_type == 'payable'\">\n"
+"                        <t t-set=\"account_types\" t-value=\"['liability_payable']\"/>\n"
+"                    </t>\n"
+"                    <t t-elif=\"filter_account_type == 'receivable'\">\n"
+"                        <t t-set=\"account_types\" t-value=\"['asset_receivable']\"/>\n"
+"                    </t>\n"
+"                    <t t-else=\"\">\n"
+"                        <t t-set=\"account_types\" t-value=\"[]\"/>\n"
+"                    </t>\n"
+"                \n"
+"                    <!-- Obtener líneas no reconciliadas según filtro -->\n"
+"                    <t t-set=\"filtered_lines\" t-value=\"object.unreconciled_aml_ids.filtered(lambda l: l.account_id.account_type in account_types) if account_types else []\"/>\n"
+"                \n"
+"                    <!-- Separar en vencidas y no vencidas -->\n"
+"                    <t t-set=\"overdue_lines\" t-value=\"filtered_lines.filtered(lambda l: l.date_maturity and l.date_maturity &lt; today)\"/>\n"
+"                    <t t-set=\"due_lines\" t-value=\"filtered_lines.filtered(lambda l: not l.date_maturity or l.date_maturity &gt;= today)\"/>\n"
+"\n"
+"                    <!-- Calcular totales -->\n"
+"                    <t t-set=\"total_overdue\" t-value=\"sum(l.amount_residual_currency if l.amount_residual_currency != 0 else l.amount_residual for l in overdue_lines)\"/>\n"
+"                    <t t-set=\"total_due\" t-value=\"sum(l.amount_residual_currency if l.amount_residual_currency != 0 else l.amount_residual for l in due_lines)\"/>\n"
+"                    <t t-set=\"total_importe\" t-value=\"total_overdue + total_due\"/>\n"
+"\n"
+"                </p>\n"
+"            \n"
+"                <!-- Mostrar información del filtro aplicado -->\n"
+"                <p>\n"
+"                    <strong>Filtro aplicado:</strong> \n"
+"                    <t t-if=\"filter_account_type == 'both'\">Por pagar y por cobrar</t>\n"
+"                    <t t-elif=\"filter_account_type == 'payable'\">Por pagar</t>\n"
+"                    <t t-elif=\"filter_account_type == 'receivable'\">Por cobrar</t>\n"
+"                    <t t-else=\"\">Deshabilitado</t>\n"
+"                    <br/>\n"
+"\n"
+"                    <strong>Líneas encontradas:</strong> <t t-out=\"len(filtered_lines)\"/>\n"
+"                </p>\n"
+"            \n"
+"                <!-- Totales -->\n"
+"                <p>\n"
+"                    <strong>Total Vencidas:</strong>\n"
+"                    <t t-out=\"'%.2f' % abs(total_overdue)\"/>\n"
+"                    <br/>\n"
+"                \n"
+"                    <strong>Total Por Vencer:</strong>\n"
+"                    <t t-out=\"'%.2f' % abs(total_due)\"/>\n"
+"                    <br/>\n"
+"                \n"
+"                    <strong>Total Importe:</strong>\n"
+"                    <t t-out=\"'%.2f' % abs(total_importe)\"/>\n"
+"                    <br/>\n"
+"\n"
+"                    <strong>Saldo Neto:</strong>\n"
+"                    <t t-out=\"'%.2f' % total_importe\"/>\n"
+"                </p>\n"
+"            \n"
+"                <br/>\n"
+"                Saludos,\n"
+"                <br/>\n"
+"                <t t-out=\"object._get_followup_responsible().name or ''\"/>\n"
+"            </div>\n"
+"        "
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.report_account_move_inventory_document
+msgid ""
+"<strong>Aprobado por: </strong><br/>\n"
+"                      Nombre: ____________________________<br/>\n"
+"                      Cédula de Identidad: _______________\n"
+"                      <br/>"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.report_account_move_document
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.report_account_move_inventory_document
+msgid "<strong>Diario:</strong><br/>"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.report_account_move_inventory_document
+msgid "<strong>Elaborado por: </strong><br/>"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.report_account_move_document
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.report_account_move_inventory_document
+msgid "<strong>Fecha:</strong><br/>"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.report_account_move_document
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.report_account_move_inventory_document
+msgid "<strong>Referencia:</strong><br/>"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.report_account_move_document
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.report_account_move_inventory_document
+msgid "<strong>Total Crédito:</strong>"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.report_account_move_document
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.report_account_move_inventory_document
+msgid "<strong>Total Débito:</strong>"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.ui.menu,name:l10n_ec_reports_penta.menu_action_report_sales_a1
+msgid "A1 Ventas"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.ui.menu,name:l10n_ec_reports_penta.menu_action_report_purchase_a2
+msgid "A2 Compras"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__export_inventory_month_wizard__month__4
+msgid "Abril"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model,name:l10n_ec_reports_penta.model_account_account
+msgid "Account"
+msgstr "Cuenta"
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model,name:l10n_ec_reports_penta.model_account_group
+msgid "Account Group"
+msgstr "Grupo de cuentas"
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__export_inventory_month_wizard__month__8
+msgid "Agosto"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_dispatch_report__warehouse_id
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_quant__warehouse_id
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_quant_aggregated__warehouse_id
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_inventory_by_location_list
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_stock_by_location_list
+msgid "Almacén"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_pentalab_invoice_report_line_list
+msgid "Anexo de Compras"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model,name:l10n_ec_reports_penta.model_pentalab_invoice_report_line
+msgid "Anexo de Compras (Facturas publicadas de diarios de Compras)"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.actions.act_window,name:l10n_ec_reports_penta.action_pentalab_anexo_compras_wizard
+#: model:ir.actions.act_window,name:l10n_ec_reports_penta.action_pentalab_invoice_report_wizard
+#: model:ir.ui.menu,name:l10n_ec_reports_penta.menu_pentalab_anexo_compras
+msgid "Anexo de compras"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.ui.menu,name:l10n_ec_reports_penta.menu_reports_tax_annexes
+msgid "Anexos de Impuestos"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.actions.act_window,name:l10n_ec_reports_penta.action_pentalab_report_antiguedad_wizard
+#: model:ir.ui.menu,name:l10n_ec_reports_penta.menu_pentalab_report_antiguedad_wizard
+msgid "Antigüedad de cartera V."
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__report_uafe_wizard__month__04
+msgid "April"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_antiguedad_wizard__file_data
+msgid "Archivo"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_wizard__file_data
 msgid "Archivo XLSX"
 msgstr ""
 
-#. module: pentalab_report
-#: model:ir.model.fields,field_description:pentalab_report.field_stock_quant__product_category
-#: model_terms:ir.ui.view,arch_db:pentalab_report.view_inventory_by_location_list
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_quant_aggregated__product_category
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_inventory_by_location_list
 msgid "Artículo"
 msgstr ""
 
-#. module: pentalab_report
-#: model_terms:ir.ui.view,arch_db:pentalab_report.view_generate_reports_wizard_form
-msgid "Cancel"
-msgstr "Cancelar"
+#. module: l10n_ec_reports_penta
+#: model:ir.actions.report,name:l10n_ec_reports_penta.action_report_account_move_custom
+msgid "Asiento Contable"
+msgstr ""
 
-#. module: pentalab_report
-#: model_terms:ir.ui.view,arch_db:pentalab_report.view_pentalab_report_wizard_form
+#. module: l10n_ec_reports_penta
+#: model:ir.actions.report,name:l10n_ec_reports_penta.action_report_account_move_inventory
+msgid "Asiento Contable Facturas y Valuacion "
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.report_account_move_document
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.report_account_move_inventory_document
+msgid "Asiento contable"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_account_bank_statement_line__valuation_moves_ids
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_account_move__valuation_moves_ids
+msgid "Asientos de valuación"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_dispatch_report__product_variant
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_stock_by_location_list
+msgid "Atributos y Variantes"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_quant__attributes_and_variants
+msgid "Atributos y variantes"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,help:l10n_ec_reports_penta.field_stock_quant__attributes_and_variants
+msgid "Atributos y variantes del producto, como calidad, matiz, calibre, etc."
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__report_uafe_wizard__month__08
+msgid "August"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_export_inventory_month_wizard__year
+msgid "Año"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.ui.menu,name:l10n_ec_reports_penta.menu_action_informe_pentalab_balance
+msgid "Balance General (EXCEL)"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_dispatch_report__street
+msgid "Calle"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_dispatch_report__street2
+msgid "Calle 2"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_report_purchase_a2_wizard_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_report_purchase_retentions_wizard_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_report_sales_a1_wizard_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_report_usafe_wizard_form
+msgid "Cancel"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_export_inventory_wizard_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_l10n_ec_reports_penta_wizard_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_pentalab_report_antiguedad_wizard_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_pentalab_report_balance_wizard
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_pentalab_report_estado_wizard
 msgid "Cancelar"
 msgstr ""
 
-#. module: pentalab_report
-#: model_terms:ir.ui.view,arch_db:pentalab_report.view_inventory_by_location_list
-msgid "Cantidad a la mano"
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_quant_aggregated__quantity
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_pentalab_invoice_report_line_list
+msgid "Cantidad"
 msgstr ""
 
-#. module: pentalab_report
-#: model:ir.model.fields,field_description:pentalab_report.field_cobros_por_ventas__x_partner_name
-#: model_terms:ir.ui.view,arch_db:pentalab_report.report_cobros_por_ventas_template
-#: model_terms:ir.ui.view,arch_db:pentalab_report.view_cobros_por_ventas_form
-#: model_terms:ir.ui.view,arch_db:pentalab_report.view_cobros_por_ventas_list
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_picking_report__total_quantity
+msgid "Cantidad Total"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_quant__quantity
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_inventory_by_location_list
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_stock_by_location_list
+msgid "Cantidad a la mano"
+msgstr "Cantidad"
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_invoice_report_line__quantity
+msgid "Cantidad facturada"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_invoice_report_line__categ_name
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_quant__category_id
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_stock_by_location_list
+msgid "Categoría"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_invoice_report_line__parent_categ_name
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_stock_by_location_list
+msgid "Categoría Padre"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_quant__main_category_id
+msgid "Categoría principal"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_pentalab_invoice_report_wizard_form
+msgid "Cerrar"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_dispatch_report__city
+msgid "Ciudad"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_cobros_por_ventas__x_partner_name
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_dispatch_report__partner_id
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.report_cobros_por_ventas_template
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_cobros_por_ventas_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_cobros_por_ventas_list
 msgid "Cliente"
 msgstr ""
 
-#. module: pentalab_report
-#: model:ir.actions.act_window,name:pentalab_report.action_cobros_por_ventas
-#: model:ir.ui.menu,name:pentalab_report.menu_cobros_por_ventas
-#: model_terms:ir.ui.view,arch_db:pentalab_report.report_cobros_por_ventas_template
+#. module: l10n_ec_reports_penta
+#: model:ir.actions.act_window,name:l10n_ec_reports_penta.action_cobros_por_ventas
+#: model:ir.ui.menu,name:l10n_ec_reports_penta.menu_cobros_por_ventas
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.report_cobros_por_ventas_template
 msgid "Cobros por Ventas"
 msgstr ""
 
-#. module: pentalab_report
-#: model:ir.model.fields,field_description:pentalab_report.field_pentalab_report_wizard__company_id
+#. module: l10n_ec_reports_penta
+#: model:ir.model,name:l10n_ec_reports_penta.model_res_company
+msgid "Companies"
+msgstr "Empresas"
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_invoice_report_line__company_id
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_wizard__company_id
 msgid "Compañía"
 msgstr ""
 
-#. module: pentalab_report
-#: model:ir.model.fields,field_description:pentalab_report.field_stock_quant__standard_price
-msgid "Cost"
-msgstr "Costo"
+#. module: l10n_ec_reports_penta
+#: model:ir.actions.act_window,name:l10n_ec_reports_penta.action_report_purchase_retentions_wizard_wizard
+#: model:ir.ui.menu,name:l10n_ec_reports_penta.menu_pentalab_purchase_retentions_wizard
+msgid "Compras y Retenciones"
+msgstr ""
 
-#. module: pentalab_report
-#: model_terms:ir.ui.view,arch_db:pentalab_report.view_inventory_by_location_list
+#. module: l10n_ec_reports_penta
+#: model:ir.model,name:l10n_ec_reports_penta.model_res_config_settings
+msgid "Config Settings"
+msgstr "Ajustes de configuración"
+
+#. module: l10n_ec_reports_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.res_config_settings_view_form
+msgid "Configurations for the UAFE"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_pentalab_report_balance_wizard
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_pentalab_report_estado_wizard
+msgid "Confirmar"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model,name:l10n_ec_reports_penta.model_stock_picking_report
+msgid "Consolidated Dispatch Orders Report"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_invoice_report_line__partner_id
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_invoice_report_line__partner_name
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.report_account_move_document
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.report_account_move_inventory_document
+msgid "Contacto"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_quant_aggregated__standard_price
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_inventory_by_location_list
 msgid "Costo"
 msgstr ""
 
-#. module: pentalab_report
-#: model:ir.model.fields,field_description:pentalab_report.field_generate_reports_wizard__create_uid
-#: model:ir.model.fields,field_description:pentalab_report.field_pentalab_report_wizard__create_uid
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_dispatch_report__create_uid
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_export_inventory_month_wizard__create_uid
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_invoice_report_wizard__create_uid
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_antiguedad_wizard__create_uid
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_balance_wizard__create_uid
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_custom__create_uid
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_estado_wizard__create_uid
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_wizard__create_uid
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_purchase_a2_wizard__create_uid
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_purchase_retentions_wizard__create_uid
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_sales_a1_wizard__create_uid
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_uafe_wizard__create_uid
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_picking_report__create_uid
 msgid "Created by"
 msgstr "Creado por"
 
-#. module: pentalab_report
-#: model:ir.model.fields,field_description:pentalab_report.field_generate_reports_wizard__create_date
-#: model:ir.model.fields,field_description:pentalab_report.field_pentalab_report_wizard__create_date
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_dispatch_report__create_date
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_export_inventory_month_wizard__create_date
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_invoice_report_wizard__create_date
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_antiguedad_wizard__create_date
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_balance_wizard__create_date
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_custom__create_date
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_estado_wizard__create_date
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_wizard__create_date
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_purchase_a2_wizard__create_date
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_purchase_retentions_wizard__create_date
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_sales_a1_wizard__create_date
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_uafe_wizard__create_date
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_picking_report__create_date
 msgid "Created on"
 msgstr "Creado el"
 
-#. module: pentalab_report
-#: model:ir.model.fields,field_description:pentalab_report.field_cobros_por_ventas__x_credit
-#: model:ir.model.fields,field_description:pentalab_report.field_pagos_por_compras__x_credit
-#: model_terms:ir.ui.view,arch_db:pentalab_report.report_cobros_por_ventas_template
-#: model_terms:ir.ui.view,arch_db:pentalab_report.view_cobros_por_ventas_form
-#: model_terms:ir.ui.view,arch_db:pentalab_report.view_cobros_por_ventas_list
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_cobros_por_ventas__x_credit
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pagos_por_compras__x_credit
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.report_account_move_document
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.report_account_move_inventory_document
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.report_cobros_por_ventas_template
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.report_pagos_por_compras_template
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_cobros_por_ventas_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_cobros_por_ventas_list
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_pagos_por_compras_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_pagos_por_compras_list
 msgid "Crédito"
 msgstr ""
 
-#. module: pentalab_report
-#: model:ir.model.fields,field_description:pentalab_report.field_cobros_por_ventas__x_account
-#: model:ir.model.fields,field_description:pentalab_report.field_pagos_por_compras__x_account
-#: model_terms:ir.ui.view,arch_db:pentalab_report.report_cobros_por_ventas_template
-#: model_terms:ir.ui.view,arch_db:pentalab_report.view_cobros_por_ventas_form
-#: model_terms:ir.ui.view,arch_db:pentalab_report.view_cobros_por_ventas_list
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_cobros_por_ventas__x_account
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pagos_por_compras__x_account
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.report_account_move_document
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.report_account_move_inventory_document
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.report_cobros_por_ventas_template
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.report_pagos_por_compras_template
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_cobros_por_ventas_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_cobros_por_ventas_list
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_pagos_por_compras_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_pagos_por_compras_list
 msgid "Cuenta"
 msgstr ""
 
-#. module: pentalab_report
-#: model:ir.model.fields,field_description:pentalab_report.field_account_payment__move_line_ids
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_account_group__account_move
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_account_group_form_inherit_hide_in_report
+msgid "Cuenta de movimiento"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_antiguedad_wizard__account_ids
+msgid "Cuentas contables"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_account_payment__move_line_ids
 msgid "Cuotas de Facturas"
 msgstr ""
 
-#. module: pentalab_report
-#: model:ir.model.fields,field_description:pentalab_report.field_account_payment__partner_id
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__report_uafe_wizard__domain_uafe__customer
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__stock_quant_aggregated__location_usage__customer
+msgid "Customer"
+msgstr "Cliente"
+
+#. module: l10n_ec_reports_penta
+#: model:mail.template,name:l10n_ec_reports_penta.email_template_customer_statement
+msgid "Customer Statement"
+msgstr "Estado de cuenta Penta CB"
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__report_uafe_wizard__domain_uafe__customer_supplier
+msgid "Customer/Supplier"
+msgstr "Cliente/Proveedor"
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_account_payment__partner_id
 msgid "Customer/Vendor"
 msgstr "Cliente/proveedor"
 
-#. module: pentalab_report
-#: model:ir.model.fields,field_description:pentalab_report.field_stock_quant__default_code
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_quant__default_code
 msgid "Código del producto"
 msgstr ""
 
-#. module: pentalab_report
-#: model:ir.model.fields,field_description:pentalab_report.field_generate_reports_wizard__date_end
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_purchase_retentions_wizard__date_end
 msgid "Date end"
-msgstr "Fecha fin"
+msgstr "Fecha de finalización"
 
-#. module: pentalab_report
-#: model:ir.model.fields,field_description:pentalab_report.field_generate_reports_wizard__date_start
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_purchase_retentions_wizard__date_start
 msgid "Date start"
-msgstr "Fecha inicio"
+msgstr "Fecha de inicio"
 
-#. module: pentalab_report
-#: model:ir.model.fields,field_description:pentalab_report.field_pentalab_report_wizard__date_from
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__report_uafe_wizard__month__12
+msgid "December"
+msgstr "Diciembre"
+
+#. module: l10n_ec_reports_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.report_account_move_document
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.report_account_move_inventory_document
+msgid "Descripción"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_invoice_report_wizard__date_from
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_wizard__date_from
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_purchase_a2_wizard__date_start
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_sales_a1_wizard__date_start
 msgid "Desde"
 msgstr ""
 
-#. module: pentalab_report
-#: model:ir.model.fields,field_description:pentalab_report.field_cobros_por_ventas__x_journal
-#: model:ir.model.fields,field_description:pentalab_report.field_pagos_por_compras__x_journal
-#: model_terms:ir.ui.view,arch_db:pentalab_report.report_cobros_por_ventas_template
-#: model_terms:ir.ui.view,arch_db:pentalab_report.view_cobros_por_ventas_form
-#: model_terms:ir.ui.view,arch_db:pentalab_report.view_cobros_por_ventas_list
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_cobros_por_ventas__x_journal
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pagos_por_compras__x_journal
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_invoice_report_line__journal_id
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_invoice_report_line__journal_name
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.report_cobros_por_ventas_template
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.report_pagos_por_compras_template
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_cobros_por_ventas_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_cobros_por_ventas_list
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_pagos_por_compras_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_pagos_por_compras_list
 msgid "Diario"
 msgstr ""
 
-#. module: pentalab_report
-#: model:ir.model.fields,field_description:pentalab_report.field_cobros_por_ventas__display_name
-#: model:ir.model.fields,field_description:pentalab_report.field_generate_reports_wizard__display_name
-#: model:ir.model.fields,field_description:pentalab_report.field_pagos_por_compras__display_name
-#: model:ir.model.fields,field_description:pentalab_report.field_pentalab_report_wizard__display_name
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_invoice_report_wizard__journal_ids
+msgid "Diarios"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__export_inventory_month_wizard__month__12
+msgid "Diciembre"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_cobros_por_ventas__display_name
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_dispatch_report__display_name
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_export_inventory_month_wizard__display_name
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pagos_por_compras__display_name
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_invoice_report_line__display_name
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_invoice_report_wizard__display_name
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_antiguedad_wizard__display_name
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_balance_wizard__display_name
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_custom__display_name
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_estado_wizard__display_name
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_wizard__display_name
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_purchase_a2_wizard__display_name
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_purchase_retentions_wizard__display_name
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_sales_a1_wizard__display_name
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_uafe_wizard__display_name
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_picking_report__display_name
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_quant_aggregated__display_name
 msgid "Display Name"
 msgstr "Nombre"
 
-#. module: pentalab_report
-#: model:ir.model.fields,field_description:pentalab_report.field_cobros_por_ventas__x_debit
-#: model:ir.model.fields,field_description:pentalab_report.field_pagos_por_compras__x_debit
-#: model_terms:ir.ui.view,arch_db:pentalab_report.report_cobros_por_ventas_template
-#: model_terms:ir.ui.view,arch_db:pentalab_report.view_cobros_por_ventas_form
-#: model_terms:ir.ui.view,arch_db:pentalab_report.view_cobros_por_ventas_list
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_uafe_wizard__domain_uafe
+msgid "Domain"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_cobros_por_ventas__x_debit
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pagos_por_compras__x_debit
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.report_account_move_document
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.report_account_move_inventory_document
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.report_cobros_por_ventas_template
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.report_pagos_por_compras_template
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_cobros_por_ventas_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_cobros_por_ventas_list
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_pagos_por_compras_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_pagos_por_compras_list
 msgid "Débito"
 msgstr ""
 
-#. module: pentalab_report
-#: model:ir.model.fields,field_description:pentalab_report.field_cobros_por_ventas__x_tag
-#: model:ir.model.fields,field_description:pentalab_report.field_pagos_por_compras__x_tag
-#: model_terms:ir.ui.view,arch_db:pentalab_report.report_cobros_por_ventas_template
-#: model_terms:ir.ui.view,arch_db:pentalab_report.view_cobros_por_ventas_form
-#: model_terms:ir.ui.view,arch_db:pentalab_report.view_cobros_por_ventas_list
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_dispatch_report__picking_id
+msgid "Egreso de Bodega"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_dispatch_report__product_packaging_id
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_product_product__packaging_name
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_quant__packaging_name
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_stock_by_location_list
+msgid "Embalaje"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_invoice_report_line__company_name
+msgid "Empresa"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__export_inventory_month_wizard__month__1
+msgid "Enero"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_dispatch_report__state_id
+msgid "Estado"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.ui.menu,name:l10n_ec_reports_penta.menu_action_informe_pentalab_estado
+msgid "Estado de resultados (EXCEL)"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_cobros_por_ventas__x_tag
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pagos_por_compras__x_tag
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.report_cobros_por_ventas_template
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.report_pagos_por_compras_template
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_cobros_por_ventas_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_cobros_por_ventas_list
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_pagos_por_compras_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_pagos_por_compras_list
 msgid "Etiqueta"
 msgstr ""
 
-#. module: pentalab_report
-#: model:ir.model.fields,field_description:pentalab_report.field_cobros_por_ventas__x_date
-#: model:ir.model.fields,field_description:pentalab_report.field_pagos_por_compras__x_date
-#: model_terms:ir.ui.view,arch_db:pentalab_report.report_cobros_por_ventas_template
-#: model_terms:ir.ui.view,arch_db:pentalab_report.view_cobros_por_ventas_form
-#: model_terms:ir.ui.view,arch_db:pentalab_report.view_cobros_por_ventas_list
+#. module: l10n_ec_reports_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_export_inventory_wizard_form
+msgid "Exportar"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.actions.act_window,name:l10n_ec_reports_penta.action_open_export_wizard
+msgid "Exportar Inventario"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model,name:l10n_ec_reports_penta.model_export_inventory_month_wizard
+msgid "Exportar Inventario por Mes"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.actions.server,name:l10n_ec_reports_penta.action_export_account_group_tree_excel
+#: model:ir.ui.menu,name:l10n_ec_reports_penta.menu_export_plan_de_cuentas
+msgid "Exportar Plan de Cuentas"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_inventory_by_location_list
+msgid "Exportar XLSX"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_dispatch_report__invoice_id
+msgid "Factura"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__export_inventory_month_wizard__month__2
+msgid "Febrero"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__report_uafe_wizard__month__02
+msgid "February"
+msgstr "Febrero"
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_cobros_por_ventas__x_date
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pagos_por_compras__x_date
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.report_cobros_por_ventas_template
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.report_pagos_por_compras_template
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_cobros_por_ventas_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_cobros_por_ventas_list
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_pagos_por_compras_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_pagos_por_compras_list
 msgid "Fecha"
 msgstr ""
 
-#. module: pentalab_report
-#: model_terms:ir.ui.view,arch_db:pentalab_report.view_pentalab_report_wizard_form
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_balance_wizard__date_to
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_estado_wizard__date_to
+msgid "Fecha Final"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_estado_wizard__date_from
+msgid "Fecha Inicio"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_dispatch_report__order_date
+msgid "Fecha Orden Venta"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_invoice_report_line__date
+msgid "Fecha contable"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_antiguedad_wizard__date
+msgid "Fecha de corte"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_invoice_report_line__invoice_date
+msgid "Fecha de factura"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_quant_aggregated__in_date
+msgid "Fecha de ingreso"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_picking_report__document_date
+msgid "Fecha del Documento"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_dispatch_report__picking_date
+msgid "Fecha del Picking"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_pentalab_report_balance_wizard
+msgid "Generar Balance General"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_pentalab_report_estado_wizard
+msgid "Generar Estado de Resultados"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_l10n_ec_reports_penta_wizard_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_pentalab_report_antiguedad_wizard_form
 msgid "Generar Reporte"
 msgstr ""
 
-#. module: pentalab_report
-#: model_terms:ir.ui.view,arch_db:pentalab_report.view_generate_reports_wizard_form
+#. module: l10n_ec_reports_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_pentalab_report_antiguedad_wizard_form
+msgid "Generar Reporte Antigüedad"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.actions.act_window,name:l10n_ec_reports_penta.action_pentalab_report_balance_wizard
+#: model:ir.actions.act_window,name:l10n_ec_reports_penta.action_pentalab_report_estado_wizard
+msgid "Generar Reporte Modificado"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.actions.server,name:l10n_ec_reports_penta.action_dispatch_report_server
+#: model:ir.actions.server,name:l10n_ec_reports_penta.action_stock_picking_report_server
+msgid "Generar Reporte de Despachos"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_report_purchase_a2_wizard_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_report_purchase_retentions_wizard_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_report_sales_a1_wizard_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_report_usafe_wizard_form
 msgid "Generate"
-msgstr "Generar"
+msgstr ""
 
-#. module: pentalab_report
-#: model:ir.actions.act_window,name:pentalab_report.action_generate_reports_wizard
-msgid "Generate Reports"
-msgstr "Generar Reportes"
-
-#. module: pentalab_report
-#: model:ir.ui.menu,name:pentalab_report.menu_action_reports_report
-msgid "Generate reports"
-msgstr "Generar reportes"
-
-#. module: pentalab_report
-#: model:ir.actions.report,name:pentalab_report.action_generate_reports_xlsx
-msgid "GenerateReports"
-msgstr "ReportesGenerado"
-
-#. module: pentalab_report
-#: model:ir.model.fields,field_description:pentalab_report.field_stock_quant__product_group
-#: model_terms:ir.ui.view,arch_db:pentalab_report.view_inventory_by_location_list
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_quant_aggregated__product_group
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_inventory_by_location_list
 msgid "Grupo"
 msgstr ""
 
-#. module: pentalab_report
-#: model:ir.model.fields,field_description:pentalab_report.field_pentalab_report_wizard__date_to
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_picking_report__waybill_number
+msgid "Guía de Remisión"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_invoice_report_wizard__date_to
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_wizard__date_to
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_purchase_a2_wizard__date_end
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_sales_a1_wizard__date_end
 msgid "Hasta"
 msgstr ""
 
-#. module: pentalab_report
-#: model:ir.model.fields,field_description:pentalab_report.field_cobros_por_ventas__id
-#: model:ir.model.fields,field_description:pentalab_report.field_generate_reports_wizard__id
-#: model:ir.model.fields,field_description:pentalab_report.field_pagos_por_compras__id
-#: model:ir.model.fields,field_description:pentalab_report.field_pentalab_report_wizard__id
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_cobros_por_ventas__id
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_dispatch_report__id
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_export_inventory_month_wizard__id
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pagos_por_compras__id
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_invoice_report_line__id
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_invoice_report_wizard__id
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_antiguedad_wizard__id
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_balance_wizard__id
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_custom__id
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_estado_wizard__id
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_wizard__id
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_purchase_a2_wizard__id
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_purchase_retentions_wizard__id
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_sales_a1_wizard__id
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_uafe_wizard__id
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_picking_report__id
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_quant_aggregated__id
 msgid "ID"
 msgstr ""
 
-#. module: pentalab_report
-#: model:ir.actions.act_window,name:pentalab_report.action_pentalab_report_wizard
-#: model_terms:ir.ui.view,arch_db:pentalab_report.view_pentalab_report_wizard_form
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_invoice_report_line__partner_vat
+msgid "Identificación"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_dispatch_report__vat
+msgid "Identificación Fiscal"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,help:l10n_ec_reports_penta.field_account_tax_group__show_report
+msgid ""
+"If this tax group is checked, it will be considered in the A1 sales report."
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_invoice_report_line__taxes
+msgid "Impuestos"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.actions.act_window,name:l10n_ec_reports_penta.action_l10n_ec_reports_penta_wizard
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_l10n_ec_reports_penta_wizard_form
 msgid "Informe Pentalab"
 msgstr ""
 
-#. module: pentalab_report
-#: model:ir.actions.act_window,name:pentalab_report.action_pentalab_inventory_by_location
-#: model:ir.ui.menu,name:pentalab_report.menu_pentalab_inventory_by_location
-#: model_terms:ir.ui.view,arch_db:pentalab_report.view_inventory_by_location_list
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__stock_quant_aggregated__location_usage__internal
+msgid "Internal"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_stock_quant_aggregated_search
+msgid "Internas"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.actions.act_window,name:l10n_ec_reports_penta.action_pentalab_inventory_by_location
+#: model:ir.ui.menu,name:l10n_ec_reports_penta.menu_pentalab_inventory_by_location
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_inventory_by_location_list
 msgid "Inventario por almacén"
 msgstr ""
 
-#. module: pentalab_report
-#: model:ir.model.fields,field_description:pentalab_report.field_account_payment__journal_code
+#. module: l10n_ec_reports_penta
+#: model:ir.actions.act_window,name:l10n_ec_reports_penta.action_stock_quant_aggregated
+msgid "Inventario por almacén agrupado"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__stock_quant_aggregated__location_usage__inventory
+msgid "Inventory"
+msgstr "Inventario"
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__report_uafe_wizard__month__01
+msgid "January"
+msgstr "Enero"
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_account_payment__journal_code
 msgid "Journal Code"
 msgstr "Código diario"
 
-#. module: pentalab_report
-#: model:ir.model.fields,field_description:pentalab_report.field_generate_reports_wizard__write_uid
-#: model:ir.model.fields,field_description:pentalab_report.field_pentalab_report_wizard__write_uid
+#. module: l10n_ec_reports_penta
+#: model:ir.model,name:l10n_ec_reports_penta.model_account_move
+msgid "Journal Entry"
+msgstr "Asiento contable"
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__export_inventory_month_wizard__month__7
+msgid "Julio"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__report_uafe_wizard__month__07
+msgid "July"
+msgstr "Julio"
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__report_uafe_wizard__month__06
+msgid "June"
+msgstr "Junio"
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__export_inventory_month_wizard__month__6
+msgid "Junio"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_dispatch_report__write_uid
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_export_inventory_month_wizard__write_uid
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_invoice_report_wizard__write_uid
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_antiguedad_wizard__write_uid
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_balance_wizard__write_uid
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_custom__write_uid
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_estado_wizard__write_uid
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_wizard__write_uid
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_purchase_a2_wizard__write_uid
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_purchase_retentions_wizard__write_uid
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_sales_a1_wizard__write_uid
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_uafe_wizard__write_uid
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_picking_report__write_uid
 msgid "Last Updated by"
 msgstr "Última actualización por"
 
-#. module: pentalab_report
-#: model:ir.model.fields,field_description:pentalab_report.field_generate_reports_wizard__write_date
-#: model:ir.model.fields,field_description:pentalab_report.field_pentalab_report_wizard__write_date
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_dispatch_report__write_date
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_export_inventory_month_wizard__write_date
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_invoice_report_wizard__write_date
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_antiguedad_wizard__write_date
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_balance_wizard__write_date
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_custom__write_date
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_estado_wizard__write_date
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_wizard__write_date
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_purchase_a2_wizard__write_date
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_purchase_retentions_wizard__write_date
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_sales_a1_wizard__write_date
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_uafe_wizard__write_date
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_picking_report__write_date
 msgid "Last Updated on"
 msgstr "Última actualización el"
 
-#. module: pentalab_report
-#: model:ir.model.fields,field_description:pentalab_report.field_stock_quant__product_line
-#: model_terms:ir.ui.view,arch_db:pentalab_report.view_inventory_by_location_list
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_quant_aggregated__product_line
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_inventory_by_location_list
 msgid "Línea"
 msgstr ""
 
-#. module: pentalab_report
-#: model:ir.model.fields,field_description:pentalab_report.field_pentalab_report_wizard__file_name
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,help:l10n_ec_reports_penta.field_pentalab_report_antiguedad_wizard__no_commercial_only
+msgid "Marcador informativo. No altera filtros ni resultados."
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__report_uafe_wizard__month__03
+msgid "March"
+msgstr "Marzo"
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__export_inventory_month_wizard__month__3
+msgid "Marzo"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__report_uafe_wizard__month__05
+msgid "May"
+msgstr "Mayo"
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__export_inventory_month_wizard__month__5
+msgid "Mayo"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_export_inventory_month_wizard__month
+msgid "Mes"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_invoice_report_line__currency_id
+msgid "Moneda"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_uafe_wizard__month
+msgid "Month"
+msgstr "Mes"
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_picking_report__transfer_reason
+msgid "Motivo del Traslado"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_invoice_report_line__paymethod_name
+msgid "Método de pago"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_antiguedad_wizard__no_commercial_only
+msgid "NO Comercial"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.report_account_move_inventory_document
+msgid "No hay asientos de valuación asociados."
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_quant_aggregated__location_parent_id
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_inventory_by_location_list
+msgid "Nombre corto"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_balance_wizard__report_filename
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_estado_wizard__report_filename
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_wizard__file_name
 msgid "Nombre del Archivo"
 msgstr ""
 
-#. module: pentalab_report
-#: model:ir.model.fields,field_description:pentalab_report.field_cobros_por_ventas__x_move_name
-#: model:ir.model.fields,field_description:pentalab_report.field_pagos_por_compras__x_move_name
-#: model_terms:ir.ui.view,arch_db:pentalab_report.report_cobros_por_ventas_template
-#: model_terms:ir.ui.view,arch_db:pentalab_report.view_cobros_por_ventas_form
-#: model_terms:ir.ui.view,arch_db:pentalab_report.view_cobros_por_ventas_list
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_cobros_por_ventas__x_move_name
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pagos_por_compras__x_move_name
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.report_cobros_por_ventas_template
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.report_pagos_por_compras_template
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_cobros_por_ventas_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_cobros_por_ventas_list
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_pagos_por_compras_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_pagos_por_compras_list
 msgid "Nombre del Asiento"
 msgstr ""
 
-#. module: pentalab_report
-#: model:ir.model.fields,field_description:pentalab_report.field_stock_quant__product_name
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_picking_report__customer_name
+msgid "Nombre del Cliente"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_picking_report__driver_name
+msgid "Nombre del Conductor"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_antiguedad_wizard__file_name
+msgid "Nombre del archivo"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_quant__product_name
 msgid "Nombre del producto"
 msgstr ""
 
-#. module: pentalab_report
-#: model:ir.model.fields,field_description:pentalab_report.field_stock_quant__list_price
-msgid "PVP"
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__report_uafe_wizard__month__11
+msgid "November"
+msgstr "Noviembre"
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__export_inventory_month_wizard__month__11
+msgid "Noviembre"
 msgstr ""
 
-#. module: pentalab_report
-#: model:ir.model,name:pentalab_report.model_account_payment
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_picking_report__company_vat
+msgid "N° Identificación Fiscal"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_invoice_report_line__auth_number
+msgid "N° autorización"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_invoice_report_line__purchase_order_name
+msgid "N° pedido"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_invoice_report_line__move_name
+msgid "Número"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_dispatch_report__picking_name
+msgid "Número Egreso"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_dispatch_report__invoice_number
+msgid "Número Factura"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_dispatch_report__order_name
+msgid "Número Orden Venta"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_picking_report__document_number
+msgid "Número del Documento"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__report_uafe_wizard__month__10
+msgid "October"
+msgstr "Octubre"
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__export_inventory_month_wizard__month__10
+msgid "Octubre"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_account_account__hide_in_report
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_account_form_inherit_hide_in_report
+msgid "Ocultar en reporte"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_picking_report__picking_id
+msgid "Orden de Despacho"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_dispatch_report__order_id
+msgid "Orden de Venta"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.ui.menu,name:l10n_ec_reports_penta.menu_reports_others
+msgid "Otros Reportes"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.actions.act_window,name:l10n_ec_reports_penta.action_pagos_por_compras
+#: model:ir.ui.menu,name:l10n_ec_reports_penta.menu_pagos_por_compras
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.report_pagos_por_compras_template
+msgid "Pagos por Compras"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model,name:l10n_ec_reports_penta.model_pentalab_invoice_report_wizard
+msgid "Parámetros - Anexo de Compras"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_pentalab_invoice_report_wizard_form
+msgid "Parámetros - Anexo de compras"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model,name:l10n_ec_reports_penta.model_account_payment
 msgid "Payments"
 msgstr "Pagos"
 
-#. module: pentalab_report
-#: model:ir.model.fields.selection,name:pentalab_report.selection__pentalab_report_wizard__type__out_invoice
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_dispatch_report__weight
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_picking_report__total_weight
+msgid "Peso Total"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_picking_report__vehicle_plate
+msgid "Placa del Vehículo"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__pentalab_report_wizard__type__out_invoice
 msgid "Por Cobrar"
 msgstr ""
 
-#. module: pentalab_report
-#: model:ir.model.fields.selection,name:pentalab_report.selection__pentalab_report_wizard__type__advance_account_customer_id
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__pentalab_report_wizard__type__advance_account_customer_id
 msgid "Por Cobrar y Por Pagar Anticipo de Clientes"
 msgstr ""
 
-#. module: pentalab_report
-#: model:ir.model.fields.selection,name:pentalab_report.selection__pentalab_report_wizard__type__in_invoice
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__pentalab_report_wizard__type__in_invoice
 msgid "Por Pagar"
 msgstr ""
 
-#. module: pentalab_report
-#: model_terms:ir.ui.view,arch_db:pentalab_report.view_inventory_by_location_list
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__pentalab_report_antiguedad_wizard__account_type__asset_receivable
+msgid "Por cobrar"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_quant_aggregated__list_price
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_inventory_by_location_list
 msgid "Precio"
 msgstr ""
 
-#. module: pentalab_report
-#: model:ir.model.fields,help:pentalab_report.field_stock_quant__list_price
-msgid "Price at which the product is sold to customers."
-msgstr "Precio al que se vende el producto a los clientes."
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_invoice_report_line__price_unit
+msgid "Precio unitario"
+msgstr ""
 
-#. module: pentalab_report
-#: model_terms:ir.ui.view,arch_db:pentalab_report.view_inventory_by_location_list
+#. module: l10n_ec_reports_penta
+#: model:ir.model,name:l10n_ec_reports_penta.model_product_product
+msgid "Product Variant"
+msgstr "Variante del producto"
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__stock_quant_aggregated__location_usage__production
+msgid "Production"
+msgstr "Producción"
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_dispatch_report__product_id
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_invoice_report_line__product_name
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_quant_aggregated__product_id
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_quant_aggregated__product_name
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_inventory_by_location_list
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_stock_by_location_list
 msgid "Producto"
 msgstr ""
 
-#. module: pentalab_report
-#: model:ir.model.fields,field_description:pentalab_report.field_pagos_por_compras__x_partner_name
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pagos_por_compras__x_partner_name
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.report_pagos_por_compras_template
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_pagos_por_compras_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_pagos_por_compras_list
 msgid "Proveedor"
 msgstr ""
 
-#. module: pentalab_report
-#: model:ir.model.fields.selection,name:pentalab_report.selection__generate_reports_wizard__report_type__purchase
-msgid "Purchase"
-msgstr "Compra"
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,help:l10n_ec_reports_penta.field_stock_quant__quantity
+msgid ""
+"Quantity of products in this quant, in the default unit of measure of the "
+"product"
+msgstr ""
+"Cantidad de productos en este quant, en la unidad de medida predeterminada "
+"del producto"
 
-#. module: pentalab_report
-#: model:ir.model,name:pentalab_report.model_stock_quant
+#. module: l10n_ec_reports_penta
+#: model:ir.model,name:l10n_ec_reports_penta.model_stock_quant
 msgid "Quants"
 msgstr "Cants"
 
-#. module: pentalab_report
-#: model:ir.model.fields,field_description:pentalab_report.field_cobros_por_ventas__x_reference
-#: model:ir.model.fields,field_description:pentalab_report.field_pagos_por_compras__x_reference
-#: model_terms:ir.ui.view,arch_db:pentalab_report.report_cobros_por_ventas_template
-#: model_terms:ir.ui.view,arch_db:pentalab_report.view_cobros_por_ventas_form
-#: model_terms:ir.ui.view,arch_db:pentalab_report.view_cobros_por_ventas_list
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_invoice_report_line__default_code
+msgid "Ref. interna"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_cobros_por_ventas__x_reference
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pagos_por_compras__x_reference
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_invoice_report_line__ref
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.report_cobros_por_ventas_template
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.report_pagos_por_compras_template
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_cobros_por_ventas_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_cobros_por_ventas_list
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_pagos_por_compras_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_pagos_por_compras_list
 msgid "Referencia"
 msgstr ""
 
-#. module: pentalab_report
-#: model_terms:ir.ui.view,arch_db:pentalab_report.view_inventory_by_location_list
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_dispatch_report__default_code
+msgid "Referencia Interna"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_quant_aggregated__default_code
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_inventory_by_location_list
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_stock_by_location_list
 msgid "Referencia interna"
 msgstr ""
 
-#. module: pentalab_report
-#: model_terms:ir.ui.view,arch_db:pentalab_report.view_generate_reports_wizard_form
+#. module: l10n_ec_reports_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_report_purchase_retentions_wizard_form
 msgid "Report Generator"
-msgstr "Gnereador de reporte"
+msgstr ""
 
-#. module: pentalab_report
-#: model:ir.model.fields,field_description:pentalab_report.field_generate_reports_wizard__report_type
-msgid "Report Type"
-msgstr "Tipo reporte"
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_account_tax_group__report_name
+msgid "Report Name"
+msgstr ""
 
-#. module: pentalab_report
-#: model:ir.actions.report,name:pentalab_report.action_report_cobros_por_ventas_pdf
+#. module: l10n_ec_reports_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_report_usafe_wizard_form
+msgid "Report UAFE"
+msgstr "Reporte UAFE"
+
+#. module: l10n_ec_reports_penta
+#: model:ir.actions.report,name:l10n_ec_reports_penta.action_report_cobros_por_ventas_pdf
 msgid "Reporte Cobros por Ventas"
 msgstr ""
 
-#. module: pentalab_report
-#: model:ir.model,name:pentalab_report.model_cobros_por_ventas
+#. module: l10n_ec_reports_penta
+#: model:ir.actions.act_window,name:l10n_ec_reports_penta.action_report_purchase_a2_wizard
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_report_purchase_a2_wizard_form
+msgid "Reporte Compras (A2)"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.actions.act_window,name:l10n_ec_reports_penta.action_stock_picking_report
+msgid "Reporte Consolidado de Órdenes de Despacho"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_balance_wizard__report_file
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_estado_wizard__report_file
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_pentalab_report_balance_wizard
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_pentalab_report_estado_wizard
+msgid "Reporte Generado"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.actions.report,name:l10n_ec_reports_penta.action_report_pagos_por_compras_pdf
+msgid "Reporte Pagos por Compras"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.actions.act_window,name:l10n_ec_reports_penta.action_report_sales_a1_wizard
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_report_sales_a1_wizard_form
+msgid "Reporte Ventas (A1)"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model,name:l10n_ec_reports_penta.model_cobros_por_ventas
 msgid "Reporte de Cobros por Ventas"
 msgstr ""
 
-#. module: pentalab_report
-#: model:ir.model,name:pentalab_report.model_pagos_por_compras
+#. module: l10n_ec_reports_penta
+#: model:ir.actions.act_window,name:l10n_ec_reports_penta.action_dispatch_report
+#: model:ir.model,name:l10n_ec_reports_penta.model_dispatch_report
+#: model:ir.ui.menu,name:l10n_ec_reports_penta.menu_dispatch_report
+msgid "Reporte de Despachos"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.ui.menu,name:l10n_ec_reports_penta.menu_stock_picking_report
+msgid "Reporte de Despachos Consolidado"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model,name:l10n_ec_reports_penta.model_pagos_por_compras
 msgid "Reporte de Pagos por Compras"
 msgstr ""
 
-#. module: pentalab_report
-#: model:ir.ui.menu,name:pentalab_report.menu_pentalab_reports
-#: model:ir.ui.menu,name:pentalab_report.menu_reports_informe_pentalab
+#. module: l10n_ec_reports_penta
+#: model:ir.ui.menu,name:l10n_ec_reports_penta.menu_pentalab_reports_root
+msgid "Reportes"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.ui.menu,name:l10n_ec_reports_penta.menu_reports_informe_pentalab_balance
+msgid "Reportes Coorporativo"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.ui.menu,name:l10n_ec_reports_penta.menu_reports_penta
+msgid "Reportes Penta"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.ui.menu,name:l10n_ec_reports_penta.menu_l10n_ec_reports_penta
+#: model:ir.ui.menu,name:l10n_ec_reports_penta.menu_pentalab_reports_group
 msgid "Reportes Pentalab"
 msgstr ""
 
-#. module: pentalab_report
-#: model:ir.ui.menu,name:pentalab_report.menu_reports_report
+#. module: l10n_ec_reports_penta
+#: model:ir.model,name:l10n_ec_reports_penta.model_pentalab_report_custom
+msgid "Reportes modificados Pentalab"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.res_config_settings_view_form
 msgid "Reports"
 msgstr "Reportes"
 
-#. module: pentalab_report
-#: model:ir.model,name:pentalab_report.model_report_pentalab_report_reports_report
-msgid "Reports report"
-msgstr "Reportes reporte"
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_res_company__sales_amount_report_uafe
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_res_config_settings__sales_amount_report_uafe
+msgid "Sales amount reported by UAFE"
+msgstr ""
 
-#. module: pentalab_report
-#: model:ir.model.fields,help:pentalab_report.field_generate_reports_wizard__report_type
-msgid "Select the type of report to generate."
-msgstr "Seleccione el tipo de reporte a generar."
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,help:l10n_ec_reports_penta.field_pentalab_report_antiguedad_wizard__account_ids
+msgid "Selecciona una o varias cuentas."
+msgstr ""
 
-#. module: pentalab_report
-#: model:ir.model.fields,field_description:pentalab_report.field_pentalab_report_wizard__partner_id
+#. module: l10n_ec_reports_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_export_inventory_wizard_form
+msgid "Seleccionar mes y año"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,help:l10n_ec_reports_penta.field_pentalab_invoice_report_wizard__journal_ids
+msgid "Seleccione uno o varios diarios de Compras"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__report_uafe_wizard__month__09
+msgid "September"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__export_inventory_month_wizard__month__9
+msgid "Septiembre"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_account_tax_group__show_report
+msgid "Show Report"
+msgstr "Mostrar informe"
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_wizard__partner_id
 msgid "Socio"
 msgstr ""
 
-#. module: pentalab_report
-#: model:ir.model.fields,field_description:pentalab_report.field_pentalab_report_wizard__type
+#. module: l10n_ec_reports_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_stock_quant_aggregated_search
+msgid "Solo ubicaciones internas"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model,name:l10n_ec_reports_penta.model_stock_quant_aggregated
+msgid "Stock agrupado por producto y ubicación padre"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.actions.act_window,name:l10n_ec_reports_penta.action_pentalab_stock_by_location
+#: model:ir.ui.menu,name:l10n_ec_reports_penta.menu_pentalab_stock_by_location
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_stock_by_location_list
+msgid "Stock por bodega"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_stock_by_location_list
+msgid "Subcatecoría"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_quant__subcategory_id
+msgid "Subcategoría"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_invoice_report_line__price_subtotal
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_pentalab_invoice_report_line_list
+msgid "Subtotal"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__report_uafe_wizard__domain_uafe__supplier
+msgid "Supplier"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model,name:l10n_ec_reports_penta.model_account_tax_group
+msgid "Tax Group"
+msgstr "Grupo de impuestos"
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_wizard__type
 msgid "Tipo"
 msgstr ""
 
-#. module: pentalab_report
-#: model:ir.model.fields,field_description:pentalab_report.field_cobros_por_ventas__x_account_type
-#: model:ir.model.fields,field_description:pentalab_report.field_pagos_por_compras__x_account_type
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_cobros_por_ventas__x_account_type
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pagos_por_compras__x_account_type
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.report_pagos_por_compras_template
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_pagos_por_compras_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_pagos_por_compras_list
 msgid "Tipo de Cuenta"
 msgstr ""
 
-#. module: pentalab_report
-#: model:ir.model.fields,field_description:pentalab_report.field_cobros_por_ventas__x_payment_type
-#: model:ir.model.fields,field_description:pentalab_report.field_pagos_por_compras__x_payment_type
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_cobros_por_ventas__x_payment_type
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pagos_por_compras__x_payment_type
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.report_pagos_por_compras_template
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_pagos_por_compras_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_pagos_por_compras_list
 msgid "Tipo de Pago"
 msgstr ""
 
-#. module: pentalab_report
-#: model:ir.model.fields,field_description:pentalab_report.field_stock_quant__store_location
-#: model_terms:ir.ui.view,arch_db:pentalab_report.view_inventory_by_location_list
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_antiguedad_wizard__account_type
+msgid "Tipo de cuenta"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_invoice_report_line__doc_type_name
+msgid "Tipo de documento"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_purchase_a2_wizard__document_type
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_sales_a1_wizard__document_type
+msgid "Tipo documento"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_invoice_report_line__price_total
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_pentalab_invoice_report_line_list
+msgid "Total"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.stock_picking_report_list_view
+msgid "Total Cantidad"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_uafe_wizard__total_reg_clientes
+msgid "Total Clientes Registrados"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_uafe_wizard__total_creditos
+msgid "Total Créditos"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_uafe_wizard__total_debitos
+msgid "Total Débitos"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_uafe_wizard__total_valor_total
+msgid "Total General"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_uafe_wizard__total_reg_operaciones
+msgid "Total Operaciones Registradas"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.stock_picking_report_list_view
+msgid "Total Peso"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_uafe_wizard__total_reg_transacciones
+msgid "Total Transacciones Registradas"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_uafe_wizard__total_valores_bienes
+msgid "Total Valores y Bienes"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_uafe_wizard__total_operaciones
+msgid "Total de Operaciones"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_uafe_wizard__total_cheque
+msgid "Total en Cheque"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_uafe_wizard__total_efectivo
+msgid "Total en Efectivo"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_uafe_wizard__total_tarjeta
+msgid "Total en Tarjeta"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__stock_quant_aggregated__location_usage__transit
+msgid "Transit"
+msgstr "Tránsito"
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_picking_report__carrier
+msgid "Transportista"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_invoice_report_line__payterm_name
+msgid "Términos de pago"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.actions.act_window,name:l10n_ec_reports_penta.action_report_uafe_wizard
+#: model:ir.ui.menu,name:l10n_ec_reports_penta.menu_report_uafe
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.res_config_settings_view_form
+msgid "UAFE"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_dispatch_report__location_id
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_quant__store_location
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_stock_by_location_list
 msgid "Ubicación"
 msgstr ""
 
-#. module: pentalab_report
-#: model:ir.model.fields,help:pentalab_report.field_stock_quant__standard_price
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_picking_report__destination_location
+msgid "Ubicación de Destino"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_picking_report__origin_location
+msgid "Ubicación de Origen"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_quant_aggregated__location_usage
+msgid "Uso de la ubicación"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_dispatch_report__user_id
+msgid "Vendedor"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__stock_quant_aggregated__location_usage__supplier
+msgid "Vendor"
+msgstr "Proveedor"
+
+#. module: l10n_ec_reports_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_pentalab_invoice_report_wizard_form
+msgid "Ver"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,help:l10n_ec_reports_penta.field_res_company__sales_amount_report_uafe
+#: model:ir.model.fields,help:l10n_ec_reports_penta.field_res_config_settings__sales_amount_report_uafe
 msgid ""
-"Value of the product (automatically computed in AVCO).\n"
-"        Used to value the product when the purchase cost is not known (e.g. inventory adjustment).\n"
-"        Used to compute margins on sale orders."
+"We specify the amount that customer purchases must reach to be considered in"
+" the UAFE report."
 msgstr ""
-"Valor del producto (calculado automáticamente en AVCO).\n"
-"Se utiliza para valorar el producto cuando se desconoce el coste de compra (p. ej., ajuste de inventario).\n"
-"Se utiliza para calcular los márgenes en los pedidos de venta."
+"Especificamos el monto que deben alcanzar las compras de los clientes para "
+"ser consideradas en el informe de la UAFE."
 
-#. module: pentalab_report
-#: model:ir.ui.menu,name:pentalab_report.menu_action_informe_pentalab
-msgid "Vencido por cobrar"
+#. module: l10n_ec_reports_penta
+#: model:ir.model,name:l10n_ec_reports_penta.model_pentalab_report_balance_wizard
+#: model:ir.model,name:l10n_ec_reports_penta.model_pentalab_report_estado_wizard
+msgid "Wizard para Generar Reporte Modificado"
 msgstr ""
 
-#. module: pentalab_report
-#: model:ir.model,name:pentalab_report.model_pentalab_report_wizard
+#. module: l10n_ec_reports_penta
+#: model:ir.model,name:l10n_ec_reports_penta.model_pentalab_report_wizard
 msgid "Wizard para Informe Pentalab"
 msgstr ""
 
-#. module: pentalab_report
-#: model:ir.model,name:pentalab_report.model_generate_reports_wizard
-msgid "Wizard to generate reports"
-msgstr "Asistente para generar reportes"
+#. module: l10n_ec_reports_penta
+#: model:ir.model,name:l10n_ec_reports_penta.model_pentalab_report_antiguedad_wizard
+msgid "Wizard para Reporte Antigüedad"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model,name:l10n_ec_reports_penta.model_report_uafe_wizard
+msgid "Wizard to generate report UAFE"
+msgstr "Asistente para generar informe UAFE"
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model,name:l10n_ec_reports_penta.model_report_purchase_retentions_wizard
+msgid "Wizard to generate report purchase and retentions"
+msgstr "Asistente para generar reportes de compras y retenciones"
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model,name:l10n_ec_reports_penta.model_report_purchase_a2_wizard
+#: model:ir.model,name:l10n_ec_reports_penta.model_report_sales_a1_wizard
+msgid "Wizard to generate report sales A1"
+msgstr "Asistente para generar informe de ventas A1"
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model,name:l10n_ec_reports_penta.model_report_l10n_ec_reports_penta_invoice_report_xlsx
+msgid "XLSX - Reporte de Facturas"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_uafe_wizard__year
+msgid "Year"
+msgstr "Año"
+
+#. module: l10n_ec_reports_penta
+#: model:mail.template,subject:l10n_ec_reports_penta.email_template_customer_statement
+msgid ""
+"{{ (object.company_id or object._get_followup_responsible().company_id).name"
+" }} Statement - {{ object.commercial_company_name }}"
+msgstr ""
