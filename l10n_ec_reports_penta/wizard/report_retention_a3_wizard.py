@@ -13,9 +13,10 @@ class ReportRetentionsA3Wizard(models.TransientModel):
     date_start = fields.Date(string='Desde', required=True)
     date_end = fields.Date(string='Hasta', required=True)
     retention_type = fields.Selection([
+        ('all', 'Todos'),
         ('vat_withholding', 'Retencion IVA'),
         ('income_withholding', 'Retencion Fuente')
-        ], string='Tipo de Retención', required=True, default='vat_withholding')
+        ], string='Tipo de Retención', required=True, default='all')
     apply_percentage_filter = fields.Boolean(string='Aplicar filtro de porcentaje')
     percentage_operator = fields.Selection([
         ('=', 'Igual a'),
@@ -89,9 +90,9 @@ class ReportRetentionsA3Wizard(models.TransientModel):
         worksheet.set_column('H:I', 22)
         worksheet.set_column('J:J', 15)
         # Encabezados
-        headers = ['#', 'FECHA DE EMISION', 'DIARIO', 'NUMERO DE RETENCION', 'RUC', 'RAZON SOCIAL', 'AUTORIZACION SRI', 'BASE IMPONIBLE', 'VALOR RETENIDO',
-                   'PORCENTAJE DE RETENCION', 'CODIGO BASE', 'CODIGO APLICADO', 'CPDIGO ATS', 'NRO DE DOCUMENTO', 'FECHA EMISION FACTURA PROVEEDOR',
-                   'CUENAT CONTABLE POR PAGAR']
+        headers = ['#', 'FECHA DE EMISIÓN', 'DIARIO', 'NÚMERO DE RETENCIÓN', 'RUC', 'RAZÓN SOCIAL', 'AUTORIZACIÓN SRI', 'BASE IMPONIBLE', 'VALOR RETENIDO',
+                   'PORCENTAJE DE RETENCIÓN', 'CÓDIGO BASE', 'CÓDIGO APLICADO', 'CÓDIGO ATS', 'NRO DE DOCUMENTO', 'FECHA EMISIÓN FACTURA PROVEEDOR',
+                   'CUENTA CONTABLE POR PAGAR']
         # Mapear cabecera
         company_name = self.env.company.display_name
         worksheet.merge_range('A1:E1', company_name)
@@ -115,9 +116,11 @@ class ReportRetentionsA3Wizard(models.TransientModel):
                 invoice = self.env['account.move'].browse(invoice)
                 for reten in move.l10n_ec_withhold_line_ids:
                     # Aplicar filtro de tipo de retencion
-                    is_vat = self.retention_type == 'vat_withholding' and reten.tax_ids.tax_group_id.id in iva_tax_groups.ids
-                    is_income = self.retention_type == 'income_withholding' and reten.tax_ids.tax_group_id.id in rent_tax_groups.ids
-                    if not (is_vat or is_income):
+                    is_vat = reten.tax_ids.tax_group_id.id in iva_tax_groups.ids
+                    is_income = reten.tax_ids.tax_group_id.id in rent_tax_groups.ids
+                    if self.retention_type == 'vat_withholding' and not is_vat:
+                        continue
+                    if self.retention_type == 'income_withholding' and not is_income:
                         continue
                     # Aplicar filtro de porcentaje si corresponde
                     percent = abs(reten.tax_ids.amount)
