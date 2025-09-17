@@ -92,7 +92,7 @@ class ReportRetentionsA3Wizard(models.TransientModel):
         # Encabezados
         headers = ['#', 'FECHA DE EMISIÓN', 'DIARIO', 'NÚMERO DE RETENCIÓN', 'RUC', 'RAZÓN SOCIAL', 'AUTORIZACIÓN SRI', 'BASE IMPONIBLE', 'VALOR RETENIDO',
                    'PORCENTAJE DE RETENCIÓN', 'CÓDIGO BASE', 'CÓDIGO APLICADO', 'CÓDIGO ATS', 'NRO DE DOCUMENTO', 'FECHA EMISIÓN FACTURA PROVEEDOR',
-                   'CUENTA CONTABLE POR PAGAR']
+                   'CUENTA CONTABLE']
         # Mapear cabecera
         company_name = self.env.company.display_name
         worksheet.merge_range('A1:E1', company_name)
@@ -138,16 +138,18 @@ class ReportRetentionsA3Wizard(models.TransientModel):
                     worksheet.write(row, 8, reten.l10n_ec_withhold_tax_amount or 0.00, formats['currency'])
                     # Obtener porcentaje de retencion
                     worksheet.write(row, 9, (percent/100) or 0.00, formats['percent'])
-                    worksheet.write(row, 10, reten.tax_ids.l10n_ec_code_base or 0.00, formats['center'])
-                    worksheet.write(row, 11, reten.tax_ids.l10n_ec_code_applied or 0.00, formats['center'])
-                    worksheet.write(row, 12, reten.tax_ids.l10n_ec_code_ats or 0.00, formats['center'])
+                    # Obtener codigos de retencion
+                    worksheet.write(row, 10, reten.tax_tag_ids.name or '', formats['center'])
+                    worksheet.write(row, 11, reten.tax_ids.name or '', formats['center'])
+                    worksheet.write(row, 12, reten.tax_ids.l10n_ec_code_ats or '', formats['center'])
+                    # Numero de documento
                     worksheet.write(row, 13, invoice.name or '', formats['center'])
                     worksheet.write(row, 14, invoice.date.strftime("%d/%m/%Y") or '', formats['border'])
                     # Obtener cuenta contable
                     account_name = ''
                     for line in move.line_ids:
                         if line.tax_ids == reten.tax_ids:
-                            account_name = line.account_id.code
+                            account_name = line.account_id.code + ' ' + line.account_id.name
                             break
                     worksheet.write(row, 15, account_name, formats['center'])
                     row += 1
