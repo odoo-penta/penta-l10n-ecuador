@@ -2,7 +2,6 @@ from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
 import re
 
-
 class AccountAsset(models.Model):
     _inherit = 'account.asset'
 
@@ -32,14 +31,16 @@ class AccountAsset(models.Model):
     @api.constrains('asset_code')
     def _check_asset_code_format(self):
         """Validar el formato del código del activo"""
-        import re
+        # Permitir letras, números y caracteres especiales imprimibles (por ejemplo: _ - / *)
+        # Se permiten espacios y cualquier caracter imprimible ASCII.
+        pattern = r'^[\x20-\x7E]+$'
         for record in self:
             if record.asset_code:
-                # Validar que solo contenga letras, números, guiones y guiones bajos
-                if not re.match(r'^[a-zA-Z0-9_-]+$', record.asset_code):
+                if not re.match(pattern, record.asset_code):
                     raise ValidationError(
-                        _("El código del activo solo puede contener letras (A-Z, a-z), "
-                          "números (0-9), guion (-) y guion bajo (_).")
+                        _(
+                            "El código del activo sólo puede contener caracteres imprimibles (letras, números y símbolos como _ - / *)."
+                        )
                     )
 
     def write(self, vals):
@@ -76,30 +77,17 @@ class AccountAsset(models.Model):
         return result
 
     @api.constrains('asset_code')
-    def _check_asset_code_format(self):
-        """Validar formato del código del activo"""
-        for record in self:
-            if record.asset_code:
-                pattern = r'^[A-Za-z0-9_-]+$'
-                if not re.match(pattern, record.asset_code):
-                    raise ValidationError(_(
-                        'El código del activo solo puede contener letras (A-Z, a-z), '
-                        'números (0-9), guión (-) y guión bajo (_).'
-                    ))
-
-    @api.constrains('asset_code')
     def _check_asset_code_unique(self):
-        """Validar que el código del activo sea único (opcional)"""
+        """Validar que el código del activo sea único"""
         for record in self:
             if record.asset_code:
                 existing = self.search([
                     ('asset_code', '=', record.asset_code),
                     ('id', '!=', record.id)
-                ])
+                ], limit=1)
                 if existing:
                     raise ValidationError(_(
-                        'Ya existe un activo con el código "%s". '
-                        'El código del activo debe ser único.'
+                        'Ya existe un activo con el código "%s". El código del activo debe ser único.'
                     ) % record.asset_code)
 
     @api.model

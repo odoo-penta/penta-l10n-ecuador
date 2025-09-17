@@ -74,7 +74,7 @@ msgstr "Banco"
 #. module: l10n_ec_account_penta
 #: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_payment__bank_reference
 msgid "Bank reference"
-msgstr "Referencia bancaria"
+msgstr "Referencia"
 
 #. module: l10n_ec_account_penta
 #: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_cards__company_id
@@ -213,7 +213,7 @@ msgstr "Requiere información de la tarjeta"
 #. module: l10n_ec_account_penta
 #: model:ir.model.fields.selection,name:l10n_ec_account_penta.selection__account_journal__payment_info_type__check
 msgid "Requires check information"
-msgstr "Requiere información de verificación"
+msgstr "Requiere información de cheque"
 
 #. module: l10n_ec_account_penta
 #: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_payment__used_card_id

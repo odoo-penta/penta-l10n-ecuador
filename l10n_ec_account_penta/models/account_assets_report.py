@@ -5,7 +5,6 @@ from collections import defaultdict
 
 MAX_NAME_LENGTH = 50
 
-
 class AssetsReportCustomHandler(models.AbstractModel):
     _inherit = 'account.asset.report.handler'
 
