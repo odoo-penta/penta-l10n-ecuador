@@ -17,3 +17,5 @@ from . import account_account
 from . import pentalab_report_balance_wizard
 from . import pentalab_report_estado_wizard
 from . import pentalab_report_custom
+from . import res_partner
+from . import account_followup_report

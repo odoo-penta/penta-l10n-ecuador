@@ -1,0 +1,93 @@
+<odoo>
+    <record id="email_template_customer_statement" model="mail.template">
+        <field name="name">Customer Statement</field>
+        <field name="model_id" ref="base.model_res_partner"/>
+        <field name="email_from">{{ object._get_followup_responsible().email_formatted }}</field>
+        <field name="subject">{{ (object.company_id or object._get_followup_responsible().company_id).name }} Statement - {{ object.commercial_company_name }}</field>
+        <field name="body_html" type="html">
+            <div style="margin: 0px; padding: 0px;">
+                <p style="margin: 0px; padding: 0px;">
+                    <t t-if="object.id != object.commercial_partner_id.id">Apreciable <t t-out="object.name or ''"/> (<t t-out="object.commercial_partner_id.name or ''"/>),</t>
+                    <t t-else="">Apreciable <t t-out="object.name or ''"/>,</t>
+                    <br/>
+                    En este correo encontrarás adjunto tu estado de cuenta.
+                    <br/>
+                    Contáctanos si tienes alguna pregunta.
+                    <br/><br/>
+
+                    <!-- Obtener fecha actual -->
+                    <!-- <t t-set="today" t-value="datetime.date.today()"/> -->
+                
+                    <!-- APLICAR FILTRO SEGÚN CONFIGURACIÓN -->
+                    <!-- <t t-if="object._get_account_type() == 'both'">
+                        <t t-set="account_types" t-value="['asset_receivable', 'liability_payable']"/>
+                    </t>
+                    <t t-elif="object._get_account_type() == 'payable'">
+                        <t t-set="account_types" t-value="['liability_payable']"/>
+                    </t>
+                    <t t-elif="object._get_account_type() == 'receivable'">
+                        <t t-set="account_types" t-value="['asset_receivable']"/>
+                    </t>
+                    <t t-else="">
+                        <t t-set="account_types" t-value="[]"/>
+                    </t> -->
+                
+                    <!-- Obtener líneas no reconciliadas según filtro -->
+                    <!-- <t t-set="filtered_lines" t-value="object.unreconciled_aml_ids.filtered(lambda l: l.account_id.account_type in account_types) if account_types else []"/> -->
+                
+                    <!-- Separar en vencidas y no vencidas -->
+                    <!-- <t t-set="overdue_lines" t-value="filtered_lines.filtered(lambda l: l.date_maturity and l.date_maturity &lt; today)"/>
+                    <t t-set="due_lines" t-value="filtered_lines.filtered(lambda l: not l.date_maturity or l.date_maturity &gt;= today)"/> -->
+
+                    <!-- Calcular totales -->
+                    <!-- <t t-set="total_overdue" t-value="sum(l.amount_residual_currency if l.amount_residual_currency != 0 else l.amount_residual for l in overdue_lines)"/>
+                    <t t-set="total_due" t-value="sum(l.amount_residual_currency if l.amount_residual_currency != 0 else l.amount_residual for l in due_lines)"/>
+                    <t t-set="total_importe" t-value="total_overdue + total_due"/> -->
+
+                </p>
+            
+                <!-- Mostrar información del filtro aplicado -->
+                <!-- <p>
+                    <strong>Filtro aplicado:</strong> 
+                    <t t-if="filter_account_type == 'both'">Por pagar y por cobrar</t>
+                    <t t-elif="filter_account_type == 'payable'">Por pagar</t>
+                    <t t-elif="filter_account_type == 'receivable'">Por cobrar</t>
+                    <t t-else="">Deshabilitado</t>
+                    <br/>
+
+                    <strong>Líneas encontradas:</strong> <t t-out="len(filtered_lines)"/>
+                </p> -->
+            
+                <!-- Totales -->
+                <t t-set="totals" t-value="object._get_followup_totals()"/>
+
+                <p>
+                  <strong>Valor vencido:</strong> <t t-esc="'$ %.2f' % totals['total_overdue']"/><br/>
+                  <strong>Valor corriente:</strong> <t t-esc="'$ %.2f' % totals['total_due']"/><br/>
+                  <strong>Valor de la cartera:</strong> <t t-esc="'$ %.2f' % totals['total_importe']"/>
+                </p>
+                <!-- <p>
+                    <strong>Valor vencido:</strong>
+                    <t t-out="'%.2f' % abs(total_overdue)"/>
+                     <t t-out="object.total_overdue"/>
+                    <br/>
+                
+                    <strong>Valor corriente:</strong>
+                    <t t-out="'%.2f' % abs(total_due)"/>
+                    <br/>
+                
+                    <strong>Valor de la cartera:</strong>
+                    <t t-out="'%.2f' % abs(total_importe)"/>
+                    <br/>
+                </p> -->
+            
+                <br/>
+                Saludos,
+                <br/>
+                <t t-out="object._get_followup_responsible().name or ''"/>
+            </div>
+        </field>
+        <field name="lang">{{ object.lang }}</field>
+        <field name="auto_delete" eval="False"/>
+    </record>
+</odoo>

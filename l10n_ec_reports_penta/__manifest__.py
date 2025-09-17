@@ -25,9 +25,13 @@
     "depends": [
         'account',
         'report_xlsx',
+        'account_followup',
+        'account_reports',
         ],
     "data": [
         "security/ir.model.access.csv",
+        
+        'data/mail_templates.xml',
         
         'report/report_export_stock_quant_xlsx.xml',
         'report/account_move_inventory_report.xml',
@@ -38,6 +42,7 @@
         'wizard/report_retention_a3_wizard_views.xml',
         'wizard/report_uafe_wizard_views.xml',
         
+
         "views/account_move_inventory_report_action.xml",
         "views/pentalab_report_wizard_view.xml",
         'views/account_tax_views.xml',
