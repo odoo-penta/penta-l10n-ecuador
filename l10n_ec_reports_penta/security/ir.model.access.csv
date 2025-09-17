@@ -17,3 +17,4 @@ access_report_retentions_a3_wizard,report.retentions.a3.wizard,model_report_rete
 access_report_uafe_wizard,report.uafe.wizard,model_report_uafe_wizard,base.group_user,1,1,1,1
 access_pentalab_report_balance_wizard,pentalab_report_balance_wizard,model_pentalab_report_balance_wizard,base.group_user,1,1,1,1
 access_pentalab_report_estado_wizard,pentalab_report_estado_wizard,model_pentalab_report_estado_wizard,base.group_user,1,1,1,1
+access_report_sales_withholding_wizard,report.sales.withholding.wizard,model_report_sales_withholding_wizard,base.group_user,1,1,1,1

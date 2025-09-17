@@ -41,6 +41,7 @@
         'wizard/report_purchase_a2_wizard_views.xml',
         'wizard/report_retention_a3_wizard_views.xml',
         'wizard/report_uafe_wizard_views.xml',
+        'wizard/report_withholding_views.xml',
         
 
         "views/account_move_inventory_report_action.xml",
