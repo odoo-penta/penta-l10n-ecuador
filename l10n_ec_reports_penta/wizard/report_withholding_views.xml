@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<record id="view_report_sales_withholding_wizard_form" model="ir.ui.view">
+		<field name="name">report.sales.withholding.wizard.form</field>
+		<field name="model">report.sales.withholding.wizard</field>
+		<field name="arch" type="xml">
+			<form string="Retenciones Ventas (Listado)">
+				<group>
+					<field name="date_start"/>
+					<field name="date_end"/>
+					<field name="retention_type"/>
+				</group>
+				<group string="Filtro por porcentaje">
+					<field name="apply_percentage_filter" nolabel="1" class="oe_inline"/>
+					<label for="apply_percentage_filter" class="oe_inline" string="Aplicar filtro de porcentaje"/>
+					<newline/>
+
+					<field name="use_percentage_range" nolabel="1" class="oe_inline"/>
+					<label for="use_percentage_range" class="oe_inline" string="Usar rango de porcentaje"/>
+
+					<!-- Modo EXACTO: visible si aplicar filtro está activo y NO se usa rango -->
+					<group invisible="(not apply_percentage_filter) or use_percentage_range">
+						<field name="percentage_operator"/>
+						<field name="percentage_value"/>
+					</group>
+
+					<!-- Modo RANGO: visible si se usa rango -->
+					<group invisible="not use_percentage_range">
+						<field name="percentage_min"/>
+						<field name="percentage_max"/>
+					</group>
+				</group>
+				<footer>
+					<button name="print_report" type="object" string="Exportar XLSX" class="btn-primary"/>
+					<button string="Cancelar" special="cancel" class="btn-secondary"/>
+				</footer>
+			</form>
+		</field>
+	</record>
+
+	<record id="action_report_sales_withholding_wizard" model="ir.actions.act_window">
+		<field name="name">Retenciones Ventas</field>
+		<field name="res_model">report.sales.withholding.wizard</field>
+		<field name="view_mode">form</field>
+		<field name="target">new</field>
+	</record>
+
+	<menuitem id="menu_action_report_sales_withholding_wizard"
+			  name="Retenciones Ventas"
+			  parent="l10n_ec_reports_penta.menu_reports_tax_annexes"
+			  action="action_report_sales_withholding_wizard"
+			  sequence="4"/>
+
+</odoo>
