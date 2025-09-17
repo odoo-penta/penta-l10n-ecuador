@@ -9,7 +9,7 @@ from odoo import models, fields, api, _
 class AccountPayment(models.Model):
     _inherit = 'account.payment'
     
-    journal_type = fields.Selection(related='journal_id.type', readonly=True, string="Journal Type")
+    journal_type = fields.Selection(related='journal_id.payment_info_type', readonly=True, string="Journal Type")
     bank_reference = fields.Char(string="Bank reference")
     used_card_id = fields.Many2one(
         'account.cards',
@@ -48,10 +48,14 @@ class AccountPayment(models.Model):
     show_bank_cc = fields.Boolean(compute="_compute_visibility_flags", store=False)  # bank_id en card o check
     show_card = fields.Boolean(compute="_compute_visibility_flags", store=False)     # resto solo en card
 
-    @api.depends('journal_id', 'journal_id.payment_info_type')
+    @api.depends('journal_type')
     def _compute_visibility_flags(self):
         for rec in self:
-            ptype = rec.journal_id.payment_info_type or False
-            rec.show_ref = ptype in ('bank', 'check')
-            rec.show_bank_cc = ptype in ('card', 'check')
-            rec.show_card = (ptype == 'card')
+            rec.show_ref = False
+            rec.show_bank_cc = False
+            rec.show_card = False
+            if rec.journal_type:
+                ptype = rec.journal_type or False
+                rec.show_ref = ptype in ('bank', 'check')
+                rec.show_bank_cc = ptype in ('card', 'check')
+                rec.show_card = (ptype == 'card')
