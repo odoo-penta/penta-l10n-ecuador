@@ -14,7 +14,7 @@
     'summary': 'POS in backend',
     "version": "18.0.1.0",
     'description': """
-        Adds a new POS sales menu that processes everything in real time on the backend.
+        Adds a new POS sales menu that processes everything in real time on the backend
     """,
     'author': 'PentaLab',
     'maintainer': 'PentaLab',
