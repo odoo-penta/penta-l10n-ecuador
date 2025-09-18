@@ -162,8 +162,8 @@ class ReportPurchaseA2Wizard(models.TransientModel):
                 subjet_type = 'Persona Natural'
             elif invoice.partner_id.company_type == 'company':
                 subjet_type = 'Empresa'
-            worksheet.write(row, 7, invoice.l10n_latam_document_type_id.name, formats['center'])
-            worksheet.write(row, 8, subjet_type, formats['border'])
+            worksheet.write(row, 7, subjet_type, formats['border'])
+            worksheet.write(row, 8, invoice.l10n_latam_document_type_id.name, formats['center'])
             worksheet.write(row, 9, invoice.name or '', formats['border'])
             worksheet.write(row, 10, invoice.l10n_ec_authorization_number or '', formats['border'])
             worksheet.write(row, 11, invoice.invoice_date.strftime("%d/%m/%Y") or '', formats['border'])
