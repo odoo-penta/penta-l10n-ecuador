@@ -43,7 +43,8 @@
         'wizard/report_uafe_wizard_views.xml',
         'wizard/report_withholding_views.xml',
         
-
+        "views/followup_hide_filters.xml",
+        "views/followup_report_custom.xml",
         "views/account_move_inventory_report_action.xml",
         "views/pentalab_report_wizard_view.xml",
         'views/account_tax_views.xml',

@@ -1,0 +1,15 @@
+<odoo>
+  <data>
+    <template id="pdf_export_main_hide_filters_when_flag"
+              inherit_id="account_reports.pdf_export_main" priority="1500">
+
+      <!-- 2) company info: 8 -> 12 cuando ocultas filtros -->
+      <xpath expr="//header/div[contains(@class, 'o_header_font')]/div[contains(@class,'col-8')]" position="attributes">
+        <attribute name="t-att-class">'col-12' or 'col-8'</attribute>
+      </xpath>
+
+      <!-- 3) filtros: sólo si NO ocultas -->
+      <xpath expr="//header/div[contains(@class, 'o_header_font')]/div[contains(@class,'col-4')]" position="replace"/>
+    </template>
+  </data>
+</odoo>
