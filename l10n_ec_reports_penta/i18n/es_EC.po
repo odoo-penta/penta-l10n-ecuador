@@ -2028,6 +2028,17 @@ msgid ""
 "object._get_followup_responsible().company_id).name }} Statement - "
 "{{ object.commercial_company_name }}"
 msgstr ""
+<<<<<<< HEAD
 "{{ (object.company_id or "
 "object._get_followup_responsible().company_id).name }} Extracto - "
 "{{ object.commercial_company_name }}"
+=======
+
+#. module: account_reports
+#. odoo-javascript
+#. odoo-python
+#: code:addons/account_reports/models/account_followup_report.py:0
+#: model_terms:ir.ui.view,arch_db:account_reports.pdf_journal_report_taxes_summary
+msgid "Due"
+msgstr "Corriente"
+>>>>>>> 0aae37a ([ADD] l10n_ec_reports_penta: Ocultar filtros del pdf y poner totales)

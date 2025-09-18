@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <template id="template_followup_report_totals_footer_final"
+              inherit_id="account_followup.line_template"
+              priority="999">
+
+      <!-- Inserta DESPUÉS del último contenedor que tiene <div class="oe_structure"/> -->
+      <xpath expr="//t[@t-foreach='lines' and @t-as='line']"
+             position="after">
+
+        <!-- ==== Totales (sin tocar líneas nativas) ==== -->
+        <t t-set="today" t-value="datetime.date.today()"/>
+        <t t-set="overdue_total" t-value="0.0"/>
+        <t t-set="due_total" t-value="0.0"/>
+
+        <t t-foreach="doc.unreconciled_aml_ids" t-as="l">
+          <t t-if="l.company_id == doc.company_id
+                   and l.account_id.account_type == 'asset_receivable'
+                   and not l.reconciled
+                   and l.parent_state == 'posted'">
+            <t t-set="amount_val"
+               t-value="abs(l.amount_residual_currency) if l.currency_id else abs(l.amount_residual)"/>
+            <t t-if="amount_val">
+              <t t-set="ref_date" t-value="l.date_maturity or (l.move_id.invoice_date or l.date)"/>
+              <t t-if="today > ref_date">
+                <t t-set="overdue_total" t-value="overdue_total + amount_val"/>
+              </t>
+              <t t-else="">
+                <t t-set="due_total" t-value="due_total + amount_val"/>
+              </t>
+            </t>
+          </t>
+        </t>
+
+        <!-- Footer de totales: QUEDA ABAJO -->
+        <div class="mt-3" style="max-width:420px; margin-left:auto; clear: both; page-break-inside: avoid;">
+          <table class="table table-bordered" style="width:100%;">
+            <tr>
+              <th style="width:60%;">Total Vencidas</th>
+              <td style="text-align:right;">
+                <span t-esc="doc.company_id.currency_id.symbol"/>
+                <t t-esc="'{:,.2f}'.format(overdue_total)"/>
+              </td>
+            </tr>
+            <tr>
+              <th>Total Debido</th>
+              <td style="text-align:right;">
+                <span t-esc="doc.company_id.currency_id.symbol"/>
+                <t t-esc="'{:,.2f}'.format(due_total)"/>
+              </td>
+            </tr>
+          </table>
+        </div>
+
+      </xpath>
+    </template>
+  </data>
+</odoo>
