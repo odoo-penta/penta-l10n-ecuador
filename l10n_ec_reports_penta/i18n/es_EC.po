@@ -6,14 +6,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-15 22:35+0000\n"
-"PO-Revision-Date: 2025-09-15 22:35+0000\n"
+"POT-Creation-Date: 2025-09-18 14:41+0000\n"
+"PO-Revision-Date: 2025-09-18 10:13-0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
+"Language: es_EC\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Plural-Forms: \n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.7\n"
 
 #. module: l10n_ec_reports_penta
 #: model:ir.actions.report,print_report_name:l10n_ec_reports_penta.action_report_account_move_custom
@@ -56,83 +58,114 @@ msgstr ""
 msgid ""
 "<div style=\"margin: 0px; padding: 0px;\">\n"
 "                <p style=\"margin: 0px; padding: 0px;\">\n"
-"                    <t t-if=\"object.id != object.commercial_partner_id.id\">Apreciable <t t-out=\"object.name or ''\"/> (<t t-out=\"object.commercial_partner_id.name or ''\"/>),</t>\n"
-"                    <t t-else=\"\">Apreciable <t t-out=\"object.name or ''\"/>,</t>\n"
+"                    <t t-if=\"object.id != "
+"object.commercial_partner_id.id\">Apreciable <t t-out=\"object.name or ''\"/"
+"> (<t t-out=\"object.commercial_partner_id.name or ''\"/>),</t>\n"
+"                    <t t-else=\"\">Apreciable <t t-out=\"object.name or "
+"''\"/>,</t>\n"
 "                    <br/>\n"
-"                    En este correo encontrarás adjunto tu estado de cuenta.\n"
+"                    En este correo encontrarás adjunto tu estado de "
+"cuenta.\n"
 "                    <br/>\n"
 "                    Contáctanos si tienes alguna pregunta.\n"
 "                    <br/><br/>\n"
 "\n"
 "                    <!-- Obtener fecha actual -->\n"
-"                    <t t-set=\"today\" t-value=\"datetime.date.today()\"/>\n"
-"                \n"
-"                    <!-- VALOR FIJO POR DEFECTO - Puedes cambiarlo según necesites -->\n"
-"                    <t t-set=\"filter_account_type\" t-value=\"'receivable'\"/>\n"
-"                    <!-- OPCIONES: 'receivable', 'payable', 'both', 'disabled' -->\n"
+"                    <!-- <t t-set=\"today\" t-value=\"datetime.date.today()"
+"\"/> -->\n"
 "                \n"
 "                    <!-- APLICAR FILTRO SEGÚN CONFIGURACIÓN -->\n"
-"                    <t t-if=\"filter_account_type == 'both'\">\n"
-"                        <t t-set=\"account_types\" t-value=\"['asset_receivable', 'liability_payable']\"/>\n"
+"                    <!-- <t t-if=\"object._get_account_type() == 'both'\">\n"
+"                        <t t-set=\"account_types\" t-"
+"value=\"['asset_receivable', 'liability_payable']\"/>\n"
 "                    </t>\n"
-"                    <t t-elif=\"filter_account_type == 'payable'\">\n"
-"                        <t t-set=\"account_types\" t-value=\"['liability_payable']\"/>\n"
+"                    <t t-elif=\"object._get_account_type() == 'payable'\">\n"
+"                        <t t-set=\"account_types\" t-"
+"value=\"['liability_payable']\"/>\n"
 "                    </t>\n"
-"                    <t t-elif=\"filter_account_type == 'receivable'\">\n"
-"                        <t t-set=\"account_types\" t-value=\"['asset_receivable']\"/>\n"
+"                    <t t-elif=\"object._get_account_type() == "
+"'receivable'\">\n"
+"                        <t t-set=\"account_types\" t-"
+"value=\"['asset_receivable']\"/>\n"
 "                    </t>\n"
 "                    <t t-else=\"\">\n"
 "                        <t t-set=\"account_types\" t-value=\"[]\"/>\n"
-"                    </t>\n"
+"                    </t> -->\n"
 "                \n"
 "                    <!-- Obtener líneas no reconciliadas según filtro -->\n"
-"                    <t t-set=\"filtered_lines\" t-value=\"object.unreconciled_aml_ids.filtered(lambda l: l.account_id.account_type in account_types) if account_types else []\"/>\n"
+"                    <!-- <t t-set=\"filtered_lines\" t-"
+"value=\"object.unreconciled_aml_ids.filtered(lambda l: "
+"l.account_id.account_type in account_types) if account_types else []\"/> --"
+">\n"
 "                \n"
 "                    <!-- Separar en vencidas y no vencidas -->\n"
-"                    <t t-set=\"overdue_lines\" t-value=\"filtered_lines.filtered(lambda l: l.date_maturity and l.date_maturity &lt; today)\"/>\n"
-"                    <t t-set=\"due_lines\" t-value=\"filtered_lines.filtered(lambda l: not l.date_maturity or l.date_maturity &gt;= today)\"/>\n"
+"                    <!-- <t t-set=\"overdue_lines\" t-"
+"value=\"filtered_lines.filtered(lambda l: l.date_maturity and "
+"l.date_maturity &lt; today)\"/>\n"
+"                    <t t-set=\"due_lines\" t-"
+"value=\"filtered_lines.filtered(lambda l: not l.date_maturity or "
+"l.date_maturity &gt;= today)\"/> -->\n"
 "\n"
 "                    <!-- Calcular totales -->\n"
-"                    <t t-set=\"total_overdue\" t-value=\"sum(l.amount_residual_currency if l.amount_residual_currency != 0 else l.amount_residual for l in overdue_lines)\"/>\n"
-"                    <t t-set=\"total_due\" t-value=\"sum(l.amount_residual_currency if l.amount_residual_currency != 0 else l.amount_residual for l in due_lines)\"/>\n"
-"                    <t t-set=\"total_importe\" t-value=\"total_overdue + total_due\"/>\n"
+"                    <!-- <t t-set=\"total_overdue\" t-"
+"value=\"sum(l.amount_residual_currency if l.amount_residual_currency != 0 "
+"else l.amount_residual for l in overdue_lines)\"/>\n"
+"                    <t t-set=\"total_due\" t-"
+"value=\"sum(l.amount_residual_currency if l.amount_residual_currency != 0 "
+"else l.amount_residual for l in due_lines)\"/>\n"
+"                    <t t-set=\"total_importe\" t-value=\"total_overdue + "
+"total_due\"/> -->\n"
 "\n"
 "                </p>\n"
 "            \n"
 "                <!-- Mostrar información del filtro aplicado -->\n"
-"                <p>\n"
+"                <!-- <p>\n"
 "                    <strong>Filtro aplicado:</strong> \n"
-"                    <t t-if=\"filter_account_type == 'both'\">Por pagar y por cobrar</t>\n"
-"                    <t t-elif=\"filter_account_type == 'payable'\">Por pagar</t>\n"
-"                    <t t-elif=\"filter_account_type == 'receivable'\">Por cobrar</t>\n"
+"                    <t t-if=\"filter_account_type == 'both'\">Por pagar y "
+"por cobrar</t>\n"
+"                    <t t-elif=\"filter_account_type == 'payable'\">Por "
+"pagar</t>\n"
+"                    <t t-elif=\"filter_account_type == 'receivable'\">Por "
+"cobrar</t>\n"
 "                    <t t-else=\"\">Deshabilitado</t>\n"
 "                    <br/>\n"
 "\n"
-"                    <strong>Líneas encontradas:</strong> <t t-out=\"len(filtered_lines)\"/>\n"
-"                </p>\n"
+"                    <strong>Líneas encontradas:</strong> <t t-"
+"out=\"len(filtered_lines)\"/>\n"
+"                </p> -->\n"
 "            \n"
 "                <!-- Totales -->\n"
+"                <t t-set=\"totals\" t-value=\"object._get_followup_totals()"
+"\"/>\n"
+"\n"
 "                <p>\n"
-"                    <strong>Total Vencidas:</strong>\n"
+"                  <strong>Valor vencido:</strong> <t t-esc=\"'$ %.2f' % "
+"totals['total_overdue']\"/><br/>\n"
+"                  <strong>Valor corriente:</strong> <t t-esc=\"'$ %.2f' % "
+"totals['total_due']\"/><br/>\n"
+"                  <strong>Valor de la cartera:</strong> <t t-esc=\"'$ %.2f' "
+"% totals['total_importe']\"/>\n"
+"                </p>\n"
+"                <!-- <p>\n"
+"                    <strong>Valor vencido:</strong>\n"
 "                    <t t-out=\"'%.2f' % abs(total_overdue)\"/>\n"
+"                     <t t-out=\"object.total_overdue\"/>\n"
 "                    <br/>\n"
 "                \n"
-"                    <strong>Total Por Vencer:</strong>\n"
+"                    <strong>Valor corriente:</strong>\n"
 "                    <t t-out=\"'%.2f' % abs(total_due)\"/>\n"
 "                    <br/>\n"
 "                \n"
-"                    <strong>Total Importe:</strong>\n"
+"                    <strong>Valor de la cartera:</strong>\n"
 "                    <t t-out=\"'%.2f' % abs(total_importe)\"/>\n"
 "                    <br/>\n"
-"\n"
-"                    <strong>Saldo Neto:</strong>\n"
-"                    <t t-out=\"'%.2f' % total_importe\"/>\n"
-"                </p>\n"
+"                </p> -->\n"
 "            \n"
 "                <br/>\n"
 "                Saludos,\n"
 "                <br/>\n"
-"                <t t-out=\"object._get_followup_responsible().name or ''\"/>\n"
+"                <t t-out=\"object._get_followup_responsible().name or ''\"/"
+">\n"
 "            </div>\n"
 "        "
 msgstr ""
@@ -189,6 +222,11 @@ msgstr ""
 #. module: l10n_ec_reports_penta
 #: model:ir.ui.menu,name:l10n_ec_reports_penta.menu_action_report_purchase_a2
 msgid "A2 Compras"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.ui.menu,name:l10n_ec_reports_penta.menu_action_report_sales_a3
+msgid "A3 Retenciones compras"
 msgstr ""
 
 #. module: l10n_ec_reports_penta
@@ -249,9 +287,16 @@ msgid "Antigüedad de cartera V."
 msgstr ""
 
 #. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_retentions_a3_wizard__apply_percentage_filter
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_sales_withholding_wizard__apply_percentage_filter
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_report_sales_withholding_wizard_form
+msgid "Aplicar filtro de porcentaje"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
 #: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__report_uafe_wizard__month__04
 msgid "April"
-msgstr ""
+msgstr "Abril"
 
 #. module: l10n_ec_reports_penta
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_antiguedad_wizard__file_data
@@ -310,7 +355,7 @@ msgstr ""
 #. module: l10n_ec_reports_penta
 #: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__report_uafe_wizard__month__08
 msgid "August"
-msgstr ""
+msgstr "Agosto"
 
 #. module: l10n_ec_reports_penta
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_export_inventory_month_wizard__year
@@ -335,10 +380,11 @@ msgstr ""
 #. module: l10n_ec_reports_penta
 #: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_report_purchase_a2_wizard_form
 #: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_report_purchase_retentions_wizard_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_report_retentions_a3_wizard_form
 #: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_report_sales_a1_wizard_form
 #: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_report_usafe_wizard_form
 msgid "Cancel"
-msgstr ""
+msgstr "Cancelar"
 
 #. module: l10n_ec_reports_penta
 #: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_export_inventory_wizard_form
@@ -346,6 +392,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_pentalab_report_antiguedad_wizard_form
 #: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_pentalab_report_balance_wizard
 #: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_pentalab_report_estado_wizard
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_report_sales_withholding_wizard_form
 msgid "Cancelar"
 msgstr ""
 
@@ -441,7 +488,7 @@ msgstr "Ajustes de configuración"
 #. module: l10n_ec_reports_penta
 #: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.res_config_settings_view_form
 msgid "Configurations for the UAFE"
-msgstr ""
+msgstr "Configuraciones para la UAFE"
 
 #. module: l10n_ec_reports_penta
 #: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_pentalab_report_balance_wizard
@@ -452,7 +499,12 @@ msgstr ""
 #. module: l10n_ec_reports_penta
 #: model:ir.model,name:l10n_ec_reports_penta.model_stock_picking_report
 msgid "Consolidated Dispatch Orders Report"
-msgstr ""
+msgstr "Informe de órdenes de despacho consolidadas"
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model,name:l10n_ec_reports_penta.model_res_partner
+msgid "Contact"
+msgstr "Contacto"
 
 #. module: l10n_ec_reports_penta
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_invoice_report_line__partner_id
@@ -460,6 +512,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.report_account_move_document
 #: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.report_account_move_inventory_document
 msgid "Contacto"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#. odoo-python
+#: code:addons/l10n_ec_reports_penta/models/account_followup_report.py:0
+msgid "Corriente"
 msgstr ""
 
 #. module: l10n_ec_reports_penta
@@ -479,7 +537,9 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_wizard__create_uid
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_purchase_a2_wizard__create_uid
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_purchase_retentions_wizard__create_uid
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_retentions_a3_wizard__create_uid
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_sales_a1_wizard__create_uid
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_sales_withholding_wizard__create_uid
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_uafe_wizard__create_uid
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_picking_report__create_uid
 msgid "Created by"
@@ -496,7 +556,9 @@ msgstr "Creado por"
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_wizard__create_date
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_purchase_a2_wizard__create_date
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_purchase_retentions_wizard__create_date
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_retentions_a3_wizard__create_date
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_sales_a1_wizard__create_date
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_sales_withholding_wizard__create_date
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_uafe_wizard__create_date
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_picking_report__create_date
 msgid "Created on"
@@ -597,7 +659,9 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_invoice_report_wizard__date_from
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_wizard__date_from
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_purchase_a2_wizard__date_start
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_retentions_a3_wizard__date_start
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_sales_a1_wizard__date_start
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_sales_withholding_wizard__date_start
 msgid "Desde"
 msgstr ""
 
@@ -639,7 +703,9 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_wizard__display_name
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_purchase_a2_wizard__display_name
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_purchase_retentions_wizard__display_name
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_retentions_a3_wizard__display_name
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_sales_a1_wizard__display_name
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_sales_withholding_wizard__display_name
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_uafe_wizard__display_name
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_picking_report__display_name
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_quant_aggregated__display_name
@@ -733,6 +799,7 @@ msgstr ""
 
 #. module: l10n_ec_reports_penta
 #: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_inventory_by_location_list
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_report_sales_withholding_wizard_form
 msgid "Exportar XLSX"
 msgstr ""
 
@@ -807,7 +874,17 @@ msgstr ""
 #. module: l10n_ec_reports_penta
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_dispatch_report__picking_date
 msgid "Fecha del Picking"
+msgstr "Fecha de recolección"
+
+#. module: l10n_ec_reports_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_report_sales_withholding_wizard_form
+msgid "Filtro por porcentaje"
 msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model,name:l10n_ec_reports_penta.model_account_followup_report
+msgid "Follow-up Report"
+msgstr "Reporte de seguimiento"
 
 #. module: l10n_ec_reports_penta
 #: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_pentalab_report_balance_wizard
@@ -845,6 +922,7 @@ msgstr ""
 #. module: l10n_ec_reports_penta
 #: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_report_purchase_a2_wizard_form
 #: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_report_purchase_retentions_wizard_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_report_retentions_a3_wizard_form
 #: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_report_sales_a1_wizard_form
 #: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_report_usafe_wizard_form
 msgid "Generate"
@@ -865,7 +943,9 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_invoice_report_wizard__date_to
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_wizard__date_to
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_purchase_a2_wizard__date_end
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_retentions_a3_wizard__date_end
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_sales_a1_wizard__date_end
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_sales_withholding_wizard__date_end
 msgid "Hasta"
 msgstr ""
 
@@ -883,7 +963,9 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_wizard__id
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_purchase_a2_wizard__id
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_purchase_retentions_wizard__id
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_retentions_a3_wizard__id
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_sales_a1_wizard__id
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_sales_withholding_wizard__id
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_uafe_wizard__id
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_picking_report__id
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_quant_aggregated__id
@@ -905,6 +987,14 @@ msgstr ""
 msgid ""
 "If this tax group is checked, it will be considered in the A1 sales report."
 msgstr ""
+"Si se marca este grupo impositivo, se considerará en el informe de ventas "
+"A1."
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__report_retentions_a3_wizard__percentage_operator__=
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__report_sales_withholding_wizard__percentage_operator__=
+msgid "Igual a"
+msgstr ""
 
 #. module: l10n_ec_reports_penta
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_invoice_report_line__taxes
@@ -920,7 +1010,7 @@ msgstr ""
 #. module: l10n_ec_reports_penta
 #: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__stock_quant_aggregated__location_usage__internal
 msgid "Internal"
-msgstr ""
+msgstr "Interno"
 
 #. module: l10n_ec_reports_penta
 #: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_stock_quant_aggregated_search
@@ -990,7 +1080,9 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_wizard__write_uid
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_purchase_a2_wizard__write_uid
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_purchase_retentions_wizard__write_uid
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_retentions_a3_wizard__write_uid
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_sales_a1_wizard__write_uid
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_sales_withholding_wizard__write_uid
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_uafe_wizard__write_uid
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_picking_report__write_uid
 msgid "Last Updated by"
@@ -1007,7 +1099,9 @@ msgstr "Última actualización por"
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_wizard__write_date
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_purchase_a2_wizard__write_date
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_purchase_retentions_wizard__write_date
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_retentions_a3_wizard__write_date
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_sales_a1_wizard__write_date
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_sales_withholding_wizard__write_date
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_uafe_wizard__write_date
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_picking_report__write_date
 msgid "Last Updated on"
@@ -1042,6 +1136,30 @@ msgstr "Mayo"
 #. module: l10n_ec_reports_penta
 #: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__export_inventory_month_wizard__month__5
 msgid "Mayo"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__report_retentions_a3_wizard__percentage_operator__>=
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__report_sales_withholding_wizard__percentage_operator__>=
+msgid "Mayor o igual"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__report_retentions_a3_wizard__percentage_operator__>
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__report_sales_withholding_wizard__percentage_operator__>
+msgid "Mayor que"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__report_retentions_a3_wizard__percentage_operator__<=
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__report_sales_withholding_wizard__percentage_operator__<=
+msgid "Menor o igual"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__report_retentions_a3_wizard__percentage_operator__<
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__report_sales_withholding_wizard__percentage_operator__<
+msgid "Menor que"
 msgstr ""
 
 #. module: l10n_ec_reports_penta
@@ -1191,6 +1309,16 @@ msgid "Ocultar en reporte"
 msgstr ""
 
 #. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_retentions_a3_wizard__percentage_operator
+msgid "Operador porcentaje"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_sales_withholding_wizard__percentage_operator
+msgid "Operador porcentaje?"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_picking_report__picking_id
 msgid "Orden de Despacho"
 msgstr ""
@@ -1259,6 +1387,16 @@ msgid "Por cobrar"
 msgstr ""
 
 #. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_sales_withholding_wizard__percentage_max
+msgid "Porcentaje máximo?"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_sales_withholding_wizard__percentage_min
+msgid "Porcentaje mínimo?"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_quant_aggregated__list_price
 #: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_inventory_by_location_list
 msgid "Precio"
@@ -1309,7 +1447,7 @@ msgstr ""
 #. module: l10n_ec_reports_penta
 #: model:ir.model,name:l10n_ec_reports_penta.model_stock_quant
 msgid "Quants"
-msgstr "Cants"
+msgstr "Cantidad"
 
 #. module: l10n_ec_reports_penta
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_invoice_report_line__default_code
@@ -1344,12 +1482,13 @@ msgstr ""
 #. module: l10n_ec_reports_penta
 #: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_report_purchase_retentions_wizard_form
 msgid "Report Generator"
-msgstr ""
+msgstr "Generador de informes"
 
 #. module: l10n_ec_reports_penta
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_account_tax_group__report_name
+#, fuzzy
 msgid "Report Name"
-msgstr ""
+msgstr "Nombre para mostrar"
 
 #. module: l10n_ec_reports_penta
 #: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_report_usafe_wizard_form
@@ -1364,6 +1503,7 @@ msgstr ""
 #. module: l10n_ec_reports_penta
 #: model:ir.actions.act_window,name:l10n_ec_reports_penta.action_report_purchase_a2_wizard
 #: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_report_purchase_a2_wizard_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_report_retentions_a3_wizard_form
 msgid "Reporte Compras (A2)"
 msgstr ""
 
@@ -1383,6 +1523,11 @@ msgstr ""
 #. module: l10n_ec_reports_penta
 #: model:ir.actions.report,name:l10n_ec_reports_penta.action_report_pagos_por_compras_pdf
 msgid "Reporte Pagos por Compras"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.actions.act_window,name:l10n_ec_reports_penta.action_report_retentions_a3_wizard
+msgid "Reporte Retenciones (A3)"
 msgstr ""
 
 #. module: l10n_ec_reports_penta
@@ -1445,10 +1590,60 @@ msgid "Reports"
 msgstr "Reportes"
 
 #. module: l10n_ec_reports_penta
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__report_retentions_a3_wizard__retention_type__income_withholding
+msgid "Retencion Fuente"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__report_retentions_a3_wizard__retention_type__vat_withholding
+msgid "Retencion IVA"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__account_tax_group__type_ret__withholding_iva_purchase
+msgid "Retencion IVA Compras"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__account_tax_group__type_ret__withholding_iva_sales
+msgid "Retencion IVA Ventas"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__account_tax_group__type_ret__withholding_rent_purchase
+msgid "Retencion Renta Compras"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__account_tax_group__type_ret__withholding_rent_sales
+msgid "Retencion Renta Ventas"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.actions.act_window,name:l10n_ec_reports_penta.action_report_sales_withholding_wizard
+msgid "Retenciones Ventas"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_report_sales_withholding_wizard_form
+msgid "Retenciones Ventas (Listado)"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__report_sales_withholding_wizard__retention_type__fuente
+msgid "Retención Fuente"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__report_sales_withholding_wizard__retention_type__iva
+msgid "Retención IVA"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_res_company__sales_amount_report_uafe
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_res_config_settings__sales_amount_report_uafe
 msgid "Sales amount reported by UAFE"
-msgstr ""
+msgstr "Monto de ventas reportado por UAFE"
 
 #. module: l10n_ec_reports_penta
 #: model:ir.model.fields,help:l10n_ec_reports_penta.field_pentalab_report_antiguedad_wizard__account_ids
@@ -1468,12 +1663,22 @@ msgstr ""
 #. module: l10n_ec_reports_penta
 #: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__report_uafe_wizard__month__09
 msgid "September"
-msgstr ""
+msgstr "Septiembre"
 
 #. module: l10n_ec_reports_penta
 #: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__export_inventory_month_wizard__month__9
 msgid "Septiembre"
 msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_sales_withholding_wizard__show_percentage_exact_fields
+msgid "Show Percentage Exact Fields"
+msgstr "Mostrar campos de porcentaje exacto"
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_sales_withholding_wizard__show_percentage_range_fields
+msgid "Show Percentage Range Fields"
+msgstr "Mostrar campos de rango de porcentaje"
 
 #. module: l10n_ec_reports_penta
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_account_tax_group__show_report
@@ -1521,7 +1726,7 @@ msgstr ""
 #. module: l10n_ec_reports_penta
 #: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__report_uafe_wizard__domain_uafe__supplier
 msgid "Supplier"
-msgstr ""
+msgstr "Proveedor"
 
 #. module: l10n_ec_reports_penta
 #: model:ir.model,name:l10n_ec_reports_penta.model_account_tax_group
@@ -1552,6 +1757,12 @@ msgid "Tipo de Pago"
 msgstr ""
 
 #. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_retentions_a3_wizard__retention_type
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_sales_withholding_wizard__retention_type
+msgid "Tipo de Retención"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_report_antiguedad_wizard__account_type
 msgid "Tipo de cuenta"
 msgstr ""
@@ -1565,6 +1776,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_purchase_a2_wizard__document_type
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_sales_a1_wizard__document_type
 msgid "Tipo documento"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__report_retentions_a3_wizard__retention_type__all
+#: model:ir.model.fields.selection,name:l10n_ec_reports_penta.selection__report_sales_withholding_wizard__retention_type__todos
+msgid "Todos"
 msgstr ""
 
 #. module: l10n_ec_reports_penta
@@ -1584,8 +1801,20 @@ msgid "Total Clientes Registrados"
 msgstr ""
 
 #. module: l10n_ec_reports_penta
+#. odoo-python
+#: code:addons/l10n_ec_reports_penta/models/account_followup_report.py:0
+msgid "Total Corriente"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_uafe_wizard__total_creditos
 msgid "Total Créditos"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#. odoo-python
+#: code:addons/l10n_ec_reports_penta/models/account_followup_report.py:0
+msgid "Total Due"
 msgstr ""
 
 #. module: l10n_ec_reports_penta
@@ -1601,6 +1830,12 @@ msgstr ""
 #. module: l10n_ec_reports_penta
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_uafe_wizard__total_reg_operaciones
 msgid "Total Operaciones Registradas"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#. odoo-python
+#: code:addons/l10n_ec_reports_penta/models/account_followup_report.py:0
+msgid "Total Overdue"
 msgstr ""
 
 #. module: l10n_ec_reports_penta
@@ -1649,6 +1884,11 @@ msgid "Transportista"
 msgstr ""
 
 #. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_account_tax_group__type_ret
+msgid "Type Ret"
+msgstr "Tipo retención"
+
+#. module: l10n_ec_reports_penta
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_pentalab_invoice_report_line__payterm_name
 msgid "Términos de pago"
 msgstr ""
@@ -1678,8 +1918,30 @@ msgid "Ubicación de Origen"
 msgstr ""
 
 #. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_sales_withholding_wizard__use_percentage_range
+#: model_terms:ir.ui.view,arch_db:l10n_ec_reports_penta.view_report_sales_withholding_wizard_form
+msgid "Usar rango de porcentaje"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
 #: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_stock_quant_aggregated__location_usage
 msgid "Uso de la ubicación"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_retentions_a3_wizard__percentage_value
+msgid "Valor porcentaje"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model.fields,field_description:l10n_ec_reports_penta.field_report_sales_withholding_wizard__percentage_value
+msgid "Valor porcentaje?"
+msgstr ""
+
+#. module: l10n_ec_reports_penta
+#. odoo-python
+#: code:addons/l10n_ec_reports_penta/models/account_followup_report.py:0
+msgid "Vencido"
 msgstr ""
 
 #. module: l10n_ec_reports_penta
@@ -1701,11 +1963,11 @@ msgstr ""
 #: model:ir.model.fields,help:l10n_ec_reports_penta.field_res_company__sales_amount_report_uafe
 #: model:ir.model.fields,help:l10n_ec_reports_penta.field_res_config_settings__sales_amount_report_uafe
 msgid ""
-"We specify the amount that customer purchases must reach to be considered in"
-" the UAFE report."
+"We specify the amount that customer purchases must reach to be considered "
+"in the UAFE report."
 msgstr ""
-"Especificamos el monto que deben alcanzar las compras de los clientes para "
-"ser consideradas en el informe de la UAFE."
+"Especificamos el monto que deben alcanzar las compras del cliente para ser "
+"consideradas en el reporte UAFE."
 
 #. module: l10n_ec_reports_penta
 #: model:ir.model,name:l10n_ec_reports_penta.model_pentalab_report_balance_wizard
@@ -1716,7 +1978,7 @@ msgstr ""
 #. module: l10n_ec_reports_penta
 #: model:ir.model,name:l10n_ec_reports_penta.model_pentalab_report_wizard
 msgid "Wizard para Informe Pentalab"
-msgstr ""
+msgstr "Asistente para Informe Pentalab"
 
 #. module: l10n_ec_reports_penta
 #: model:ir.model,name:l10n_ec_reports_penta.model_pentalab_report_antiguedad_wizard
@@ -1734,10 +1996,20 @@ msgid "Wizard to generate report purchase and retentions"
 msgstr "Asistente para generar reportes de compras y retenciones"
 
 #. module: l10n_ec_reports_penta
+#: model:ir.model,name:l10n_ec_reports_penta.model_report_retentions_a3_wizard
+msgid "Wizard to generate report retentions A3"
+msgstr "Asistente para generar informe de retenciones A3"
+
+#. module: l10n_ec_reports_penta
 #: model:ir.model,name:l10n_ec_reports_penta.model_report_purchase_a2_wizard
 #: model:ir.model,name:l10n_ec_reports_penta.model_report_sales_a1_wizard
 msgid "Wizard to generate report sales A1"
 msgstr "Asistente para generar informe de ventas A1"
+
+#. module: l10n_ec_reports_penta
+#: model:ir.model,name:l10n_ec_reports_penta.model_report_sales_withholding_wizard
+msgid "Wizard to generate sales withholdings report"
+msgstr "Asistente para generar informe de retenciones de ventas"
 
 #. module: l10n_ec_reports_penta
 #: model:ir.model,name:l10n_ec_reports_penta.model_report_l10n_ec_reports_penta_invoice_report_xlsx
@@ -1752,6 +2024,10 @@ msgstr "Año"
 #. module: l10n_ec_reports_penta
 #: model:mail.template,subject:l10n_ec_reports_penta.email_template_customer_statement
 msgid ""
-"{{ (object.company_id or object._get_followup_responsible().company_id).name"
-" }} Statement - {{ object.commercial_company_name }}"
+"{{ (object.company_id or "
+"object._get_followup_responsible().company_id).name }} Statement - "
+"{{ object.commercial_company_name }}"
 msgstr ""
+"{{ (object.company_id or "
+"object._get_followup_responsible().company_id).name }} Extracto - "
+"{{ object.commercial_company_name }}"

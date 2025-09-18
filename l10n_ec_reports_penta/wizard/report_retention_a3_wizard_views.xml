@@ -16,7 +16,7 @@
                     <field name="percentage_value" invisible='not apply_percentage_filter'/>
                 </group>
                 <footer>
-                    <button name="print_report" type="object" string="Generate" class="btn-primary"/>
+                    <button name="print_report" type="object" string="Imprimir" class="btn-primary"/>
                     <button string="Cancel" special="cancel" class="btn-secondary"/>
                 </footer>
             </form>

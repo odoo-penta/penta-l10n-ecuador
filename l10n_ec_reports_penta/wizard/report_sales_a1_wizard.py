@@ -69,8 +69,8 @@ class ReportSalesA1Wizard(models.TransientModel):
         worksheet.set_column('H:I', 22)
         worksheet.set_column('J:J', 15)
         # Encabezados
-        headers = ['#', 'TIPO DE COMPROBANTE', 'TIPO DE IDENTIFICACIÓN', 'IDENTIFICACIÓN', 'RAZÓN SOCIAL', 'PARTE RELACIONADA', 'TIPO DE SUJETO', 'NRO. DE DOCUMENTO',
-                    'NRO. AUTORIZACIÓN', 'FECHA EMISI.']
+        headers = ['#', 'TIPO DE COMPROBANTE', 'TIPO DE IDENTIFICACIÓN', 'IDENTIFICACIÓN', 'RAZÓN SOCIAL', 'PARTE RELACIONADA', 'TIPO DE SUJETO', 'NÚMERO DE DOCUMENTO',
+                    'NÚMERO AUTORIZACIÓN', 'FECHA EMISIÓN']
         # Obtener grupos de impuestos para el reporte
         tax_groups = self.env['account.tax.group'].search([('show_report', '=', True)], order="report_name")
         tax_col = 10
@@ -86,7 +86,7 @@ class ReportSalesA1Wizard(models.TransientModel):
             tax_struct[tax_group.id]['iva'] = tax_col
             tax_col += 1
         # LLenar el resto del texto de la cabecera
-        headers += ['TOTAL VENTA', 'RET. IVA', 'RET. FUENTE', 'CASILLA 104', 'CASILLA 104 RETENCIÓN', 'DÍAS CRÉDITO', 'FORMA PAGO 1']
+        headers += ['TOTAL VENTA', 'RET. IVA', 'RET. FUENTE', 'CASILLA 104', 'CASILLA 104 RETENCIÓN', 'DÍAS CRÉDITO', 'FORMA DE PAGO']
         # Mapear cabecera
         company_name = self.env.company.display_name
         worksheet.merge_range('A1:E1', company_name)

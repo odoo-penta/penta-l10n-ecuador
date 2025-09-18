@@ -80,7 +80,7 @@ class ReportPurchaseA2Wizard(models.TransientModel):
         worksheet.set_column('H:I', 22)
         worksheet.set_column('J:J', 15)
         # Encabezados
-        headers = ['#', 'SUSTENTO TRIBUTARIO', 'TIPO DE IDENTIFICACIÓN', 'IDENTIFICACIÓN', 'RAZÓN SOCIAL', 'TIPO DE CONTRIBUYENTE', 'PARTE RELACIONADA', 'TIPO DE SUJETO', 'TIPO DE COMPROBANTE', 'NRO DE FACTURA',
+        headers = ['#', 'SUSTENTO TRIBUTARIO', 'TIPO DE IDENTIFICACIÓN', 'IDENTIFICACIÓN', 'RAZÓN SOCIAL', 'TIPO DE CONTRIBUYENTE', 'PARTE RELACIONADA', 'TIPO DE SUJETO', 'TIPO DE COMPROBANTE', 'NÚMERO DE FACTURA',
                     'AUTORIZACIÓN', 'FECHA EMISIÓN', 'FECHA CONTABILIZACIÓN']
         # Obtener grupos de impuestos para el reporte
         tax_groups = self.env['account.tax.group'].search([('show_report', '=', True)], order="report_name")
@@ -130,8 +130,8 @@ class ReportPurchaseA2Wizard(models.TransientModel):
         worksheet.write(row + 1, last_col, 'RET 100%', formats['header_bg'])
         last_col += 1
         # Cabecera restante
-        headers2 = ['CÓD. RET. FUENTE', 'BASE IMP', 'PORCENTAJE DE RETENCIÓN FUENTE', 'VALOR RETENIDO', 'COMPROBANTE DE RETENCIÓN', 'AUT. RET.', 'FECHA DE RETENCIÓN',
-                    'PAGO EXTERIOR - PAGO LOCAL', 'PAÍS DE PAGO', 'PARAÍSO FISCAL', 'ADOBLE TRIB. EN PAGO', 'SUJETO RET.', 'DIARIO CONTABLE', 'FORMATO PAGO 1',
+        headers2 = ['CÓDIGO RET. FUENTE', 'BASE IMP', 'PORCENTAJE DE RETENCIÓN FUENTE', 'VALOR RETENIDO', 'COMPROBANTE DE RETENCIÓN', 'AUT. RET.', 'FECHA DE RETENCIÓN',
+                    'PAGO EXTERIOR - PAGO LOCAL', 'PAÍS DE PAGO', 'PARAÍSO FISCAL', 'ADOBLE TRIB. EN PAGO', 'SUJETO RET.', 'DIARIO CONTABLE', 'FORMATO DE PAGO',
                     'CTA. CONTABLE', 'REFERENCIA']
         # Mapear titulos 2
         for col, header in enumerate(headers2):
