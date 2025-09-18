@@ -62,6 +62,18 @@ class CashBox(models.Model):
                 if other:
                     raise UserError(_("The close journal '%s' is already assigned to the cash box '%s'. Please choose another journal.") % (rec.close_journal_id.name, other.name))
 
+    @api.constrains('cashier_ids')
+    def _check_unique_cashier(self):
+        for rec in self:
+            for user in rec.cashier_ids:
+                other = self.env['cash.box'].search([
+                    ('id', '!=', rec.id),
+                    ('cashier_ids', 'in', user.id),
+                    ('company_id', '=', rec.company_id.id)
+                ], limit=1)
+                if other:
+                    raise UserError(_("The cashier '%s' is already assigned to the cash box '%s'. Please choose another cashier.") % (user.name, other.name))
+
     @api.model
     def _is_admin(self):
         return self.env.user.has_group('base.group_system')

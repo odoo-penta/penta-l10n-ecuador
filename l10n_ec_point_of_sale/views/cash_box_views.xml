@@ -58,6 +58,7 @@
                     <field name="warehouse_id"/>
                     <field name="journal_id"/>
                     <field name="responsible_ids" widget="many2many_tags"/>
+                    <field name="cashier_ids" widget="many2many_tags"/>
                     <field name="state" widget="badge"/>
                 </list>
             </field>
