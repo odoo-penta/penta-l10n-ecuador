@@ -148,7 +148,7 @@ class ReportRetentionsA3Wizard(models.TransientModel):
                     # Obtener cuenta contable
                     account_name = ''
                     for line in move.line_ids:
-                        if line.tax_ids == reten.tax_ids:
+                        if line.tax_line_id == reten.tax_ids:
                             account_name = line.account_id.code + ' ' + line.account_id.name
                             break
                     worksheet.write(row, 15, account_name, formats['center'])
