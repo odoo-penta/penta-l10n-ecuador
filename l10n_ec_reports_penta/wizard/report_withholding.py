@@ -158,6 +158,11 @@ class ReportSalesWithholdingWizard(models.TransientModel):
 		count = 1
 		moves = self._get_moves_data()
 		for move in moves:
+			# Tomar las etiquetas fiscales desde las líneas de retención del comprobante (las que tienen monto retenido),
+			# deduplicar y usar un único valor (el primero). El dominio ya trae solo movimientos 'posted'.
+			move_withhold_lines = move.line_ids.filtered(lambda l: l.l10n_ec_withhold_tax_amount)
+			move_tag_names = list(set(move_withhold_lines.mapped('tax_tag_ids.name'))) if move_withhold_lines else []
+			move_fiscal_code = move_tag_names[0] if move_tag_names else ''
 			for line in move.line_ids:
 				if not line.l10n_ec_withhold_tax_amount:
 					continue
@@ -195,9 +200,10 @@ class ReportSalesWithholdingWizard(models.TransientModel):
 				worksheet.write(row, 7, line.balance or 0.0, formats['currency'])
 				worksheet.write(row, 8, line.l10n_ec_withhold_tax_amount or 0.0, formats['currency'])
 				worksheet.write(row, 9, (percent / 100.0), formats['percent'])
-				tag_names = ', '.join(set(line.tax_tag_ids.mapped('name'))) if line.tax_tag_ids else ''
+				# Tipo normalizado en base al grupo de impuestos
 				worksheet.write(row, 10, normalized or (group_name or ''), formats['center'])
-				worksheet.write(row, 11, tag_names, formats['border'])
+                # etiqueta tax_tag_ids
+				worksheet.write(row, 11, move_fiscal_code, formats['border'])
 				worksheet.write(row, 12, invoice.name if invoice else '', formats['border'])
 				worksheet.write(row, 13, invoice.invoice_date.strftime(DATE_FMT) if invoice and invoice.invoice_date else '', formats['border'])
 
