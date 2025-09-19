@@ -25,7 +25,7 @@ class AccountPayment(models.Model):
         ('Corriente', 'Corriente'),
         ('Diferido con interés', 'Diferido con interés'),
         ('Diferido sin interés', 'Diferido sin interés')
-        ], string="Payment type", store=True, readonly=False, compute="_compute_card_payment_type"
+        ], string="Payment type", store=True, readonly=False
     )
     number_months = fields.Selection(
         selection=[
@@ -40,9 +40,9 @@ class AccountPayment(models.Model):
         ('48', '48'),
         ('60', '60'),
         ],
-        string="Number of months", store=True, readonly=False, compute="_compute_nmero_de_meses"
+        string="Number of months", store=True, readonly=False
     )
-    number_lot = fields.Char(store=True, readonly=False, compute="_compute_number_lot")
+    number_lot = fields.Char(store=True, readonly=False)
     authorization_number = fields.Char(string="Authorization number")
     bank_id = fields.Many2one("res.partner.bank")
     show_ref = fields.Boolean(compute="_compute_visibility_flags", store=False)
