@@ -47,9 +47,5 @@
 		<field name="target">new</field>
 	</record>
 
-	<menuitem id="menu_action_report_sales_withholding_wizard"
-			  name="Retenciones Ventas"
-			  parent="l10n_ec_reports_penta.menu_reports_tax_annexes"
-			  action="action_report_sales_withholding_wizard"
-			  sequence="4"/>
+
 </odoo>
