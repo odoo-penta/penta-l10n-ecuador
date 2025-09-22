@@ -88,8 +88,6 @@ class ReportSalesA1Wizard(models.TransientModel):
             tax_col += 1
         # LLenar el resto del texto de la cabecera
         headers += ['TOTAL VENTA', 'RETENCIÓN', 'CASILLA 104 RETENCIÓN', 'DÍAS CRÉDITO', 'FORMA DE PAGO']
-        # Se comenta se puede volver a utilizar en algun momento
-        # headers += ['TOTAL VENTA', 'RET. IVA', 'RET. FUENTE', 'CASILLA 104', 'CASILLA 104 RETENCIÓN', 'DÍAS CRÉDITO', 'FORMA DE PAGO']
         # Mapear cabecera
         company_name = self.env.company.display_name
         worksheet.merge_range('A1:E1', company_name)
