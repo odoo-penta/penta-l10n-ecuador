@@ -4,6 +4,7 @@ import base64
 import io
 from odoo.tools.misc import xlsxwriter
 from odoo.addons.penta_base.reports.xlsx_formats import get_xlsx_formats
+from odoo.tools import extract_numbers
 
 
 class ReportSalesA1Wizard(models.TransientModel):
@@ -86,7 +87,9 @@ class ReportSalesA1Wizard(models.TransientModel):
             tax_struct[tax_group.id]['iva'] = tax_col
             tax_col += 1
         # LLenar el resto del texto de la cabecera
-        headers += ['TOTAL VENTA', 'RET. IVA', 'RET. FUENTE', 'CASILLA 104', 'CASILLA 104 RETENCIÓN', 'DÍAS CRÉDITO', 'FORMA DE PAGO']
+        headers += ['TOTAL VENTA', 'RETENCIÓN', 'CASILLA 104 RETENCIÓN', 'DÍAS CRÉDITO', 'FORMA DE PAGO']
+        # Se comenta se puede volver a utilizar en algun momento
+        # headers += ['TOTAL VENTA', 'RET. IVA', 'RET. FUENTE', 'CASILLA 104', 'CASILLA 104 RETENCIÓN', 'DÍAS CRÉDITO', 'FORMA DE PAGO']
         # Mapear cabecera
         company_name = self.env.company.display_name
         worksheet.merge_range('A1:E1', company_name)
@@ -117,9 +120,8 @@ class ReportSalesA1Wizard(models.TransientModel):
                 subjet_type = 'Persona Natural'
             elif invoice.partner_id.company_type == 'company':
                 subjet_type = 'Empresa'
-
             worksheet.write(row, 6, subjet_type, formats['border'])
-            worksheet.write(row, 7, invoice.name or '', formats['border'])
+            worksheet.write(row, 7, extract_numbers(invoice.name) or '', formats['border'])
             worksheet.write(row, 8, invoice.l10n_ec_authorization_number or '', formats['border'])
             worksheet.write(row, 9, invoice.invoice_date.strftime("%d/%m/%Y") or '', formats['border'])
             # Mapear impuestos BASE
@@ -139,6 +141,8 @@ class ReportSalesA1Wizard(models.TransientModel):
                     worksheet.write(row, tax_struct[tax_group.id]['iva'], 0.00, formats['number'])
             # Total venta
             worksheet.write(row, tax_col, invoice.amount_total, formats['number'])
+            # Se comenta se puede volver a utilizar en algun momento
+            """
             # Retenciones
             iva_tax_groups = self.env['account.tax.group'].search([('type_ret', 'in', ['withholding_iva_purchase', 'withholding_iva_sales'])])
             rent_tax_groups = self.env['account.tax.group'].search([('type_ret', 'in', ['withholding_rent_purchase', 'withholding_rent_sales'])])
@@ -159,15 +163,19 @@ class ReportSalesA1Wizard(models.TransientModel):
             all_tags = invoice.invoice_line_ids.mapped("tax_tag_ids.name")
             all_tags = list(set(all_tags))
             worksheet.write(row, tax_col+3, all_tags[0] if all_tags else '', formats['border'])
+            """
             # Casilla Retenciones
             if invoice.l10n_ec_withhold_ids:
+                worksheet.write(row, tax_col+1, 'SI', formats['center'])
                 all_tags = invoice.l10n_ec_withhold_ids.filtered(lambda w: w.state == "posted").line_ids.mapped("tax_tag_ids.name")
                 all_tags = list(set(all_tags))
-                worksheet.write(row, tax_col+4, all_tags[0] if all_tags else '', formats['border'])
+                tags_text = "\n".join(all_tags) if all_tags else ''
+                worksheet.write(row, tax_col+2, tags_text, formats['border'])
             else:
-                worksheet.write(row, tax_col+4, '', formats['border'])
-            worksheet.write(row, tax_col+5, invoice.invoice_payment_term_id.name if invoice.invoice_payment_term_id else '', formats['border'])
-            worksheet.write(row, tax_col+6, invoice.l10n_ec_sri_payment_id.name if invoice.l10n_ec_sri_payment_id else '', formats['border'])
+                worksheet.write(row, tax_col+1, 'NO', formats['center'])
+                worksheet.write(row, tax_col+2, '', formats['border'])
+            worksheet.write(row, tax_col+3, invoice.invoice_payment_term_id.name if invoice.invoice_payment_term_id else '', formats['border'])
+            worksheet.write(row, tax_col+4, invoice.l10n_ec_sri_payment_id.name if invoice.l10n_ec_sri_payment_id else '', formats['border'])
             cont += 1
         workbook.close()
         output.seek(0)
