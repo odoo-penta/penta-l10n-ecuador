@@ -4,6 +4,7 @@ import base64
 import io
 from odoo.tools.misc import xlsxwriter
 from odoo.addons.penta_base.reports.xlsx_formats import get_xlsx_formats
+from odoo.tools import extract_numbers
 
 
 class ReportRetentionsA3Wizard(models.TransientModel):
@@ -90,8 +91,8 @@ class ReportRetentionsA3Wizard(models.TransientModel):
         worksheet.set_column('H:I', 22)
         worksheet.set_column('J:J', 15)
         # Encabezados
-        headers = ['#', 'FECHA DE EMISIÓN', 'DIARIO', 'NÚMERO DE RETENCIÓN', 'RUC', 'RAZÓN SOCIAL', 'AUTORIZACIÓN SRI', 'BASE IMPONIBLE', 'VALOR RETENIDO',
-                   'PORCENTAJE DE RETENCIÓN', 'CÓDIGO BASE', 'CÓDIGO APLICADO', 'CÓDIGO ATS', 'NRO DE DOCUMENTO', 'FECHA EMISIÓN FACTURA PROVEEDOR',
+        headers = ['#', 'FECHA DE EMISIÓN', 'NÚMERO DE RETENCIÓN', 'RUC', 'RAZÓN SOCIAL', 'AUTORIZACIÓN SRI', 'BASE IMPONIBLE', 'VALOR RETENIDO',
+                   'PORCENTAJE DE RETENCIÓN', 'CÓDIGO BASE', 'CÓDIGO ATS', 'NRO DE DOCUMENTO', 'FECHA EMISIÓN FACTURA PROVEEDOR',
                    'CUENTA CONTABLE']
         # Mapear cabecera
         company_name = self.env.company.display_name
@@ -129,29 +130,29 @@ class ReportRetentionsA3Wizard(models.TransientModel):
                             continue
                     worksheet.write(row, 0, cont, formats['center'])
                     worksheet.write(row, 1, move.date.strftime("%d/%m/%Y") or '', formats['border'])
-                    worksheet.write(row, 2, move.journal_id.name, formats['center'])
-                    worksheet.write(row, 3, move.name, formats['center'])
-                    worksheet.write(row, 4, move.partner_id.vat or '', formats['border'])
-                    worksheet.write(row, 5, move.partner_id.complete_name or '', formats['border'])
-                    worksheet.write(row, 6, move.l10n_ec_authorization_number or '', formats['border'])
-                    worksheet.write(row, 7, reten.balance or '', formats['currency'])
-                    worksheet.write(row, 8, reten.l10n_ec_withhold_tax_amount or 0.00, formats['currency'])
+                    #worksheet.write(row, 2, move.journal_id.name, formats['center'])
+                    worksheet.write(row, 2, extract_numbers(move.name), formats['center'])
+                    worksheet.write(row, 3, move.partner_id.vat or '', formats['border'])
+                    worksheet.write(row, 4, move.partner_id.complete_name or '', formats['border'])
+                    worksheet.write(row, 5, move.l10n_ec_authorization_number or '', formats['border'])
+                    worksheet.write(row, 6, reten.balance or '', formats['currency'])
+                    worksheet.write(row, 7, reten.l10n_ec_withhold_tax_amount or 0.00, formats['currency'])
                     # Obtener porcentaje de retencion
-                    worksheet.write(row, 9, (percent/100) or 0.00, formats['percent'])
+                    worksheet.write(row, 8, (percent/100) or 0.00, formats['percent'])
                     # Obtener codigos de retencion
-                    worksheet.write(row, 10, reten.tax_tag_ids.name or '', formats['center'])
-                    worksheet.write(row, 11, reten.tax_ids.name or '', formats['center'])
-                    worksheet.write(row, 12, reten.tax_ids.l10n_ec_code_ats or '', formats['center'])
+                    worksheet.write(row, 9, reten.tax_tag_ids.name or '', formats['center'])
+                    #worksheet.write(row, 10, reten.tax_ids.name or '', formats['center'])
+                    worksheet.write(row, 10, reten.tax_ids.l10n_ec_code_ats or '', formats['center'])
                     # Numero de documento
-                    worksheet.write(row, 13, invoice.name or '', formats['center'])
-                    worksheet.write(row, 14, invoice.date.strftime("%d/%m/%Y") or '', formats['border'])
+                    worksheet.write(row, 11, invoice.name or '', formats['center'])
+                    worksheet.write(row, 12, invoice.date.strftime("%d/%m/%Y") or '', formats['border'])
                     # Obtener cuenta contable
                     account_name = ''
                     for line in move.line_ids:
                         if line.tax_line_id == reten.tax_ids:
                             account_name = line.account_id.code + ' ' + line.account_id.name
                             break
-                    worksheet.write(row, 15, account_name, formats['center'])
+                    worksheet.write(row, 13, account_name, formats['center'])
                     row += 1
                     cont += 1
         workbook.close()
