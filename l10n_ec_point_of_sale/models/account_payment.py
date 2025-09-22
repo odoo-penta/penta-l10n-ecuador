@@ -18,6 +18,7 @@ class FinanceCard(models.Model):
 class AccountPayment(models.Model):
     _inherit = 'account.payment'
     
+    cash_session_id = fields.Many2one('cash.box.session', string="Cash Session", copy=False)
     bank_reference = fields.Char(string="Bank reference")
     card = fields.Many2one('finance.card', string="Card")
     card_payment_type = fields.Selection(
