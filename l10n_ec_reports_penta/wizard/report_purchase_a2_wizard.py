@@ -144,180 +144,183 @@ class ReportPurchaseA2Wizard(models.TransientModel):
         row += 1
         cont = 1
         for invoice in invoices:
-            row += 1
-            worksheet.write(row, 0, cont, formats['center'])
-            # Obtener sustento tributario
-            tax_supports = set()
-            for line in invoice.invoice_line_ids:
-                for tax in line.tax_ids:
-                    if tax.l10n_ec_code_taxsupport:
-                        tax_supports.add(tax.l10n_ec_code_taxsupport)
-            # Convertir en string separado por coma
-            # Se comenta se podria volver a utilizar de nuevo
-            """
-            tax_support = ', '.join(tax_supports)
-            worksheet.write(row, 1, tax_support, formats['center'])
-            """
-            worksheet.write(row, 1, invoice.partner_id.l10n_latam_identification_type_id.name or '', formats['center'])
-            worksheet.write(row, 2, invoice.partner_id.vat or '', formats['border'])
-            worksheet.write(row, 3, invoice.partner_id.complete_name or '', formats['border'])
-            worksheet.write(row, 4, invoice.partner_id.l10n_ec_taxpayer_type_id.name if invoice.partner_id.l10n_ec_taxpayer_type_id else '', formats['border'])
-            worksheet.write(row, 5, 'SI' if invoice.partner_id.l10n_ec_related_party else 'NO', formats['center'])
-            subjet_type = ''
-            if invoice.partner_id.company_type == 'person':
-                subjet_type = 'Persona Natural'
-            elif invoice.partner_id.company_type == 'company':
-                subjet_type = 'Empresa'
-            worksheet.write(row, 6, subjet_type, formats['border'])
-            worksheet.write(row, 7, invoice.l10n_latam_document_type_id.name, formats['center'])
-            worksheet.write(row, 8, extract_numbers(invoice.name) or '', formats['border'])
-            worksheet.write(row, 9, invoice.l10n_ec_authorization_number or '', formats['border'])
-            worksheet.write(row, 10, invoice.invoice_date.strftime("%d/%m/%Y") or '', formats['border'])
-            #worksheet.write(row, 11, invoice.date.strftime("%d/%m/%Y") or '', formats['border'])
-            total_base_amount = 0.00
-            total_iva_amount = 0.00
-            # Mapear impuestos BASE
-            for tax_group in tax_groups:
-                base_amount = 0.0
-                iva_amount = 0.0
+            # Obtenemos tags (puede venir de invoice_line_ids, withholding, etc.)
+            all_tags = invoice.l10n_ec_withhold_ids.filtered(lambda w: w.state == "posted").line_ids.mapped("tax_tag_ids.name")
+            all_tags = list(set(all_tags))
+            # Si no hay tags, ponemos una lista con un solo elemento '' para que haga una fila igual
+            tags_to_iterate = all_tags if all_tags else ['']
+            for tag in tags_to_iterate:  
+                row += 1
+                worksheet.write(row, 0, cont, formats['center'])
+                # Obtener sustento tributario
+                tax_supports = set()
                 for line in invoice.invoice_line_ids:
-                    for l_tax in line.tax_ids:
-                        if l_tax.tax_group_id == tax_group:
-                            base_amount += line.price_subtotal
-                            iva_amount  += line.price_subtotal * (l_tax.amount / 100.0)
-                if base_amount > 0.00:
-                    total_base_amount += base_amount
-                    total_iva_amount += iva_amount
-                    worksheet.write(row, tax_struct[tax_group.id]['base'], base_amount or 0.00, formats['number'])
-                    worksheet.write(row, tax_struct[tax_group.id]['iva'], iva_amount or 0.00, formats['number'])
-                else:
-                    worksheet.write(row, tax_struct[tax_group.id]['base'], 0.00, formats['number'])
-                    worksheet.write(row, tax_struct[tax_group.id]['iva'], 0.00, formats['number'])
-            total_amount = total_base_amount + total_iva_amount
-            # Retenciones
-            retentions = self._get_retentions_data(invoice)
-            iva_tax_groups = self.env['account.tax.group'].search([('type_ret', 'in', ['withholding_iva_purchase', 'withholding_iva_sales'])])
-            rent_tax_groups = self.env['account.tax.group'].search([('type_ret', 'in', ['withholding_rent_purchase', 'withholding_rent_sales'])])
-            cod_ret_iva = ''
-            cod_ret_fuente = ''
-            percent_ret_fuente = ''
-            ret_10 = ret_20 = ret_30 = ret_50 = ret_70 = ret_100 = 0.00
-            ret_name = ''
-            ret_aut = ''
-            ret_date = ''
-            for retention in retentions:
-                # Nombre retencion
-                if ret_name:
-                    ret_name += ', ' + retention.name
-                else:
-                    ret_name = retention.name
-                # Autorizacion retencion
-                if ret_aut:
-                    ret_aut += ', ' + retention.l10n_ec_authorization_number
-                else:
-                    ret_aut = retention.l10n_ec_authorization_number
-                # Fecha retencion
-                if ret_date:
-                    ret_date += ', ' + retention.l10n_ec_withhold_date.strftime('%d/%m/%Y')
-                else:
-                    ret_date = retention.l10n_ec_withhold_date.strftime('%d/%m/%Y')
-                for line in retention.l10n_ec_withhold_line_ids:
                     for tax in line.tax_ids:
-                        if tax.tax_group_id:
-                            percent = abs(tax.amount)
-                            ret_amount = abs(line.l10n_ec_withhold_tax_amount)
-                            tax_code = (tax.l10n_ec_code_ats or tax.l10n_ec_code_applied or tax.l10n_ec_code_base or '')
-                            # IVA
-                            if tax.tax_group_id.id in iva_tax_groups.ids:
-                                # Codigo retencion iva
-                                if cod_ret_iva:
-                                    cod_ret_iva += ', ' + tax_code
-                                else:
-                                    cod_ret_iva = tax_code
-                                # Sumar al acumulador según porcentaje
-                                if percent == 10:
-                                    ret_10 += ret_amount
-                                elif percent == 20:
-                                    ret_20 += ret_amount
-                                elif percent == 30:
-                                    ret_30 += ret_amount
-                                elif percent == 50:
-                                    ret_50 += ret_amount
-                                elif percent == 70:
-                                    ret_70 += ret_amount
-                                elif percent == 100:
-                                    ret_100 += ret_amount
-                            # FUENTE
-                            elif tax.tax_group_id.id in rent_tax_groups.ids:
-                                # Codigo retencion fuente
-                                if cod_ret_fuente:
-                                    cod_ret_fuente += ', ' + tax_code
-                                else:
-                                    cod_ret_fuente = tax_code
-                                # Porcentaje de retencion
-                                if percent_ret_fuente:
-                                    percent_ret_fuente += ', ' + str(abs(tax.amount))
-                                else:
-                                    percent_ret_fuente = str(abs(tax.amount))
-            # valor total
-            worksheet.write(row, tax_col, total_amount, formats['number'])
-            # Casilla Retenciones
-            if invoice.l10n_ec_withhold_ids:
-                worksheet.write(row, tax_col+1, 'SI', formats['center'])
-                all_tags = invoice.l10n_ec_withhold_ids.filtered(lambda w: w.state == "posted").line_ids.mapped("tax_tag_ids.name")
-                all_tags = list(set(all_tags))
-                tags_text = "\n".join(all_tags) if all_tags else ''
-                worksheet.write(row, tax_col+2, tags_text, formats['border'])
-            else:
-                worksheet.write(row, tax_col+1, 'NO', formats['center'])
-                worksheet.write(row, tax_col+2, '', formats['border'])
-            # Cod Ret iva
-            worksheet.write(row, tax_col+3, cod_ret_iva, formats['center'])
-            # Retenciones IVA
-            """
-            worksheet.write(row, tax_col+1, ret_10, formats['number'])
-            worksheet.write(row, tax_col+2, ret_20, formats['number'])
-            worksheet.write(row, tax_col+3, ret_30, formats['number'])
-            worksheet.write(row, tax_col+4, ret_50, formats['number'])
-            worksheet.write(row, tax_col+5, ret_70, formats['number'])
-            worksheet.write(row, tax_col+6, ret_100, formats['number'])
-            """
-            # cod Ret Fuente
-            worksheet.write(row, tax_col+4, cod_ret_fuente, formats['center'])
-            worksheet.write(row, tax_col+5, invoice.amount_untaxed, formats['number'])
-            worksheet.write(row, tax_col+6, percent_ret_fuente, formats['center'])
-            """
-            ret_amount = ret_10 + ret_20 + ret_30 + ret_50 + ret_70 + ret_100
-            worksheet.write(row, tax_col+6, ret_amount, formats['number'])
-            """
-            worksheet.write(row, tax_col+7, ret_name, formats['center'])
-            worksheet.write(row, tax_col+8, ret_aut, formats['number'])
-            worksheet.write(row, tax_col+9, ret_date, formats['center'])
-            # Posicion fiscal
-            worksheet.write(row, tax_col+10, invoice.fiscal_position_id.name if invoice.fiscal_position_id else '', formats['center'])
-            payment_country = 'NA'
-            payment_country_haven = 'NA'
-            if invoice.fiscal_position_id and invoice.fiscal_position_id.country_id:
-                payment_country = invoice.fiscal_position_id.country_id.name
-                if invoice.fiscal_position_id.country_id.l10n_ec_code_tax_haven:
-                    payment_country_haven = invoice.fiscal_position_id.country_id.l10n_ec_code_tax_haven
-            worksheet.write(row, tax_col+11, payment_country, formats['center'])
-            worksheet.write(row, tax_col+12, payment_country_haven, formats['center'])
-            worksheet.write(row, tax_col+13, 'NA', formats['center'])
-            worksheet.write(row, tax_col+14, 'NA', formats['center'])
-            worksheet.write(row, tax_col+15, invoice.journal_id.name, formats['center'])
-            worksheet.write(row, tax_col+16, invoice.l10n_ec_sri_payment_id.name if invoice.l10n_ec_sri_payment_id else '', formats['center'])
-            # Obtener cuenta contable
-            """
-            account_name = ''
-            for line in invoice.line_ids:
-                if line.account_id.account_type == 'liability_payable':
-                    account_name = line.account_id.code
-                    break
-            worksheet.write(row, tax_col+21, account_name, formats['center'])
-            """
-            worksheet.write(row, tax_col+17, invoice.ref, formats['center'])
-            cont += 1
+                        if tax.l10n_ec_code_taxsupport:
+                            tax_supports.add(tax.l10n_ec_code_taxsupport)
+                # Convertir en string separado por coma
+                # Se comenta se podria volver a utilizar de nuevo
+                """
+                tax_support = ', '.join(tax_supports)
+                worksheet.write(row, 1, tax_support, formats['center'])
+                """
+                worksheet.write(row, 1, invoice.partner_id.l10n_latam_identification_type_id.name or '', formats['center'])
+                worksheet.write(row, 2, invoice.partner_id.vat or '', formats['border'])
+                worksheet.write(row, 3, invoice.partner_id.complete_name or '', formats['border'])
+                worksheet.write(row, 4, invoice.partner_id.l10n_ec_taxpayer_type_id.name if invoice.partner_id.l10n_ec_taxpayer_type_id else '', formats['border'])
+                worksheet.write(row, 5, 'SI' if invoice.partner_id.l10n_ec_related_party else 'NO', formats['center'])
+                subjet_type = ''
+                if invoice.partner_id.company_type == 'person':
+                    subjet_type = 'Persona Natural'
+                elif invoice.partner_id.company_type == 'company':
+                    subjet_type = 'Empresa'
+                worksheet.write(row, 6, subjet_type, formats['border'])
+                worksheet.write(row, 7, invoice.l10n_latam_document_type_id.name, formats['center'])
+                worksheet.write(row, 8, extract_numbers(invoice.name) or '', formats['border'])
+                worksheet.write(row, 9, invoice.l10n_ec_authorization_number or '', formats['border'])
+                worksheet.write(row, 10, invoice.invoice_date.strftime("%d/%m/%Y") or '', formats['border'])
+                #worksheet.write(row, 11, invoice.date.strftime("%d/%m/%Y") or '', formats['border'])
+                total_base_amount = 0.00
+                total_iva_amount = 0.00
+                # Mapear impuestos BASE
+                for tax_group in tax_groups:
+                    base_amount = 0.0
+                    iva_amount = 0.0
+                    for line in invoice.invoice_line_ids:
+                        for l_tax in line.tax_ids:
+                            if l_tax.tax_group_id == tax_group:
+                                base_amount += line.price_subtotal
+                                iva_amount  += line.price_subtotal * (l_tax.amount / 100.0)
+                    if base_amount > 0.00:
+                        total_base_amount += base_amount
+                        total_iva_amount += iva_amount
+                        worksheet.write(row, tax_struct[tax_group.id]['base'], base_amount or 0.00, formats['number'])
+                        worksheet.write(row, tax_struct[tax_group.id]['iva'], iva_amount or 0.00, formats['number'])
+                    else:
+                        worksheet.write(row, tax_struct[tax_group.id]['base'], 0.00, formats['number'])
+                        worksheet.write(row, tax_struct[tax_group.id]['iva'], 0.00, formats['number'])
+                total_amount = total_base_amount + total_iva_amount
+                # Retenciones
+                retentions = self._get_retentions_data(invoice)
+                iva_tax_groups = self.env['account.tax.group'].search([('type_ret', 'in', ['withholding_iva_purchase', 'withholding_iva_sales'])])
+                rent_tax_groups = self.env['account.tax.group'].search([('type_ret', 'in', ['withholding_rent_purchase', 'withholding_rent_sales'])])
+                cod_ret_iva = ''
+                cod_ret_fuente = ''
+                percent_ret_fuente = ''
+                ret_10 = ret_20 = ret_30 = ret_50 = ret_70 = ret_100 = 0.00
+                ret_name = ''
+                ret_aut = ''
+                ret_date = ''
+                for retention in retentions:
+                    # Nombre retencion
+                    if ret_name:
+                        ret_name += ', ' + retention.name
+                    else:
+                        ret_name = retention.name
+                    # Autorizacion retencion
+                    if ret_aut:
+                        ret_aut += ', ' + retention.l10n_ec_authorization_number
+                    else:
+                        ret_aut = retention.l10n_ec_authorization_number
+                    # Fecha retencion
+                    if ret_date:
+                        ret_date += ', ' + retention.l10n_ec_withhold_date.strftime('%d/%m/%Y')
+                    else:
+                        ret_date = retention.l10n_ec_withhold_date.strftime('%d/%m/%Y')
+                    for line in retention.l10n_ec_withhold_line_ids:
+                        for tax in line.tax_ids:
+                            if tax.tax_group_id:
+                                percent = abs(tax.amount)
+                                ret_amount = abs(line.l10n_ec_withhold_tax_amount)
+                                tax_code = (tax.l10n_ec_code_ats or tax.l10n_ec_code_applied or tax.l10n_ec_code_base or '')
+                                # IVA
+                                if tax.tax_group_id.id in iva_tax_groups.ids:
+                                    # Codigo retencion iva
+                                    if cod_ret_iva:
+                                        cod_ret_iva += ', ' + tax_code
+                                    else:
+                                        cod_ret_iva = tax_code
+                                    # Sumar al acumulador según porcentaje
+                                    if percent == 10:
+                                        ret_10 += ret_amount
+                                    elif percent == 20:
+                                        ret_20 += ret_amount
+                                    elif percent == 30:
+                                        ret_30 += ret_amount
+                                    elif percent == 50:
+                                        ret_50 += ret_amount
+                                    elif percent == 70:
+                                        ret_70 += ret_amount
+                                    elif percent == 100:
+                                        ret_100 += ret_amount
+                                # FUENTE
+                                elif tax.tax_group_id.id in rent_tax_groups.ids:
+                                    # Codigo retencion fuente
+                                    if cod_ret_fuente:
+                                        cod_ret_fuente += ', ' + tax_code
+                                    else:
+                                        cod_ret_fuente = tax_code
+                                    # Porcentaje de retencion
+                                    if percent_ret_fuente:
+                                        percent_ret_fuente += ', ' + str(abs(tax.amount))
+                                    else:
+                                        percent_ret_fuente = str(abs(tax.amount))
+                # valor total
+                worksheet.write(row, tax_col, total_amount, formats['number'])
+                # Casilla Retenciones
+                if tag:
+                    worksheet.write(row, tax_col+1, 'SI', formats['center'])
+                    worksheet.write(row, tax_col+2, tag, formats['border'])
+                else:
+                    worksheet.write(row, tax_col+1, 'NO', formats['center'])
+                    worksheet.write(row, tax_col+2, '', formats['border'])
+                # Cod Ret iva
+                worksheet.write(row, tax_col+3, cod_ret_iva, formats['center'])
+                # Retenciones IVA
+                """
+                worksheet.write(row, tax_col+1, ret_10, formats['number'])
+                worksheet.write(row, tax_col+2, ret_20, formats['number'])
+                worksheet.write(row, tax_col+3, ret_30, formats['number'])
+                worksheet.write(row, tax_col+4, ret_50, formats['number'])
+                worksheet.write(row, tax_col+5, ret_70, formats['number'])
+                worksheet.write(row, tax_col+6, ret_100, formats['number'])
+                """
+                # cod Ret Fuente
+                worksheet.write(row, tax_col+4, cod_ret_fuente, formats['center'])
+                worksheet.write(row, tax_col+5, invoice.amount_untaxed, formats['number'])
+                worksheet.write(row, tax_col+6, percent_ret_fuente, formats['center'])
+                """
+                ret_amount = ret_10 + ret_20 + ret_30 + ret_50 + ret_70 + ret_100
+                worksheet.write(row, tax_col+6, ret_amount, formats['number'])
+                """
+                worksheet.write(row, tax_col+7, ret_name, formats['center'])
+                worksheet.write(row, tax_col+8, ret_aut, formats['number'])
+                worksheet.write(row, tax_col+9, ret_date, formats['center'])
+                # Posicion fiscal
+                worksheet.write(row, tax_col+10, invoice.fiscal_position_id.name if invoice.fiscal_position_id else '', formats['center'])
+                payment_country = 'NA'
+                payment_country_haven = 'NA'
+                if invoice.fiscal_position_id and invoice.fiscal_position_id.country_id:
+                    payment_country = invoice.fiscal_position_id.country_id.name
+                    if invoice.fiscal_position_id.country_id.l10n_ec_code_tax_haven:
+                        payment_country_haven = invoice.fiscal_position_id.country_id.l10n_ec_code_tax_haven
+                worksheet.write(row, tax_col+11, payment_country, formats['center'])
+                worksheet.write(row, tax_col+12, payment_country_haven, formats['center'])
+                worksheet.write(row, tax_col+13, 'NA', formats['center'])
+                worksheet.write(row, tax_col+14, 'NA', formats['center'])
+                worksheet.write(row, tax_col+15, invoice.journal_id.name, formats['center'])
+                worksheet.write(row, tax_col+16, invoice.l10n_ec_sri_payment_id.name if invoice.l10n_ec_sri_payment_id else '', formats['center'])
+                # Obtener cuenta contable
+                """
+                account_name = ''
+                for line in invoice.line_ids:
+                    if line.account_id.account_type == 'liability_payable':
+                        account_name = line.account_id.code
+                        break
+                worksheet.write(row, tax_col+21, account_name, formats['center'])
+                """
+                worksheet.write(row, tax_col+17, invoice.ref, formats['center'])
+                cont += 1
         workbook.close()
         output.seek(0)
         return output.read()
