@@ -5,7 +5,6 @@ import io
 from odoo.tools.misc import xlsxwriter
 from odoo.addons.penta_base.reports.xlsx_formats import get_xlsx_formats
 
-
 class ReportSalesWithholdingWizard(models.TransientModel):
 	_name = 'report.sales.withholding.wizard'
 	_description = 'Wizard to generate sales withholdings report'
@@ -138,16 +137,16 @@ class ReportSalesWithholdingWizard(models.TransientModel):
 		company_name = self.env.company.display_name
 		worksheet.merge_range('A1:E1', company_name)
 		worksheet.merge_range('A2:B2', 'Fecha Desde:')
-		worksheet.write('C2', self.date_start.strftime(DATE_FMT) if self.date_start else '')
+		worksheet.write('C2', self.date_start.strftime(DATE_FMT) if self.date_st	art else '')
 		worksheet.merge_range('A3:B3', 'Fecha Hasta:')
 		worksheet.write('C3', self.date_end.strftime(DATE_FMT) if self.date_end else '')
 		worksheet.merge_range('A4:B4', 'Reporte:')
 		worksheet.write('C4', 'RETENCIONES VENTAS')
 
-		# Cabeceras
+		# Cabeceras (agregada CUENTA CONTABLE tras VALOR RETENIDO)
 		headers = [
-			'#', 'FECHA DE EMISION', 'DIARIO', 'NUMERO DE RETENCION', 'RUC', 'RAZON SOCIAL', 'AUTORIZACION SRI',
-			'BASE IMPONIBLE', 'VALOR RETENIDO', 'PORCENTAJE', 'TIPO', 'CODIGO DECLARACION FISCAL', 'NRO FACTURA', 'FECHA FACTURA'
+			'#', 'FECHA DE EMISIÓN', 'NÚMERO DE RETENCIÓN', 'RUC', 'RAZÓN SOCIAL', 'AUTORIZACIÓN SRI',
+			'BASE IMPONIBLE', 'VALOR RETENIDO', 'CUENTA CONTABLE', 'PORCENTAJE', 'TIPO', 'CASILLA 104', 'NRO FACTURA', 'FECHA FACTURA'
 		]
 		row = 5
 		for col, header in enumerate(headers):
@@ -158,14 +157,15 @@ class ReportSalesWithholdingWizard(models.TransientModel):
 		count = 1
 		moves = self._get_moves_data()
 		for move in moves:
-			# Tomar las etiquetas fiscales desde las líneas de retención del comprobante (las que tienen monto retenido),
-			# deduplicar y usar un único valor (el primero). El dominio ya trae solo movimientos 'posted'.
-			move_withhold_lines = move.line_ids.filtered(lambda l: l.l10n_ec_withhold_tax_amount)
-			move_tag_names = list(set(move_withhold_lines.mapped('tax_tag_ids.name'))) if move_withhold_lines else []
-			move_fiscal_code = move_tag_names[0] if move_tag_names else ''
+			# Recorremos únicamente líneas con monto retenido; Casilla 104 se determina por línea.
 			for line in move.line_ids:
 				if not line.l10n_ec_withhold_tax_amount:
 					continue
+				# Filtrar solo retenciones de clientes: partner con customer_rank > 0
+				if move.partner_id and move.partner_id.customer_rank <= 0:
+					continue
+				# Factura origen (puede no existir; se muestran retenciones con o sin factura asociada)
+				invoice = line.l10n_ec_withhold_invoice_id
 				# Tipo (grupo de impuestos)
 				tax_groups = line.tax_ids.mapped('tax_group_id')
 				group_name = tax_groups[:1].name if tax_groups else ''
@@ -192,18 +192,36 @@ class ReportSalesWithholdingWizard(models.TransientModel):
 				worksheet.write(row, 0, count, formats['center'])
 				withhold_date = getattr(move, 'l10n_ec_withhold_date', None)
 				worksheet.write(row, 1, withhold_date.strftime(DATE_FMT) if withhold_date else '', formats['border'])
-				worksheet.write(row, 2, move.journal_id.name or '', formats['border'])
-				worksheet.write(row, 3, move.name or '', formats['border'])
-				worksheet.write(row, 4, move.partner_id.vat or '', formats['border'])
-				worksheet.write(row, 5, move.partner_id.complete_name or '', formats['border'])
-				worksheet.write(row, 6, move.l10n_ec_authorization_number or '', formats['border'])
-				worksheet.write(row, 7, line.balance or 0.0, formats['currency'])
-				worksheet.write(row, 8, line.l10n_ec_withhold_tax_amount or 0.0, formats['currency'])
+				# worksheet.write(row, 2, move.journal_id.name or '', formats['border'])
+				# Número de retención: solo dígitos
+				import re
+				raw_ret = move.name or ''
+				ret_digits = re.sub(r'\D', '', raw_ret)
+				worksheet.write(row, 2, ret_digits if ret_digits else raw_ret, formats['border'])
+				worksheet.write(row, 3, move.partner_id.vat or '', formats['border'])
+				worksheet.write(row, 4, move.partner_id.complete_name or '', formats['border'])
+				worksheet.write(row, 5, move.l10n_ec_authorization_number or '', formats['border'])
+				# Base imponible siempre en positivo
+				worksheet.write(row, 6, abs(line.balance) if line.balance else 0.0, formats['currency'])
+				worksheet.write(row, 7, line.l10n_ec_withhold_tax_amount or 0.0, formats['currency'])
+				# Cuenta contable: código + nombre (si existe)
+				account_label = ''
+				if line.account_id:
+					acc_code = line.account_id.code or ''
+					acc_name = line.account_id.name or ''
+					account_label = f"{acc_code} {acc_name}".strip()
+				worksheet.write(row, 8, account_label, formats['border'])
 				worksheet.write(row, 9, (percent / 100.0), formats['percent'])
 				# Tipo normalizado en base al grupo de impuestos
 				worksheet.write(row, 10, normalized or (group_name or ''), formats['center'])
-                # etiqueta tax_tag_ids
-				worksheet.write(row, 11, move_fiscal_code, formats['border'])
+				# Casilla 104 por línea: prioridad tax_tag_ids; fallback código ATS de impuestos
+				line_tag_names = line.tax_tag_ids.mapped('name') if line.tax_tag_ids else []
+				if line_tag_names:
+					casilla_104 = line_tag_names[0]
+				else:
+					ats_codes = [t.l10n_ec_code_ats for t in line.tax_ids if getattr(t, 'l10n_ec_code_ats', False)]
+					casilla_104 = ats_codes[0] if ats_codes else ''
+				worksheet.write(row, 11, casilla_104, formats['border'])
 				worksheet.write(row, 12, invoice.name if invoice else '', formats['border'])
 				worksheet.write(row, 13, invoice.invoice_date.strftime(DATE_FMT) if invoice and invoice.invoice_date else '', formats['border'])
 
@@ -213,4 +231,3 @@ class ReportSalesWithholdingWizard(models.TransientModel):
 		workbook.close()
 		output.seek(0)
 		return output.read()
-
