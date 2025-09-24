@@ -137,7 +137,7 @@ class ReportSalesWithholdingWizard(models.TransientModel):
 		company_name = self.env.company.display_name
 		worksheet.merge_range('A1:E1', company_name)
 		worksheet.merge_range('A2:B2', 'Fecha Desde:')
-		worksheet.write('C2', self.date_start.strftime(DATE_FMT) if self.date_st	art else '')
+		worksheet.write('C2', self.date_start.strftime(DATE_FMT) if self.date_start else '')
 		worksheet.merge_range('A3:B3', 'Fecha Hasta:')
 		worksheet.write('C3', self.date_end.strftime(DATE_FMT) if self.date_end else '')
 		worksheet.merge_range('A4:B4', 'Reporte:')
@@ -165,7 +165,6 @@ class ReportSalesWithholdingWizard(models.TransientModel):
 				if move.partner_id and move.partner_id.customer_rank <= 0:
 					continue
 				# Factura origen (puede no existir; se muestran retenciones con o sin factura asociada)
-				invoice = line.l10n_ec_withhold_invoice_id
 				# Tipo (grupo de impuestos)
 				tax_groups = line.tax_ids.mapped('tax_group_id')
 				group_name = tax_groups[:1].name if tax_groups else ''
