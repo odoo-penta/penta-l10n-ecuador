@@ -4,30 +4,35 @@
 # License Odoo Proprietary License v1.0 (https://www.odoo.com/documentation/user/16.0/legal/licenses/licenses.html#odoo-proprietary-license)
 
 from odoo import models, fields, api, _
-
-
-class FinanceCard(models.Model):
-    _name = 'finance.card'
-    _description = 'Credit/Debit Card'
-    _order = 'name desc'
-    
-    name = fields.Char()
-    card_type = fields.Selection([('debit', 'Debit'), ('credit', 'Credit')], string="Card type")
+from odoo.exceptions import UserError
 
 
 class AccountPayment(models.Model):
     _inherit = 'account.payment'
     
     cash_session_id = fields.Many2one('cash.box.session', string="Cash Session", copy=False)
-    bank_reference = fields.Char(string="Bank reference")
-    card = fields.Many2one('finance.card', string="Card")
-    card_payment_type = fields.Selection(
-        [('debit', 'Debit'),
-         ('current', 'Current'),
-         ('deferred_with_interest', 'Deferred with interest'),
-         ('deferred_without_interest', 'Deferred without interest')], string="Payment type"
-    )
-    number_months = fields.Integer(string="Number of months")
-    number_lot = fields.Char()
-    authorization_number = fields.Char(string="Authorization number")
-    bank_id = fields.Many2one("res.partner.bank")
+
+    @api.model
+    def default_get(self, fields_list):
+        #import pdb;pdb.set_trace()
+        res = super().default_get(fields_list)
+        if self.env.user.has_group('l10n_ec_point_of_sale.group_cash_box_user') and fields_list.get('payment_type') == 'inbound':
+            cash_box = self.env['cash.box'].search(['|',('cashier_ids', 'in', self.env.user.id),('responsible_ids', 'in', self.env.user.id)], limit=1)
+            if not cash_box:
+                raise UserError(_("The user is not assigned to any register. Assign a register before creating an order."))
+            session = cash_box.current_session_id
+            if not session:
+                raise UserError(_("You don't have any open cashier sessions. Please open one before creating an order."))
+            # Sólo asigna si los campos están en fields_list
+            if 'cash_session_id' in fields_list:
+                res['cash_session_id'] = session.id
+        return res
+    
+    @api.model_create_multi
+    def create(self, vals_list):
+        #import pdb;pdb.set_trace()
+        payments  = super().create(vals_list)
+        for payment in payments:
+            if payment.cash_session_id:
+                self.env['cash.box.session']._create_movement(payment.cash_session_id.id, payment.partner_id.id, 'payment', payment.id)
+        return payments
