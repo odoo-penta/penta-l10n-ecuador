@@ -111,9 +111,6 @@
                 <footer>
                     <button string="Close Cash Box" type="object" name="action_confirm_closed" class="btn-primary"/>
                     <button string="Cancel" special="cancel" class="btn-secondary"/>
-                    <div style="margin-left:auto;">
-                        <button name="print_report" string="Print Summary" type="object" class="btn-primary" icon="fa-print"/>
-                    </div>
                 </footer>
             </form>
         </field>

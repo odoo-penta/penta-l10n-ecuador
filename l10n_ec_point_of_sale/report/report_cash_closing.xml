@@ -51,8 +51,8 @@
                                         <tr>
                                             <!-- TIPO -->
                                             <td>
-                                                <t t-if="movement.operation_type == 'invoice'">
-                                                    <strong>Invoice</strong>
+                                                <t t-if="movement.operation_type == 'order'">
+                                                    <strong>Order</strong>
                                                 </t>
                                                 <t t-elif="movement.operation_type == 'refund'">
                                                     <strong>Credit note</strong>

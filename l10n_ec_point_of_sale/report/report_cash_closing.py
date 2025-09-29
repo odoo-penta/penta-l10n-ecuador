@@ -11,13 +11,14 @@ class ReportCashClosing(models.AbstractModel):
 
     @api.model
     def _get_report_values(self, docids, data=None):
-        wizard = self.env['cash.box.closed.wizard'].browse(docids)
+        import pdb;pdb.set_trace()
+        session = self.env['cash.box.session'].browse(docids)
         user = self.env.user
         return {
             'doc_ids': docids,
-            'doc_model': 'cash.box.closed.wizard',
-            'docs': wizard,
-            'payment_summary': wizard._get_payment_summary(),
+            'doc_model': 'cash.box.session',
+            'docs': session,
+            'payment_summary': session._get_payment_summary(),
             'user_name': user.name,
             'user_identification': user.partner_id.vat or '',
         }
