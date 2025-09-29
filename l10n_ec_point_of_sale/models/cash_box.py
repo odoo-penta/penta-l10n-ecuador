@@ -219,7 +219,7 @@ class CashBoxSession(models.Model):
         for vals in vals_list:
             # asignamos un nombre unico a la sesion en base a la secuencia
             if vals.get('name', 'New') == 'New':
-                seq = self.get_sequence()
+                seq = self.get_sequence(vals.get('cash_id', None))
                 if seq:
                     cash_name = self.env['cash.box'].browse(vals.get('cash_id', False)).code if vals.get('cash_id') else 'Cash Box'
                     vals['name'] = cash_name + '/' + seq.next_by_id() or '00000'
@@ -285,44 +285,54 @@ class CashBoxSession(models.Model):
     def create_closing_journal_entries(self):
         payment_datas = self._get_payment_datas()
         if payment_datas:
-            # Creamos el asiento de cierre
-            reference = _('Cash closing %s') % (self.name)
-            move = self.env['account.move'].create({
-                'ref': reference,
-                'journal_id': self.cash_id.close_journal_id.id,
-                'date': fields.Date.context_today(self),
-                'move_type': 'entry',
-            })
-            line_vals = []
-            for p_values in payment_datas.values():
-                for pp_values_k, pp_values_v in p_values.items():
-                    if not pp_values_v['amount'] or pp_values_v['journal'].type != 'cash':
-                        continue
-                    # agg la linea al debito
-                    line_vals.append((0, 0, {
-                        'move_id': move.id,
-                        'partner_id': pp_values_v['customer'].id,
-                        'account_id': self.cash_id.close_account_id.id,
-                        'debit': pp_values_v['amount'],
-                        'credit': 0.00,
-                    }))
-                    # agg la linea al credito
-                    line_vals.append((0, 0, {
-                        'move_id': move.id,
-                        'partner_id': pp_values_v['customer'].id,
-                        'account_id': self.env['account.payment'].browse(pp_values_k).journal_id.default_account_id.id,
-                        'debit': 0.00,
-                        'credit': pp_values_v['amount'],
-                    }))
-            move.write({'line_ids': line_vals})
-            move.action_post()
-            # Relacionamos el asiento de cierre a la sesion
-            self.close_move_id = move.id
+            # Filtramos pagos de tipo efectivo con monto mayor a 0
+            cash_lines_exist = any(
+                pp_values_v['amount'] and pp_values_v['journal'].type == 'cash'
+                for p_values in payment_datas.values()
+                for pp_values_v in p_values.values()
+            )
+            if cash_lines_exist:
+                # Creamos el asiento de cierre
+                reference = _('Cash closing %s') % (self.name)
+                move = self.env['account.move'].create({
+                    'ref': reference,
+                    'journal_id': self.cash_id.close_journal_id.id,
+                    'date': fields.Date.context_today(self),
+                    'move_type': 'entry',
+                })
+                line_vals = []
+                for p_values in payment_datas.values():
+                    for pp_values_k, pp_values_v in p_values.items():
+                        if not pp_values_v['amount'] or pp_values_v['journal'].type != 'cash':
+                            continue
+                        # agg la linea al debito
+                        line_vals.append((0, 0, {
+                            'move_id': move.id,
+                            'partner_id': pp_values_v['customer'].id,
+                            'account_id': self.cash_id.close_account_id.id,
+                            'debit': pp_values_v['amount'],
+                            'credit': 0.00,
+                        }))
+                        # agg la linea al credito
+                        line_vals.append((0, 0, {
+                            'move_id': move.id,
+                            'partner_id': pp_values_v['customer'].id,
+                            'account_id': self.env['account.payment'].browse(pp_values_k).journal_id.default_account_id.id,
+                            'debit': 0.00,
+                            'credit': pp_values_v['amount'],
+                        }))
+                move.write({'line_ids': line_vals})
+                move.action_post()
+                # Relacionamos el asiento de cierre a la sesion
+                self.close_move_id = move.id
      
     @api.model
-    def get_sequence(self):
+    def get_sequence(self, cash_id=None):
         # obtenemos la secuencia para la sesion
-        if self.cash_id:
+        if cash_id:
+            cash = self.env['cash.box'].browse(cash_id)
+            return cash.session_seq_id or False
+        elif self.cash_id:
             return self.cash_id.session_seq_id or False
         else:
             cash_id = self.env.context.get('default_cash_id', False)
@@ -335,63 +345,6 @@ class CashBoxSession(models.Model):
         param = self.env['ir.config_parameter'].sudo().get_param('l10n_ec_point_of_sale.allow_credit_note_cash')
         for record in self:
             record.allow_credit = param 
-    
-    def action_new_sale(self):
-        self.ensure_one()
-        # invocamos el wizard de nueva venta
-        return {
-            'type': 'ir.actions.act_window',
-            'name': _('New Sale'),
-            'res_model': 'cash.box.sale.wizard',
-            'view_mode': 'form',
-            'target': 'new',
-            'context': {
-                'default_cash_id': self.cash_id.id,
-                'default_session_id': self.id,
-            }
-        }
-        
-    def action_new_credit_note(self):
-        # invocamos el wizard de notas de credito
-        self.ensure_one()
-        return {
-            'type': 'ir.actions.act_window',
-            'name': _('Credit Notes'),
-            'res_model': 'cash.box.credit.note.wizard',
-            'view_mode': 'form',
-            'target': 'new',
-            'context': {
-                'default_session_id': self.id,
-            }
-        }
-        
-    def action_new_payment(self):
-        # invocamos el wizard de pagos
-        self.ensure_one()
-        return {
-            'type': 'ir.actions.act_window',
-            'name': _('Payments'),
-            'res_model': 'cash.box.payment.wizard',
-            'view_mode': 'form',
-            'target': 'new',
-            'context': {
-                'default_session_id': self.id,
-            }
-        }
-
-    def action_new_quotation(self):
-        # invocamos el wizard de cotizaciones
-        self.ensure_one()
-        return {
-            'type': 'ir.actions.act_window',
-            'name': _('Quotations'),
-            'res_model': 'cash.box.quotation.wizard',
-            'view_mode': 'form',
-            'target': 'new',
-            'context': {
-                'default_session_id': self.id,
-            }
-        }
         
     def open_journal_items_view(self):
         self.ensure_one()
@@ -449,7 +402,6 @@ class CashBoxSession(models.Model):
                 return 'cash'
         
         payment_summary = {}
-        import pdb;pdb.set_trace()
         if not movement_ids:
             movement_ids = self.cash_id.current_session_id.movement_ids
         for movement in movement_ids:
