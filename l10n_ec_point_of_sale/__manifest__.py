@@ -23,8 +23,7 @@
     'license': 'OPL-1',
     'category': 'Sales/Sales',
     'depends': [
-        'sale',
-        'stock',
+        'sale_stock',
         'l10n_ec_account_penta',
     ],
     'data': [
@@ -44,10 +43,8 @@
         
         'views/cash_box_views.xml',
         'views/coin_views.xml',
-        'views/payment_method_views.xml',
+        'views/sale_order_views.xml',
         'views/cash_menuitems.xml',
-    ],
-    'demo': [
     ],
     'installable': True,
     'application': True,

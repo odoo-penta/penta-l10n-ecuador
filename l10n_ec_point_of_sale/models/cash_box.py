@@ -12,7 +12,7 @@ class CashBox(models.Model):
     _description = 'Cash box'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'name desc'
-    
+
     _sql_constraints = [
         ('unique_cash_box_name', 'unique(name)', _('The box name already exists.')),
     ]
@@ -22,15 +22,16 @@ class CashBox(models.Model):
     currency_id = fields.Many2one('res.currency', default=lambda self: self.env.company.currency_id)
     company_id = fields.Many2one('res.company', string='Company', required=True, default=lambda self: self.env.company)
     warehouse_id = fields.Many2one('stock.warehouse', string="Warehouse", check_company=True, tracking=True)
-    responsible_ids = fields.Many2many('res.users', 'cash_user_rel', 'cash_id', 'user_id', default=lambda self: [self.env.uid], string="Responsibles", tracking=True)
     journal_id = fields.Many2one('account.journal', string="Journal", domain=[('type', 'in', ['sale'])], tracking=True)
-    state = fields.Selection([('open', 'Open'), ('closed', 'Closed')], default='closed', string="State", readonly=True)
     session_ids = fields.One2many('cash.box.session', 'cash_id', string="Sessions", readonly=True)
     current_session_id = fields.Many2one('cash.box.session', string="Current Session", readonly=True)
-    payment_method_ids = fields.Many2many('cash.payment.method', 'cash_payment_method_rel', 'cash_id', 'payment_id', string='Payment methods', domain=[('journal_id.type', 'in', ['cash', 'bank']), ('journal_id.active', '=', True)], copy=False)
-    cashier_ids = fields.Many2many('res.users', 'cash_aditional_user_rel', 'cash_id', 'user_id', string="Cashiers")
+    state = fields.Selection([('open', 'Open'), ('closed', 'Closed')], default='closed', string="State", readonly=True)
     is_cash_box_admin = fields.Boolean(compute='_compute_is_cash_box_admin', store=False)
     is_administrator = fields.Boolean(compute='_compute_is_administrator', store=False)
+    is_cash_box_responsible = fields.Boolean(compute='_compute_is_cash_box_responsible', store=False)
+    # Campos de configuracion
+    responsible_ids = fields.Many2many('res.users', 'cash_user_rel', 'cash_id', 'user_id', default=lambda self: [self.env.uid], string="Responsibles", tracking=True)
+    cashier_ids = fields.Many2many('res.users', 'cash_aditional_user_rel', 'cash_id', 'user_id', string="Cashiers")
     session_seq_id = fields.Many2one('ir.sequence', string="Session Sequence", domain="[('code', '=', 'cash.session')]", required=True)
     movement_seq_id = fields.Many2one('ir.sequence', string="Movement Sequence", domain="[('code', '=', 'cash.session.movement')]", required=True)
     close_account_id = fields.Many2one('account.account', required=True, check_company=True, copy=False, ondelete='restrict', tracking=True, string='Close Account', domain=[('deprecated', '=', False),('account_type', '=', 'asset_cash')])
@@ -39,6 +40,44 @@ class CashBox(models.Model):
     close_journal_id = fields.Many2one('account.journal', string="Close Journal", domain=[('type', 'in', ['general'])], tracking=True)
     l10n_ec_sri_payment_id = fields.Many2one('l10n_ec.sri.payment', string="SRI Payment Method", required=True)
     analytic_account_id = fields.Many2one('account.analytic.account', required=True, ondelete='restrict', tracking=True, domain="['|', ('company_id', '=', False), ('company_id', '=?', company_id)]")
+    
+    @api.model_create_multi
+    def create(self, vals_list):
+        for record in vals_list:
+            if record.get('responsible_ids'):
+                for responsible in record['responsible_ids'][0]:
+                    self.asign_cash_user_group(self.env['res.users'].browse(responsible))
+            if record.get('cashier_ids'):
+                for responsible in record['cashier_ids'][0]:
+                    self.asign_cash_user_group(self.env['res.users'].browse(responsible))
+        return super().create(vals_list)
+    
+    def write(self, vals):
+        if self.current_session_id and not self.env.context.get('closed', False):
+            raise UserError(_("You must close the current session before making changes to the box."))
+        if vals.get('responsible_ids'):
+            for responsible in vals['responsible_ids'][0]:
+                self.asign_cash_user_group(self.env['res.users'].browse(responsible))
+        if vals.get('cashier_ids'):
+            for responsible in vals['cashier_ids'][0]:
+                self.asign_cash_user_group(self.env['res.users'].browse(responsible))
+        return super().write(vals)
+    
+    def unlink(self):
+        for cash in self:
+            # no permite eliminar caja si ya tiene una session relacionada
+            if cash.session_ids:
+                raise UserError(_("You cannot delete a cash box with active sessions."))
+        return super().unlink()
+    
+    @api.model
+    def search(self, args, offset=0, limit=None, order=None):
+        args = list(args)  # Copia segura para evitar efectos colaterales
+        # si es administrador de sistema permite ver todas las cajas
+        if not self._is_admin():
+            # filtra que el usuario se encuentre entre los administradores del sistema
+            args += ['|',('responsible_ids', 'in', self.env.uid),('cashier_ids', 'in', self.env.uid)]
+        return super().search(args, offset=offset, limit=limit, order=order)
     
     @api.constrains('journal_id', 'close_journal_id')
     def _check_unique_journals(self):
@@ -73,10 +112,6 @@ class CashBox(models.Model):
                 ], limit=1)
                 if other:
                     raise UserError(_("The cashier '%s' is already assigned to the cash box '%s'. Please choose another cashier.") % (user.name, other.name))
-
-    @api.model
-    def _is_admin(self):
-        return self.env.user.has_group('base.group_system')
     
     @api.depends('name')
     def _compute_is_cash_box_admin(self):
@@ -91,26 +126,20 @@ class CashBox(models.Model):
             else:
                 rec.is_administrator = self.env.user in rec.responsible_ids
     
-    def write(self, vals):
-        if self.current_session_id and not self.env.context.get('closed', False):
-            raise UserError(_("You must close the current session before making changes to the box."))
-        return super().write(vals)
+    @api.depends('name')
+    def _compute_is_cash_box_responsible(self):
+        for rec in self:
+            rec.is_cash_box_responsible = self.env.user in rec.responsible_ids
+                
+    def asign_cash_user_group(self, user):
+        user_group = self.env.ref('l10n_ec_point_of_sale.group_cash_box_user')
+        if not user.has_group('l10n_ec_point_of_sale.group_cash_box_user'):
+            user.groups_id = [(4, user_group.id, 0)]
+        return True
     
-    def unlink(self):
-        for cash in self:
-            # no permite eliminar caja si ya tiene una session relacionada
-            if cash.session_ids:
-                raise UserError(_("You cannot delete a cash box with active sessions."))
-        return super().unlink()
-
     @api.model
-    def search(self, args, offset=0, limit=None, order=None):
-        args = list(args)  # Copia segura para evitar efectos colaterales
-        # si es administrador de sistema permite ver todas las cajas
-        if not self._is_admin():
-            # filtra que el usuario se encuentre entre los administradores del sistema
-            args += [('responsible_ids', 'in', self.env.uid)]
-        return super().search(args, offset=offset, limit=limit, order=order)
+    def _is_admin(self):
+        return self.env.user.has_group('base.group_system')
     
     def open_cash(self, initial_balance):
         # abrimos la sesion
@@ -389,6 +418,20 @@ class CashBoxSession(models.Model):
             'target': 'current',
         }
         
+    def _create_movement(self, session_id, partner_id, type_op, obj_related):
+        # creamos un movimiento de 
+        values = {
+            'session_id': session_id,
+            'partner_id': partner_id,
+            'cashier_id': self.env.user.id,
+            'operation_type': type_op,
+        }
+        if type_op == 'order':
+            values['order_id'] = obj_related
+        elif type_op == 'payment':
+            values['payment_id'] = obj_related
+        return self.env['cash.box.session.movement'].create(values)
+        
 class CashBoxSessionMovement(models.Model):
     _name = 'cash.box.session.movement'
     _description = 'Cash Box Session Movement'
@@ -399,12 +442,12 @@ class CashBoxSessionMovement(models.Model):
     currency_id = fields.Many2one(related='session_id.currency_id', depends=['session_id'])
     partner_id = fields.Many2one('res.partner', string='Customer', required=True)
     operation_type = fields.Selection([
-        ('invoice', 'Invoice'),
+        ('order', 'Order'),
         ('refund', 'Credit Note'),
         ('payment', 'Payment'),
         ('quote', 'Quote'),
     ], string="Operation Type", required=True)
-    amount = fields.Monetary(string='Amount', currency_field='currency_id')
+    amount = fields.Monetary(string='Amount', compute='_compute_amount', currency_field='currency_id')
     cashier_id = fields.Many2one('res.users', 'Cashier', default=lambda self: self.env.user)
     invoice_id = fields.Many2one("account.move", string="Invoice", readonly=True)
     credit_note_id = fields.Many2one("account.move", string="Credit Note", readonly=True)
@@ -423,7 +466,7 @@ class CashBoxSessionMovement(models.Model):
         for vals in vals_list:
             # asignamos un nombre unico al movimiento en base a la secuencia
             if vals.get('name', 'New') == 'New':
-                seq = self.get_sequence()
+                seq = self.get_sequence(vals.get('session_id', None))
                 if seq:
                     session_name = self.env['cash.box.session'].browse(vals.get('session_id', False)).name.split("/")[-1] if vals.get('session_id') else 'Session'
                     vals['name'] = session_name + '/' + seq.next_by_id() or '00000'
@@ -431,10 +474,22 @@ class CashBoxSessionMovement(models.Model):
                     raise UserError(_("Please configure the sequence for cash session movements."))
         return super().create(vals_list)
     
+    @api.depends('order_id', 'payment_id')
+    def _compute_amount(self):
+        self.amount = 0.00
+        for record in self:
+            if record.order_id:
+                record.amount = record.order_id.amount_total
+            elif record.payment_id:
+                record.amount = record.payment_id.amount
+    
     @api.model
-    def get_sequence(self):
+    def get_sequence(self, session_id=None):
         # obtenemos la secuencia para el movimiento
-        if self.session_id:
+        if session_id:
+            session = self.env['cash.box.session'].browse(session_id)
+            return session.cash_id.movement_seq_id or False
+        elif self.session_id:
             return self.session_id.cash_id.session_seq_id or False
         else:
             session_id = self.env.context.get('default_session_id', False)
@@ -446,8 +501,8 @@ class CashBoxSessionMovement(models.Model):
     def _compute_state(self):
         for rec in self:
             state = 'draft'  # valor por defecto
-            if rec.operation_type == 'invoice' and rec.invoice_id:
-                state = rec.invoice_id.payment_state or rec.invoice_id.state
+            if rec.operation_type == 'order' and rec.order_id:
+                state = rec.order_id.state
             elif rec.operation_type == 'refund' and rec.credit_note_id:
                 state = rec.credit_note_id.payment_state or rec.credit_note_id.state
             elif rec.operation_type == 'payment' and rec.payment_id:
