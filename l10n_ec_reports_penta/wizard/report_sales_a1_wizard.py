@@ -168,7 +168,6 @@ class ReportSalesA1Wizard(models.TransientModel):
                 all_tags = list(set(all_tags))
                 worksheet.write(row, tax_col+3, all_tags[0] if all_tags else '', formats['border'])
                 """
-                #import pdb;pdb.set_trace()
                 # Casilla Retenciones
                 if tag:
                     worksheet.write(row, tax_col+1, 'SI', formats['center'])

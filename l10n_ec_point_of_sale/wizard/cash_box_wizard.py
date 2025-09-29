@@ -4,10 +4,7 @@
 # License Odoo Proprietary License v1.0 (https://www.odoo.com/documentation/user/16.0/legal/licenses/licenses.html#odoo-proprietary-license)
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
-from decimal import Decimal, ROUND_HALF_UP
-from odoo.tools.float_utils import float_compare, float_round
-from collections import defaultdict
-from odoo.exceptions import ValidationError
+from odoo.tools.float_utils import float_round
 
 
 class CashBoxBaseWizard(models.AbstractModel):
@@ -179,6 +176,7 @@ class CashBoxClosedWizard(models.TransientModel):
         if cash_id:
             cash = self.env['cash.box'].browse(cash_id)
             movement_ids = cash.current_session_id.movement_ids
+            import pdb;pdb.set_trace()
             summary = self._get_payment_summary(movement_ids=movement_ids)
             total_cash = sum(item['cash'] for item in summary.values())
             total_cash += cash.current_session_id.initial_balance
@@ -287,10 +285,6 @@ class CashBoxClosedWizard(models.TransientModel):
                     'user_id': user.id,
                     'date_deadline': fields.Date.today(),
                 })
-        
-    def print_report(self):
-        self.ensure_one()
-        return self.env.ref('l10n_ec_point_of_sale.action_cash_closing_report').report_action(self)
     
     def _get_payment_summary(self, movement_ids=None):
         """ Obtiene un resumen de los pagos realizados por movimiento """
@@ -305,6 +299,7 @@ class CashBoxClosedWizard(models.TransientModel):
                 return 'cash'
         
         payment_summary = {}
+        import pdb;pdb.set_trace()
         if not movement_ids:
             movement_ids = self.cash_id.current_session_id.movement_ids
         for movement in movement_ids:

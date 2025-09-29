@@ -431,6 +431,54 @@ class CashBoxSession(models.Model):
         elif type_op == 'payment':
             values['payment_id'] = obj_related
         return self.env['cash.box.session.movement'].create(values)
+    
+    def print_summary(self):
+        self.ensure_one()
+        return self.env.ref('l10n_ec_point_of_sale.action_cash_closing_report').report_action(self)
+    
+    def _get_payment_summary(self, movement_ids=None):
+        """ Obtiene un resumen de los pagos realizados por movimiento """
+        
+        def categorize_payment(payment):
+            """ Categoriza el pago según su tipo """
+            if payment.journal_id.type == 'credit' or payment.journal_id.default_account_id.account_type == 'liability_credit_card':
+                return 'card'
+            elif payment.journal_id.type == 'bank':
+                return 'transfer'
+            else:
+                return 'cash'
+        
+        payment_summary = {}
+        import pdb;pdb.set_trace()
+        if not movement_ids:
+            movement_ids = self.cash_id.current_session_id.movement_ids
+        for movement in movement_ids:
+            # instanciamos el diccionario de resumen por movimiento
+            summary = {'cash': 0.00, 'transfer': 0.00, 'card': 0.00, 'credit': 0.00}
+            # si el movimeinto es factura o cotizacion
+            if movement.operation_type in ('invoice', 'quote'):
+                # obtenemos los pagos asociados a la factura o cotizacion(factura)
+                dict_payments = movement.invoice_id.open_payments()
+                payments = self.env['account.payment'].browse(
+                    dict_payments.get('res_id') or
+                    (dict_payments.get('domain') and dict_payments.get('domain')[0][2]) or
+                    []
+                ) 
+                # iteramos los pagos obtenidos
+                for payment in payments:
+                    key = categorize_payment(payment)
+                    summary[key] += payment.amount
+            # si el movimiento es una nota de credito
+            elif movement.operation_type == 'refund':
+                summary['credit'] += movement.credit_note_id.amount_total
+            # si el movimiento es un pago
+            else:
+                # obtenmos el pago
+                payment = movement.payment_id
+                key = categorize_payment(payment)
+                summary[key] += payment.amount
+            payment_summary[movement.id] = summary
+        return payment_summary
         
 class CashBoxSessionMovement(models.Model):
     _name = 'cash.box.session.movement'
