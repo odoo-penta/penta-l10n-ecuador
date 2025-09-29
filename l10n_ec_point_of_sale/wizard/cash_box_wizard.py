@@ -176,7 +176,6 @@ class CashBoxClosedWizard(models.TransientModel):
         if cash_id:
             cash = self.env['cash.box'].browse(cash_id)
             movement_ids = cash.current_session_id.movement_ids
-            import pdb;pdb.set_trace()
             summary = self._get_payment_summary(movement_ids=movement_ids)
             total_cash = sum(item['cash'] for item in summary.values())
             total_cash += cash.current_session_id.initial_balance
@@ -204,7 +203,7 @@ class CashBoxClosedWizard(models.TransientModel):
         }
         
     @api.onchange('final_balance')
-    def _oncahnge_final_balance(self):
+    def _onchange_final_balance(self):
         self.closing_note = ''
         
     def applied_diff_closing_balance(self):
@@ -299,7 +298,6 @@ class CashBoxClosedWizard(models.TransientModel):
                 return 'cash'
         
         payment_summary = {}
-        import pdb;pdb.set_trace()
         if not movement_ids:
             movement_ids = self.cash_id.current_session_id.movement_ids
         for movement in movement_ids:

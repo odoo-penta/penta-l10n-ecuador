@@ -6,12 +6,11 @@
 from odoo import api, models
 
 class ReportCashClosing(models.AbstractModel):
-    _name = 'report.report_cash_closing_template'
+    _name = 'report.l10n_ec_point_of_sale.report_cash_closing_template'
     _description = 'Cash Closing Report'
 
     @api.model
     def _get_report_values(self, docids, data=None):
-        import pdb;pdb.set_trace()
         session = self.env['cash.box.session'].browse(docids)
         user = self.env.user
         return {
