@@ -12,12 +12,10 @@ class ReportCashClosing(models.AbstractModel):
     @api.model
     def _get_report_values(self, docids, data=None):
         session = self.env['cash.box.session'].browse(docids)
-        user = self.env.user
         return {
             'doc_ids': docids,
             'doc_model': 'cash.box.session',
             'docs': session,
             'payment_summary': session._get_payment_summary(),
-            'user_name': user.name,
-            'user_identification': user.partner_id.vat or '',
+            'journal_payment_summary': session.get_payment_summary_by_journal(),
         }
