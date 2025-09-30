@@ -317,6 +317,7 @@ class CashBoxSession(models.Model):
                             'account_id': self.cash_id.close_account_id.id,
                             'debit': pp_values_v['amount'],
                             'credit': 0.00,
+                            'name': self.name,
                         }))
                         # agg la linea al credito
                         line_vals.append((0, 0, {
@@ -325,6 +326,7 @@ class CashBoxSession(models.Model):
                             'account_id': self.env['account.payment'].browse(pp_values_k).journal_id.default_account_id.id,
                             'debit': 0.00,
                             'credit': pp_values_v['amount'],
+                            'name': self.name,
                         }))
                 move.write({'line_ids': line_vals})
                 move.action_post()

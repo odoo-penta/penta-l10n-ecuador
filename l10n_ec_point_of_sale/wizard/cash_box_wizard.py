@@ -273,12 +273,12 @@ class CashBoxClosedWizard(models.TransientModel):
         if self.suggested_balance != self.final_balance:
             diff_move = self.applied_diff_closing_balance()
             current_session.diff_move_id = diff_move.id
-        # proceso de cierre
-        self.cash_id.closed_cash(self.final_balance)
         # si excede el limite de diferencia, notifica a los administardores de caja
         if self.exceeds_limit:
+            raise UserError(_("The closing balance exceeds the allowed difference limit. Please contact a cash box administrator to approve the closing."))
+            """
             for user in self.cash_id.responsible_ids:
-                self.env['mail.activity'].create({
+                self.env['mail.activity'].sudo().create({
                     'res_model_id': self.env['ir.model']._get('cash.box').id,
                     'res_id': self.cash_id.id,
                     'activity_type_id': self.env.ref('mail.mail_activity_data_todo').id,
@@ -287,6 +287,10 @@ class CashBoxClosedWizard(models.TransientModel):
                     'user_id': user.id,
                     'date_deadline': fields.Date.today(),
                 })
+            """
+        else:
+            # proceso de cierre
+            self.cash_id.closed_cash(self.final_balance)
         # Abrir session de caja cerrada
         return {
             'name': _('Cash Session'),
