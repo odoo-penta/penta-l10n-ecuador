@@ -1,13 +1,13 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# 	* pentalab_cash_manage
+# 	* l10n_ec_point_of_sale
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-04 15:36+0000\n"
-"PO-Revision-Date: 2025-08-04 10:43-0500\n"
+"POT-Creation-Date: 2025-09-30 15:50+0000\n"
+"PO-Revision-Date: 2025-09-30 11:35-0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es_EC\n"
@@ -15,171 +15,143 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.6\n"
+"X-Generator: Poedit 3.7\n"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,help:pentalab_cash_manage.field_account_payment__journal_type
-msgid ""
-"\n"
-"        Select 'Sale' for customer invoices journals.\n"
-"        Select 'Purchase' for vendor bills journals.\n"
-"        Select 'Cash', 'Bank' or 'Credit Card' for journals that are used "
-"in customer or vendor payments.\n"
-"        Select 'General' for miscellaneous operations journals.\n"
-"        "
-msgstr ""
-"\n"
-"Seleccione \"Venta\" para los diarios de facturas de clientes.\n"
-"Seleccione \"Compra\" para los diarios de facturas de proveedores.\n"
-"Seleccione \"Efectivo\", \"Banco\" o \"Tarjeta de crédito\" para los "
-"diarios utilizados en pagos a clientes o proveedores.\n"
-"Seleccione \"General\" para los diarios de operaciones varias."
+#. module: l10n_ec_point_of_sale
+#: model:ir.actions.report,print_report_name:l10n_ec_point_of_sale.action_cash_closing_report
+msgid "'CashClosing-%s' % (object.name or '')"
+msgstr "'CierreCaja-%s' % (object.name or '')"
 
-#. module: pentalab_cash_manage
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.report_cash_closing_template
+#. module: l10n_ec_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.report_cash_closing_template
 msgid ""
 "<br/>\n"
-"                                    <strong>Opening balance:</strong>"
+"                                    <strong>Closing Date:</strong>"
 msgstr ""
 "<br/>\n"
-"                                        <strong>Saldo apertura:</strong>"
+"                                    <strong>Fecha cierre:</strong>"
 
-#. module: pentalab_cash_manage
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.report_cash_closing_template
+#. module: l10n_ec_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.report_cash_closing_template
 msgid ""
 "<br/>\n"
-"                                    <strong>Opening date: </strong>"
+"                                    <strong>Session:</strong>"
 msgstr ""
 "<br/>\n"
-"                                        <strong>Fecha apertura: </strong>"
+"                                    <strong>Sesión:</strong>"
 
-#. module: pentalab_cash_manage
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.report_cash_closing_template
+#. module: l10n_ec_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.report_cash_closing_template
 msgid ""
 "<br/>\n"
-"                                    <strong>Session: </strong>"
+"                                    <strong>Status:</strong>"
 msgstr ""
 "<br/>\n"
-"                                        <strong>Sesión: </strong>"
+"                                    <strong>Estado:</strong>"
 
-#. module: pentalab_cash_manage
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_session_form
+#. module: l10n_ec_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.report_cash_closing_template
+msgid ""
+"<br/><br/>\n"
+"                                    ________________________<br/>\n"
+"                                    C.I.: __________________"
+msgstr ""
+"<br/><br/>\n"
+"                                    ________________________<br/>\n"
+"                                    C.I.: __________________"
+
+#. module: l10n_ec_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.view_cash_box_session_form
 msgid "<span class=\"o_stat_text\">Journal Items</span>"
 msgstr "<span class=\"o_stat_text\">Apuntes contables</span>"
 
-#. module: pentalab_cash_manage
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.report_cash_closing_template
-msgid "<strong>/</strong>"
-msgstr ""
+#. module: l10n_ec_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.view_cash_box_session_form
+msgid "<span class=\"o_stat_text\">Payments</span>"
+msgstr "<span class=\"o_stat_text\">Pagos</span>"
 
-#. module: pentalab_cash_manage
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.report_cash_closing_template
-msgid "<strong>Cash movements</strong>"
-msgstr "<strong>Movimientos de caja</strong>"
+#. module: l10n_ec_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.view_cash_box_session_form
+msgid "<span class=\"o_stat_text\">Summary</span>"
+msgstr "<span class=\"o_stat_text\">Resumen</span>"
 
-#. module: pentalab_cash_manage
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.report_cash_closing_template
-msgid "<strong>Cash: </strong>"
-msgstr "<strong>Caja: </strong>"
+#. module: l10n_ec_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.report_cash_closing_template
+msgid "<strong>Cash:</strong>"
+msgstr "<strong>Caja:</strong>"
 
-#. module: pentalab_cash_manage
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.report_cash_closing_template
-msgid "<strong>Credit note</strong>"
-msgstr "<strong>Nota de crédito</strong>"
-
-#. module: pentalab_cash_manage
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_kanban
+#. module: l10n_ec_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.view_cash_box_kanban
 msgid "<strong>Currency: </strong>"
-msgstr "<strong>Divisa: </strong>"
+msgstr "<strong>Moneda: </strong>"
 
-#. module: pentalab_cash_manage
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.report_cash_closing_template
-msgid "<strong>Invoice</strong>"
-msgstr "<strong>Factura</strong>"
+#. module: l10n_ec_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.report_cash_closing_template
+msgid "<strong>Opening Date:</strong>"
+msgstr "<strong>Fecha apertura:</strong>"
 
-#. module: pentalab_cash_manage
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.report_cash_closing_template
-msgid "<strong>Payment</strong>"
-msgstr "<strong>Pago</strong>"
+#. module: l10n_ec_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.report_cash_closing_template
+msgid "<strong>Responsible (Close):</strong><br/>"
+msgstr "<strong>Responsable (Cierre):</strong><br/>"
 
-#. module: pentalab_cash_manage
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.report_cash_closing_template
-msgid "<strong>Quote</strong>"
-msgstr "<strong>Cotización</strong>"
+#. module: l10n_ec_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.report_cash_closing_template
+msgid "<strong>Responsible (Open):</strong><br/>"
+msgstr "<strong>Responsable (Apertura):</strong><br/>"
 
-#. module: pentalab_cash_manage
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.report_cash_closing_template
-msgid "<strong>Responsible</strong>"
-msgstr "<strong>Responsable</strong>"
-
-#. module: pentalab_cash_manage
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_kanban
+#. module: l10n_ec_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.view_cash_box_kanban
 msgid "<strong>Warehouse: </strong>"
-msgstr "<strong>Almacen: </strong>"
+msgstr "<strong>Almacén: </strong>"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_advance_line_wizard__account_id
-msgid "Account"
-msgstr "Cuenta"
-
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box__message_needaction
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session__message_needaction
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box__message_needaction
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session__message_needaction
 msgid "Action Needed"
-msgstr "Acción necesaria"
+msgstr "Acción requerida"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box__activity_ids
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session__activity_ids
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box__activity_ids
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session__activity_ids
 msgid "Activities"
 msgstr "Actividades"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box__activity_exception_decoration
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session__activity_exception_decoration
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box__activity_exception_decoration
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session__activity_exception_decoration
 msgid "Activity Exception Decoration"
 msgstr "Decoración de excepción de actividad"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box__activity_state
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session__activity_state
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box__activity_state
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session__activity_state
 msgid "Activity State"
 msgstr "Estado de actividad"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box__activity_type_icon
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session__activity_type_icon
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box__activity_type_icon
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session__activity_type_icon
 msgid "Activity Type Icon"
 msgstr "Icono de tipo de actividad"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_advance_line_wizard__move_line_id
-msgid "Advance"
-msgstr "Anticipo"
-
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_sale_wizard__advance_line_ids
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_sale_wizard_form
-msgid "Advances"
-msgstr "Anticipos"
-
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session__allow_credit
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session__allow_credit
 msgid "Allow Credit"
 msgstr "Permitir crédito"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_res_config_settings__allow_advance_cash
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_res_config_settings__allow_advance_cash
 msgid "Allow advance"
 msgstr "Permitir anticipo"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_res_config_settings__allow_credit_note_cash
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_res_config_settings__allow_credit_note_cash
 msgid "Allow credit note"
 msgstr "Permitir nota de crédito"
 
-#. module: pentalab_cash_manage
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.res_config_settings_view_form
+#. module: l10n_ec_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.res_config_settings_view_form
 msgid ""
 "Allows the generation of credit notes for invoices in the cash register "
 "sessions"
@@ -187,773 +159,552 @@ msgstr ""
 "Permite la generación de notas de crédito para facturas en las sesiones de "
 "caja"
 
-#. module: pentalab_cash_manage
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.res_config_settings_view_form
+#. module: l10n_ec_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.res_config_settings_view_form
 msgid "Allows the use of advances for invoices in cashier sessions"
 msgstr "Permite el uso de anticipos para facturas en sesiones de caja"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_advance_line_wizard__amount
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_payment_method_wizard__amount
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session_movement__amount
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session_movement__amount
 msgid "Amount"
 msgstr "Monto"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box__message_attachment_count
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session__message_attachment_count
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box__analytic_account_id
+msgid "Analytic Account"
+msgstr "Cuenta analítica"
+
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box__message_attachment_count
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session__message_attachment_count
 msgid "Attachment Count"
-msgstr "Recuento de archivos adjuntos"
+msgstr "Número de archivos adjuntos"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_account_payment__authorization_number
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_payment_method_wizard__authorization_number
-msgid "Authorization number"
-msgstr "Número de autorización"
+#. module: l10n_ec_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.report_cash_closing_template
+msgid "Balances"
+msgstr "Saldos"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_payment_method_wizard__available_payment_method_ids
-msgid "Available Payment Methods"
-msgstr "Métodos de pago disponibles"
-
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_account_payment__bank_id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_payment_method_wizard__bank_id
-msgid "Bank"
-msgstr "Banco"
-
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_payment_method_wizard__bank_reference
-msgid "Bank Reference"
-msgstr "Referencia bancaria"
-
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_account_payment__bank_reference
-msgid "Bank reference"
-msgstr "Referencia bancaria"
-
-#. module: pentalab_cash_manage
-#: model:ir.model,name:pentalab_cash_manage.model_cash_box_base_wizard
+#. module: l10n_ec_point_of_sale
+#: model:ir.model,name:l10n_ec_point_of_sale.model_cash_box_base_wizard
 msgid "Base Cash Box Wizard"
 msgstr "Asistente de caja base"
 
-#. module: pentalab_cash_manage
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.report_cash_closing_template
-msgid "C.I.:"
-msgstr ""
-
-#. module: pentalab_cash_manage
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_closed_wizard_form
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_coin_wizard_form
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_credit_note_wizard_form
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_open_wizard_form
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_payment_wizard_form
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_quotation_wizard_form
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_sale_wizard_form
+#. module: l10n_ec_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.view_cash_box_closed_wizard_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.view_cash_box_coin_wizard_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.view_cash_box_open_wizard_form
 msgid "Cancel"
 msgstr "Cancelar"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields.selection,name:pentalab_cash_manage.selection__cash_box_session_movement__state__cancelled
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields.selection,name:l10n_ec_point_of_sale.selection__cash_box_session_movement__state__cancelled
 msgid "Cancelled"
 msgstr "Cancelado"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_account_payment__card
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_payment_method_wizard__card
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_pos_payment_method__card
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.report_cash_closing_template
+#. module: l10n_ec_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.report_cash_closing_template
 msgid "Card"
 msgstr "Tarjeta"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_finance_card__card_type
-msgid "Card type"
-msgstr "Tipo tarjeta"
-
-#. module: pentalab_cash_manage
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.report_cash_closing_template
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.res_config_settings_view_form
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_form
+#. module: l10n_ec_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.report_cash_closing_template
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.view_cash_box_form
 msgid "Cash"
-msgstr "Caja"
+msgstr "Efectivo"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_advance_line_wizard__cash_id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_base_wizard__cash_id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_closed_wizard__cash_id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_credit_note_wizard__cash_id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_open_wizard__cash_id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_payment_method_wizard__cash_id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_payment_wizard__cash_id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_quotation_wizard__cash_id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_sale_wizard__cash_id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session__cash_id
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.res_config_settings_view_form
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_coin_form
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_coin_list
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_form
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_list
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_base_wizard__cash_id
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_closed_wizard__cash_id
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_open_wizard__cash_id
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session__cash_id
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.view_cash_box_coin_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.view_cash_box_coin_list
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.view_cash_box_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.view_cash_box_list
 msgid "Cash Box"
 msgstr "Caja"
 
-#. module: pentalab_cash_manage
-#: model:res.groups,name:pentalab_cash_manage.group_cash_box_admin
+#. module: l10n_ec_point_of_sale
+#: model:res.groups,name:l10n_ec_point_of_sale.group_cash_box_admin
 msgid "Cash Box Admin"
 msgstr "Administrador Caja"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_payment_method_wizard__base_id
-msgid "Cash Box Base"
-msgstr "Caja base"
-
-#. module: pentalab_cash_manage
-#: model:ir.actions.act_window,name:pentalab_cash_manage.action_cash_box_coin
-#: model:ir.ui.menu,name:pentalab_cash_manage.cash_box_coins_menu
+#. module: l10n_ec_point_of_sale
+#: model:ir.actions.act_window,name:l10n_ec_point_of_sale.action_cash_box_coin
+#: model:ir.ui.menu,name:l10n_ec_point_of_sale.cash_box_coins_menu
 msgid "Cash Box Coin"
 msgstr "Monedas/Billetes"
 
-#. module: pentalab_cash_manage
-#: model:ir.model,name:pentalab_cash_manage.model_cash_box_credit_note_wizard
-msgid "Cash Box Credit Note Wizard"
-msgstr "Asistente Notas de credito"
-
-#. module: pentalab_cash_manage
-#: model:ir.model,name:pentalab_cash_manage.model_cash_box_payment_wizard
-msgid "Cash Box Payment Wizard"
-msgstr "Asistente Pagos"
-
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_payment_method_wizard__quote_id
-msgid "Cash Box Quotation"
-msgstr "Cotizacion"
-
-#. module: pentalab_cash_manage
-#: model:ir.model,name:pentalab_cash_manage.model_cash_box_quotation_line_wizard
-msgid "Cash Box Quotation Line Wizard"
-msgstr "Asistente Cotizaciones Lineas"
-
-#. module: pentalab_cash_manage
-#: model:ir.model,name:pentalab_cash_manage.model_cash_box_quotation_wizard
-msgid "Cash Box Quotation Wizard"
-msgstr "Asistente Cotizaciones"
-
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_payment_method_wizard__sale_id
-msgid "Cash Box Sale"
-msgstr "Caja Ventas"
-
-#. module: pentalab_cash_manage
-#: model:ir.model,name:pentalab_cash_manage.model_cash_box_sale_line_wizard
-msgid "Cash Box Sale Line Wizard"
-msgstr "Asistente Ventas Lineas"
-
-#. module: pentalab_cash_manage
-#: model:ir.model,name:pentalab_cash_manage.model_cash_box_session
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session_movement__session_id
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_session_form
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_session_list
+#. module: l10n_ec_point_of_sale
+#: model:ir.model,name:l10n_ec_point_of_sale.model_cash_box_session
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session_movement__session_id
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.view_cash_box_session_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.view_cash_box_session_list
 msgid "Cash Box Session"
 msgstr "Sesión de caja"
 
-#. module: pentalab_cash_manage
-#: model:ir.model,name:pentalab_cash_manage.model_cash_box_session_movement
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_session_movement_form
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_session_movement_list
+#. module: l10n_ec_point_of_sale
+#: model:ir.model,name:l10n_ec_point_of_sale.model_cash_box_session_movement
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.view_cash_box_session_movement_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.view_cash_box_session_movement_list
 msgid "Cash Box Session Movement"
 msgstr "Movimiento de sesión"
 
-#. module: pentalab_cash_manage
-#: model:res.groups,name:pentalab_cash_manage.group_cash_box_user
+#. module: l10n_ec_point_of_sale
+#: model:res.groups,name:l10n_ec_point_of_sale.group_cash_box_user
 msgid "Cash Box User"
 msgstr "Usuario Caja"
 
-#. module: pentalab_cash_manage
-#: model:ir.actions.act_window,name:pentalab_cash_manage.action_cash_box
-#: model:ir.ui.menu,name:pentalab_cash_manage.cash_box_menu
+#. module: l10n_ec_point_of_sale
+#: model:ir.actions.act_window,name:l10n_ec_point_of_sale.action_cash_box
+#: model:ir.ui.menu,name:l10n_ec_point_of_sale.cash_box_menu
 msgid "Cash Boxes"
 msgstr "Cajas"
 
-#. module: pentalab_cash_manage
-#: model:ir.actions.report,name:pentalab_cash_manage.action_cash_closing_report
-#: model:ir.model,name:pentalab_cash_manage.model_report_pentalab_cash_manage_report_cash_closing_template
+#. module: l10n_ec_point_of_sale
+#: model:ir.actions.report,name:l10n_ec_point_of_sale.action_cash_closing_report
+#: model:ir.model,name:l10n_ec_point_of_sale.model_report_l10n_ec_point_of_sale_report_cash_closing_template
 msgid "Cash Closing Report"
 msgstr "Reporte cierre caja"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_res_config_settings__cash_imbalance_limit
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_res_config_settings__cash_imbalance_limit
 msgid "Cash Imbalance Limit"
 msgstr "Limite diferencia caja"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_quotation_line_wizard__cash_quotation_id
-msgid "Cash Quotation Wizard"
-msgstr "Asistente Cotizaciones"
+#. module: l10n_ec_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.report_cash_closing_template
+msgid "Cash Movements"
+msgstr "Movimientos de caja"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_sale_line_wizard__cash_sale_id
-msgid "Cash Sale Wizard"
-msgstr "Asistente Ventas"
+#. module: l10n_ec_point_of_sale
+#. odoo-python
+#: code:addons/l10n_ec_point_of_sale/wizard/cash_box_wizard.py:0
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_account_payment__cash_session_id
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_sale_order__cash_session_id
+msgid "Cash Session"
+msgstr "Sesión"
 
-#. module: pentalab_cash_manage
-#: model:ir.model,name:pentalab_cash_manage.model_cash_box
+#. module: l10n_ec_point_of_sale
+#: model:ir.model,name:l10n_ec_point_of_sale.model_cash_box
 msgid "Cash box"
 msgstr "Caja"
 
-#. module: pentalab_cash_manage
+#. module: l10n_ec_point_of_sale
 #. odoo-python
-#: code:addons/pentalab_cash_manage/models/cash_box.py:0
+#: code:addons/l10n_ec_point_of_sale/models/cash_box.py:0
 msgid "Cash box '%s' closed successfully with a final balance of %s."
 msgstr "La caja '%s' se cerró exitosamente con un saldo final de %s."
 
-#. module: pentalab_cash_manage
+#. module: l10n_ec_point_of_sale
 #. odoo-python
-#: code:addons/pentalab_cash_manage/models/cash_box.py:0
+#: code:addons/l10n_ec_point_of_sale/models/cash_box.py:0
 msgid "Cash box '%s' opend successfully with a initial balance of %s."
 msgstr "La caja '%s' se abrió exitosamente con un saldo inicial de %s."
 
-#. module: pentalab_cash_manage
-#: model:ir.model,name:pentalab_cash_manage.model_cash_box_coin
+#. module: l10n_ec_point_of_sale
+#: model:ir.model,name:l10n_ec_point_of_sale.model_cash_box_coin
 msgid "Cash box Coin"
 msgstr "Monedas/Billetes"
 
-#. module: pentalab_cash_manage
+#. module: l10n_ec_point_of_sale
 #. odoo-python
-#: code:addons/pentalab_cash_manage/models/cash_box.py:0
+#: code:addons/l10n_ec_point_of_sale/models/cash_box.py:0
 msgid "Cash box closed successfully with a final balance of %s."
 msgstr "Caja cerrada exitosamente con saldo final de %s."
 
-#. module: pentalab_cash_manage
+#. module: l10n_ec_point_of_sale
 #. odoo-python
-#: code:addons/pentalab_cash_manage/models/cash_box.py:0
+#: code:addons/l10n_ec_point_of_sale/models/cash_box.py:0
 msgid "Cash box open successfully with a initial balance of %s."
 msgstr "Caja abierta exitosamente con un saldo inicial de %s."
 
-#. module: pentalab_cash_manage
+#. module: l10n_ec_point_of_sale
 #. odoo-python
-#: code:addons/pentalab_cash_manage/models/cash_box.py:0
+#: code:addons/l10n_ec_point_of_sale/models/cash_box.py:0
 msgid "Cash closing %s"
 msgstr "Caja cerrada %s"
 
-#. module: pentalab_cash_manage
+#. module: l10n_ec_point_of_sale
 #. odoo-python
-#: code:addons/pentalab_cash_manage/wizard/cash_box_wizard.py:0
+#: code:addons/l10n_ec_point_of_sale/wizard/cash_box_wizard.py:0
 msgid "Cash closing adjustment"
 msgstr "Ajuste de cierre de caja"
 
-#. module: pentalab_cash_manage
-#: model:ir.ui.menu,name:pentalab_cash_manage.cash_box_control
+#. module: l10n_ec_point_of_sale
+#: model:ir.ui.menu,name:l10n_ec_point_of_sale.cash_box_control
 msgid "Cash control"
 msgstr "Control caja"
 
-#. module: pentalab_cash_manage
-#: model:ir.module.category,description:pentalab_cash_manage.cash_box_access
+#. module: l10n_ec_point_of_sale
+#: model:ir.module.category,description:l10n_ec_point_of_sale.cash_box_access
 msgid "Cash management and cash sessions"
 msgstr "Gestión de caja y sesiones de caja"
 
-#. module: pentalab_cash_manage
+#. module: l10n_ec_point_of_sale
 #. odoo-python
-#: code:addons/pentalab_cash_manage/wizard/cash_box_wizard.py:0
+#: code:addons/l10n_ec_point_of_sale/wizard/cash_box_wizard.py:0
 msgid "Cash shortage"
 msgstr "Perdida de efectivo"
 
-#. module: pentalab_cash_manage
+#. module: l10n_ec_point_of_sale
 #. odoo-python
-#: code:addons/pentalab_cash_manage/wizard/cash_box_wizard.py:0
+#: code:addons/l10n_ec_point_of_sale/wizard/cash_box_wizard.py:0
 msgid "Cash surplus"
 msgstr "Ganancia de efectivo"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session_movement__cashier_id
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.report_cash_closing_template
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session_movement__cashier_id
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.report_cash_closing_template
 msgid "Cashier"
 msgstr "Cajero"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box__cashier_ids
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session__cashier_ids
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box__cashier_ids
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session__cashier_ids
 msgid "Cashiers"
 msgstr "Cajeros"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,help:pentalab_cash_manage.field_cash_box_payment_method_wizard__require_bank_data
-#: model:ir.model.fields,help:pentalab_cash_manage.field_pos_payment_method__require_bank_data
-msgid "Check if this method requires a bank reference"
-msgstr "Comprueba si este método requiere una referencia bancaria"
-
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,help:pentalab_cash_manage.field_cash_box_payment_method_wizard__require_tc_data
-#: model:ir.model.fields,help:pentalab_cash_manage.field_pos_payment_method__require_tc_data
-msgid "Check if this method requires additional card information"
-msgstr "Comprueba si este método requiere información adicional de la tarjeta"
-
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,help:pentalab_cash_manage.field_cash_box_payment_method_wizard__require_check_data
-#: model:ir.model.fields,help:pentalab_cash_manage.field_pos_payment_method__require_check_data
-msgid "Check if this method requires check information"
-msgstr "Comprueba si este método requiere información de cheque"
-
-#. module: pentalab_cash_manage
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_form
+#. module: l10n_ec_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.view_cash_box_form
 msgid "Close"
 msgstr "Cerrar"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box__close_account_id
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box__close_account_id
 msgid "Close Account"
 msgstr "Cuenta cierre"
 
-#. module: pentalab_cash_manage
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_closed_wizard_form
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_kanban
+#. module: l10n_ec_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.view_cash_box_closed_wizard_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.view_cash_box_kanban
 msgid "Close Cash Box"
 msgstr "Cerrar caja"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box__close_journal_id
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box__close_journal_id
 msgid "Close Journal"
 msgstr "Diario cierre"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session__close_move_id
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session__close_move_id
 msgid "Close Move"
 msgstr "Asiento cierre"
 
-#. module: pentalab_cash_manage
-#: model:ir.actions.report,print_report_name:pentalab_cash_manage.action_cash_closing_report
-msgid "CloseCashSummary"
-msgstr "'CierreCaja_%s' % (object.cash_id.name)"
-
-#. module: pentalab_cash_manage
-#: model:ir.model.fields.selection,name:pentalab_cash_manage.selection__cash_box__state__closed
-#: model:ir.model.fields.selection,name:pentalab_cash_manage.selection__cash_box_session__state__closed
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_kanban
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_search
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_session_search
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields.selection,name:l10n_ec_point_of_sale.selection__cash_box__state__closed
+#: model:ir.model.fields.selection,name:l10n_ec_point_of_sale.selection__cash_box_session__state__closed
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.view_cash_box_kanban
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.view_cash_box_search
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.view_cash_box_session_search
 msgid "Closed"
-msgstr "Cerrada"
+msgstr "Cerrado"
 
-#. module: pentalab_cash_manage
+#. module: l10n_ec_point_of_sale
 #. odoo-python
-#: code:addons/pentalab_cash_manage/wizard/cash_box_wizard.py:0
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_closed_wizard_form
+#: code:addons/l10n_ec_point_of_sale/wizard/cash_box_wizard.py:0
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.view_cash_box_closed_wizard_form
 msgid "Closed Cash Box"
 msgstr "Caja cerrada"
 
-#. module: pentalab_cash_manage
-#: model:ir.model,name:pentalab_cash_manage.model_cash_box_closed_wizard
+#. module: l10n_ec_point_of_sale
+#: model:ir.model,name:l10n_ec_point_of_sale.model_cash_box_closed_wizard
 msgid "Closed Cash Box Wizard"
 msgstr "Asistente cierre de caja"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_coin_wizard__closed_wizard_id
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_coin_wizard__closed_wizard_id
 msgid "Closed Wizard"
 msgstr "Asistente cierre"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session__closing_date
+#. module: l10n_ec_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.report_cash_closing_template
+msgid "Closing Balance"
+msgstr "Balance cierre"
+
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session__closing_date
 msgid "Closing Date"
 msgstr "Fecha cierre"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_advance_line_wizard__closing_note
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_base_wizard__closing_note
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_closed_wizard__closing_note
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_credit_note_wizard__closing_note
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_open_wizard__closing_note
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_payment_method_wizard__closing_note
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_payment_wizard__closing_note
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_quotation_wizard__closing_note
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_sale_wizard__closing_note
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session__closing_note
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_base_wizard__closing_note
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_closed_wizard__closing_note
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_open_wizard__closing_note
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session__closing_note
 msgid "Closing Note"
 msgstr "Nota de cierre"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session__closing_balance
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session__closing_balance
 msgid "Closing balance"
 msgstr "Balance cierre"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box__code
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box__code
 msgid "Code"
 msgstr "Código"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_coin_line_wizard__coin_id
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_account_payment__code_movement
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_sale_order__code_movement
+msgid "Code Movement"
+msgstr "Código movimiento"
+
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_coin_line_wizard__coin_id
 msgid "Coin"
 msgstr "Moneda"
 
-#. module: pentalab_cash_manage
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_coin_wizard_form
+#. module: l10n_ec_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.view_cash_box_coin_wizard_form
 msgid "Coin Cash Box"
 msgstr "Moneda caja"
 
-#. module: pentalab_cash_manage
-#: model:ir.model,name:pentalab_cash_manage.model_cash_box_coin_line_wizard
+#. module: l10n_ec_point_of_sale
+#: model:ir.model,name:l10n_ec_point_of_sale.model_cash_box_coin_line_wizard
 msgid "Coin Line for Initial Balance Wizard"
 msgstr "Asistente de línea de monedas para saldo inicial"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_coin_wizard__coin_line_ids
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_coin_wizard__coin_line_ids
 msgid "Coins"
 msgstr "Monedas"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box__company_id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_advance_line_wizard__company_id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_base_wizard__company_id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_closed_wizard__company_id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_credit_note_wizard__company_id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_open_wizard__company_id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_payment_method_wizard__company_id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_payment_wizard__company_id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_quotation_wizard__company_id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_sale_wizard__company_id
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box__company_id
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_base_wizard__company_id
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_closed_wizard__company_id
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_open_wizard__company_id
 msgid "Company"
-msgstr "Compañia"
+msgstr "Compañía"
 
-#. module: pentalab_cash_manage
-#: model:ir.model,name:pentalab_cash_manage.model_res_config_settings
+#. module: l10n_ec_point_of_sale
+#: model:ir.model,name:l10n_ec_point_of_sale.model_res_config_settings
 msgid "Config Settings"
 msgstr "Ajustes de configuración"
 
-#. module: pentalab_cash_manage
-#: model:ir.ui.menu,name:pentalab_cash_manage.cash_box_config_menu
+#. module: l10n_ec_point_of_sale
+#: model:ir.ui.menu,name:l10n_ec_point_of_sale.cash_box_config_menu
 msgid "Configuration"
 msgstr "Configuración"
 
-#. module: pentalab_cash_manage
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_coin_wizard_form
+#. module: l10n_ec_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.view_cash_box_coin_wizard_form
 msgid "Confirm"
 msgstr "Confirmar"
 
-#. module: pentalab_cash_manage
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_credit_note_wizard_form
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_payment_wizard_form
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_quotation_wizard_form
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_sale_wizard_form
-msgid "Continue"
-msgstr "Continuar"
-
-#. module: pentalab_cash_manage
-#: model:ir.actions.act_window,name:pentalab_cash_manage.action_cash_box_coin_wizard
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_closed_wizard_form
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_open_wizard_form
+#. module: l10n_ec_point_of_sale
+#: model:ir.actions.act_window,name:l10n_ec_point_of_sale.action_cash_box_coin_wizard
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.view_cash_box_closed_wizard_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.view_cash_box_open_wizard_form
 msgid "Count Cash"
 msgstr "Conteo efectivo"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box__create_uid
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_advance_line_wizard__create_uid
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_closed_wizard__create_uid
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_coin__create_uid
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_coin_line_wizard__create_uid
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_coin_wizard__create_uid
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_credit_note_wizard__create_uid
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_open_wizard__create_uid
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_payment_method_wizard__create_uid
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_payment_wizard__create_uid
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_quotation_line_wizard__create_uid
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_quotation_wizard__create_uid
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_sale_line_wizard__create_uid
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_sale_wizard__create_uid
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session__create_uid
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session_movement__create_uid
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_finance_card__create_uid
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box__create_uid
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_closed_wizard__create_uid
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_coin__create_uid
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_coin_line_wizard__create_uid
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_coin_wizard__create_uid
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_open_wizard__create_uid
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session__create_uid
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session_movement__create_uid
 msgid "Created by"
 msgstr "Creado por"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box__create_date
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_advance_line_wizard__create_date
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_closed_wizard__create_date
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_coin__create_date
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_coin_line_wizard__create_date
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_coin_wizard__create_date
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_credit_note_wizard__create_date
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_open_wizard__create_date
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_payment_method_wizard__create_date
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_payment_wizard__create_date
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_quotation_line_wizard__create_date
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_quotation_wizard__create_date
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_sale_line_wizard__create_date
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_sale_wizard__create_date
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session__create_date
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session_movement__create_date
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_finance_card__create_date
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box__create_date
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_closed_wizard__create_date
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_coin__create_date
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_coin_line_wizard__create_date
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_coin_wizard__create_date
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_open_wizard__create_date
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session__create_date
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session_movement__create_date
 msgid "Created on"
 msgstr "Creado el"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields.selection,name:pentalab_cash_manage.selection__finance_card__card_type__credit
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.report_cash_closing_template
+#. module: l10n_ec_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.report_cash_closing_template
 msgid "Credit"
 msgstr "Crédito"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session_movement__credit_note_id
-#: model:ir.model.fields.selection,name:pentalab_cash_manage.selection__cash_box_session_movement__operation_type__refund
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_session_form
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session_movement__credit_note_id
+#: model:ir.model.fields.selection,name:l10n_ec_point_of_sale.selection__cash_box_session_movement__operation_type__refund
 msgid "Credit Note"
 msgstr "Nota de crédito"
 
-#. module: pentalab_cash_manage
-#. odoo-python
-#: code:addons/pentalab_cash_manage/models/cash_box.py:0
-msgid "Credit Notes"
-msgstr "Notas de crédito"
-
-#. module: pentalab_cash_manage
-#: model:ir.model,name:pentalab_cash_manage.model_finance_card
-msgid "Credit/Debit Card"
-msgstr "Crédito/Débito Tarjeta"
-
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box__currency_id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_advance_line_wizard__currency_id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_base_wizard__currency_id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_closed_wizard__currency_id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_coin__currency_id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_credit_note_wizard__currency_id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_open_wizard__currency_id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_payment_method_wizard__currency_id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_payment_wizard__currency_id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_quotation_line_wizard__currency_id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_quotation_wizard__currency_id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_sale_line_wizard__currency_id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_sale_wizard__currency_id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session__currency_id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session_movement__currency_id
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box__currency_id
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_base_wizard__currency_id
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_closed_wizard__currency_id
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_coin__currency_id
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_open_wizard__currency_id
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session__currency_id
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session_movement__currency_id
 msgid "Currency"
 msgstr "Divisa"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields.selection,name:pentalab_cash_manage.selection__account_payment__card_payment_type__current
-#: model:ir.model.fields.selection,name:pentalab_cash_manage.selection__cash_box_payment_method_wizard__card_payment_type__current
-msgid "Current"
-msgstr "Corriente"
-
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box__current_session_id
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box__current_session_id
 msgid "Current Session"
 msgstr "Sesión actual"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_payment_wizard__partner_id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_sale_wizard__partner_id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session_movement__partner_id
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session_movement__partner_id
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.report_cash_closing_template
 msgid "Customer"
 msgstr "Cliente"
 
-#. module: pentalab_cash_manage
-#: model:ir.model,name:pentalab_cash_manage.model_cash_box_advance_line_wizard
-msgid "Customer Advance Line"
-msgstr "Línea de anticipo de clientes"
-
-#. module: pentalab_cash_manage
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.report_cash_closing_template
-msgid "Custumer"
-msgstr "Cliente"
-
-#. module: pentalab_cash_manage
-#: model:ir.model.fields.selection,name:pentalab_cash_manage.selection__account_payment__card_payment_type__debit
-#: model:ir.model.fields.selection,name:pentalab_cash_manage.selection__cash_box_payment_method_wizard__card_payment_type__debit
-#: model:ir.model.fields.selection,name:pentalab_cash_manage.selection__finance_card__card_type__debit
-msgid "Debit"
-msgstr "Débito"
-
-#. module: pentalab_cash_manage
-#: model:ir.model.fields.selection,name:pentalab_cash_manage.selection__account_payment__card_payment_type__deferred_with_interest
-#: model:ir.model.fields.selection,name:pentalab_cash_manage.selection__cash_box_payment_method_wizard__card_payment_type__deferred_with_interest
-msgid "Deferred with interest"
-msgstr "Diferido con intereses"
-
-#. module: pentalab_cash_manage
-#: model:ir.model.fields.selection,name:pentalab_cash_manage.selection__account_payment__card_payment_type__deferred_without_interest
-#: model:ir.model.fields.selection,name:pentalab_cash_manage.selection__cash_box_payment_method_wizard__card_payment_type__deferred_without_interest
-msgid "Deferred without interest"
-msgstr "Diferido sin  intereses"
-
-#. module: pentalab_cash_manage
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_closed_wizard_form
+#. module: l10n_ec_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.view_cash_box_closed_wizard_form
 msgid ""
 "Diferencia en cierre de caja sobrepasa el limite permitido, se notificara a "
 "los administradores de caja."
 msgstr ""
+"Diferencia en cierre de caja sobrepasa el limite permitido, se notificara a "
+"los administradores de caja."
 
-#. module: pentalab_cash_manage
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_closed_wizard_form
+#. module: l10n_ec_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.view_cash_box_closed_wizard_form
 msgid ""
 "Diferencia en cierre de caja, valor NEGATIVO se ira a la cuenta de perdidas."
 msgstr ""
+"Diferencia en cierre de caja, valor NEGATIVO se ira a la cuenta de perdidas."
 
-#. module: pentalab_cash_manage
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_closed_wizard_form
+#. module: l10n_ec_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.view_cash_box_closed_wizard_form
 msgid ""
 "Diferencia en cierre de caja, valor POSITIVO ira a la cuenta de ganancias"
 msgstr ""
+"Diferencia en cierre de caja, valor POSITIVO ira a la cuenta de ganancias"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session__diff_move_id
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session__diff_balance
+msgid "Diff Balance"
+msgstr "Balance diferencia"
+
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session__diff_move_id
 msgid "Diff Move"
 msgstr "Asiento diferencia"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_quotation_line_wizard__discount
-msgid "Discount (%)"
-msgstr "Descuento (%)"
+#. module: l10n_ec_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.report_cash_closing_template
+msgid "Difference"
+msgstr "Diferencia"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box__display_name
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_advance_line_wizard__display_name
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_closed_wizard__display_name
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_coin__display_name
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_coin_line_wizard__display_name
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_coin_wizard__display_name
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_credit_note_wizard__display_name
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_open_wizard__display_name
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_payment_method_wizard__display_name
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_payment_wizard__display_name
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_quotation_line_wizard__display_name
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_quotation_wizard__display_name
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_sale_line_wizard__display_name
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_sale_wizard__display_name
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session__display_name
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session_movement__display_name
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_finance_card__display_name
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box__display_name
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_closed_wizard__display_name
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_coin__display_name
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_coin_line_wizard__display_name
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_coin_wizard__display_name
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_open_wizard__display_name
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session__display_name
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session_movement__display_name
 msgid "Display Name"
-msgstr "Nombre para mostrar"
+msgstr "Nombre mostrado"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields.selection,name:pentalab_cash_manage.selection__cash_box_session_movement__state__done
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields.selection,name:l10n_ec_point_of_sale.selection__cash_box_session_movement__state__done
 msgid "Done"
 msgstr "Hecho"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields.selection,name:pentalab_cash_manage.selection__cash_box_session_movement__state__draft
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields.selection,name:l10n_ec_point_of_sale.selection__cash_box_session_movement__state__draft
 msgid "Draft"
 msgstr "Borrador"
 
-#. module: pentalab_cash_manage
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_sale_wizard_form
-msgid "El valor a pagar adicional se registrara como anticipo de cliente"
-msgstr ""
-
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_sale_wizard__exceeds_amount
-msgid "Exceeds Amount"
-msgstr "Excede el monto"
-
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_closed_wizard__exceeds_limit
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_closed_wizard__exceeds_limit
 msgid "Exceeds Limit"
 msgstr "Excede el limite"
 
-#. module: pentalab_cash_manage
-#. odoo-python
-#: code:addons/pentalab_cash_manage/wizard/cash_box_wizard.py:0
-msgid "Failed to create invoice from the sale order."
-msgstr "No se pudo crear la factura a partir de la orden de venta."
-
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_closed_wizard__final_balance
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_closed_wizard__final_balance
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.report_cash_closing_template
 msgid "Final Balance"
 msgstr "Balance Final"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session__final_balance
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session__final_balance
 msgid "Final balance"
 msgstr "Balance final"
 
-#. module: pentalab_cash_manage
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_finance_card_form
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_finance_card_list
-msgid "Finance Card"
-msgstr "Tarjeta"
-
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session_movement__state
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session_movement__state
 msgid "Financial statement"
 msgstr "Estado financiero"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box__message_follower_ids
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session__message_follower_ids
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box__message_follower_ids
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session__message_follower_ids
 msgid "Followers"
 msgstr "Seguidores"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box__message_partner_ids
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session__message_partner_ids
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box__message_partner_ids
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session__message_partner_ids
 msgid "Followers (Partners)"
 msgstr "Seguidores (Contactos)"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,help:pentalab_cash_manage.field_cash_box__activity_type_icon
-#: model:ir.model.fields,help:pentalab_cash_manage.field_cash_box_session__activity_type_icon
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,help:l10n_ec_point_of_sale.field_cash_box__activity_type_icon
+#: model:ir.model.fields,help:l10n_ec_point_of_sale.field_cash_box_session__activity_type_icon
 msgid "Font awesome icon e.g. fa-tasks"
 msgstr "Icono de Font Awesome, por ejemplo, fa-tasks"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box__gain_account_id
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box__gain_account_id
 msgid "Gain Account"
 msgstr "Cuenta ganancias"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_sale_wizard__has_advance
-msgid "Has Advance"
-msgstr "Es anticipo"
-
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box__has_message
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session__has_message
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box__has_message
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session__has_message
 msgid "Has Message"
-msgstr "Tiene mensaje"
+msgstr "Tiene un mensaje"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box__id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_advance_line_wizard__id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_closed_wizard__id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_coin__id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_coin_line_wizard__id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_coin_wizard__id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_credit_note_wizard__id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_open_wizard__id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_payment_method_wizard__id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_payment_wizard__id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_quotation_line_wizard__id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_quotation_wizard__id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_sale_line_wizard__id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_sale_wizard__id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session__id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session_movement__id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_finance_card__id
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box__id
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_closed_wizard__id
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_coin__id
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_coin_line_wizard__id
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_coin_wizard__id
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_open_wizard__id
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session__id
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session_movement__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box__activity_exception_icon
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session__activity_exception_icon
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box__activity_exception_icon
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session__activity_exception_icon
 msgid "Icon"
 msgstr "Icono"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,help:pentalab_cash_manage.field_cash_box__activity_exception_icon
-#: model:ir.model.fields,help:pentalab_cash_manage.field_cash_box_session__activity_exception_icon
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,help:l10n_ec_point_of_sale.field_cash_box__activity_exception_icon
+#: model:ir.model.fields,help:l10n_ec_point_of_sale.field_cash_box_session__activity_exception_icon
 msgid "Icon to indicate an exception activity."
 msgstr "Icono para indicar una actividad de excepción."
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,help:pentalab_cash_manage.field_res_config_settings__allow_advance_cash
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,help:l10n_ec_point_of_sale.field_res_config_settings__allow_advance_cash
 msgid ""
 "If checked, allows the use of advances for invoices in cashier sessions."
 msgstr ""
 "Si está marcada, permite el uso de anticipos para facturas en sesiones de "
 "caja."
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,help:pentalab_cash_manage.field_res_config_settings__allow_credit_note_cash
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,help:l10n_ec_point_of_sale.field_res_config_settings__allow_credit_note_cash
 msgid ""
 "If checked, it allows the generation of credit notes for invoices in the "
 "cash register sessions."
@@ -961,643 +712,413 @@ msgstr ""
 "Si está marcada, permite la generación de notas de crédito para facturas en "
 "las sesiones de caja."
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,help:pentalab_cash_manage.field_cash_box__message_needaction
-#: model:ir.model.fields,help:pentalab_cash_manage.field_cash_box_session__message_needaction
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,help:l10n_ec_point_of_sale.field_cash_box__message_needaction
+#: model:ir.model.fields,help:l10n_ec_point_of_sale.field_cash_box_session__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr "Si está marcado, los mensajes nuevos requieren su atención."
+msgstr "Si está marcada, hay nuevos mensajes que requieren su atención."
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,help:pentalab_cash_manage.field_cash_box__message_has_error
-#: model:ir.model.fields,help:pentalab_cash_manage.field_cash_box__message_has_sms_error
-#: model:ir.model.fields,help:pentalab_cash_manage.field_cash_box_session__message_has_error
-#: model:ir.model.fields,help:pentalab_cash_manage.field_cash_box_session__message_has_sms_error
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,help:l10n_ec_point_of_sale.field_cash_box__message_has_error
+#: model:ir.model.fields,help:l10n_ec_point_of_sale.field_cash_box__message_has_sms_error
+#: model:ir.model.fields,help:l10n_ec_point_of_sale.field_cash_box_session__message_has_error
+#: model:ir.model.fields,help:l10n_ec_point_of_sale.field_cash_box_session__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
-msgstr "Si está marcada, algunos mensajes tendrán un error de entrega."
+msgstr "Si está marcada, algunos mensajes tienen error de envío."
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields.selection,name:pentalab_cash_manage.selection__cash_box_session__state__in_progress
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_session_search
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields.selection,name:l10n_ec_point_of_sale.selection__cash_box_session__state__in_progress
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.view_cash_box_session_search
 msgid "In progress"
 msgstr "En progreso"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields.selection,name:pentalab_cash_manage.selection__cash_box_payment_wizard__payment_type__inbound
-msgid "Inbound"
-msgstr "Recibir"
-
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_open_wizard__initial_balance
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_open_wizard__initial_balance
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.report_cash_closing_template
 msgid "Initial Balance"
-msgstr "Balance Inicial"
+msgstr "Saldo inicial"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session__initial_balance
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session__initial_balance
 msgid "Initial balance"
 msgstr "Balance inicial"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_credit_note_wizard__invoice_ids
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session_movement__invoice_id
-#: model:ir.model.fields.selection,name:pentalab_cash_manage.selection__cash_box_session_movement__operation_type__invoice
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session_movement__invoice_id
 msgid "Invoice"
 msgstr "Factura"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box__is_administrator
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box__is_administrator
 msgid "Is Administrator"
 msgstr "Es administrador"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box__is_cash_box_admin
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box__is_cash_box_admin
 msgid "Is Cash Box Admin"
 msgstr "Administrador Caja"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box__message_is_follower
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session__message_is_follower
-msgid "Is Follower"
-msgstr "Es seguidor"
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box__is_cash_box_responsible
+msgid "Is Cash Box Responsible"
+msgstr "Es responsable de caja"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box__journal_id
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box__message_is_follower
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session__message_is_follower
+msgid "Is Follower"
+msgstr "Es un seguidor"
+
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box__journal_id
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.report_cash_closing_template
 msgid "Journal"
 msgstr "Diario"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_account_payment__journal_type
-msgid "Journal Type"
-msgstr "Tipo diario"
-
-#. module: pentalab_cash_manage
-#: model:ir.ui.menu,name:pentalab_cash_manage.cash_box_account_journal_menu
+#. module: l10n_ec_point_of_sale
+#: model:ir.ui.menu,name:l10n_ec_point_of_sale.cash_box_account_journal_menu
 msgid "Journals"
 msgstr "Diarios"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box__write_uid
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_advance_line_wizard__write_uid
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_closed_wizard__write_uid
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_coin__write_uid
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_coin_line_wizard__write_uid
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_coin_wizard__write_uid
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_credit_note_wizard__write_uid
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_open_wizard__write_uid
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_payment_method_wizard__write_uid
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_payment_wizard__write_uid
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_quotation_line_wizard__write_uid
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_quotation_wizard__write_uid
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_sale_line_wizard__write_uid
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_sale_wizard__write_uid
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session__write_uid
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session_movement__write_uid
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_finance_card__write_uid
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box__write_uid
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_closed_wizard__write_uid
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_coin__write_uid
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_coin_line_wizard__write_uid
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_coin_wizard__write_uid
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_open_wizard__write_uid
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session__write_uid
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session_movement__write_uid
 msgid "Last Updated by"
 msgstr "Última actualización por"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box__write_date
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_advance_line_wizard__write_date
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_closed_wizard__write_date
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_coin__write_date
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_coin_line_wizard__write_date
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_coin_wizard__write_date
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_credit_note_wizard__write_date
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_open_wizard__write_date
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_payment_method_wizard__write_date
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_payment_wizard__write_date
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_quotation_line_wizard__write_date
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_quotation_wizard__write_date
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_sale_line_wizard__write_date
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_sale_wizard__write_date
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session__write_date
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session_movement__write_date
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_finance_card__write_date
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box__write_date
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_closed_wizard__write_date
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_coin__write_date
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_coin_line_wizard__write_date
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_coin_wizard__write_date
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_open_wizard__write_date
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session__write_date
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session_movement__write_date
 msgid "Last Updated on"
 msgstr "Última actualización el"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box__loss_account_id
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box__loss_account_id
 msgid "Loss Account"
 msgstr "Cuenta perdidas"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box__message_has_error
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session__message_has_error
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box__message_has_error
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session__message_has_error
 msgid "Message Delivery error"
-msgstr "Error de entrega del mensaje"
+msgstr "Error de envío de mensaje"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box__message_ids
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session__message_ids
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box__message_ids
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session__message_ids
 msgid "Messages"
 msgstr "Mensajes"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_quotation_wizard__more_order
-msgid "More Order"
-msgstr "Mas de una order"
-
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box__movement_seq_id
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box__movement_seq_id
 msgid "Movement Sequence"
 msgstr "Secuencia movimientos"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session__movement_ids
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_session_form
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session__movement_ids
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.view_cash_box_session_form
 msgid "Movements"
 msgstr "Movimientos"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box__my_activity_date_deadline
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session__my_activity_date_deadline
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box__my_activity_date_deadline
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session__my_activity_date_deadline
 msgid "My Activity Deadline"
 msgstr "Fecha límite de mi actividad"
 
-#. module: pentalab_cash_manage
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_quotation_wizard_form
-msgid ""
-"Más de una orden de entraga en la cotización, procese la misma desde el "
-"menú de cotizaciones."
-msgstr ""
-
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box__name
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_coin__name
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session__name
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session_movement__name
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_finance_card__name
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box__name
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_coin__name
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session__name
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session_movement__name
 msgid "Name"
 msgstr "Nombre"
 
-#. module: pentalab_cash_manage
+#. module: l10n_ec_point_of_sale
 #. odoo-python
-#: code:addons/pentalab_cash_manage/models/cash_box.py:0
+#: code:addons/l10n_ec_point_of_sale/models/cash_box.py:0
 msgid "New"
 msgstr "Nuevo"
 
-#. module: pentalab_cash_manage
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_credit_note_wizard_form
-msgid "New Credit Note"
-msgstr "Nueva Nota de crédito"
-
-#. module: pentalab_cash_manage
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_payment_wizard_form
-msgid "New Payment"
-msgstr "Nuevo Pago"
-
-#. module: pentalab_cash_manage
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_quotation_wizard_form
-msgid "New Quotation"
-msgstr "Nueva Cotización"
-
-#. module: pentalab_cash_manage
-#. odoo-python
-#: code:addons/pentalab_cash_manage/models/cash_box.py:0
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_sale_wizard_form
-msgid "New Sale"
-msgstr "Nueva Venta"
-
-#. module: pentalab_cash_manage
-#: model:ir.model,name:pentalab_cash_manage.model_cash_box_sale_wizard
-msgid "New Sale Wizard"
-msgstr "Asistente para nuevas ventas"
-
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box__activity_calendar_event_id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session__activity_calendar_event_id
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box__activity_calendar_event_id
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session__activity_calendar_event_id
 msgid "Next Activity Calendar Event"
 msgstr "Próximo evento del calendario de actividades"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box__activity_date_deadline
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session__activity_date_deadline
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box__activity_date_deadline
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session__activity_date_deadline
 msgid "Next Activity Deadline"
 msgstr "Fecha límite para la próxima actividad"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box__activity_summary
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session__activity_summary
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box__activity_summary
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session__activity_summary
 msgid "Next Activity Summary"
 msgstr "Resumen de la próxima actividad"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box__activity_type_id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session__activity_type_id
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box__activity_type_id
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session__activity_type_id
 msgid "Next Activity Type"
 msgstr "Siguiente tipo de actividad"
 
-#. module: pentalab_cash_manage
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.report_cash_closing_template
+#. module: l10n_ec_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.report_cash_closing_template
 msgid "Number"
 msgstr "Número"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_account_payment__number_lot
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_payment_method_wizard__number_lot
-msgid "Number Lot"
-msgstr "Número Lote"
-
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box__message_needaction_counter
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session__message_needaction_counter
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box__message_needaction_counter
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session__message_needaction_counter
 msgid "Number of Actions"
 msgstr "Número de acciones"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box__message_has_error_counter
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session__message_has_error_counter
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box__message_has_error_counter
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session__message_has_error_counter
 msgid "Number of errors"
 msgstr "Número de errores"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,help:pentalab_cash_manage.field_cash_box__message_needaction_counter
-#: model:ir.model.fields,help:pentalab_cash_manage.field_cash_box_session__message_needaction_counter
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,help:l10n_ec_point_of_sale.field_cash_box__message_needaction_counter
+#: model:ir.model.fields,help:l10n_ec_point_of_sale.field_cash_box_session__message_needaction_counter
 msgid "Number of messages requiring action"
-msgstr "Número de mensajes que requieren acción"
+msgstr "Número de mensajes que requieren una acción"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,help:pentalab_cash_manage.field_cash_box__message_has_error_counter
-#: model:ir.model.fields,help:pentalab_cash_manage.field_cash_box_session__message_has_error_counter
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,help:l10n_ec_point_of_sale.field_cash_box__message_has_error_counter
+#: model:ir.model.fields,help:l10n_ec_point_of_sale.field_cash_box_session__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr "Número de mensajes con error de entrega"
+msgstr "Número de mensajes con error de envío"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_account_payment__number_months
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_payment_method_wizard__number_months
-msgid "Number of months"
-msgstr "Número de meses"
-
-#. module: pentalab_cash_manage
-#: model:ir.model.fields.selection,name:pentalab_cash_manage.selection__cash_box__state__open
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_form
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_search
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields.selection,name:l10n_ec_point_of_sale.selection__cash_box__state__open
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.view_cash_box_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.view_cash_box_search
 msgid "Open"
-msgstr "Abierto"
+msgstr "Abrir"
 
-#. module: pentalab_cash_manage
+#. module: l10n_ec_point_of_sale
 #. odoo-python
-#: code:addons/pentalab_cash_manage/wizard/cash_box_wizard.py:0
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_kanban
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_open_wizard_form
+#: code:addons/l10n_ec_point_of_sale/wizard/cash_box_wizard.py:0
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.view_cash_box_kanban
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.view_cash_box_open_wizard_form
 msgid "Open Cash Box"
 msgstr "Abrir caja"
 
-#. module: pentalab_cash_manage
-#: model:ir.model,name:pentalab_cash_manage.model_cash_box_open_wizard
+#. module: l10n_ec_point_of_sale
+#: model:ir.model,name:l10n_ec_point_of_sale.model_cash_box_open_wizard
 msgid "Open Cash Box Wizard"
 msgstr "Asistente apertura de caja"
 
-#. module: pentalab_cash_manage
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_kanban
+#. module: l10n_ec_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.view_cash_box_kanban
 msgid "Opened"
-msgstr "Abierta"
+msgstr "Abierto"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_coin_wizard__opened_wizard_id
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_coin_wizard__opened_wizard_id
 msgid "Opened Wizard"
 msgstr "Asistente apertura"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session__opening_date
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session__opening_date
 msgid "Opening Date"
 msgstr "Fecha apertura"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_advance_line_wizard__opening_note
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_base_wizard__opening_note
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_closed_wizard__opening_note
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_credit_note_wizard__opening_note
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_open_wizard__opening_note
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_payment_method_wizard__opening_note
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_payment_wizard__opening_note
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_quotation_wizard__opening_note
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_sale_wizard__opening_note
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session__opening_note
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_base_wizard__opening_note
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_closed_wizard__opening_note
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_open_wizard__opening_note
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session__opening_note
 msgid "Opening Note"
 msgstr "Nota de apertura"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session_movement__operation_type
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session_movement__operation_type
 msgid "Operation Type"
 msgstr "Tipo Operación"
 
-#. module: pentalab_cash_manage
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_quotation_wizard_form
-msgid ""
-"Orden de entrega validada en la cotización, no podra modificar los "
-"productos."
-msgstr ""
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields.selection,name:l10n_ec_point_of_sale.selection__cash_box_session_movement__operation_type__order
+msgid "Order"
+msgstr "Orden"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields.selection,name:pentalab_cash_manage.selection__cash_box_payment_wizard__payment_type__outbound
-msgid "Outbound"
-msgstr "Enviar"
-
-#. module: pentalab_cash_manage
-#: model:ir.module.category,name:pentalab_cash_manage.cash_box_access
-#: model:ir.ui.menu,name:pentalab_cash_manage.cash_box_root_menu
+#. module: l10n_ec_point_of_sale
+#: model:ir.module.category,name:l10n_ec_point_of_sale.cash_box_access
+#: model:ir.ui.menu,name:l10n_ec_point_of_sale.cash_box_root_menu
 msgid "POS PENTA"
-msgstr "Caja"
+msgstr "POS PENTA"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields.selection,name:pentalab_cash_manage.selection__cash_box_session_movement__state__paid
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields.selection,name:l10n_ec_point_of_sale.selection__cash_box_session_movement__state__paid
 msgid "Paid"
 msgstr "Pagado"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_advance_line_wizard__partner_id
-msgid "Partner"
-msgstr "Cliente"
-
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_payment_method_wizard__payment_id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session_movement__payment_id
-#: model:ir.model.fields.selection,name:pentalab_cash_manage.selection__cash_box_session_movement__operation_type__payment
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_session_form
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session_movement__payment_id
+#: model:ir.model.fields.selection,name:l10n_ec_point_of_sale.selection__cash_box_session_movement__operation_type__payment
 msgid "Payment"
 msgstr "Pago"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_payment_method_wizard__payment_method_id
-msgid "Payment Method"
-msgstr "Método de pago"
+#. module: l10n_ec_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.report_cash_closing_template
+msgid "Payment Journals Summary"
+msgstr "Resumen Diarios:"
 
-#. module: pentalab_cash_manage
-#: model:ir.model,name:pentalab_cash_manage.model_cash_box_payment_method_wizard
-msgid "Payment Method Wizard"
-msgstr "Asistente Método de pago"
-
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_payment_wizard__payment_method_ids
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_quotation_wizard__payment_method_ids
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_sale_wizard__payment_method_ids
-#: model:ir.ui.menu,name:pentalab_cash_manage.cash_box_pos_payment_method_menu
-msgid "Payment Methods"
-msgstr "Métodos de pago"
-
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_payment_wizard__payment_type
-msgid "Payment Type"
-msgstr "Tipo pago"
-
-#. module: pentalab_cash_manage
-#. odoo-python
-#: code:addons/pentalab_cash_manage/wizard/cash_box_wizard.py:0
-msgid "Payment for %s"
-msgstr "Pagado por %s"
-
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box__payment_method_ids
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_payment_wizard_form
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_quotation_wizard_form
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_sale_wizard_form
-msgid "Payment methods"
-msgstr "Métodos de pago"
-
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_account_payment__card_payment_type
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_payment_method_wizard__card_payment_type
-msgid "Payment type"
-msgstr "Tipo pago"
-
-#. module: pentalab_cash_manage
-#. odoo-python
-#: code:addons/pentalab_cash_manage/models/cash_box.py:0
-#: model:ir.model,name:pentalab_cash_manage.model_account_payment
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.report_cash_closing_template
+#. module: l10n_ec_point_of_sale
+#: model:ir.model,name:l10n_ec_point_of_sale.model_account_payment
 msgid "Payments"
 msgstr "Pagos"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_quotation_wizard__picking_done
-msgid "Picking Done"
-msgstr "Entrega validada"
-
-#. module: pentalab_cash_manage
+#. module: l10n_ec_point_of_sale
 #. odoo-python
-#: code:addons/pentalab_cash_manage/models/cash_box.py:0
+#: code:addons/l10n_ec_point_of_sale/models/cash_box.py:0
 msgid "Please configure the sequence for cash box sessions."
 msgstr "Configure la secuencia para las sesiones de caja."
 
-#. module: pentalab_cash_manage
+#. module: l10n_ec_point_of_sale
 #. odoo-python
-#: code:addons/pentalab_cash_manage/models/cash_box.py:0
+#: code:addons/l10n_ec_point_of_sale/models/cash_box.py:0
 msgid "Please configure the sequence for cash session movements."
 msgstr ""
 "Por favor configure la secuencia para los movimientos de la sesión de caja."
 
-#. module: pentalab_cash_manage
-#: model:ir.model,name:pentalab_cash_manage.model_pos_payment_method
-msgid "Point of Sale Payment Methods"
-msgstr "Métodos de pago del punto de venta"
-
-#. module: pentalab_cash_manage
-#: model:ir.model.fields.selection,name:pentalab_cash_manage.selection__cash_box_session_movement__state__posted
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields.selection,name:l10n_ec_point_of_sale.selection__cash_box_session_movement__state__posted
 msgid "Posted"
 msgstr "Publicado"
 
-#. module: pentalab_cash_manage
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_closed_wizard_form
-msgid "Print Summary"
-msgstr "Resumen caja"
-
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_quotation_line_wizard__product_id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_sale_line_wizard__product_id
-msgid "Product"
-msgstr "Producto"
-
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_quotation_wizard__product_line_ids
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_sale_wizard__product_line_ids
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_quotation_wizard_form
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_sale_wizard_form
-msgid "Products"
-msgstr "Productos"
-
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_coin_line_wizard__quantity
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_quotation_line_wizard__quantity
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_sale_line_wizard__quantity
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_coin_line_wizard__quantity
 msgid "Quantity"
 msgstr "Cantidad"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_quotation_line_wizard__qty_available
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_sale_line_wizard__qty_available
-msgid "Quantity On Hand"
-msgstr "Cantidad disponible"
-
-#. module: pentalab_cash_manage
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_session_form
-msgid "Quotation"
-msgstr "Cotización"
-
-#. module: pentalab_cash_manage
-#. odoo-python
-#: code:addons/pentalab_cash_manage/models/cash_box.py:0
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_quotation_wizard__sale_order_id
-msgid "Quotations"
-msgstr "Cotizaciones"
-
-#. module: pentalab_cash_manage
-#: model:ir.model.fields.selection,name:pentalab_cash_manage.selection__cash_box_session_movement__operation_type__quote
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields.selection,name:l10n_ec_point_of_sale.selection__cash_box_session_movement__operation_type__quote
 msgid "Quote"
 msgstr "Cotización"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box__rating_ids
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session__rating_ids
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box__rating_ids
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session__rating_ids
 msgid "Ratings"
 msgstr "Calificaciones"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_credit_note_wizard__reason
-msgid "Reason"
-msgstr "Razon"
-
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,help:pentalab_cash_manage.field_cash_box_credit_note_wizard__reason
-msgid "Reason for the credit note."
-msgstr "Motivo de la nota de crédito."
-
-#. module: pentalab_cash_manage
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.report_cash_closing_template
+#. module: l10n_ec_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.report_cash_closing_template
 msgid "Reference"
 msgstr "Referencia"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,help:pentalab_cash_manage.field_cash_box_payment_method_wizard__bank_reference
-msgid "Reference for bank payments"
-msgstr "Referencia para pagos bancarios."
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session__responsible_close
+msgid "Responsible (Close)"
+msgstr "Responsable (Cierre)"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_payment_method_wizard__require_bank_data
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_pos_payment_method__require_bank_data
-msgid "Requires bank details"
-msgstr "Requiere datos bancarios"
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session__responsible_open
+msgid "Responsible (Open)"
+msgstr "Responsable (Apertura)"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_payment_method_wizard__require_tc_data
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_pos_payment_method__require_tc_data
-msgid "Requires card details"
-msgstr "Requiere datos tarjeta"
-
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_payment_method_wizard__require_check_data
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_pos_payment_method__require_check_data
-msgid "Requires check details"
-msgstr "Requiere datos cheque"
-
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box__activity_user_id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session__activity_user_id
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box__activity_user_id
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session__activity_user_id
 msgid "Responsible User"
 msgstr "Usuario Responsable"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box__responsible_ids
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session__responsible_ids
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box__responsible_ids
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.report_cash_closing_template
 msgid "Responsibles"
 msgstr "Responsables"
 
-#. module: pentalab_cash_manage
-#. odoo-python
-#: code:addons/pentalab_cash_manage/wizard/cash_box_wizard.py:0
-msgid "Review and validate the quote from the quotes menu."
-msgstr "Revisar y validar la cotización desde el menú de cotizaciones."
-
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box__message_has_sms_error
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session__message_has_sms_error
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box__message_has_sms_error
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session__message_has_sms_error
 msgid "SMS Delivery error"
-msgstr "Error de entrega de SMS"
+msgstr "Error de envío del SMS"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box__l10n_ec_sri_payment_id
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box__l10n_ec_sri_payment_id
 msgid "SRI Payment Method"
 msgstr "Método de pago (SRI)"
 
-#. module: pentalab_cash_manage
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_session_form
-msgid "Sale"
-msgstr "Venta"
-
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session_movement__order_id
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session_movement__order_id
 msgid "Sale Order"
 msgstr "Orden de Venta"
 
-#. module: pentalab_cash_manage
-#: model:ir.model,name:pentalab_cash_manage.model_sale_order
+#. module: l10n_ec_point_of_sale
+#: model:ir.model,name:l10n_ec_point_of_sale.model_sale_order
 msgid "Sales Order"
 msgstr "Orden de venta"
 
-#. module: pentalab_cash_manage
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.report_cash_closing_template
+#. module: l10n_ec_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.report_cash_closing_template
 msgid "Sales Summary"
 msgstr "Resumen ventas"
 
-#. module: pentalab_cash_manage
+#. module: l10n_ec_point_of_sale
 #. odoo-python
-#: code:addons/pentalab_cash_manage/wizard/cash_box_wizard.py:0
+#: code:addons/l10n_ec_point_of_sale/wizard/cash_box_wizard.py:0
 msgid "Select Coins"
 msgstr "Seleccionar monedas"
 
-#. module: pentalab_cash_manage
-#: model:ir.model,name:pentalab_cash_manage.model_cash_box_coin_wizard
+#. module: l10n_ec_point_of_sale
+#: model:ir.model,name:l10n_ec_point_of_sale.model_cash_box_coin_wizard
 msgid "Select Coins for Balance"
 msgstr "Seleccione monedas para el saldo"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_advance_line_wizard__session_id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_base_wizard__session_id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_closed_wizard__session_id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_credit_note_wizard__session_id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_open_wizard__session_id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_payment_method_wizard__session_id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_payment_wizard__session_id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_quotation_wizard__session_id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_sale_wizard__session_id
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_base_wizard__session_id
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_closed_wizard__session_id
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_open_wizard__session_id
 msgid "Session"
 msgstr "Sesión"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box__session_seq_id
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box__session_seq_id
 msgid "Session Sequence"
 msgstr "Secuencia sesión"
 
-#. module: pentalab_cash_manage
-#: model:ir.actions.act_window,name:pentalab_cash_manage.action_cash_box_session
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box__session_ids
-#: model:ir.ui.menu,name:pentalab_cash_manage.cash_box_session_menu
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_form
+#. module: l10n_ec_point_of_sale
+#: model:ir.actions.act_window,name:l10n_ec_point_of_sale.action_cash_box_session
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box__session_ids
+#: model:ir.ui.menu,name:l10n_ec_point_of_sale.cash_box_session_menu
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.view_cash_box_form
 msgid "Sessions"
 msgstr "Sesiones"
 
-#. module: pentalab_cash_manage
-#: model:ir.actions.act_window,name:pentalab_cash_manage.action_cash_config_settings
-#: model:ir.ui.menu,name:pentalab_cash_manage.cash_box_settings_menu
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_form
+#. module: l10n_ec_point_of_sale
+#: model:ir.actions.act_window,name:l10n_ec_point_of_sale.action_cash_config_settings
+#: model:ir.ui.menu,name:l10n_ec_point_of_sale.cash_box_settings_menu
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.view_cash_box_form
 msgid "Settings"
 msgstr "Ajustes"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box__state
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session__state
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box__state
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session__state
 msgid "State"
 msgstr "Estado"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_quotation_wizard__sale_order_state
-msgid "Status"
-msgstr "Estado"
-
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,help:pentalab_cash_manage.field_cash_box__activity_state
-#: model:ir.model.fields,help:pentalab_cash_manage.field_cash_box_session__activity_state
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,help:l10n_ec_point_of_sale.field_cash_box__activity_state
+#: model:ir.model.fields,help:l10n_ec_point_of_sale.field_cash_box_session__activity_state
 msgid ""
 "Status based on activities\n"
 "Overdue: Due date is already passed\n"
@@ -1609,251 +1130,202 @@ msgstr ""
 "Hoy: La fecha de la actividad es hoy\n"
 "Planificado: Actividades futuras."
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_closed_wizard__suggested_balance
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_closed_wizard__suggested_balance
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session__suggested_balance
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.report_cash_closing_template
 msgid "Suggested Balance"
 msgstr "Balance sugerido"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_quotation_line_wizard__price_tax
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_sale_line_wizard__price_tax
-msgid "Tax"
-msgstr "Impuesto"
-
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_quotation_line_wizard__tax_ids
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_sale_line_wizard__tax_ids
-msgid "Taxes"
-msgstr "Impuestos"
-
-#. module: pentalab_cash_manage
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_quotation_wizard_form
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_sale_wizard_form
-msgid "Taxs"
-msgstr "Impuestos"
-
-#. module: pentalab_cash_manage
+#. module: l10n_ec_point_of_sale
 #. odoo-python
-#: code:addons/pentalab_cash_manage/wizard/cash_box_wizard.py:0
-msgid "The amount for the payment method '%s' must be greater than zero."
-msgstr "El importe del método de pago '%s' debe ser mayor que cero."
-
-#. module: pentalab_cash_manage
-#. odoo-python
-#: code:addons/pentalab_cash_manage/wizard/cash_box_wizard.py:0
-msgid "The amount must be greater than zero."
-msgstr "El importe debe ser mayor que cero."
-
-#. module: pentalab_cash_manage
-#. odoo-python
-#: code:addons/pentalab_cash_manage/models/cash_box.py:0
-#: model:ir.model.constraint,message:pentalab_cash_manage.constraint_cash_box_unique_cash_box_name
+#: code:addons/l10n_ec_point_of_sale/models/cash_box.py:0
+#: model:ir.model.constraint,message:l10n_ec_point_of_sale.constraint_cash_box_unique_cash_box_name
 msgid "The box name already exists."
 msgstr "El nombre de la caja ya existe."
 
-#. module: pentalab_cash_manage
+#. module: l10n_ec_point_of_sale
 #. odoo-python
-#: code:addons/pentalab_cash_manage/wizard/cash_box_wizard.py:0
+#: code:addons/l10n_ec_point_of_sale/wizard/cash_box_wizard.py:0
 msgid "The cash box is already closed."
 msgstr "La caja ya está cerrada."
 
-#. module: pentalab_cash_manage
+#. module: l10n_ec_point_of_sale
 #. odoo-python
-#: code:addons/pentalab_cash_manage/wizard/cash_box_wizard.py:0
+#: code:addons/l10n_ec_point_of_sale/wizard/cash_box_wizard.py:0
 msgid "The cash box is already open."
 msgstr "La caja ya está abierta."
 
-#. module: pentalab_cash_manage
+#. module: l10n_ec_point_of_sale
 #. odoo-python
-#: code:addons/pentalab_cash_manage/models/coins.py:0
-#: model:ir.model.constraint,message:pentalab_cash_manage.constraint_cash_box_coin_unique_cash_box_coin
+#: code:addons/l10n_ec_point_of_sale/models/cash_box.py:0
+msgid ""
+"The cashier '%s' is already assigned to the cash box '%s'. Please choose "
+"another cashier."
+msgstr "El cajero '%s' ya está asignado a la caja '%s'. Elija otro cajero."
+
+#. module: l10n_ec_point_of_sale
+#. odoo-python
+#: code:addons/l10n_ec_point_of_sale/models/cash_box.py:0
+msgid ""
+"The close journal '%s' is already assigned to the cash box '%s'. Please "
+"choose another journal."
+msgstr ""
+"El diario de cierre '%s' ya está asignado a la caja '%s'. Elija otro diario."
+
+#. module: l10n_ec_point_of_sale
+#. odoo-python
+#: code:addons/l10n_ec_point_of_sale/models/coins.py:0
+#: model:ir.model.constraint,message:l10n_ec_point_of_sale.constraint_cash_box_coin_unique_cash_box_coin
 msgid "The coin name already exists."
 msgstr "El nombre de la moneda ya existe."
 
-#. module: pentalab_cash_manage
+#. module: l10n_ec_point_of_sale
 #. odoo-python
-#: code:addons/pentalab_cash_manage/wizard/cash_box_wizard.py:0
+#: code:addons/l10n_ec_point_of_sale/models/cash_box.py:0
+msgid ""
+"The journal '%s' is already assigned to the cash box '%s'. Please choose "
+"another journal."
+msgstr "El diario '%s' ya está asignado a la caja '%s'. Elija otro diario."
+
+#. module: l10n_ec_point_of_sale
+#. odoo-python
+#: code:addons/l10n_ec_point_of_sale/wizard/cash_box_wizard.py:0
 msgid "The journal must have a default account."
 msgstr "El diario debe tener una cuenta predeterminada."
 
-#. module: pentalab_cash_manage
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.res_config_settings_view_form
+#. module: l10n_ec_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.res_config_settings_view_form
 msgid ""
 "The maximum amount of cash imbalance allowed before a warning is raised"
 msgstr ""
 "La cantidad máxima de descuadre de efectivo permitida antes de que se "
 "levante una advertencia"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,help:pentalab_cash_manage.field_res_config_settings__cash_imbalance_limit
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,help:l10n_ec_point_of_sale.field_res_config_settings__cash_imbalance_limit
 msgid ""
 "The maximum amount of cash imbalance allowed before a warning is raised."
 msgstr ""
 "La cantidad máxima de desequilibrio de efectivo permitido antes de que se "
 "levante una advertencia."
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,help:pentalab_cash_manage.field_cash_box_advance_line_wizard__amount
-msgid ""
-"The residual amount on a journal item expressed in the company currency."
-msgstr ""
-"El importe residual de un elemento de diario expresado en la moneda de la "
-"empresa."
-
-#. module: pentalab_cash_manage
+#. module: l10n_ec_point_of_sale
 #. odoo-python
-#: code:addons/pentalab_cash_manage/wizard/cash_box_wizard.py:0
-msgid "The total amount of payments must match the total amount of products."
+#: code:addons/l10n_ec_point_of_sale/models/sale_order.py:0
+msgid ""
+"The user is not assigned to any register. Assign a register before creating "
+"an order."
 msgstr ""
-"El importe total de los pagos debe coincidir con el importe total de los "
-"productos."
+"El usuario no está asignado a ninguna caja. Asigne una caja antes de crear "
+"un pedido."
 
-#. module: pentalab_cash_manage
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.report_cash_closing_template
-msgid "There are no recorded movements."
-msgstr "No hay movimientos registrados."
+#. module: l10n_ec_point_of_sale
+#. odoo-python
+#: code:addons/l10n_ec_point_of_sale/models/account_payment.py:0
+msgid ""
+"The user is not assigned to any register. Assign a register before creating "
+"an payment."
+msgstr ""
+"El usuario no está asignado a ninguna caja. Asigne una caja antes de crear "
+"un pago."
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_quotation_line_wizard__price_total
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_sale_line_wizard__price_total
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.report_cash_closing_template
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_payment_wizard_form
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_quotation_wizard_form
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_sale_wizard_form
+#. module: l10n_ec_point_of_sale
+#. odoo-python
+#: code:addons/l10n_ec_point_of_sale/models/account_payment.py:0
+#: code:addons/l10n_ec_point_of_sale/models/sale_order.py:0
+msgid "This sales order is related to an already closed cashier session."
+msgstr ""
+"Esta orden de venta está relacionada con una sesión de cajero ya cerrada."
+
+#. module: l10n_ec_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.report_cash_closing_template
 msgid "Total"
-msgstr ""
+msgstr "Total"
 
-#. module: pentalab_cash_manage
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.report_cash_closing_template
+#. module: l10n_ec_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.report_cash_closing_template
 msgid "Transfer/Deposit"
 msgstr "Tranferencia/Déposito"
 
-#. module: pentalab_cash_manage
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.report_cash_closing_template
+#. module: l10n_ec_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.report_cash_closing_template
 msgid "Type"
 msgstr "Tipo"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,help:pentalab_cash_manage.field_cash_box__activity_exception_decoration
-#: model:ir.model.fields,help:pentalab_cash_manage.field_cash_box_session__activity_exception_decoration
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,help:l10n_ec_point_of_sale.field_cash_box__activity_exception_decoration
+#: model:ir.model.fields,help:l10n_ec_point_of_sale.field_cash_box_session__activity_exception_decoration
 msgid "Type of the exception activity on record."
 msgstr "Tipo de actividad de excepción registrada."
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_quotation_line_wizard__price_unit
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_sale_line_wizard__price_unit
-msgid "Unit Price"
-msgstr "Precio unitario"
-
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_sale_wizard__use_only_advances
-msgid "Use Only Advances"
-msgstr "Usar solo anticipos"
-
-#. module: pentalab_cash_manage
-#: model:res.groups,comment:pentalab_cash_manage.group_cash_box_admin
+#. module: l10n_ec_point_of_sale
+#: model:res.groups,comment:l10n_ec_point_of_sale.group_cash_box_admin
 msgid "Users who can see all boxes"
 msgstr "Usuarios que pueden ver todas las cajas"
 
-#. module: pentalab_cash_manage
-#: model:res.groups,comment:pentalab_cash_manage.group_cash_box_user
+#. module: l10n_ec_point_of_sale
+#: model:res.groups,comment:l10n_ec_point_of_sale.group_cash_box_user
 msgid "Users who can see only their boxes or where they are auxiliary"
 msgstr "Usuarios que solo pueden ver sus cajas o donde son auxiliares"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_quotation_wizard__validated_order
-msgid "Validated Order"
-msgstr "Orden validada"
-
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_coin__value
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_coin_line_wizard__value
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_coin__value
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_coin_line_wizard__value
 msgid "Value"
 msgstr "Valor"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box__warehouse_id
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.view_cash_box_search
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box__warehouse_id
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.view_cash_box_search
 msgid "Warehouse"
 msgstr "Almacen"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box__website_message_ids
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_session__website_message_ids
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box__website_message_ids
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session__website_message_ids
 msgid "Website Messages"
 msgstr "Mensajes del sitio web"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,help:pentalab_cash_manage.field_cash_box__website_message_ids
-#: model:ir.model.fields,help:pentalab_cash_manage.field_cash_box_session__website_message_ids
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,help:l10n_ec_point_of_sale.field_cash_box__website_message_ids
+#: model:ir.model.fields,help:l10n_ec_point_of_sale.field_cash_box_session__website_message_ids
 msgid "Website communication history"
-msgstr "Historial de comunicaciones del sitio web"
+msgstr "Historial de comunicación del sitio web"
 
-#. module: pentalab_cash_manage
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_advance_line_wizard__wizard_id
-#: model:ir.model.fields,field_description:pentalab_cash_manage.field_cash_box_coin_line_wizard__wizard_id
+#. module: l10n_ec_point_of_sale
+#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_coin_line_wizard__wizard_id
 msgid "Wizard"
 msgstr "Asistente"
 
-#. module: pentalab_cash_manage
+#. module: l10n_ec_point_of_sale
 #. odoo-python
-#: code:addons/pentalab_cash_manage/models/cash_box.py:0
+#: code:addons/l10n_ec_point_of_sale/models/cash_box.py:0
 msgid "You cannot delete a cash box with active sessions."
 msgstr "No se puede eliminar una caja con sesiones activas."
 
-#. module: pentalab_cash_manage
+#. module: l10n_ec_point_of_sale
 #. odoo-python
-#: code:addons/pentalab_cash_manage/wizard/cash_box_wizard.py:0
-msgid "You cannot use the same advance more than once."
-msgstr "No puedes utilizar el mismo anticipo más de una vez."
+#: code:addons/l10n_ec_point_of_sale/models/sale_order.py:0
+msgid ""
+"You don't have any open cashier sessions. Please open one before creating "
+"an order."
+msgstr ""
+"No tienes ninguna sesión de cajero abierta. Por favor, abre una antes de "
+"crear un pedido."
 
-#. module: pentalab_cash_manage
+#. module: l10n_ec_point_of_sale
 #. odoo-python
-#: code:addons/pentalab_cash_manage/wizard/cash_box_wizard.py:0
-msgid "You must add at least one payment method."
-msgstr "Debes agregar al menos un método de pago."
+#: code:addons/l10n_ec_point_of_sale/models/account_payment.py:0
+msgid ""
+"You don't have any open cashier sessions. Please open one before creating "
+"an payment."
+msgstr ""
+"No tienes ninguna sesión de cajero abierta. Abre una antes de realizar un "
+"pago."
 
-#. module: pentalab_cash_manage
+#. module: l10n_ec_point_of_sale
 #. odoo-python
-#: code:addons/pentalab_cash_manage/wizard/cash_box_wizard.py:0
-msgid "You must add at least one product to the sale."
-msgstr "Debes agregar al menos un producto a la venta."
-
-#. module: pentalab_cash_manage
-#. odoo-python
-#: code:addons/pentalab_cash_manage/models/cash_box.py:0
+#: code:addons/l10n_ec_point_of_sale/models/cash_box.py:0
 msgid "You must close the current session before making changes to the box."
 msgstr "Debes cerrar la sesión actual antes de realizar cambios en la caja."
-
-#. module: pentalab_cash_manage
-#. odoo-python
-#: code:addons/pentalab_cash_manage/wizard/cash_box_wizard.py:0
-msgid ""
-"You must provide a Bank Reference when the payment method is bank-related "
-"(%s)"
-msgstr ""
-"Debe proporcionar una referencia bancaria cuando el método de pago esté "
-"relacionado con el banco (%s)"
-
-#. module: pentalab_cash_manage
-#. odoo-python
-#: code:addons/pentalab_cash_manage/wizard/cash_box_wizard.py:0
-msgid "You must select an customer."
-msgstr "Debe seleccionar un cliente."
-
-#. module: pentalab_cash_manage
-#. odoo-python
-#: code:addons/pentalab_cash_manage/wizard/cash_box_wizard.py:0
-msgid "You must select an invoice."
-msgstr "Debes seleccionar una factura."
-
-#. module: pentalab_cash_manage
-#. odoo-python
-#: code:addons/pentalab_cash_manage/wizard/cash_box_wizard.py:0
-msgid "You must select at least one sales order."
-msgstr "Debe seleccionar al menos una cotización."
-
-#. module: pentalab_cash_manage
-#: model_terms:ir.ui.view,arch_db:pentalab_cash_manage.report_cash_closing_template
-msgid "_______________________________"
-msgstr ""
