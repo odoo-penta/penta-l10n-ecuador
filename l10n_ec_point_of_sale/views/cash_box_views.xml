@@ -202,7 +202,6 @@
                         </div>
                         <group>
                             <group>
-                                <field name="allow_credit" invisible="1"/>
                                 <field name="name"/>
                                 <field name="cash_id"/>
                                 <field name="opening_date"/>

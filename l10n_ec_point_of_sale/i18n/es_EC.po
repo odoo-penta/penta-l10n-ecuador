@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-30 15:50+0000\n"
-"PO-Revision-Date: 2025-09-30 11:35-0500\n"
+"POT-Creation-Date: 2025-09-30 20:48+0000\n"
+"PO-Revision-Date: 2025-09-30 15:50-0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es_EC\n"
@@ -56,9 +56,6 @@ msgid ""
 "                                    ________________________<br/>\n"
 "                                    C.I.: __________________"
 msgstr ""
-"<br/><br/>\n"
-"                                    ________________________<br/>\n"
-"                                    C.I.: __________________"
 
 #. module: l10n_ec_point_of_sale
 #: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.view_cash_box_session_form
@@ -136,35 +133,6 @@ msgid "Activity Type Icon"
 msgstr "Icono de tipo de actividad"
 
 #. module: l10n_ec_point_of_sale
-#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session__allow_credit
-msgid "Allow Credit"
-msgstr "Permitir crédito"
-
-#. module: l10n_ec_point_of_sale
-#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_res_config_settings__allow_advance_cash
-msgid "Allow advance"
-msgstr "Permitir anticipo"
-
-#. module: l10n_ec_point_of_sale
-#: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_res_config_settings__allow_credit_note_cash
-msgid "Allow credit note"
-msgstr "Permitir nota de crédito"
-
-#. module: l10n_ec_point_of_sale
-#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.res_config_settings_view_form
-msgid ""
-"Allows the generation of credit notes for invoices in the cash register "
-"sessions"
-msgstr ""
-"Permite la generación de notas de crédito para facturas en las sesiones de "
-"caja"
-
-#. module: l10n_ec_point_of_sale
-#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.res_config_settings_view_form
-msgid "Allows the use of advances for invoices in cashier sessions"
-msgstr "Permite el uso de anticipos para facturas en sesiones de caja"
-
-#. module: l10n_ec_point_of_sale
 #: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session_movement__amount
 msgid "Amount"
 msgstr "Monto"
@@ -209,7 +177,6 @@ msgstr "Tarjeta"
 
 #. module: l10n_ec_point_of_sale
 #: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.report_cash_closing_template
-#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.res_config_settings_view_form
 #: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.view_cash_box_form
 msgid "Cash"
 msgstr "Efectivo"
@@ -426,6 +393,11 @@ msgid "Closing Balance"
 msgstr "Balance cierre"
 
 #. module: l10n_ec_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.res_config_settings_view_form
+msgid "Closing Cash"
+msgstr "Cierre caja"
+
+#. module: l10n_ec_point_of_sale
 #: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session__closing_date
 msgid "Closing Date"
 msgstr "Fecha cierre"
@@ -567,22 +539,18 @@ msgid ""
 "Diferencia en cierre de caja sobrepasa el limite permitido, se notificara a "
 "los administradores de caja."
 msgstr ""
-"Diferencia en cierre de caja sobrepasa el limite permitido, se notificara a "
-"los administradores de caja."
 
 #. module: l10n_ec_point_of_sale
 #: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.view_cash_box_closed_wizard_form
 msgid ""
 "Diferencia en cierre de caja, valor NEGATIVO se ira a la cuenta de perdidas."
 msgstr ""
-"Diferencia en cierre de caja, valor NEGATIVO se ira a la cuenta de perdidas."
 
 #. module: l10n_ec_point_of_sale
 #: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.view_cash_box_closed_wizard_form
 msgid ""
 "Diferencia en cierre de caja, valor POSITIVO ira a la cuenta de ganancias"
 msgstr ""
-"Diferencia en cierre de caja, valor POSITIVO ira a la cuenta de ganancias"
 
 #. module: l10n_ec_point_of_sale
 #: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session__diff_balance
@@ -681,7 +649,7 @@ msgstr "Tiene un mensaje"
 #: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session__id
 #: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box_session_movement__id
 msgid "ID"
-msgstr "ID"
+msgstr ""
 
 #. module: l10n_ec_point_of_sale
 #: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box__activity_exception_icon
@@ -694,23 +662,6 @@ msgstr "Icono"
 #: model:ir.model.fields,help:l10n_ec_point_of_sale.field_cash_box_session__activity_exception_icon
 msgid "Icon to indicate an exception activity."
 msgstr "Icono para indicar una actividad de excepción."
-
-#. module: l10n_ec_point_of_sale
-#: model:ir.model.fields,help:l10n_ec_point_of_sale.field_res_config_settings__allow_advance_cash
-msgid ""
-"If checked, allows the use of advances for invoices in cashier sessions."
-msgstr ""
-"Si está marcada, permite el uso de anticipos para facturas en sesiones de "
-"caja."
-
-#. module: l10n_ec_point_of_sale
-#: model:ir.model.fields,help:l10n_ec_point_of_sale.field_res_config_settings__allow_credit_note_cash
-msgid ""
-"If checked, it allows the generation of credit notes for invoices in the "
-"cash register sessions."
-msgstr ""
-"Si está marcada, permite la generación de notas de crédito para facturas en "
-"las sesiones de caja."
 
 #. module: l10n_ec_point_of_sale
 #: model:ir.model.fields,help:l10n_ec_point_of_sale.field_cash_box__message_needaction
@@ -779,6 +730,11 @@ msgstr "Diario"
 #: model:ir.ui.menu,name:l10n_ec_point_of_sale.cash_box_account_journal_menu
 msgid "Journals"
 msgstr "Diarios"
+
+#. module: l10n_ec_point_of_sale
+#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.report_cash_closing_template
+msgid "Journals Summary"
+msgstr "Resumen diarios"
 
 #. module: l10n_ec_point_of_sale
 #: model:ir.model.fields,field_description:l10n_ec_point_of_sale.field_cash_box__write_uid
@@ -962,7 +918,7 @@ msgstr "Orden"
 #: model:ir.module.category,name:l10n_ec_point_of_sale.cash_box_access
 #: model:ir.ui.menu,name:l10n_ec_point_of_sale.cash_box_root_menu
 msgid "POS PENTA"
-msgstr "POS PENTA"
+msgstr ""
 
 #. module: l10n_ec_point_of_sale
 #: model:ir.model.fields.selection,name:l10n_ec_point_of_sale.selection__cash_box_session_movement__state__paid
@@ -974,11 +930,6 @@ msgstr "Pagado"
 #: model:ir.model.fields.selection,name:l10n_ec_point_of_sale.selection__cash_box_session_movement__operation_type__payment
 msgid "Payment"
 msgstr "Pago"
-
-#. module: l10n_ec_point_of_sale
-#: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.report_cash_closing_template
-msgid "Payment Journals Summary"
-msgstr "Resumen Diarios:"
 
 #. module: l10n_ec_point_of_sale
 #: model:ir.model,name:l10n_ec_point_of_sale.model_account_payment
@@ -1175,6 +1126,16 @@ msgstr ""
 
 #. module: l10n_ec_point_of_sale
 #. odoo-python
+#: code:addons/l10n_ec_point_of_sale/wizard/cash_box_wizard.py:0
+msgid ""
+"The closing balance exceeds the allowed difference limit. Please contact a "
+"cash box administrator to approve the closing."
+msgstr ""
+"El saldo de cierre supera el límite de diferencia permitido. Comuníquese "
+"con el administrador de la caja para aprobar el cierre."
+
+#. module: l10n_ec_point_of_sale
+#. odoo-python
 #: code:addons/l10n_ec_point_of_sale/models/coins.py:0
 #: model:ir.model.constraint,message:l10n_ec_point_of_sale.constraint_cash_box_coin_unique_cash_box_coin
 msgid "The coin name already exists."
@@ -1241,7 +1202,7 @@ msgstr ""
 #. module: l10n_ec_point_of_sale
 #: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.report_cash_closing_template
 msgid "Total"
-msgstr "Total"
+msgstr ""
 
 #. module: l10n_ec_point_of_sale
 #: model_terms:ir.ui.view,arch_db:l10n_ec_point_of_sale.report_cash_closing_template

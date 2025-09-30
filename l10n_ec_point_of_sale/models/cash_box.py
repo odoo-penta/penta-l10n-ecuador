@@ -212,7 +212,6 @@ class CashBoxSession(models.Model):
     diff_balance = fields.Monetary(currency_field='currency_id', readonly=True)
     state = fields.Selection([('in_progress', 'In progress'), ('closed', 'Closed')], default='closed', string="State")
     movement_ids = fields.One2many('cash.box.session.movement', 'session_id', string="Movements", readonly=True)
-    allow_credit = fields.Boolean(compute="_compute_allow_credit")
     close_move_id = fields.Many2one('account.move', readonly=True)
     diff_move_id = fields.Many2one('account.move', readonly=True)
     opening_note = fields.Text(readonly=True)
@@ -346,12 +345,6 @@ class CashBoxSession(models.Model):
             if cash_id:
                 return self.env['cash.box'].browse(cash_id).session_seq_id or False
             return False
-        
-    @api.depends()
-    def _compute_allow_credit(self):
-        param = self.env['ir.config_parameter'].sudo().get_param('l10n_ec_point_of_sale.allow_credit_note_cash')
-        for record in self:
-            record.allow_credit = param
             
     def open_payments_view(self):
         self.ensure_one()
