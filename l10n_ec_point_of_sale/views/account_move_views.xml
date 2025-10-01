@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_account_move_form_inherit_point_of_sale" model="ir.ui.view">
+        <field name="name">account.move.form.inherit.point.of.sale</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@id='other_tab_group']/group/field[@name='delivery_date']" position='after'>
+                <field name="cash_session_id"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
