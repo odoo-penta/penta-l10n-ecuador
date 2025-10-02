@@ -4,7 +4,7 @@ import base64
 import io
 from odoo.tools.misc import xlsxwriter
 from odoo.addons.penta_base.reports.xlsx_formats import get_xlsx_formats
-from odoo.tools import extract_numbers
+from odoo.tools import format_invoice_number
 
 
 class ReportRetentionsA3Wizard(models.TransientModel):
@@ -131,7 +131,7 @@ class ReportRetentionsA3Wizard(models.TransientModel):
                     worksheet.write(row, 0, cont, formats['center'])
                     worksheet.write(row, 1, move.date.strftime("%d/%m/%Y") or '', formats['border'])
                     #worksheet.write(row, 2, move.journal_id.name, formats['center'])
-                    worksheet.write(row, 2, extract_numbers(move.name), formats['center'])
+                    worksheet.write(row, 2, format_invoice_number(move.name), formats['center'])
                     worksheet.write(row, 3, move.partner_id.vat or '', formats['border'])
                     worksheet.write(row, 4, move.partner_id.complete_name or '', formats['border'])
                     worksheet.write(row, 5, move.l10n_ec_authorization_number or '', formats['border'])
