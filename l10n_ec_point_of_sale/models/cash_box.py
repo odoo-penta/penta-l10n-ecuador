@@ -212,7 +212,6 @@ class CashBoxSession(models.Model):
     diff_balance = fields.Monetary(currency_field='currency_id', readonly=True)
     state = fields.Selection([('in_progress', 'In progress'), ('closed', 'Closed')], default='closed', string="State")
     movement_ids = fields.One2many('cash.box.session.movement', 'session_id', string="Movements", readonly=True)
-    allow_credit = fields.Boolean(compute="_compute_allow_credit")
     close_move_id = fields.Many2one('account.move', readonly=True)
     diff_move_id = fields.Many2one('account.move', readonly=True)
     opening_note = fields.Text(readonly=True)
@@ -317,6 +316,7 @@ class CashBoxSession(models.Model):
                             'account_id': self.cash_id.close_account_id.id,
                             'debit': pp_values_v['amount'],
                             'credit': 0.00,
+                            'name': self.name,
                         }))
                         # agg la linea al credito
                         line_vals.append((0, 0, {
@@ -325,6 +325,7 @@ class CashBoxSession(models.Model):
                             'account_id': self.env['account.payment'].browse(pp_values_k).journal_id.default_account_id.id,
                             'debit': 0.00,
                             'credit': pp_values_v['amount'],
+                            'name': self.name,
                         }))
                 move.write({'line_ids': line_vals})
                 move.action_post()
@@ -344,13 +345,21 @@ class CashBoxSession(models.Model):
             if cash_id:
                 return self.env['cash.box'].browse(cash_id).session_seq_id or False
             return False
-        
-    @api.depends()
-    def _compute_allow_credit(self):
-        param = self.env['ir.config_parameter'].sudo().get_param('l10n_ec_point_of_sale.allow_credit_note_cash')
-        for record in self:
-            record.allow_credit = param
-            
+          
+    def open_invoices_view(self):
+        self.ensure_one()
+        # Obtener pagos de los movimientos
+        invoice_movements = self.movement_ids.filtered(lambda m: m.invoice_id)
+        invoices = invoice_movements.mapped('invoice_id')
+        return {
+            'name': 'Invoices',
+            'type': 'ir.actions.act_window',
+            'res_model': 'account.move',
+            'view_mode': 'list,form',
+            'domain': [('id', 'in', invoices.ids)],
+            'target': 'current',
+        }
+    
     def open_payments_view(self):
         self.ensure_one()
         # Obtener pagos de los movimientos
@@ -402,6 +411,8 @@ class CashBoxSession(models.Model):
             values['order_id'] = obj_related
         elif type_op == 'payment':
             values['payment_id'] = obj_related
+        elif type_op == 'invoice':
+            values['invoice_id'] = obj_related
         return self.env['cash.box.session.movement'].create(values)
     
     def print_summary(self):
@@ -470,9 +481,8 @@ class CashBoxSessionMovement(models.Model):
     partner_id = fields.Many2one('res.partner', string='Customer', required=True)
     operation_type = fields.Selection([
         ('order', 'Order'),
-        ('refund', 'Credit Note'),
+        ('invoice', 'Invoice'),
         ('payment', 'Payment'),
-        ('quote', 'Quote'),
     ], string="Operation Type", required=True)
     amount = fields.Monetary(string='Amount', compute='_compute_amount', currency_field='currency_id')
     cashier_id = fields.Many2one('res.users', 'Cashier', default=lambda self: self.env.user)
@@ -501,7 +511,8 @@ class CashBoxSessionMovement(models.Model):
                     raise UserError(_("Please configure the sequence for cash session movements."))
         return super().create(vals_list)
     
-    @api.depends('order_id', 'payment_id')
+
+    @api.depends('order_id', 'payment_id', 'invoice_id')
     def _compute_amount(self):
         self.amount = 0.00
         for record in self:
@@ -509,6 +520,9 @@ class CashBoxSessionMovement(models.Model):
                 record.amount = record.order_id.amount_total
             elif record.payment_id:
                 record.amount = record.payment_id.amount
+            elif record.invoice_id:
+                record.amount = record.invoice_id.amount_total
+
     
     @api.model
     def get_sequence(self, session_id=None):
@@ -530,12 +544,10 @@ class CashBoxSessionMovement(models.Model):
             state = 'draft'  # valor por defecto
             if rec.operation_type == 'order' and rec.order_id:
                 state = rec.order_id.state
-            elif rec.operation_type == 'refund' and rec.credit_note_id:
-                state = rec.credit_note_id.payment_state or rec.credit_note_id.state
+            elif rec.operation_type == 'invoice' and rec.invoice_id:
+                state = rec.invoice_id.state
             elif rec.operation_type == 'payment' and rec.payment_id:
                 state = rec.payment_id.state
-            elif rec.operation_type == 'quote' and rec.order_id:
-                state = rec.order_id.state
             # Mapeamos algunos states si se requiere simplificar
             if state in ['not_paid', 'draft']:
                 rec.state = 'draft'

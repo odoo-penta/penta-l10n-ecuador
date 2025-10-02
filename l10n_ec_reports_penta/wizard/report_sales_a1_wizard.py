@@ -4,7 +4,8 @@ import base64
 import io
 from odoo.tools.misc import xlsxwriter
 from odoo.addons.penta_base.reports.xlsx_formats import get_xlsx_formats
-from odoo.tools import extract_numbers
+from odoo.tools import format_invoice_number
+
 
 
 class ReportSalesA1Wizard(models.TransientModel):
@@ -125,7 +126,7 @@ class ReportSalesA1Wizard(models.TransientModel):
                 elif invoice.partner_id.company_type == 'company':
                     subjet_type = 'Empresa'
                 worksheet.write(row, 6, subjet_type, formats['border'])
-                worksheet.write(row, 7, extract_numbers(invoice.name) or '', formats['border'])
+                worksheet.write(row, 7, format_invoice_number(invoice.name) or '', formats['border'])
                 worksheet.write(row, 8, invoice.l10n_ec_authorization_number or '', formats['border'])
                 worksheet.write(row, 9, invoice.invoice_date.strftime("%d/%m/%Y") or '', formats['border'])
                 # Mapear impuestos BASE
