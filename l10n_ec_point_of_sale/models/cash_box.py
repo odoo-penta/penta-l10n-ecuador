@@ -345,7 +345,7 @@ class CashBoxSession(models.Model):
             if cash_id:
                 return self.env['cash.box'].browse(cash_id).session_seq_id or False
             return False
-            
+          
     def open_invoices_view(self):
         self.ensure_one()
         # Obtener pagos de los movimientos
@@ -511,6 +511,7 @@ class CashBoxSessionMovement(models.Model):
                     raise UserError(_("Please configure the sequence for cash session movements."))
         return super().create(vals_list)
     
+
     @api.depends('order_id', 'payment_id', 'invoice_id')
     def _compute_amount(self):
         self.amount = 0.00
@@ -521,6 +522,7 @@ class CashBoxSessionMovement(models.Model):
                 record.amount = record.payment_id.amount
             elif record.invoice_id:
                 record.amount = record.invoice_id.amount_total
+
     
     @api.model
     def get_sequence(self, session_id=None):

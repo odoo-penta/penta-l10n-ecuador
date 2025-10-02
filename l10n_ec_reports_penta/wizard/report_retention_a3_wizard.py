@@ -7,6 +7,8 @@ from odoo.addons.penta_base.reports.xlsx_formats import get_xlsx_formats
 from odoo.tools import format_invoice_number
 
 
+
+
 class ReportRetentionsA3Wizard(models.TransientModel):
     _name = 'report.retentions.a3.wizard'
     _description = 'Wizard to generate report retentions A3'

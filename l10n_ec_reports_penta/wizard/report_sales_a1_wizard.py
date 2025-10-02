@@ -7,6 +7,7 @@ from odoo.addons.penta_base.reports.xlsx_formats import get_xlsx_formats
 from odoo.tools import format_invoice_number
 
 
+
 class ReportSalesA1Wizard(models.TransientModel):
     _name = 'report.sales.a1.wizard'
     _description = 'Wizard to generate report sales A1'
