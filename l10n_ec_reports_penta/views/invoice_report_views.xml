@@ -15,27 +15,20 @@
 
   <!-- Acción (wizard) -->
   <record id="action_pentalab_anexo_compras_wizard" model="ir.actions.act_window">
-    <field name="name">Anexo de compras</field>
+    <field name="name">Detalle de compras</field>
     <field name="res_model">pentalab.invoice.report.wizard</field>
     <field name="view_mode">form</field>
     <field name="target">new</field>
   </record>
 
-  <!-- Reportes Pentalab -> Anexo de compras -->
-  <!--
-  <menuitem id="menu_pentalab_anexo_compras"
-            name="Anexo de compras"
-            parent="menu_pentalab_reports_group"
-            action="action_pentalab_anexo_compras_wizard"
-            sequence="1"/>
-  -->
+
 
   <!-- Vista LIST del reporte -->
   <record id="view_pentalab_invoice_report_line_list" model="ir.ui.view">
     <field name="name">pentalab.invoice.report.line.list</field>
     <field name="model">pentalab.invoice.report.line</field>
     <field name="arch" type="xml">
-      <list string="Anexo de Compras" create="false" edit="false" delete="false">
+      <list string="Detalle de Compras" create="false" edit="false" delete="false">
         <field name="company_id"/>
         <field name="invoice_date"/>
         <field name="date"/>
@@ -43,10 +36,12 @@
         <field name="journal_id"/>
         <field name="doc_type_name"/>
         <field name="ref"/>
+        <field name="importacion"/>
         <field name="purchase_order_name"/>
         <field name="auth_number"/>
         <field name="partner_vat"/>
         <field name="partner_id"/>
+        <field name="partner_category"/>
         <field name="payterm_name"/>
         <field name="paymethod_name"/>
         <field name="default_code"/>
@@ -68,7 +63,7 @@
     <field name="name">pentalab.invoice.report.wizard.form</field>
     <field name="model">pentalab.invoice.report.wizard</field>
     <field name="arch" type="xml">
-      <form string="Parámetros - Anexo de compras">
+      <form string="Parámetros - Detalle de compras">
         <group>
           <group>
             <field name="date_from"/>
