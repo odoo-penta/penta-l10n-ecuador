@@ -66,7 +66,7 @@ class PentalabInvoiceReportWizard(models.TransientModel):
             "name": "Anexo de Compras",
             "res_model": "pentalab.invoice.report.line",
             "view_mode": "list",
-            "views": [(self.env.ref("pentalab_report.view_pentalab_invoice_report_line_list").id, "list")],
+            "views": [(self.env.ref("l10n_ec_reports_penta.view_pentalab_invoice_report_line_list").id, "list")],
             "target": "current",
             "domain": domain,
             "context": ctx,
