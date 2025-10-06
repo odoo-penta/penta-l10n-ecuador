@@ -1,0 +1,39 @@
+<odoo noupdate="1">
+  <!-- Tipo de ausencia para VACACIONES (único por compañía; ver constraint en nuestro modelo) -->
+  <record id="hr_leave_type_vacaciones" model="hr.leave.type">
+    <field name="name">Vacaciones</field>
+    <field name="is_vacation">1</field>
+    <!-- Global (sin compañía) para que aplique a todas; si quieres por compañía, rellena company_id -->
+    <field name="company_id" eval="False"/>
+    <!-- No requiere asignaciones previas -->
+    <field name="requires_allocation">no</field>
+    <field name="time_type">leave</field>
+  </record>
+
+  <!-- Enfermedad - IESS cubre 50% -->
+  <record id="hr_leave_type_illness_50" model="hr.leave.type">
+    <field name="name">Enfermedad - IESS cubre 50%</field>
+    <field name="is_vacation">0</field>
+    <field name="company_id" eval="False"/>
+    <field name="requires_allocation">no</field>
+    <field name="time_type">leave</field>
+  </record>
+
+  <!-- Enfermedad - IESS cubre 66% -->
+  <record id="hr_leave_type_illness_66" model="hr.leave.type">
+    <field name="name">Enfermedad - IESS cubre 66%</field>
+    <field name="is_vacation">0</field>
+    <field name="company_id" eval="False"/>
+    <field name="requires_allocation">no</field>
+    <field name="time_type">leave</field>
+  </record>
+
+  <!-- Enfermedad - IESS cubre 75% -->
+  <record id="hr_leave_type_illness_75" model="hr.leave.type">
+    <field name="name">Enfermedad - IESS cubre 75%</field>
+    <field name="is_vacation">0</field>
+    <field name="company_id" eval="False"/>
+    <field name="requires_allocation">no</field>
+    <field name="time_type">leave</field>
+  </record>
+</odoo>

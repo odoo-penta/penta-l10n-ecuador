@@ -1,0 +1,11 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_education_level,access_hr_education_level,model_hr_education_level,base.group_system,1,1,1,1
+access_hr_disability_type,access_hr_disability_type,model_hr_disability_type,base.group_system,1,1,1,1
+access_family_dependents_manager,access_family_dependents_manager,model_l10n_ec_ptb_family_dependents,hr.group_hr_manager,1,1,1,1
+access_family_dependents_user,access_family_dependents_user,model_l10n_ec_ptb_family_dependents,hr.group_hr_user,1,1,1,0
+access_hr_payment_mode_user,access_hr_payment_mode_user,model_hr_payment_mode,base.group_user,1,1,1,1
+access_hr_iess_option_user,access_hr_iess_option_user,model_hr_iess_option,hr.group_hr_manager,1,1,1,1
+access_hr_account_section_user,access_hr_account_section_user,model_hr_account_section,hr.group_hr_manager,1,1,1,1
+access_vacation_balance_user,access_vacation_balance_user,model_l10n_ec_ptb_vacation_balance,base.group_user,1,0,0,0
+access_vacation_move_user,access_vacation_move_user,model_l10n_ec_ptb_vacation_move,base.group_user,1,0,0,0
+penta_benefit_config_user,Penta Benefit Config User,model_penta_benefit_config,hr_payroll.group_hr_payroll_user,1,1,1,1

@@ -1,0 +1,36 @@
+<odoo>
+  <!-- Página VACACIONES en hr.contract -->
+  <record id="view_hr_contract_vacation_page" model="ir.ui.view">
+    <field name="name">hr.contract.vacation.page.penta</field>
+    <field name="model">hr.contract</field>
+    <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+    <field name="arch" type="xml">
+      <xpath expr="//page[@name='other']" position="after">
+        <page string="Vacaciones" name="penta_vacations">
+          <group>
+            <group>
+              <field name="vac_total_entitled" readonly="1"/>
+              <field name="vac_total_taken" readonly="1"/>
+              <field name="vac_total_available" readonly="1"/>
+            </group>
+            <group>
+              <button name="action_rebuild_vacation_balances" type="object" class="oe_highlight" string="Recalcular periodos"/>
+            </group>
+          </group>
+          <group>
+            <field name="vacation_balance_ids" nolabel="1">
+              <list create="0" edit="0" delete="0">
+                <field name="year_index"/>
+                <field name="period_start"/>
+                <field name="period_end"/>
+                <field name="days_entitled"/>
+                <field name="days_taken"/>
+                <field name="days_available"/>
+              </list>
+            </field>
+          </group>
+        </page>
+      </xpath>
+    </field>
+  </record>
+</odoo>
