@@ -5,6 +5,7 @@
 
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
+from collections import defaultdict
 
 
 class CashBox(models.Model):
@@ -198,7 +199,8 @@ class CashBoxSession(models.Model):
 
     name = fields.Char(required=True, copy=False, readonly=True, default=_('New'))
     cash_id = fields.Many2one('cash.box', string="Cash Box", readonly=True)
-    responsible_ids = fields.Many2many(related='cash_id.responsible_ids', depends=['cash_id'], readonly=True)
+    responsible_open = fields.Many2one('res.users', string="Responsible (Open)", readonly=True)
+    responsible_close = fields.Many2one('res.users', string="Responsible (Close)", readonly=True)
     cashier_ids = fields.Many2many(related='cash_id.cashier_ids', depends=['cash_id'], readonly=True)
     currency_id = fields.Many2one(related='cash_id.currency_id', depends=['cash_id'])
     opening_date = fields.Datetime(string="Opening Date", readonly=True)
@@ -206,9 +208,10 @@ class CashBoxSession(models.Model):
     initial_balance = fields.Monetary(currency_field='currency_id', string="Initial balance", readonly=True)
     final_balance = fields.Monetary(currency_field='currency_id', string="Final balance", readonly=True)
     closing_balance = fields.Monetary(currency_field='currency_id', string="Closing balance", readonly=True)
+    suggested_balance = fields.Monetary(currency_field='currency_id', readonly=True)
+    diff_balance = fields.Monetary(currency_field='currency_id', readonly=True)
     state = fields.Selection([('in_progress', 'In progress'), ('closed', 'Closed')], default='closed', string="State")
     movement_ids = fields.One2many('cash.box.session.movement', 'session_id', string="Movements", readonly=True)
-    allow_credit = fields.Boolean(compute="_compute_allow_credit")
     close_move_id = fields.Many2one('account.move', readonly=True)
     diff_move_id = fields.Many2one('account.move', readonly=True)
     opening_note = fields.Text(readonly=True)
@@ -232,7 +235,7 @@ class CashBoxSession(models.Model):
         # creamos la nueva session
         session = self.create({
             'cash_id': cash.id,
-            #'responsible_ids': [(6, 0, cash.responsible_ids.ids)],
+            'responsible_open': self.env.user.id,
             'currency_id': cash.currency_id.id,
             'opening_date': fields.Datetime.now(),
             'initial_balance': initial_balance,
@@ -247,6 +250,7 @@ class CashBoxSession(models.Model):
     
     @api.model
     def closed_session(self, final_balance):
+        self.responsible_close = self.env.user.id
         # creamos el asiento de cierre
         self.create_closing_journal_entries()
         # cerramos la sesion
@@ -312,6 +316,7 @@ class CashBoxSession(models.Model):
                             'account_id': self.cash_id.close_account_id.id,
                             'debit': pp_values_v['amount'],
                             'credit': 0.00,
+                            'name': self.name,
                         }))
                         # agg la linea al credito
                         line_vals.append((0, 0, {
@@ -320,6 +325,7 @@ class CashBoxSession(models.Model):
                             'account_id': self.env['account.payment'].browse(pp_values_k).journal_id.default_account_id.id,
                             'debit': 0.00,
                             'credit': pp_values_v['amount'],
+                            'name': self.name,
                         }))
                 move.write({'line_ids': line_vals})
                 move.action_post()
@@ -339,12 +345,34 @@ class CashBoxSession(models.Model):
             if cash_id:
                 return self.env['cash.box'].browse(cash_id).session_seq_id or False
             return False
-        
-    @api.depends()
-    def _compute_allow_credit(self):
-        param = self.env['ir.config_parameter'].sudo().get_param('l10n_ec_point_of_sale.allow_credit_note_cash')
-        for record in self:
-            record.allow_credit = param 
+          
+    def open_invoices_view(self):
+        self.ensure_one()
+        # Obtener pagos de los movimientos
+        invoice_movements = self.movement_ids.filtered(lambda m: m.invoice_id)
+        invoices = invoice_movements.mapped('invoice_id')
+        return {
+            'name': 'Invoices',
+            'type': 'ir.actions.act_window',
+            'res_model': 'account.move',
+            'view_mode': 'list,form',
+            'domain': [('id', 'in', invoices.ids)],
+            'target': 'current',
+        }
+    
+    def open_payments_view(self):
+        self.ensure_one()
+        # Obtener pagos de los movimientos
+        payment_movements = self.movement_ids.filtered(lambda m: m.payment_id)
+        payments = payment_movements.mapped('payment_id')
+        return {
+            'name': 'Payments',
+            'type': 'ir.actions.act_window',
+            'res_model': 'account.payment',
+            'view_mode': 'list,form',
+            'domain': [('id', 'in', payments.ids)],
+            'target': 'current',
+        }
         
     def open_journal_items_view(self):
         self.ensure_one()
@@ -383,6 +411,8 @@ class CashBoxSession(models.Model):
             values['order_id'] = obj_related
         elif type_op == 'payment':
             values['payment_id'] = obj_related
+        elif type_op == 'invoice':
+            values['invoice_id'] = obj_related
         return self.env['cash.box.session.movement'].create(values)
     
     def print_summary(self):
@@ -431,6 +461,14 @@ class CashBoxSession(models.Model):
                 summary[key] += payment.amount
             payment_summary[movement.id] = summary
         return payment_summary
+    
+    def get_payment_summary_by_journal(self):
+        summary = defaultdict(float)
+        for move in self.movement_ids:
+            if move.payment_id:  # Solo movimientos con payment
+                journal_name = move.payment_id.journal_id.name
+                summary[journal_name] += move.amount  # Sumamos el total del movimiento
+        return dict(summary)
         
 class CashBoxSessionMovement(models.Model):
     _name = 'cash.box.session.movement'
@@ -443,9 +481,8 @@ class CashBoxSessionMovement(models.Model):
     partner_id = fields.Many2one('res.partner', string='Customer', required=True)
     operation_type = fields.Selection([
         ('order', 'Order'),
-        ('refund', 'Credit Note'),
+        ('invoice', 'Invoice'),
         ('payment', 'Payment'),
-        ('quote', 'Quote'),
     ], string="Operation Type", required=True)
     amount = fields.Monetary(string='Amount', compute='_compute_amount', currency_field='currency_id')
     cashier_id = fields.Many2one('res.users', 'Cashier', default=lambda self: self.env.user)
@@ -474,7 +511,8 @@ class CashBoxSessionMovement(models.Model):
                     raise UserError(_("Please configure the sequence for cash session movements."))
         return super().create(vals_list)
     
-    @api.depends('order_id', 'payment_id')
+
+    @api.depends('order_id', 'payment_id', 'invoice_id')
     def _compute_amount(self):
         self.amount = 0.00
         for record in self:
@@ -482,6 +520,9 @@ class CashBoxSessionMovement(models.Model):
                 record.amount = record.order_id.amount_total
             elif record.payment_id:
                 record.amount = record.payment_id.amount
+            elif record.invoice_id:
+                record.amount = record.invoice_id.amount_total
+
     
     @api.model
     def get_sequence(self, session_id=None):
@@ -503,12 +544,10 @@ class CashBoxSessionMovement(models.Model):
             state = 'draft'  # valor por defecto
             if rec.operation_type == 'order' and rec.order_id:
                 state = rec.order_id.state
-            elif rec.operation_type == 'refund' and rec.credit_note_id:
-                state = rec.credit_note_id.payment_state or rec.credit_note_id.state
+            elif rec.operation_type == 'invoice' and rec.invoice_id:
+                state = rec.invoice_id.state
             elif rec.operation_type == 'payment' and rec.payment_id:
                 state = rec.payment_id.state
-            elif rec.operation_type == 'quote' and rec.order_id:
-                state = rec.order_id.state
             # Mapeamos algunos states si se requiere simplificar
             if state in ['not_paid', 'draft']:
                 rec.state = 'draft'

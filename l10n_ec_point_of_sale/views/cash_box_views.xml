@@ -154,7 +154,6 @@
                     <field name="currency_id" column_invisible="True"/>
                     <field name="name"/>
                     <field name="cash_id"/>
-                    <field name="responsible_ids" widget="many2many_tags"/>
                     <field name="opening_date"/>
                     <field name="closing_date"/>
                     <field name="initial_balance"/>
@@ -183,6 +182,22 @@
                                     <span class="o_stat_text">Summary</span>
                                 </div>
                             </button>
+                            <button name="open_invoices_view"
+                                class="oe_stat_button"
+                                icon="fa-bars"
+                                type="object">
+                                <div class="o_stat_info">
+                                    <span class="o_stat_text">Invoices</span>
+                                </div>
+                            </button>
+                            <button name="open_payments_view"
+                                class="oe_stat_button"
+                                icon="fa-bars"
+                                type="object">
+                                <div class="o_stat_info">
+                                    <span class="o_stat_text">Payments</span>
+                                </div>
+                            </button>
                             <button name="open_journal_items_view"
                                 class="oe_stat_button"
                                 icon="fa-bars"
@@ -195,17 +210,17 @@
                         </div>
                         <group>
                             <group>
-                                <field name="allow_credit" invisible="1"/>
                                 <field name="name"/>
                                 <field name="cash_id"/>
-                                <field name="responsible_ids" widget="many2many_tags"/>
                                 <field name="opening_date"/>
                                 <field name="closing_date"/>
                                 <field name="opening_note"/>
                             </group>
                             <group>
                                 <field name="initial_balance"/>
+                                <field name="suggested_balance"/>
                                 <field name="closing_balance"/>
+                                <field name="diff_balance"/>
                                 <field name="final_balance"/>
                                 <field name="close_move_id"/>
                                 <field name="diff_move_id"/>

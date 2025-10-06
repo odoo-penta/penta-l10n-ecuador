@@ -265,17 +265,20 @@ class CashBoxClosedWizard(models.TransientModel):
         # validamos estado
         if self.cash_id.state == 'closed':
             raise UserError(_("The cash box is already closed."))
-        self.cash_id.current_session_id.closing_note = self.closing_note
+        current_session = self.cash_id.current_session_id
+        current_session.closing_note = self.closing_note
+        current_session.suggested_balance = self.suggested_balance
+        current_session.diff_balance = self.final_balance - self.suggested_balance
         # asientos de diferencia de cierre
         if self.suggested_balance != self.final_balance:
             diff_move = self.applied_diff_closing_balance()
-            self.cash_id.current_session_id.diff_move_id = diff_move.id
-        # proceso de cierre
-        self.cash_id.closed_cash(self.final_balance)
+            current_session.diff_move_id = diff_move.id
         # si excede el limite de diferencia, notifica a los administardores de caja
         if self.exceeds_limit:
+            raise UserError(_("The closing balance exceeds the allowed difference limit. Please contact a cash box administrator to approve the closing."))
+            """
             for user in self.cash_id.responsible_ids:
-                self.env['mail.activity'].create({
+                self.env['mail.activity'].sudo().create({
                     'res_model_id': self.env['ir.model']._get('cash.box').id,
                     'res_id': self.cash_id.id,
                     'activity_type_id': self.env.ref('mail.mail_activity_data_todo').id,
@@ -284,6 +287,19 @@ class CashBoxClosedWizard(models.TransientModel):
                     'user_id': user.id,
                     'date_deadline': fields.Date.today(),
                 })
+            """
+        else:
+            # proceso de cierre
+            self.cash_id.closed_cash(self.final_balance)
+        # Abrir session de caja cerrada
+        return {
+            'name': _('Cash Session'),
+            'type': 'ir.actions.act_window',
+            'res_model': 'cash.box.session',  # asegúrate que este sea el modelo correcto de tus sesiones
+            'view_mode': 'form',
+            'res_id': current_session.id,
+            'target': 'current',
+        }
     
     def _get_payment_summary(self, movement_ids=None):
         """ Obtiene un resumen de los pagos realizados por movimiento """

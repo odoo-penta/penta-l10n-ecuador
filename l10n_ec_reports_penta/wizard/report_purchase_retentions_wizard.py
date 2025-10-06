@@ -1,12 +1,7 @@
 from odoo import models, fields
-from datetime import datetime, date
-import calendar
-import zipfile
 import base64
 import io
-from collections import defaultdict
 from odoo.tools.misc import xlsxwriter
-from odoo.tools import remove_accents, sanitize_text, extract_numbers
 
 class ReportPurchaseRetentionsWizard(models.TransientModel):
     _name = 'report.purchase.retentions.wizard'
