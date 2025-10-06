@@ -138,7 +138,7 @@ class PentalabInvoiceReportLine(models.Model):
 
             -- Método de pago (partner -> inbound payment method line)
             LEFT JOIN account_payment_method_line pmline
-                   ON pmline.id = rp.property_inbound_payment_method_line_id
+                   ON pmline.id = (rp.property_inbound_payment_method_line_id::jsonb ->> 'id')::integer
 
             -- Producto y categorías (incluye ancestros para "Línea")
             LEFT JOIN product_product pp        ON pp.id = aml.product_id
