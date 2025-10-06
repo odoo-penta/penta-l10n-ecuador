@@ -1565,7 +1565,7 @@ msgstr ""
 
 #. module: l10n_ec_reports_penta
 #: model:ir.ui.menu,name:l10n_ec_reports_penta.menu_reports_informe_pentalab_balance
-msgid "Reportes Coorporativo"
+msgid "Reportes Corporativo"
 msgstr ""
 
 #. module: l10n_ec_reports_penta
