@@ -34,8 +34,9 @@ class SaleOrder(models.Model):
     def action_confirm(self):
         if self.cash_session_id.state == 'closed':
             raise UserError(_("This sales order is related to an already closed cashier session."))
-        movement = self.env['cash.box.session']._create_movement(self.cash_session_id.id, self.partner_id.id, 'order', self.id)
-        self.code_movement = movement.name
+        if self.cash_session_id:
+            movement = self.env['cash.box.session']._create_movement(self.cash_session_id.id, self.partner_id.id, 'order', self.id)
+            self.code_movement = movement.name
         return super().action_confirm()
     
     def _prepare_invoice(self):
