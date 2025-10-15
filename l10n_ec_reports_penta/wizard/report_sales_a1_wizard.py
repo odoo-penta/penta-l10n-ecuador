@@ -5,6 +5,7 @@ import io
 from odoo.tools.misc import xlsxwriter
 from odoo.addons.penta_base.reports.xlsx_formats import get_xlsx_formats
 from odoo.tools import format_invoice_number
+from openpyxl.utils import get_column_letter
 
 
 class ReportSalesA1Wizard(models.TransientModel):
@@ -61,6 +62,8 @@ class ReportSalesA1Wizard(models.TransientModel):
         formats = get_xlsx_formats(workbook)
         # Obtener data
         invoices = self._get_invoices_data()
+        # Obtener grupos de impuestos para el reporte
+        tax_groups = self.env['account.tax.group'].search([('show_report', '=', True)], order="report_name")
         # Ancho de columnas
         worksheet.set_column('A:A', 6)
         worksheet.set_column('B:C', 24)
@@ -69,11 +72,16 @@ class ReportSalesA1Wizard(models.TransientModel):
         worksheet.set_column('F:G', 20)
         worksheet.set_column('H:I', 22)
         worksheet.set_column('J:J', 15)
+        # Ajustar anchos de columna segun cantidad de grupos de impuestos
+        last_column = len(tax_groups) * 2 + 10
+        worksheet.set_column(get_column_letter(11)+':'+get_column_letter(last_column), 15)
+        worksheet.set_column(get_column_letter(last_column+1)+':'+get_column_letter(last_column+2), 15)
+        worksheet.set_column(get_column_letter(last_column+3)+':'+get_column_letter(last_column+3), 35)
+        worksheet.set_column(get_column_letter(last_column+4)+':'+get_column_letter(last_column+4), 15)
+        worksheet.set_column(get_column_letter(last_column+5)+':'+get_column_letter(last_column+5), 37)
         # Encabezados
         headers = ['#', 'TIPO DE COMPROBANTE', 'TIPO DE IDENTIFICACIÓN', 'IDENTIFICACIÓN', 'RAZÓN SOCIAL', 'PARTE RELACIONADA', 'TIPO DE SUJETO', 'NÚMERO DE DOCUMENTO',
                     'NÚMERO AUTORIZACIÓN', 'FECHA EMISIÓN']
-        # Obtener grupos de impuestos para el reporte
-        tax_groups = self.env['account.tax.group'].search([('show_report', '=', True)], order="report_name")
         tax_col = 10
         tax_struct = {}
         # Mapear bases
@@ -121,16 +129,16 @@ class ReportSalesA1Wizard(models.TransientModel):
                 worksheet.write(row, 2, invoice.partner_id.l10n_latam_identification_type_id.name or '', formats['center'])
                 worksheet.write(row, 3, invoice.partner_id.vat or '', formats['border'])
                 worksheet.write(row, 4, invoice.partner_id.complete_name or '', formats['border'])
-                worksheet.write(row, 5, 'SI' if invoice.partner_id.l10n_ec_related_party else 'NO', formats['border'])
+                worksheet.write(row, 5, 'SI' if invoice.partner_id.l10n_ec_related_party else 'NO', formats['center'])
                 subjet_type = ''
                 if invoice.partner_id.company_type == 'person':
                     subjet_type = 'Persona Natural'
                 elif invoice.partner_id.company_type == 'company':
                     subjet_type = 'Empresa'
                 worksheet.write(row, 6, subjet_type, formats['border'])
-                worksheet.write(row, 7, format_invoice_number(invoice.name) or '', formats['border'])
+                worksheet.write(row, 7, format_invoice_number(invoice.name) or '', formats['center'])
                 worksheet.write(row, 8, invoice.l10n_ec_authorization_number or '', formats['border'])
-                worksheet.write(row, 9, invoice.invoice_date.strftime("%d/%m/%Y") or '', formats['border'])
+                worksheet.write(row, 9, invoice.invoice_date.strftime("%d/%m/%Y") or '', formats['center'])
                 # Mapear impuestos
                 base_per_group = {tg.id: 0.0 for tg in tax_groups}
                 iva_per_group = {tg.id: 0.0 for tg in tax_groups}

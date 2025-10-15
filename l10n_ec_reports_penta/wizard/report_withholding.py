@@ -171,14 +171,14 @@ class ReportSalesWithholdingWizard(models.TransientModel):
 				# Tipo (grupo de impuestos)
 				tax_groups = line.tax_ids.mapped('tax_group_id')
 				group_name = tax_groups[:1].name if tax_groups else ''
-				# Normalizar tipo a 'IVA' o 'Fuente' a partir del nombre del grupo
+				# Normalizar tipo a 'IVA' o 'RENTA' a partir del nombre del grupo
 				normalized = group_name or ''
 				if group_name:
 					lower = group_name.lower()
 					if 'iva' in lower:
 						normalized = 'IVA'
 					elif 'fuente' in lower or 'renta' in lower:
-						normalized = 'Fuente'
+						normalized = 'RENTA'
 				if self.retention_type != 'all' and normalized != self.retention_type:
 					continue
 
