@@ -88,7 +88,8 @@ class PentalabReportEstadoWizard(models.TransientModel):
             raise UserError("La fecha final no puede ser menor a la fecha inicial.")
         """Genera el reporte y almacena el archivo en el wizard"""
         company_id = self.env.company.id  # Obtener la empresa actual
-        report_id = 24  # ID del reporte fijo
+        report = self.env.ref('l10n_ec_reports.l10n_ec_profit_and_loss')
+        report_id = report.id
         ultimo_dia = self.date_to.strftime('%d-%m-%Y')  # Formatear la fecha como espera el método
         primer_dia = self.date_from.strftime('%d-%m-%Y') 
         date_to = datetime.strptime(ultimo_dia, '%d-%m-%Y').date()
