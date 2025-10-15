@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <template id="report_penta_bank_recon_pdf_template">
+    <t t-call="web.external_layout">
+      <t t-set="o" t-value="doc"/>
+      <t t-set="vals" t-value="doc.get_report_values_for_pdf()"/>
+
+      <div class="page">
+        <h2 style="margin-bottom:8px;"><t t-esc="vals['header']['titulo']"/></h2>
+
+        <!-- Cabecera -->
+        <table class="table table-sm o_main_table" style="width:100%; margin-bottom:8px;">
+          <tbody>
+            <tr>
+              <td><strong>Compañía</strong></td>
+              <td t-esc="vals['header']['company']"/>
+              <td><strong>Usuario</strong></td>
+              <td t-esc="vals['header']['usuario']"/>
+            </tr>
+            <tr>
+              <td><strong>Desde</strong></td>
+              <td t-esc="vals['header']['desde']"/>
+              <td><strong>Hasta</strong></td>
+              <td t-esc="vals['header']['hasta']"/>
+            </tr>
+            <tr>
+              <td><strong>Diario</strong></td>
+              <td t-esc="vals['header']['diario']"/>
+              <td><strong>N.º de Cuenta</strong></td>
+              <td t-esc="vals['header']['cuenta']"/>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Tabla -->
+        <table class="table table-sm o_main_table" style="width:100%;">
+          <thead>
+            <tr>
+              <th style="white-space:nowrap;">Fecha</th>
+              <th>Tipo de Movimiento</th>
+              <th>Número de Documento</th>
+              <th>Referencia Contable</th>
+              <th style="text-align:right;">Debe</th>
+              <th style="text-align:right;">Haber</th>
+              <th style="text-align:right;">Saldo</th>
+              <th>Estado de Conciliación</th>
+              <th>Memo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <t t-foreach="vals['rows']" t-as="r">
+              <tr>
+                <td><t t-esc="r['fecha']"/></td>
+                <td><t t-esc="r['tipo_mov']"/></td>
+                <td><t t-esc="r['numero_doc']"/></td>
+                <td><t t-esc="r['ref_cont']"/></td>
+                <td style="text-align:right;"><t t-esc="'{:,.2f}'.format(r['debe'])"/></td>
+                <td style="text-align:right;"><t t-esc="'{:,.2f}'.format(r['haber'])"/></td>
+                <td style="text-align:right;"><t t-esc="'{:,.2f}'.format(r['saldo'])"/></td>
+                <td><t t-esc="r['estado']"/></td>
+                <td><t t-esc="r['memo']"/></td>
+              </tr>
+            </t>
+            <t t-if="not vals['rows']">
+              <tr>
+                <td colspan="9" style="text-align:center; color:#666;">Sin resultados para los filtros seleccionados.</td>
+              </tr>
+            </t>
+          </tbody>
+        </table>
+
+        <!-- RESUMEN -->
+        <div style="margin-top:10px;">
+          <strong>Resumen</strong>
+          <table class="table table-sm o_main_table" style="width:50%; margin-top:4px;">
+            <tbody>
+              <tr>
+                <td style="width:70%;"><strong>Saldo contable final</strong></td>
+                <td style="text-align:right;"><strong><t t-esc="'{:,.2f}'.format(vals['saldo_final'])"/></strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </t>
+  </template>
+</odoo>
