@@ -2,8 +2,10 @@
 from odoo import models, fields, api
 import base64
 import io
+import re
 from odoo.tools.misc import xlsxwriter
 from odoo.addons.penta_base.reports.xlsx_formats import get_xlsx_formats
+from odoo.tools import format_invoice_number
 
 class ReportSalesWithholdingWizard(models.TransientModel):
 	_name = 'report.sales.withholding.wizard'
@@ -12,10 +14,10 @@ class ReportSalesWithholdingWizard(models.TransientModel):
 	date_start = fields.Date(string='Desde', required=True)
 	date_end = fields.Date(string='Hasta', required=True)
 	retention_type = fields.Selection([
-		('IVA', 'Retención IVA'),
-		('Fuente', 'Retención Fuente'),
-		('Todos', 'Todos'),
-	], string='Tipo de Retención', required=True, default='Todos')
+    	('all', 'Todos'),
+		('vat_withholding', 'Retención IVA'),
+        ('income_withholding', 'Retención Fuente')
+	], string='Tipo de Retención', required=True, default='all')
 	apply_percentage_filter = fields.Boolean(string='Aplicar filtro de porcentaje')
 	# Modo exacto (operador + valor) o rango (min/max)
 	use_percentage_range = fields.Boolean(string='Usar rango de porcentaje')
@@ -100,14 +102,15 @@ class ReportSalesWithholdingWizard(models.TransientModel):
 			('state', '=', 'posted'),
 			('l10n_ec_withhold_date', '>=', self.date_start),
 			('l10n_ec_withhold_date', '<=', self.date_end),
-			('line_ids.l10n_ec_withhold_tax_amount', '!=', 0),
+   			('journal_id.l10n_ec_withhold_type', '=', 'out_withhold'),
+			#('line_ids.l10n_ec_withhold_tax_amount', '!=', 0),
 		]
 		return self.env['account.move'].search(move_domain, order='l10n_ec_withhold_date asc')
 
 	def print_report(self):
 		report = self.generate_xlsx_report()
 		today = fields.Date.context_today(self)
-		file_name = f"retenciones_ventas_{today.strftime('%d%m%Y')}.xlsx"
+		file_name = f"RetencionesVentas_{today.strftime('%d_%m_%Y')}.xlsx"
 		attachment = self.env['ir.attachment'].create({
 			'name': file_name,
 			'type': 'binary',
@@ -145,8 +148,8 @@ class ReportSalesWithholdingWizard(models.TransientModel):
 
 		# Cabeceras (agregada CUENTA CONTABLE tras VALOR RETENIDO)
 		headers = [
-			'#', 'FECHA DE EMISIÓN', 'NÚMERO DE RETENCIÓN', 'RUC', 'RAZÓN SOCIAL', 'AUTORIZACIÓN SRI',
-			'BASE IMPONIBLE', 'VALOR RETENIDO', 'CUENTA CONTABLE', 'PORCENTAJE', 'TIPO', 'CASILLA 104', 'NRO FACTURA', 'FECHA FACTURA'
+			'#', 'FECHA DE EMISIÓN', 'NÚMERO DE RETENCIÓN', 'RUC', 'RAZÓN SOCIAL', 'AUTORIZACIÓN SRI', 'TIPO RETENCIÓN',
+			'BASE IMPONIBLE', 'VALOR RETENIDO', 'PORCENTAJE', 'CASILLA 104', 'NRO FACTURA', 'FECHA FACTURA', 'CUENTA CONTABLE'
 		]
 		row = 5
 		for col, header in enumerate(headers):
@@ -176,7 +179,7 @@ class ReportSalesWithholdingWizard(models.TransientModel):
 						normalized = 'IVA'
 					elif 'fuente' in lower or 'renta' in lower:
 						normalized = 'Fuente'
-				if self.retention_type != 'Todos' and normalized != self.retention_type:
+				if self.retention_type != 'all' and normalized != self.retention_type:
 					continue
 
 				# Porcentaje
@@ -193,26 +196,18 @@ class ReportSalesWithholdingWizard(models.TransientModel):
 				worksheet.write(row, 1, withhold_date.strftime(DATE_FMT) if withhold_date else '', formats['border'])
 				# worksheet.write(row, 2, move.journal_id.name or '', formats['border'])
 				# Número de retención: solo dígitos
-				import re
 				raw_ret = move.name or ''
 				ret_digits = re.sub(r'\D', '', raw_ret)
-				worksheet.write(row, 2, ret_digits if ret_digits else raw_ret, formats['border'])
+				worksheet.write(row, 2, format_invoice_number(ret_digits) if ret_digits else format_invoice_number(raw_ret), formats['border'])
 				worksheet.write(row, 3, move.partner_id.vat or '', formats['border'])
 				worksheet.write(row, 4, move.partner_id.complete_name or '', formats['border'])
 				worksheet.write(row, 5, move.l10n_ec_authorization_number or '', formats['border'])
-				# Base imponible siempre en positivo
-				worksheet.write(row, 6, abs(line.balance) if line.balance else 0.0, formats['currency'])
-				worksheet.write(row, 7, line.l10n_ec_withhold_tax_amount or 0.0, formats['currency'])
-				# Cuenta contable: código + nombre (si existe)
-				account_label = ''
-				if line.account_id:
-					acc_code = line.account_id.code or ''
-					acc_name = line.account_id.name or ''
-					account_label = f"{acc_code} {acc_name}".strip()
-				worksheet.write(row, 8, account_label, formats['border'])
-				worksheet.write(row, 9, (percent / 100.0), formats['percent'])
 				# Tipo normalizado en base al grupo de impuestos
-				worksheet.write(row, 10, normalized or (group_name or ''), formats['center'])
+				worksheet.write(row, 6, normalized or (group_name or ''), formats['center'])
+				# Base imponible siempre en positivo
+				worksheet.write(row, 7, abs(line.balance) if line.balance else 0.0, formats['currency'])
+				worksheet.write(row, 8, line.l10n_ec_withhold_tax_amount or 0.0, formats['currency'])
+				worksheet.write(row, 9, (percent / 100.0), formats['percent'])
 				# Casilla 104 por línea: prioridad tax_tag_ids; fallback código ATS de impuestos
 				line_tag_names = line.tax_tag_ids.mapped('name') if line.tax_tag_ids else []
 				if line_tag_names:
@@ -220,9 +215,16 @@ class ReportSalesWithholdingWizard(models.TransientModel):
 				else:
 					ats_codes = [t.l10n_ec_code_ats for t in line.tax_ids if getattr(t, 'l10n_ec_code_ats', False)]
 					casilla_104 = ats_codes[0] if ats_codes else ''
-				worksheet.write(row, 11, casilla_104, formats['border'])
-				worksheet.write(row, 12, invoice.name if invoice else '', formats['border'])
-				worksheet.write(row, 13, invoice.invoice_date.strftime(DATE_FMT) if invoice and invoice.invoice_date else '', formats['border'])
+				worksheet.write(row, 10, casilla_104, formats['border'])
+				worksheet.write(row, 11, invoice.name if invoice else '', formats['border'])
+				worksheet.write(row, 12, invoice.invoice_date.strftime(DATE_FMT) if invoice and invoice.invoice_date else '', formats['border'])
+   				# Cuenta contable: código + nombre (si existe)
+				account_label = ''
+				if line.account_id:
+					acc_code = line.account_id.code or ''
+					acc_name = line.account_id.name or ''
+					account_label = f"{acc_code} {acc_name}".strip()
+				worksheet.write(row, 13, account_label, formats['border'])
 
 				row += 1
 				count += 1

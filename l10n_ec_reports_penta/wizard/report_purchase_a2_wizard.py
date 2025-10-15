@@ -98,7 +98,7 @@ class ReportPurchaseA2Wizard(models.TransientModel):
             tax_struct[tax_group.id]['iva'] = tax_col
             tax_col += 1
         # LLenar el resto del texto de la cabecera
-        headers += ['VALOR TOTAL', 'RETENCIÓN', 'CASILLA 104 RETENCIÓN', 'COD RET IVA']
+        headers += ['VALOR TOTAL', 'RETENCIÓN', 'CASILLA 104']
         # Mapear cabecera
         company_name = self.env.company.display_name
         worksheet.merge_range('A1:E1', company_name)
@@ -133,9 +133,7 @@ class ReportPurchaseA2Wizard(models.TransientModel):
         last_col += 1
         """
         # Cabecera restante
-        headers2 = ['CÓDIGO RET. FUENTE', 'BASE IMP', 'PORCENTAJE DE RETENCIÓN FUENTE', 'COMPROBANTE DE RETENCIÓN',
-                    'AUT. RET.', 'FECHA DE RETENCIÓN', 'PAGO EXTERIOR - PAGO LOCAL', 'PAÍS DE PAGO', 'PARAÍSO FISCAL', 'ADOBLE TRIB. EN PAGO', 'SUJETO RET.', 'DIARIO CONTABLE',
-                    'FORMATO DE PAGO', 'REFERENCIA']
+        headers2 = ['DIARIO CONTABLE', 'FORMATO DE PAGO', 'REFERENCIA']
         # Mapear titulos 2
         for col, header in enumerate(headers2):
             worksheet.merge_range(row, last_col, row + 1, last_col, header, formats['header_bg'])
@@ -144,8 +142,14 @@ class ReportPurchaseA2Wizard(models.TransientModel):
         row += 1
         cont = 1
         for invoice in invoices:
-            # Obtenemos tags (puede venir de invoice_line_ids, withholding, etc.)
+            # Se comenta se puede volver a utilizar en algun momento
+            """
+            # Obtenemos tags (withholding)
             all_tags = invoice.l10n_ec_withhold_ids.filtered(lambda w: w.state == "posted").line_ids.mapped("tax_tag_ids.name")
+            all_tags = list(set(all_tags))
+            """
+            # Obtenemos tags (invoice_line_ids)
+            all_tags = invoice.invoice_line_ids.mapped("tax_tag_ids.name")
             all_tags = list(set(all_tags))
             # Si no hay tags, ponemos una lista con un solo elemento '' para que haga una fila igual
             tags_to_iterate = all_tags if all_tags else ['']
@@ -276,7 +280,7 @@ class ReportPurchaseA2Wizard(models.TransientModel):
                     worksheet.write(row, tax_col+1, 'NO', formats['center'])
                     worksheet.write(row, tax_col+2, '', formats['border'])
                 # Cod Ret iva
-                worksheet.write(row, tax_col+3, cod_ret_iva, formats['center'])
+                #worksheet.write(row, tax_col+3, cod_ret_iva, formats['center'])
                 # Retenciones IVA
                 """
                 worksheet.write(row, tax_col+1, ret_10, formats['number'])
@@ -287,30 +291,30 @@ class ReportPurchaseA2Wizard(models.TransientModel):
                 worksheet.write(row, tax_col+6, ret_100, formats['number'])
                 """
                 # cod Ret Fuente
-                worksheet.write(row, tax_col+4, cod_ret_fuente, formats['center'])
-                worksheet.write(row, tax_col+5, invoice.amount_untaxed, formats['number'])
-                worksheet.write(row, tax_col+6, percent_ret_fuente, formats['center'])
+                #worksheet.write(row, tax_col+4, cod_ret_fuente, formats['center'])
+                #worksheet.write(row, tax_col+5, invoice.amount_untaxed, formats['number'])
+                #worksheet.write(row, tax_col+6, percent_ret_fuente, formats['center'])
                 """
                 ret_amount = ret_10 + ret_20 + ret_30 + ret_50 + ret_70 + ret_100
                 worksheet.write(row, tax_col+6, ret_amount, formats['number'])
                 """
-                worksheet.write(row, tax_col+7, ret_name, formats['center'])
-                worksheet.write(row, tax_col+8, ret_aut, formats['number'])
-                worksheet.write(row, tax_col+9, ret_date, formats['center'])
+                #worksheet.write(row, tax_col+7, ret_name, formats['center'])
+                #worksheet.write(row, tax_col+8, ret_aut, formats['number'])
+                #worksheet.write(row, tax_col+9, ret_date, formats['center'])
                 # Posicion fiscal
-                worksheet.write(row, tax_col+10, invoice.fiscal_position_id.name if invoice.fiscal_position_id else '', formats['center'])
+                #worksheet.write(row, tax_col+10, invoice.fiscal_position_id.name if invoice.fiscal_position_id else '', formats['center'])
                 payment_country = 'NA'
                 payment_country_haven = 'NA'
                 if invoice.fiscal_position_id and invoice.fiscal_position_id.country_id:
                     payment_country = invoice.fiscal_position_id.country_id.name
                     if invoice.fiscal_position_id.country_id.l10n_ec_code_tax_haven:
                         payment_country_haven = invoice.fiscal_position_id.country_id.l10n_ec_code_tax_haven
-                worksheet.write(row, tax_col+11, payment_country, formats['center'])
-                worksheet.write(row, tax_col+12, payment_country_haven, formats['center'])
-                worksheet.write(row, tax_col+13, 'NA', formats['center'])
-                worksheet.write(row, tax_col+14, 'NA', formats['center'])
-                worksheet.write(row, tax_col+15, invoice.journal_id.name, formats['center'])
-                worksheet.write(row, tax_col+16, invoice.l10n_ec_sri_payment_id.name if invoice.l10n_ec_sri_payment_id else '', formats['center'])
+                #worksheet.write(row, tax_col+11, payment_country, formats['center'])
+                #worksheet.write(row, tax_col+12, payment_country_haven, formats['center'])
+                #worksheet.write(row, tax_col+13, 'NA', formats['center'])
+                #worksheet.write(row, tax_col+14, 'NA', formats['center'])
+                worksheet.write(row, tax_col+3, invoice.journal_id.name, formats['center'])
+                worksheet.write(row, tax_col+4, invoice.l10n_ec_sri_payment_id.name if invoice.l10n_ec_sri_payment_id else '', formats['center'])
                 # Obtener cuenta contable
                 """
                 account_name = ''
@@ -320,7 +324,7 @@ class ReportPurchaseA2Wizard(models.TransientModel):
                         break
                 worksheet.write(row, tax_col+21, account_name, formats['center'])
                 """
-                worksheet.write(row, tax_col+17, invoice.ref, formats['center'])
+                worksheet.write(row, tax_col+5, invoice.ref, formats['center'])
                 cont += 1
         workbook.close()
         output.seek(0)

@@ -88,7 +88,7 @@ class ReportSalesA1Wizard(models.TransientModel):
             tax_struct[tax_group.id]['iva'] = tax_col
             tax_col += 1
         # LLenar el resto del texto de la cabecera
-        headers += ['TOTAL VENTA', 'RETENCIÓN', 'CASILLA 104 RETENCIÓN', 'DÍAS CRÉDITO', 'FORMA DE PAGO']
+        headers += ['TOTAL VENTA', 'RETENCIÓN', 'CASILLA 104', 'DÍAS CRÉDITO', 'FORMA DE PAGO']
         # Mapear cabecera
         company_name = self.env.company.display_name
         worksheet.merge_range('A1:E1', company_name)
@@ -107,8 +107,14 @@ class ReportSalesA1Wizard(models.TransientModel):
         # Mapear datos
         cont = 1
         for invoice in invoices:
-            # Obtenemos tags (puede venir de invoice_line_ids, withholding, etc.)
+            # Se comenta se puede volver a utilizar en algun momento
+            """
+            # Obtenemos tags (withholding)
             all_tags = invoice.l10n_ec_withhold_ids.filtered(lambda w: w.state == "posted").line_ids.mapped("tax_tag_ids.name")
+            all_tags = list(set(all_tags))
+            """
+            # Obtenemos tags (invoice_line_ids)
+            all_tags = invoice.invoice_line_ids.mapped("tax_tag_ids.name")
             all_tags = list(set(all_tags))
             # Si no hay tags, ponemos una lista con un solo elemento '' para que haga una fila igual
             tags_to_iterate = all_tags if all_tags else ['']

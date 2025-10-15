@@ -17,8 +17,8 @@ class ReportRetentionsA3Wizard(models.TransientModel):
     date_end = fields.Date(string='Hasta', required=True)
     retention_type = fields.Selection([
         ('all', 'Todos'),
-        ('vat_withholding', 'Retencion IVA'),
-        ('income_withholding', 'Retencion Fuente')
+        ('vat_withholding', 'Retención IVA'),
+        ('income_withholding', 'Retención Fuente')
         ], string='Tipo de Retención', required=True, default='all')
     apply_percentage_filter = fields.Boolean(string='Aplicar filtro de porcentaje')
     percentage_operator = fields.Selection([
@@ -91,7 +91,10 @@ class ReportRetentionsA3Wizard(models.TransientModel):
         worksheet.set_column('E:E', 30)
         worksheet.set_column('F:G', 20)
         worksheet.set_column('H:I', 22)
-        worksheet.set_column('J:J', 15)
+        worksheet.set_column('J:J', 20)
+        worksheet.set_column('K:L', 15)
+        worksheet.set_column('M:N', 25)
+        worksheet.set_column('O:O', 30)
         # Encabezados
         headers = ['#', 'FECHA DE EMISIÓN', 'NÚMERO DE RETENCIÓN', 'RUC', 'RAZÓN SOCIAL', 'AUTORIZACIÓN SRI', 'TIPO DE RETENCIÓN', 'BASE IMPONIBLE', 'VALOR RETENIDO',
                    'PORCENTAJE DE RETENCIÓN', 'CÓDIGO BASE', 'CÓDIGO ATS', 'NRO DE DOCUMENTO', 'FECHA EMISIÓN FACTURA PROVEEDOR',
