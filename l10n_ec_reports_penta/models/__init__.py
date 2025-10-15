@@ -18,4 +18,5 @@ from . import pentalab_report_balance_wizard
 from . import pentalab_report_estado_wizard
 from . import pentalab_report_custom
 from . import res_partner
+from . import bank_recon_report_wizard
 

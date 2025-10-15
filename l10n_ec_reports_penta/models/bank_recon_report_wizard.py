@@ -21,12 +21,6 @@ def _first_day_of_current_month(env):
         today = date(y, m, d)
     return today.replace(day=1)
 
-
-class AccountAccount(models.Model):
-    _inherit = 'account.account'
-    hide_in_report = fields.Boolean(string="Ocultar en reporte", default=False)
-
-
 class PentaBankReconReportWizard(models.TransientModel):
     _name = "penta.bank.recon.report.wizard"
     _description = "Wizard: Reporte de Conciliación Bancaria"
@@ -244,7 +238,7 @@ class PentaBankReconReportWizard(models.TransientModel):
     # --------- PDF (QWeb) ----------
     def action_print_pdf(self):
         self._validate_dates()
-        return self.env.ref("penta_bank_recon.report_penta_bank_recon_pdf").report_action(self)
+        return self.env.ref("l10n_ec_reports_penta.report_penta_bank_recon_pdf").report_action(self)
 
     # Usado por el QWeb
     def get_report_values_for_pdf(self):
