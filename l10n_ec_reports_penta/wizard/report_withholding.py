@@ -29,8 +29,8 @@ class ReportSalesWithholdingWizard(models.TransientModel):
 		('<', 'Menor que'),
 	], string='Operador porcentaje', default='=')
 	percentage_value = fields.Float(string='Valor porcentaje')
-	percentage_min = fields.Float(string='Porcentaje mínimo?')
-	percentage_max = fields.Float(string='Porcentaje máximo?')
+	percentage_min = fields.Float(string='Porcentaje mínimo')
+	percentage_max = fields.Float(string='Porcentaje máximo')
 	show_percentage_exact_fields = fields.Boolean(compute='_compute_show_percentage_fields', store=False)
 	show_percentage_range_fields = fields.Boolean(compute='_compute_show_percentage_fields', store=False)
 
@@ -185,11 +185,11 @@ class ReportSalesWithholdingWizard(models.TransientModel):
 							normalized = 'RENTA'
 					if self.retention_type != 'all' and normalized != self.retention_type:
 						continue
-					# Porcentaje
-					percent_vals = [abs(t.amount) for t in reten.tax_ids if t.amount_type == 'percent']
-					percent = percent_vals[0] if percent_vals else 0.0
-					if (self.apply_percentage_filter or self.use_percentage_range) and not self._compare_percent(percent):
-						continue
+					# Aplicar filtro de porcentaje si corresponde
+					percent = abs(reten.tax_ids.amount)
+					if self.apply_percentage_filter or self.use_percentage_range:
+						if not self._compare_percent(percent):
+							continue
 					worksheet.write(row, 0, count, formats['center'])
 					withhold_date = getattr(move, 'l10n_ec_withhold_date', None)
 					worksheet.write(row, 1, withhold_date.strftime(DATE_FMT) if withhold_date else '', formats['border'])

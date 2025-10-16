@@ -28,8 +28,8 @@ class ReportRetentionsA3Wizard(models.TransientModel):
         ('<', 'Menor que'),
     ], string='Operador porcentaje', default='=')
     percentage_value = fields.Float(string='Valor porcentaje')
-    percentage_min = fields.Float(string='Porcentaje mínimo?')
-    percentage_max = fields.Float(string='Porcentaje máximo?')
+    percentage_min = fields.Float(string='Porcentaje mínimo')
+    percentage_max = fields.Float(string='Porcentaje máximo')
     show_percentage_exact_fields = fields.Boolean(compute='_compute_show_percentage_fields', store=False)
     show_percentage_range_fields = fields.Boolean(compute='_compute_show_percentage_fields', store=False)
     
@@ -167,7 +167,7 @@ class ReportRetentionsA3Wizard(models.TransientModel):
                         continue
                     # Aplicar filtro de porcentaje si corresponde
                     percent = abs(reten.tax_ids.amount)
-                    if self.apply_percentage_filter:
+                    if self.apply_percentage_filter or self.use_percentage_range:
                         if not self._compare_percent(percent):
                             continue
                     worksheet.write(row, 0, cont, formats['center'])

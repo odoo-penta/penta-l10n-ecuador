@@ -66,7 +66,7 @@
         'views/account_move_report_action.xml',
         "views/bank_recon_report_wizard_views.xml",
         "data/report_action.xml",
-        "reports/report_bank_recon_pdf.xml",
+        "report/report_bank_recon_pdf.xml",
         'report/account_move_report.xml',
         'views/menuitems.xml',
     ],

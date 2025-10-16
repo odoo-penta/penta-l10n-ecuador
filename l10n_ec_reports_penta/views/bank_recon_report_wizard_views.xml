@@ -18,8 +18,12 @@
           </group>
         </group>
         <separator string="Columnas incluidas (sin resumen por ahora)"/>
-        <label string="Fecha, Tipo de Movimiento, Número de Documento, Referencia Contable, Debe, Haber, Saldo, Estado de Conciliación, Memo"/>
-
+        <p class="o_form_label">
+          Fecha, Tipo de Movimiento, Número de Documento, Referencia Contable, Debe, Haber, Saldo, Estado de Conciliación, Memo
+        </p>
+        <!--
+        <label string="Fecha, Tipo de Movimiento, Número de Documento, Referencia Contable, Debe, Haber, Saldo, Estado de Conciliación, Memo" class="o_form_label"/>
+        -->
         <footer>
           <button name="action_export_xlsx" type="object" string="Exportar a Excel" class="btn-primary"/>
           <button name="action_print_pdf" type="object" string="Imprimir PDF" class="btn-secondary"/>
