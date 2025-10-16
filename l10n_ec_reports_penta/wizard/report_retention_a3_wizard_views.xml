@@ -10,10 +10,24 @@
                     <field name="date_end"/>
                     <field name="retention_type"/>
                 </group>
-                <group>
-                    <field name="apply_percentage_filter"/>
-                    <field name="percentage_operator" invisible='not apply_percentage_filter'/>
-                    <field name="percentage_value" invisible='not apply_percentage_filter'/>
+                <group string="Filtro por porcentaje">
+                    <group>
+                        <field name="apply_percentage_filter" nolabel="1" class="oe_inline"/>
+                        <label for="apply_percentage_filter" class="oe_inline" string="Aplicar filtro de porcentaje"/>
+                        <newline/>
+                        <field name="use_percentage_range" nolabel="1" class="oe_inline"/>
+                        <label for="use_percentage_range" class="oe_inline" string="Usar rango de porcentaje"/> 
+                    </group>
+					<!-- Modo EXACTO: visible si aplicar filtro está activo y NO se usa rango -->
+					<group invisible="(not apply_percentage_filter) or use_percentage_range">
+						<field name="percentage_operator"/>
+						<field name="percentage_value"/>
+					</group>
+					<!-- Modo RANGO: visible si se usa rango -->
+					<group invisible="not use_percentage_range">
+						<field name="percentage_min"/>
+						<field name="percentage_max"/>
+					</group>
                 </group>
                 <footer>
                     <button name="print_report" type="object" string="Imprimir" class="btn-primary"/>

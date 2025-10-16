@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
-from odoo import models, fields
+from odoo import models, fields, api
 import base64
 import io
 from odoo.tools.misc import xlsxwriter
 from odoo.addons.penta_base.reports.xlsx_formats import get_xlsx_formats
 from odoo.tools import format_invoice_number
-
-
 
 
 class ReportRetentionsA3Wizard(models.TransientModel):
@@ -21,6 +19,7 @@ class ReportRetentionsA3Wizard(models.TransientModel):
         ('income_withholding', 'Retención Fuente')
         ], string='Tipo de Retención', required=True, default='all')
     apply_percentage_filter = fields.Boolean(string='Aplicar filtro de porcentaje')
+    use_percentage_range = fields.Boolean(string='Usar rango de porcentaje')
     percentage_operator = fields.Selection([
         ('=', 'Igual a'),
         ('>=', 'Mayor o igual'),
@@ -29,6 +28,69 @@ class ReportRetentionsA3Wizard(models.TransientModel):
         ('<', 'Menor que'),
     ], string='Operador porcentaje', default='=')
     percentage_value = fields.Float(string='Valor porcentaje')
+    percentage_min = fields.Float(string='Porcentaje mínimo?')
+    percentage_max = fields.Float(string='Porcentaje máximo?')
+    show_percentage_exact_fields = fields.Boolean(compute='_compute_show_percentage_fields', store=False)
+    show_percentage_range_fields = fields.Boolean(compute='_compute_show_percentage_fields', store=False)
+    
+    @api.depends('apply_percentage_filter', 'use_percentage_range')
+    def _compute_show_percentage_fields(self):
+        for rec in self:
+            rec.show_percentage_exact_fields = bool(rec.apply_percentage_filter and not rec.use_percentage_range)
+            rec.show_percentage_range_fields = bool(rec.use_percentage_range)
+
+    @api.onchange('apply_percentage_filter')
+    def _onchange_apply_percentage_filter(self):
+        for rec in self:
+            if rec.apply_percentage_filter:
+                rec.use_percentage_range = False
+                rec.percentage_min = 0.0
+                rec.percentage_max = 0.0
+
+    @api.onchange('use_percentage_range')
+    def _onchange_use_percentage_range(self):
+        for rec in self:
+            if rec.use_percentage_range:
+                rec.apply_percentage_filter = False
+                rec.percentage_value = 0.0
+                
+    def _compare_percent(self, percent: float) -> bool:
+        if self.use_percentage_range:
+            min_v = self.percentage_min
+            max_v = self.percentage_max
+            if min_v and max_v and min_v > max_v:
+                min_v, max_v = max_v, min_v
+            if min_v and percent < min_v:
+                return False
+            if max_v and percent > max_v:
+                return False
+            return True
+        op = self.percentage_operator
+        val = self.percentage_value
+        if op == '=' and not val:
+            return True
+        if op == '=':
+            return percent == val
+        if op == '>=':
+            return percent >= val
+        if op == '<=':
+            return percent <= val
+        if op == '>':
+            return percent > val
+        if op == '<':
+            return percent < val
+        return True
+
+    def _get_moves_data(self):
+        # Generar data para reporte
+        move_domain = [
+            ('state', '=', 'posted'),
+            ('date', '>=', self.date_start),
+            ('date', '<=', self.date_end),
+            ('journal_id.l10n_ec_withhold_type', '=', 'in_withhold'),
+        ]
+        moves = self.env['account.move'].search(move_domain, order='date asc')
+        return moves
     
     def print_report(self):
         report = self.generate_xlsx_report()
@@ -47,32 +109,6 @@ class ReportRetentionsA3Wizard(models.TransientModel):
             'url': f'/web/content/{attachment.id}?download=true',
             'target': 'self',
         }
-        
-    def _get_moves_data(self):
-        # Generar data para reporte
-        move_domain = [
-            ('state', '=', 'posted'),
-            ('date', '>=', self.date_start),
-            ('date', '<=', self.date_end),
-            ('journal_id.l10n_ec_withhold_type', '=', 'in_withhold'),
-        ]
-        moves = self.env['account.move'].search(move_domain, order='date asc')
-        return moves
-    
-    def _compare_percent(self, percent):
-        op = self.percentage_operator
-        val = self.percentage_value
-        if op == '=':
-            return percent == val
-        elif op == '>=':
-            return percent >= val
-        elif op == '<=':
-            return percent <= val
-        elif op == '>':
-            return percent > val
-        elif op == '<':
-            return percent < val
-        return True
     
     def generate_xlsx_report(self):
         output = io.BytesIO()

@@ -2,10 +2,10 @@
 from odoo import models, fields, api
 import base64
 import io
-import re
 from odoo.tools.misc import xlsxwriter
 from odoo.addons.penta_base.reports.xlsx_formats import get_xlsx_formats
 from odoo.tools import format_invoice_number
+
 
 class ReportSalesWithholdingWizard(models.TransientModel):
 	_name = 'report.sales.withholding.wizard'
@@ -17,7 +17,7 @@ class ReportSalesWithholdingWizard(models.TransientModel):
 		('all', 'Todos'),
 		('vat_withholding', 'Retención IVA'),
 		('income_withholding', 'Retención Fuente')
-	], string='Tipo de Retención', required=True, default='all')
+		], string='Tipo de Retención', required=True, default='all')
 	apply_percentage_filter = fields.Boolean(string='Aplicar filtro de porcentaje')
 	# Modo exacto (operador + valor) o rango (min/max)
 	use_percentage_range = fields.Boolean(string='Usar rango de porcentaje')
@@ -27,11 +27,10 @@ class ReportSalesWithholdingWizard(models.TransientModel):
 		('<=', 'Menor o igual'),
 		('>', 'Mayor que'),
 		('<', 'Menor que'),
-	], string='Operador porcentaje?', default='=')
-	percentage_value = fields.Float(string='Valor porcentaje?')
+	], string='Operador porcentaje', default='=')
+	percentage_value = fields.Float(string='Valor porcentaje')
 	percentage_min = fields.Float(string='Porcentaje mínimo?')
 	percentage_max = fields.Float(string='Porcentaje máximo?')
-
 	show_percentage_exact_fields = fields.Boolean(compute='_compute_show_percentage_fields', store=False)
 	show_percentage_range_fields = fields.Boolean(compute='_compute_show_percentage_fields', store=False)
 
@@ -138,7 +137,7 @@ class ReportSalesWithholdingWizard(models.TransientModel):
 		worksheet.set_column('F:G', 20)
 		worksheet.set_column('H:I', 22)
 		worksheet.set_column('J:J', 20)
-		worksheet.set_column('K:L', 15)
+		worksheet.set_column('K:L', 25)
 		worksheet.set_column('M:N', 25)
 		# Encabezados
 		headers = [

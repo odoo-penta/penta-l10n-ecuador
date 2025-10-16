@@ -5,7 +5,7 @@
 		<field name="name">report.sales.withholding.wizard.form</field>
 		<field name="model">report.sales.withholding.wizard</field>
 		<field name="arch" type="xml">
-			<form string="Retenciones Ventas (Listado)">
+			<form string="Retenciones Ventas">
 				<group>
 					<field name="date_start"/>
 					<field name="date_end"/>
@@ -46,6 +46,5 @@
 		<field name="view_mode">form</field>
 		<field name="target">new</field>
 	</record>
-
 
 </odoo>
