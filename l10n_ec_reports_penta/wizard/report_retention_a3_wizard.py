@@ -80,6 +80,7 @@ class ReportRetentionsA3Wizard(models.TransientModel):
         worksheet = workbook.add_worksheet("Retenciones compras")
         # Formatos
         formats = get_xlsx_formats(workbook)
+        DATE_FMT = '%d/%m/%Y'
         # Obtener data
         moves = self._get_moves_data()
         iva_tax_groups = self.env['account.tax.group'].search([('type_ret', 'in', ['withholding_iva_purchase', 'withholding_iva_purchase'])])
@@ -104,10 +105,10 @@ class ReportRetentionsA3Wizard(models.TransientModel):
         worksheet.merge_range('A1:E1', company_name)
         date_from = self.date_start
         worksheet.merge_range('A2:B2', 'Fecha Desde:')
-        worksheet.write('C2', date_from.strftime('%d/%m/%Y') if date_from else '')
+        worksheet.write('C2', date_from.strftime(DATE_FMT) if date_from else '')
         date_to = self.date_end
         worksheet.merge_range('A3:B3', 'Fecha Hasta:')
-        worksheet.write('C3', date_to.strftime('%d/%m/%Y') if date_to else '')
+        worksheet.write('C3', date_to.strftime(DATE_FMT) if date_to else '')
         worksheet.merge_range('A4:B4', 'Reporte:')
         worksheet.write('C4', 'RETENCIONES COMPRAS A3')
         row = 5
@@ -134,7 +135,7 @@ class ReportRetentionsA3Wizard(models.TransientModel):
                         if not self._compare_percent(percent):
                             continue
                     worksheet.write(row, 0, cont, formats['center'])
-                    worksheet.write(row, 1, move.date.strftime("%d/%m/%Y") or '', formats['border'])
+                    worksheet.write(row, 1, move.date.strftime(DATE_FMT) or '', formats['border'])
                     #worksheet.write(row, 2, move.journal_id.name, formats['center'])
                     worksheet.write(row, 2, format_invoice_number(move.name), formats['center'])
                     worksheet.write(row, 3, move.partner_id.vat or '', formats['border'])
@@ -160,7 +161,7 @@ class ReportRetentionsA3Wizard(models.TransientModel):
                     worksheet.write(row, 11, reten.tax_ids.l10n_ec_code_ats or '', formats['center'])
                     # Numero de documento
                     worksheet.write(row, 12, invoice.name or '', formats['center'])
-                    worksheet.write(row, 13, invoice.date.strftime("%d/%m/%Y") or '', formats['border'])
+                    worksheet.write(row, 13, invoice.date.strftime(DATE_FMT) or '', formats['border'])
                     # Obtener cuenta contable
                     account_name = ''
                     for line in move.line_ids:
