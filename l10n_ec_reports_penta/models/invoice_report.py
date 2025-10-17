@@ -72,7 +72,6 @@ class PentalabInvoiceReportLine(models.Model):
                     ELSE ldt.name::text END AS doc_type_name,
 
                 am.ref AS ref,
-                am.id_import AS importacion,
                 COALESCE(pol_po.po_names, am.invoice_origin) AS purchase_order_name,
                 am.l10n_ec_authorization_number AS auth_number,
                 rp.vat AS partner_vat,
