@@ -142,14 +142,12 @@ class ReportSalesA1Wizard(models.TransientModel):
                 # Mapear impuestos
                 base_per_group = {tg.id: 0.0 for tg in tax_groups}
                 iva_per_group = {tg.id: 0.0 for tg in tax_groups}
-                for line in invoice.invoice_line_ids:
-                    line_tags = ", ".join(sorted(line.tax_tag_ids.mapped("name")))
-                    if line_tags == tag:  # Coincide con el grupo actual
-                        for l_tax in line.tax_ids:
-                            tg_id = l_tax.tax_group_id.id
-                            if tg_id in base_per_group:
-                                base_per_group[tg_id] += line.price_subtotal
-                                iva_per_group[tg_id] += round(line.price_subtotal * (l_tax.amount / 100.0), 2)
+                for taxes in invoice.tax_totals['subtotals']:
+                    for tax in taxes['tax_groups']:
+                        if tax['id'] in tax_groups.ids:
+                            tg_id = tax['id']
+                            base_per_group[tg_id] += taxes['base_amount']
+                            iva_per_group[tg_id] += taxes['tax_amount']
                 for tg in tax_groups:
                     worksheet.write(row, tax_struct[tg.id]['base'], base_per_group[tg.id], formats['number'])
                     worksheet.write(row, tax_struct[tg.id]['iva'], iva_per_group[tg.id], formats['number'])
@@ -157,7 +155,8 @@ class ReportSalesA1Wizard(models.TransientModel):
                 total_line = sum(base_per_group.values()) + sum(iva_per_group.values())
                 worksheet.write(row, tax_col, total_line, formats['number'])    
                 # Casilla Retenciones
-                worksheet.write(row, tax_col+1, 'SI' if tag else 'NO', formats['center'])
+                has_posted_withhold = any(ret.state == 'posted' for ret in invoice.l10n_ec_withhold_ids)
+                worksheet.write(row, tax_col+1, 'SI' if has_posted_withhold else 'NO', formats['center'])
                 worksheet.write(row, tax_col+2, tag or '', formats['border'])
                 worksheet.write(row, tax_col+3, invoice.invoice_payment_term_id.name if invoice.invoice_payment_term_id else '', formats['border'])
                 worksheet.write(row, tax_col+4, invoice.l10n_ec_sri_payment_id.name if invoice.l10n_ec_sri_payment_id else '', formats['border'])
