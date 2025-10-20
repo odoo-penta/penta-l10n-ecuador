@@ -15,7 +15,7 @@
               action="action_pentalab_report_antiguedad_wizard" sequence="3"/>
     <menuitem id="menu_pentalab_purchase_retentions_wizard" name="Compras y Retenciones" parent="menu_reports_penta"
               action="action_report_purchase_retentions_wizard_wizard" sequence="4"/>
-    <menuitem id="menu_pentalab_anexo_compras" name="Anexo de compras" parent="menu_reports_penta" action="action_pentalab_anexo_compras_wizard" sequence="5"/>
+    <menuitem id="menu_pentalab_anexo_compras" name="Detalle de compras" parent="menu_reports_penta" action="action_pentalab_anexo_compras_wizard" sequence="5"/>
     <!-- OTROS REPORTES -->
     <menuitem id="menu_reports_others" name="Otros Reportes" parent="account.menu_finance_reports" sequence="98"/>
     <menuitem id="menu_report_uafe" name="UAFE" parent="menu_reports_others" action="action_report_uafe_wizard" sequence="1" />
