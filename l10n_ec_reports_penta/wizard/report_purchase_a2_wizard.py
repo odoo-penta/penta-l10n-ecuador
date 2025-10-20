@@ -58,7 +58,7 @@ class ReportPurchaseA2Wizard(models.TransientModel):
     def generate_xlsx_report(self):
         output = io.BytesIO()
         workbook = xlsxwriter.Workbook(output, {'in_memory': True})
-        worksheet = workbook.add_worksheet("Ventas A1")
+        worksheet = workbook.add_worksheet("Compras A2")
         # Formatos
         formats = get_xlsx_formats(workbook)
         # Obtener data
@@ -160,11 +160,12 @@ class ReportPurchaseA2Wizard(models.TransientModel):
                 total_line = sum(base_per_group.values()) + sum(iva_per_group.values())
                 worksheet.write(row, tax_col, total_line, formats['number']) 
                 # Casilla Retenciones
-                worksheet.write(row, tax_col+1, 'SI' if tag else 'NO', formats['center'])
+                has_posted_withhold = any(ret.state == 'posted' for ret in invoice.l10n_ec_withhold_ids)
+                worksheet.write(row, tax_col+1, 'SI' if has_posted_withhold else 'NO', formats['center'])
                 worksheet.write(row, tax_col+2, tag or '', formats['border'])
                 worksheet.write(row, tax_col+3, invoice.journal_id.name, formats['center'])
-                worksheet.write(row, tax_col+4, invoice.l10n_ec_sri_payment_id.name if invoice.l10n_ec_sri_payment_id else '', formats['center'])
-                worksheet.write(row, tax_col+5, invoice.ref, formats['center'])
+                worksheet.write(row, tax_col+4, invoice.l10n_ec_sri_payment_id.name if invoice.l10n_ec_sri_payment_id else '', formats['border'])
+                worksheet.write(row, tax_col+5, invoice.ref or '', formats['border'])
                 cont += 1
         workbook.close()
         output.seek(0)

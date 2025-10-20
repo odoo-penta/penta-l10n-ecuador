@@ -126,7 +126,7 @@ class ReportSalesA1Wizard(models.TransientModel):
                 row += 1
                 worksheet.write(row, 0, cont, formats['center'])
                 worksheet.write(row, 1, invoice.l10n_latam_document_type_id.name, formats['center'])
-                worksheet.write(row, 2, invoice.partner_id.l10n_latam_identification_type_id.name or '', formats['center'])
+                worksheet.write(row, 2, invoice.partner_id.l10n_latam_identification_type_id.name or '', formats['border'])
                 worksheet.write(row, 3, invoice.partner_id.vat or '', formats['border'])
                 worksheet.write(row, 4, invoice.partner_id.complete_name or '', formats['border'])
                 worksheet.write(row, 5, 'SI' if invoice.partner_id.l10n_ec_related_party else 'NO', formats['center'])
@@ -136,9 +136,9 @@ class ReportSalesA1Wizard(models.TransientModel):
                 elif invoice.partner_id.company_type == 'company':
                     subjet_type = 'Empresa'
                 worksheet.write(row, 6, subjet_type, formats['border'])
-                worksheet.write(row, 7, format_invoice_number(invoice.name) or '', formats['center'])
+                worksheet.write(row, 7, format_invoice_number(invoice.name) or '', formats['border'])
                 worksheet.write(row, 8, invoice.l10n_ec_authorization_number or '', formats['border'])
-                worksheet.write(row, 9, invoice.invoice_date.strftime("%d/%m/%Y") or '', formats['center'])
+                worksheet.write(row, 9, invoice.invoice_date.strftime("%d/%m/%Y") or '', formats['border'])
                 # Mapear impuestos
                 base_per_group = {tg.id: 0.0 for tg in tax_groups}
                 iva_per_group = {tg.id: 0.0 for tg in tax_groups}

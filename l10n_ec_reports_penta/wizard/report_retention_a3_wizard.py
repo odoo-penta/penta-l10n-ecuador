@@ -113,14 +113,14 @@ class ReportRetentionsA3Wizard(models.TransientModel):
     def generate_xlsx_report(self):
         output = io.BytesIO()
         workbook = xlsxwriter.Workbook(output, {'in_memory': True})
-        worksheet = workbook.add_worksheet("Retenciones compras")
+        worksheet = workbook.add_worksheet("Retencion compras A3")
         # Formatos
         formats = get_xlsx_formats(workbook)
         DATE_FMT = '%d/%m/%Y'
         # Obtener data
         moves = self._get_moves_data()
-        iva_tax_groups = self.env['account.tax.group'].search([('type_ret', 'in', ['withholding_iva_purchase', 'withholding_iva_purchase'])])
-        rent_tax_groups = self.env['account.tax.group'].search([('type_ret', 'in', ['withholding_rent_purchase', 'withholding_rent_purchase'])])
+        iva_tax_groups = self.env['account.tax.group'].search([('type_ret', 'in', ['withholding_iva_purchase'])])
+        rent_tax_groups = self.env['account.tax.group'].search([('type_ret', 'in', ['withholding_rent_purchase'])])
         # Ancho de columnas
         worksheet.set_column('A:A', 6)
         worksheet.set_column('B:C', 24)
@@ -129,9 +129,9 @@ class ReportRetentionsA3Wizard(models.TransientModel):
         worksheet.set_column('F:G', 20)
         worksheet.set_column('H:I', 22)
         worksheet.set_column('J:J', 20)
-        worksheet.set_column('K:L', 15)
+        worksheet.set_column('K:L', 20)
         worksheet.set_column('M:N', 25)
-        worksheet.set_column('O:O', 30)
+        worksheet.set_column('O:O', 35)
         # Encabezados
         headers = ['#', 'FECHA DE EMISIÓN', 'NÚMERO DE RETENCIÓN', 'RUC', 'RAZÓN SOCIAL', 'AUTORIZACIÓN SRI', 'TIPO DE RETENCIÓN', 'BASE IMPONIBLE', 'VALOR RETENIDO',
                    'PORCENTAJE DE RETENCIÓN', 'CÓDIGO BASE', 'CÓDIGO ATS', 'NRO DE DOCUMENTO', 'FECHA EMISIÓN FACTURA PROVEEDOR',
@@ -192,11 +192,11 @@ class ReportRetentionsA3Wizard(models.TransientModel):
                     # Obtener porcentaje de retencion
                     worksheet.write(row, 9, (percent/100) or 0.00, formats['percent'])
                     # Obtener codigos de retencion
-                    worksheet.write(row, 10, reten.tax_tag_ids.name or '', formats['center'])
+                    worksheet.write(row, 10, reten.tax_tag_ids.name or '', formats['border'])
                     #worksheet.write(row, 10, reten.tax_ids.name or '', formats['center'])
                     worksheet.write(row, 11, reten.tax_ids.l10n_ec_code_ats or '', formats['center'])
                     # Numero de documento
-                    worksheet.write(row, 12, invoice.name or '', formats['center'])
+                    worksheet.write(row, 12, format_invoice_number(invoice.name) or '', formats['border'])
                     worksheet.write(row, 13, invoice.date.strftime(DATE_FMT) or '', formats['border'])
                     # Obtener cuenta contable
                     account_name = ''
@@ -204,7 +204,7 @@ class ReportRetentionsA3Wizard(models.TransientModel):
                         if line.tax_line_id == reten.tax_ids:
                             account_name = line.account_id.code + ' ' + line.account_id.name
                             break
-                    worksheet.write(row, 14, account_name, formats['center'])
+                    worksheet.write(row, 14, account_name, formats['border'])
                     row += 1
                     cont += 1
         workbook.close()

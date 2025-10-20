@@ -138,7 +138,8 @@ class ReportSalesWithholdingWizard(models.TransientModel):
 		worksheet.set_column('H:I', 22)
 		worksheet.set_column('J:J', 20)
 		worksheet.set_column('K:L', 25)
-		worksheet.set_column('M:N', 25)
+		worksheet.set_column('M:M', 20)
+		worksheet.set_column('N:N', 35)
 		# Encabezados
 		headers = [
 			'#', 'FECHA DE EMISIÓN', 'NÚMERO DE RETENCIÓN', 'RUC', 'RAZÓN SOCIAL', 'AUTORIZACIÓN SRI', 'TIPO RETENCIÓN',
@@ -160,69 +161,77 @@ class ReportSalesWithholdingWizard(models.TransientModel):
 		row += 1
 		count = 1
 		moves = self._get_moves_data()
+		iva_tax_groups = self.env['account.tax.group'].search([('type_ret', 'in', ['withholding_iva_sales'])])
+		rent_tax_groups = self.env['account.tax.group'].search([('type_ret', 'in', ['withholding_rent_sales'])])
 		for move in moves:
 			invoice = move.line_ids.mapped('l10n_ec_withhold_invoice_id').id
 			if invoice:
 				invoice = self.env['account.move'].browse(invoice)
-				# Recorremos únicamente líneas con monto retenido; Casilla 104 se determina por línea.
-				for reten in move.l10n_ec_withhold_line_ids:
-					if not reten.l10n_ec_withhold_tax_amount:
+			# Recorremos únicamente líneas con monto retenido; Casilla 104 se determina por línea.
+			for reten in move.l10n_ec_withhold_line_ids:
+				# Aplicar filtro de tipo de retencion
+				is_vat = reten.tax_ids.tax_group_id.id in iva_tax_groups.ids
+				is_income = reten.tax_ids.tax_group_id.id in rent_tax_groups.ids
+				if self.retention_type == 'vat_withholding' and not is_vat:
+					continue
+				if self.retention_type == 'income_withholding' and not is_income:
+					continue
+				if not reten.l10n_ec_withhold_tax_amount:
+					continue
+				# Filtrar solo retenciones de clientes: partner con customer_rank > 0
+				if move.partner_id and move.partner_id.customer_rank <= 0:
+					continue
+				# Aplicar filtro de porcentaje si corresponde
+				percent = abs(reten.tax_ids.amount)
+				if self.apply_percentage_filter or self.use_percentage_range:
+					if not self._compare_percent(percent):
 						continue
-					# Filtrar solo retenciones de clientes: partner con customer_rank > 0
-					if move.partner_id and move.partner_id.customer_rank <= 0:
-						continue
-					# Factura origen (puede no existir; se muestran retenciones con o sin factura asociada)
-					# Tipo (grupo de impuestos)
-					tax_groups = reten.tax_ids.mapped('tax_group_id')
-					group_name = tax_groups[:1].name if tax_groups else ''
-					# Normalizar tipo a 'IVA' o 'RENTA' a partir del nombre del grupo
-					normalized = group_name or ''
-					if group_name:
-						lower = group_name.lower()
-						if 'iva' in lower:
-							normalized = 'IVA'
-						elif 'fuente' in lower or 'renta' in lower:
-							normalized = 'RENTA'
-					if self.retention_type != 'all' and normalized != self.retention_type:
-						continue
-					# Aplicar filtro de porcentaje si corresponde
-					percent = abs(reten.tax_ids.amount)
-					if self.apply_percentage_filter or self.use_percentage_range:
-						if not self._compare_percent(percent):
-							continue
-					worksheet.write(row, 0, count, formats['center'])
-					withhold_date = getattr(move, 'l10n_ec_withhold_date', None)
-					worksheet.write(row, 1, withhold_date.strftime(DATE_FMT) if withhold_date else '', formats['border'])
-					# Número de retencion
-					worksheet.write(row, 2, format_invoice_number(move.ref) if move.ref else move.name, formats['border'])
-					worksheet.write(row, 3, move.partner_id.vat or '', formats['border'])
-					worksheet.write(row, 4, move.partner_id.complete_name or '', formats['border'])
-					worksheet.write(row, 5, move.l10n_ec_authorization_number or '', formats['border'])
-					# Tipo normalizado en base al grupo de impuestos
-					worksheet.write(row, 6, normalized or (group_name or ''), formats['center'])
-					# Base imponible siempre en positivo
-					worksheet.write(row, 7, abs(reten.balance) if reten.balance else 0.0, formats['currency'])
-					worksheet.write(row, 8, reten.l10n_ec_withhold_tax_amount or 0.0, formats['currency'])
-					worksheet.write(row, 9, (percent / 100.0), formats['percent'])
-					# Casilla 104 por línea: prioridad tax_tag_ids; fallback código ATS de impuestos
-					line_tag_names = reten.tax_tag_ids.mapped('name') if reten.tax_tag_ids else []
-					if line_tag_names:
-						casilla_104 = line_tag_names[0]
+				worksheet.write(row, 0, count, formats['center'])
+				withhold_date = getattr(move, 'l10n_ec_withhold_date', None)
+				worksheet.write(row, 1, withhold_date.strftime(DATE_FMT) if withhold_date else '', formats['border'])
+				# Número de retencion
+				worksheet.write(row, 2, format_invoice_number(move.ref) if move.ref else move.name, formats['border'])
+				worksheet.write(row, 3, move.partner_id.vat or '', formats['border'])
+				worksheet.write(row, 4, move.partner_id.complete_name or '', formats['border'])
+				worksheet.write(row, 5, move.l10n_ec_authorization_number or '', formats['border'])
+				# Tipo de retencion
+				if self.retention_type == 'vat_withholding':
+					worksheet.write(row, 6, 'IVA', formats['center'])
+				elif self.retention_type == 'income_withholding':
+					worksheet.write(row, 6, 'RENTA', formats['center'])
+				else:
+					if is_vat:
+						worksheet.write(row, 6, 'IVA', formats['center'])
 					else:
-						ats_codes = [t.l10n_ec_code_ats for t in reten.tax_ids if getattr(t, 'l10n_ec_code_ats', False)]
-						casilla_104 = ats_codes[0] if ats_codes else ''
-					worksheet.write(row, 10, casilla_104, formats['border'])
-					worksheet.write(row, 11, invoice.name if invoice else '', formats['border'])
-					worksheet.write(row, 12, invoice.invoice_date.strftime(DATE_FMT) if invoice and invoice.invoice_date else '', formats['border'])
-					# Obtener cuenta contable
-					account_name = ''
-					for line in move.line_ids:
-						if line.tax_line_id == reten.tax_ids:
-							account_name = line.account_id.code + ' ' + line.account_id.name
-							break
-					worksheet.write(row, 13, account_name, formats['border'])
-					row += 1
-					count += 1
+						worksheet.write(row, 6, 'RENTA', formats['center'])
+				# Base imponible siempre en positivo
+				worksheet.write(row, 7, abs(reten.balance) if reten.balance else 0.0, formats['currency'])
+				worksheet.write(row, 8, reten.l10n_ec_withhold_tax_amount or 0.0, formats['currency'])
+				worksheet.write(row, 9, (percent / 100.0), formats['percent'])
+				iva_tags = []
+				rent_tags = []
+				for line in move.line_ids:
+					for tag in line.tax_tag_ids:
+						if 'IVA' in line.name.upper():
+							iva_tags.append(tag.name)
+						else:
+							rent_tags.append(tag.name)
+    			# Casilla 104
+				if is_vat:
+					worksheet.write(row, 10, iva_tags[0] if iva_tags else '', formats['border'])
+				elif is_income:
+					worksheet.write(row, 10, rent_tags[0] if rent_tags else '', formats['border'])
+				worksheet.write(row, 11, format_invoice_number(invoice.name) if invoice else '', formats['border'])
+				worksheet.write(row, 12, invoice.invoice_date.strftime(DATE_FMT) if invoice and invoice.invoice_date else '', formats['border'])
+				# Obtener cuenta contable
+				account_name = ''
+				for line in move.line_ids:
+					if line.tax_line_id == reten.tax_ids:
+						account_name = line.account_id.code + ' ' + line.account_id.name
+						break
+				worksheet.write(row, 13, account_name, formats['border'])
+				row += 1
+				count += 1
 		workbook.close()
 		output.seek(0)
 		return output.read()
