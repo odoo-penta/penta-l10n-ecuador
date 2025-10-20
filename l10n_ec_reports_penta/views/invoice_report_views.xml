@@ -36,7 +36,6 @@
         <field name="journal_id"/>
         <field name="doc_type_name"/>
         <field name="ref"/>
-        <field name="importacion"/>
         <field name="purchase_order_name"/>
         <field name="auth_number"/>
         <field name="partner_vat"/>
