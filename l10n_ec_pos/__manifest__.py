@@ -42,6 +42,8 @@
         'wizard/res_config_settings_views.xml',
         
         'views/cash_box_views.xml',
+        'views/cash_box_session_views.xml',
+        'views/cash_box_session_movement_views.xml',
         'views/coin_views.xml',
         'views/sale_order_views.xml',
         'views/account_payment_views.xml',

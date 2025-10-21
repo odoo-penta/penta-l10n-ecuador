@@ -99,13 +99,13 @@
                         <field name="closing_note"/>
                     </group>
                     <div class="alert alert-info o_form_label" invisible="suggested_balance >= final_balance" style="width: 500px">
-                        Diferencia en cierre de caja, valor POSITIVO ira a la cuenta de ganancias
+                        Difference in cash closing, POSITIVE value will go to the profit account
                     </div>
                     <div class="alert alert-warning o_form_label" invisible="final_balance >= suggested_balance" style="width: 500px">
-                        Diferencia en cierre de caja, valor NEGATIVO se ira a la cuenta de perdidas.
+                        Difference in cash closing, NEGATIVE value will go to the loss account
                     </div>
                     <div class="alert alert-danger o_form_label" invisible="not exceeds_limit" style="width: 700px">
-                        Diferencia en cierre de caja sobrepasa el limite permitido, se notificara a los administradores de caja.
+                        If the cash closing difference exceeds the permitted limit, cash managers will be notified
                     </div>
                 </group>
                 <footer>

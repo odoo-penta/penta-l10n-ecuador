@@ -182,13 +182,17 @@ class CashBoxSession(models.Model):
         # Obtener pagos de los movimientos
         payment_movements = self.movement_ids.filtered(lambda m: m.payment_id)
         payments = payment_movements.mapped('payment_id')
+        list_view_id = self.env.ref('account.view_account_payment_tree').id
+        form_view_id = self.env.ref('account.view_account_payment_form').id
         return {
             'name': 'Payments',
             'type': 'ir.actions.act_window',
             'res_model': 'account.payment',
             'view_mode': 'list,form',
+            'views': [(list_view_id, 'list'), (form_view_id, 'form')],
             'domain': [('id', 'in', payments.ids)],
             'target': 'current',
+            'context': {'create': False},
         }
         
     def open_journal_items_view(self):
@@ -214,6 +218,7 @@ class CashBoxSession(models.Model):
             'view_mode': 'list,form',
             'domain': [('id', 'in', move_lines.ids)],
             'target': 'current',
+            'context': {'create': False},
         }
         
     def _create_movement(self, session_id, partner_id, type_op, obj_related):

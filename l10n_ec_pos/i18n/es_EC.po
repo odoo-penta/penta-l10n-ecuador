@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-30 20:48+0000\n"
-"PO-Revision-Date: 2025-09-30 15:50-0500\n"
+"POT-Creation-Date: 2025-10-21 17:03+0000\n"
+"PO-Revision-Date: 2025-10-21 12:06-0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es_EC\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.7\n"
+"X-Generator: Poedit 3.8\n"
 
 #. module: l10n_ec_pos
 #: model:ir.actions.report,print_report_name:l10n_ec_pos.action_cash_closing_report
@@ -56,6 +56,14 @@ msgid ""
 "                                    ________________________<br/>\n"
 "                                    C.I.: __________________"
 msgstr ""
+"<br/><br/>\n"
+"                                    ________________________<br/>\n"
+"                                    C.I.: __________________"
+
+#. module: l10n_ec_pos
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.view_cash_box_session_form
+msgid "<span class=\"o_stat_text\">Invoices</span>"
+msgstr "<span class=\"o_stat_text\">Facturas</span>"
 
 #. module: l10n_ec_pos
 #: model_terms:ir.ui.view,arch_db:l10n_ec_pos.view_cash_box_session_form
@@ -250,6 +258,8 @@ msgstr "Movimientos de caja"
 #. module: l10n_ec_pos
 #. odoo-python
 #: code:addons/l10n_ec_pos/wizard/cash_box_wizard.py:0
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_account_bank_statement_line__cash_session_id
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_account_move__cash_session_id
 #: model:ir.model.fields,field_description:l10n_ec_pos.field_account_payment__cash_session_id
 #: model:ir.model.fields,field_description:l10n_ec_pos.field_sale_order__cash_session_id
 msgid "Cash Session"
@@ -262,13 +272,13 @@ msgstr "Caja"
 
 #. module: l10n_ec_pos
 #. odoo-python
-#: code:addons/l10n_ec_pos/models/cash_box.py:0
+#: code:addons/l10n_ec_pos/models/cash_box_session.py:0
 msgid "Cash box '%s' closed successfully with a final balance of %s."
 msgstr "La caja '%s' se cerró exitosamente con un saldo final de %s."
 
 #. module: l10n_ec_pos
 #. odoo-python
-#: code:addons/l10n_ec_pos/models/cash_box.py:0
+#: code:addons/l10n_ec_pos/models/cash_box_session.py:0
 msgid "Cash box '%s' opend successfully with a initial balance of %s."
 msgstr "La caja '%s' se abrió exitosamente con un saldo inicial de %s."
 
@@ -291,7 +301,7 @@ msgstr "Caja abierta exitosamente con un saldo inicial de %s."
 
 #. module: l10n_ec_pos
 #. odoo-python
-#: code:addons/l10n_ec_pos/models/cash_box.py:0
+#: code:addons/l10n_ec_pos/models/cash_box_session.py:0
 msgid "Cash closing %s"
 msgstr "Caja cerrada %s"
 
@@ -507,7 +517,6 @@ msgstr "Crédito"
 
 #. module: l10n_ec_pos
 #: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session_movement__credit_note_id
-#: model:ir.model.fields.selection,name:l10n_ec_pos.selection__cash_box_session_movement__operation_type__refund
 msgid "Credit Note"
 msgstr "Nota de crédito"
 
@@ -534,25 +543,6 @@ msgid "Customer"
 msgstr "Cliente"
 
 #. module: l10n_ec_pos
-#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.view_cash_box_closed_wizard_form
-msgid ""
-"Diferencia en cierre de caja sobrepasa el limite permitido, se notificara a "
-"los administradores de caja."
-msgstr ""
-
-#. module: l10n_ec_pos
-#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.view_cash_box_closed_wizard_form
-msgid ""
-"Diferencia en cierre de caja, valor NEGATIVO se ira a la cuenta de perdidas."
-msgstr ""
-
-#. module: l10n_ec_pos
-#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.view_cash_box_closed_wizard_form
-msgid ""
-"Diferencia en cierre de caja, valor POSITIVO ira a la cuenta de ganancias"
-msgstr ""
-
-#. module: l10n_ec_pos
 #: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session__diff_balance
 msgid "Diff Balance"
 msgstr "Balance diferencia"
@@ -566,6 +556,21 @@ msgstr "Asiento diferencia"
 #: model_terms:ir.ui.view,arch_db:l10n_ec_pos.report_cash_closing_template
 msgid "Difference"
 msgstr "Diferencia"
+
+#. module: l10n_ec_pos
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.view_cash_box_closed_wizard_form
+msgid "Difference in cash closing, NEGATIVE value will go to the loss account"
+msgstr ""
+"Diferencia en el cierre de caja, valor NEGATIVO pasará a la cuenta de "
+"pérdidas"
+
+#. module: l10n_ec_pos
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.view_cash_box_closed_wizard_form
+msgid ""
+"Difference in cash closing, POSITIVE value will go to the profit account"
+msgstr ""
+"Diferencia en el cierre de caja, valor POSITIVO pasará a la cuenta de "
+"ganancias"
 
 #. module: l10n_ec_pos
 #: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__display_name
@@ -649,7 +654,7 @@ msgstr "Tiene un mensaje"
 #: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session__id
 #: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session_movement__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: l10n_ec_pos
 #: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__activity_exception_icon
@@ -678,6 +683,15 @@ msgid "If checked, some messages have a delivery error."
 msgstr "Si está marcada, algunos mensajes tienen error de envío."
 
 #. module: l10n_ec_pos
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.view_cash_box_closed_wizard_form
+msgid ""
+"If the cash closing difference exceeds the permitted limit, cash managers "
+"will be notified"
+msgstr ""
+"Si la diferencia de cierre de efectivo excede el límite permitido, se "
+"notificará a los administradores de caja"
+
+#. module: l10n_ec_pos
 #: model:ir.model.fields.selection,name:l10n_ec_pos.selection__cash_box_session__state__in_progress
 #: model_terms:ir.ui.view,arch_db:l10n_ec_pos.view_cash_box_session_search
 msgid "In progress"
@@ -696,6 +710,7 @@ msgstr "Balance inicial"
 
 #. module: l10n_ec_pos
 #: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session_movement__invoice_id
+#: model:ir.model.fields.selection,name:l10n_ec_pos.selection__cash_box_session_movement__operation_type__invoice
 msgid "Invoice"
 msgstr "Factura"
 
@@ -725,6 +740,11 @@ msgstr "Es un seguidor"
 #: model_terms:ir.ui.view,arch_db:l10n_ec_pos.report_cash_closing_template
 msgid "Journal"
 msgstr "Diario"
+
+#. module: l10n_ec_pos
+#: model:ir.model,name:l10n_ec_pos.model_account_move
+msgid "Journal Entry"
+msgstr "Asiento contable"
 
 #. module: l10n_ec_pos
 #: model:ir.ui.menu,name:l10n_ec_pos.cash_box_account_journal_menu
@@ -804,7 +824,8 @@ msgstr "Nombre"
 
 #. module: l10n_ec_pos
 #. odoo-python
-#: code:addons/l10n_ec_pos/models/cash_box.py:0
+#: code:addons/l10n_ec_pos/models/cash_box_session.py:0
+#: code:addons/l10n_ec_pos/models/cash_box_session_movement.py:0
 msgid "New"
 msgstr "Nuevo"
 
@@ -918,7 +939,7 @@ msgstr "Orden"
 #: model:ir.module.category,name:l10n_ec_pos.cash_box_access
 #: model:ir.ui.menu,name:l10n_ec_pos.cash_box_root_menu
 msgid "POS PENTA"
-msgstr ""
+msgstr "POS PENTA"
 
 #. module: l10n_ec_pos
 #: model:ir.model.fields.selection,name:l10n_ec_pos.selection__cash_box_session_movement__state__paid
@@ -938,13 +959,13 @@ msgstr "Pagos"
 
 #. module: l10n_ec_pos
 #. odoo-python
-#: code:addons/l10n_ec_pos/models/cash_box.py:0
+#: code:addons/l10n_ec_pos/models/cash_box_session.py:0
 msgid "Please configure the sequence for cash box sessions."
 msgstr "Configure la secuencia para las sesiones de caja."
 
 #. module: l10n_ec_pos
 #. odoo-python
-#: code:addons/l10n_ec_pos/models/cash_box.py:0
+#: code:addons/l10n_ec_pos/models/cash_box_session_movement.py:0
 msgid "Please configure the sequence for cash session movements."
 msgstr ""
 "Por favor configure la secuencia para los movimientos de la sesión de caja."
@@ -958,11 +979,6 @@ msgstr "Publicado"
 #: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_coin_line_wizard__quantity
 msgid "Quantity"
 msgstr "Cantidad"
-
-#. module: l10n_ec_pos
-#: model:ir.model.fields.selection,name:l10n_ec_pos.selection__cash_box_session_movement__operation_type__quote
-msgid "Quote"
-msgstr "Cotización"
 
 #. module: l10n_ec_pos
 #: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__rating_ids
@@ -1062,6 +1078,11 @@ msgid "Settings"
 msgstr "Ajustes"
 
 #. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_account_payment__show_cash_session
+msgid "Show Cash Session"
+msgstr "Mostrar sesión de caja"
+
+#. module: l10n_ec_pos
 #: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__state
 #: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session__state
 msgid "State"
@@ -1109,11 +1130,15 @@ msgstr "La caja ya está abierta."
 
 #. module: l10n_ec_pos
 #. odoo-python
-#: code:addons/l10n_ec_pos/models/cash_box.py:0
+#: code:addons/l10n_ec_pos/models/account_payment.py:0
 msgid ""
-"The cashier '%s' is already assigned to the cash box '%s'. Please choose "
-"another cashier."
-msgstr "El cajero '%s' ya está asignado a la caja '%s'. Elija otro cajero."
+"The checkout session enabled for this user to record customer payments is "
+"closed. Please open the checkout session to enable customer payment "
+"recording."
+msgstr ""
+"La sesión de caja habilitada a este usuario para registro de pagos de "
+"cliente se encuentra cerrada. Por favor, abrir la sesión de caja para "
+"habilitar el registro de pagos de clientes."
 
 #. module: l10n_ec_pos
 #. odoo-python
@@ -1173,6 +1198,20 @@ msgstr ""
 
 #. module: l10n_ec_pos
 #. odoo-python
+#: code:addons/l10n_ec_pos/models/cash_box.py:0
+#: model:ir.model.constraint,message:l10n_ec_pos.constraint_cash_box_unique_movement_seq_id
+msgid "The movement sequence must be unique per cash box."
+msgstr "La secuencia de movimiento debe ser única por caja."
+
+#. module: l10n_ec_pos
+#. odoo-python
+#: code:addons/l10n_ec_pos/models/cash_box.py:0
+#: model:ir.model.constraint,message:l10n_ec_pos.constraint_cash_box_unique_session_seq_id
+msgid "The session sequence must be unique per cash box."
+msgstr "La secuencia de sesiones debe ser única por caja."
+
+#. module: l10n_ec_pos
+#. odoo-python
 #: code:addons/l10n_ec_pos/models/sale_order.py:0
 msgid ""
 "The user is not assigned to any register. Assign a register before creating "
@@ -1183,13 +1222,19 @@ msgstr ""
 
 #. module: l10n_ec_pos
 #. odoo-python
-#: code:addons/l10n_ec_pos/models/account_payment.py:0
+#: code:addons/l10n_ec_pos/models/account_move.py:0
 msgid ""
 "The user is not assigned to any register. Assign a register before creating "
 "an payment."
 msgstr ""
 "El usuario no está asignado a ninguna caja. Asigne una caja antes de crear "
 "un pago."
+
+#. module: l10n_ec_pos
+#. odoo-python
+#: code:addons/l10n_ec_pos/models/account_move.py:0
+msgid "This invoice is related to an already closed cashier session."
+msgstr "Esta factura está relacionada con una sesión de cajero ya cerrada."
 
 #. module: l10n_ec_pos
 #. odoo-python
@@ -1202,7 +1247,7 @@ msgstr ""
 #. module: l10n_ec_pos
 #: model_terms:ir.ui.view,arch_db:l10n_ec_pos.report_cash_closing_template
 msgid "Total"
-msgstr ""
+msgstr "Total"
 
 #. module: l10n_ec_pos
 #: model_terms:ir.ui.view,arch_db:l10n_ec_pos.report_cash_closing_template
@@ -1277,7 +1322,7 @@ msgstr ""
 
 #. module: l10n_ec_pos
 #. odoo-python
-#: code:addons/l10n_ec_pos/models/account_payment.py:0
+#: code:addons/l10n_ec_pos/models/account_move.py:0
 msgid ""
 "You don't have any open cashier sessions. Please open one before creating "
 "an payment."

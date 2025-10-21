@@ -5,7 +5,7 @@
                 <div class="page">
                     <t t-foreach="docs" t-as="o">
                         <!-- Encabezado -->
-                        <div style="text-align:center; margin-bottom:20px;">
+                        <div style="text-align:center; margin-top:80px; margin-bottom:80px;">
                             <h2 style="color:#7c5c47;">Sales Summary</h2>
                         </div>
                         <!-- Datos principales -->
@@ -130,7 +130,7 @@
                         </table>
                         <!-- Responsables -->
                         <h4 style="margin-top:30px; text-align:center;">Responsibles</h4>
-                        <table style="width:100%; margin-top:15px; text-align:center;">
+                        <table style="width:100%; margin-top:15px; margin-bottom:50px; text-align:center;">
                             <tr>
                                 <td style="width:50%;">
                                     <strong>Responsible (Open):</strong><br/>
