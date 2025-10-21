@@ -18,4 +18,6 @@ class ReportCashClosing(models.AbstractModel):
             'docs': session,
             'payment_summary': session._get_payment_summary(),
             'journal_payment_summary': session.get_payment_summary_by_journal(),
+            'payments': session._get_payments(),
+            'invoices': session._get_invoices(),
         }

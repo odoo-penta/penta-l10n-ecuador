@@ -162,12 +162,19 @@ class CashBoxSession(models.Model):
             if cash_id:
                 return self.env['cash.box'].browse(cash_id).session_seq_id or False
             return False
+        
+    def _get_payments(self):
+        """ Obtiene los pagos realizados con la sesion """
+        return self.env['account.payment'].search([('cash_session_id', '=', self.id),('state', 'in', ['in_process', 'paid'])])
+    
+    def _get_invoices(self):
+        """ Obtiene los pagos realizados con la sesion """
+        return self.env['account.move'].search([('move_type' ,'in', ['out_invoice', 'in_invoice']),('cash_session_id', '=', self.id),('state', '=', 'posted')])
           
     def open_invoices_view(self):
         self.ensure_one()
         # Obtener pagos de los movimientos
-        invoice_movements = self.movement_ids.filtered(lambda m: m.invoice_id)
-        invoices = invoice_movements.mapped('invoice_id')
+        invoices = self._get_invoices()
         return {
             'name': 'Invoices',
             'type': 'ir.actions.act_window',
@@ -180,8 +187,7 @@ class CashBoxSession(models.Model):
     def open_payments_view(self):
         self.ensure_one()
         # Obtener pagos de los movimientos
-        payment_movements = self.movement_ids.filtered(lambda m: m.payment_id)
-        payments = payment_movements.mapped('payment_id')
+        payments = self._get_payments()
         list_view_id = self.env.ref('account.view_account_payment_tree').id
         form_view_id = self.env.ref('account.view_account_payment_form').id
         return {
@@ -198,10 +204,8 @@ class CashBoxSession(models.Model):
     def open_journal_items_view(self):
         self.ensure_one()
         # Obtener asientos de facturas y pagos
-        invoice_movements = self.movement_ids.filtered(lambda m: m.invoice_id)
-        payment_movements = self.movement_ids.filtered(lambda m: m.payment_id)
-        invoice_moves = invoice_movements.mapped('invoice_id')
-        payment_moves = payment_movements.mapped('payment_id.move_id')
+        invoice_moves = self._get_invoices().mapped('move_id') if self._get_invoices() else self.env['account.move']
+        payment_moves = self._get_payments().mapped('move_id') if self._get_payments() else self.env['account.payment']
         # Unirlos valores
         move_ids = (invoice_moves + payment_moves)
         # Si tenemos asiento de cierre lo agg
@@ -237,57 +241,36 @@ class CashBoxSession(models.Model):
             values['invoice_id'] = obj_related
         return self.env['cash.box.session.movement'].create(values)
     
-    def print_summary(self):
-        self.ensure_one()
-        return self.env.ref('l10n_ec_pos.action_cash_closing_report').report_action(self)
-    
-    def _get_payment_summary(self, movement_ids=None):
+    def _get_payment_summary(self):
         """ Obtiene un resumen de los pagos realizados por movimiento """
-        
         def categorize_payment(payment):
             """ Categoriza el pago según su tipo """
-            if payment.journal_id.type == 'credit' or payment.journal_id.default_account_id.account_type == 'liability_credit_card':
-                return 'card'
-            elif payment.journal_id.type == 'bank':
-                return 'transfer'
+            if payment.journal_id.type == 'bank':
+                if payment.card_id:
+                    return 'card'
+                else:
+                    return 'transfer'
             else:
                 return 'cash'
-        
+
         payment_summary = {}
-        if not movement_ids:
-            movement_ids = self.cash_id.current_session_id.movement_ids
-        for movement in movement_ids:
-            # instanciamos el diccionario de resumen por movimiento
-            summary = {'cash': 0.00, 'transfer': 0.00, 'card': 0.00, 'credit': 0.00}
-            # si el movimeinto es factura o cotizacion
-            if movement.operation_type in ('invoice', 'quote'):
-                # obtenemos los pagos asociados a la factura o cotizacion(factura)
-                dict_payments = movement.invoice_id.open_payments()
-                payments = self.env['account.payment'].browse(
-                    dict_payments.get('res_id') or
-                    (dict_payments.get('domain') and dict_payments.get('domain')[0][2]) or
-                    []
-                ) 
-                # iteramos los pagos obtenidos
-                for payment in payments:
-                    key = categorize_payment(payment)
-                    summary[key] += payment.amount
-            # si el movimiento es una nota de credito
-            elif movement.operation_type == 'refund':
-                summary['credit'] += movement.credit_note_id.amount_total
-            # si el movimiento es un pago
+        payments = self._get_payments()
+        for payment in payments:
+            key = categorize_payment(payment)
+            if payment_summary.get(payment.id):
+                payment_summary[payment.id][key] += payment.amount
             else:
-                # obtenmos el pago
-                payment = movement.payment_id
-                key = categorize_payment(payment)
-                summary[key] += payment.amount
-            payment_summary[movement.id] = summary
+                payment_summary[payment.id] = {'cash': 0.00, 'transfer': 0.00, 'card': 0.00}
+                payment_summary[payment.id][key] += payment.amount
         return payment_summary
     
     def get_payment_summary_by_journal(self):
         summary = defaultdict(float)
-        for move in self.movement_ids:
-            if move.payment_id:  # Solo movimientos con payment
-                journal_name = move.payment_id.journal_id.name
-                summary[journal_name] += move.amount  # Sumamos el total del movimiento
+        for payment in self._get_payments():
+            journal_name = payment.journal_id.name
+            summary[journal_name] += payment.amount
         return dict(summary)
+    
+    def print_summary(self):
+        self.ensure_one()
+        return self.env.ref('l10n_ec_pos.action_cash_closing_report').report_action(self)

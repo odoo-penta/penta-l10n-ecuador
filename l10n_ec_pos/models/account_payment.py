@@ -23,7 +23,7 @@ class AccountPayment(models.Model):
         res['show_cash_session'] = len(cash_boxs) > 1
         # Si solo hay una sesión, asignarla automáticamente
         if len(cash_boxs) == 1:
-            res['cash_session_id'] = cash_boxs.id
+            res['cash_session_id'] = cash_boxs.current_session_id.id
         return res
         
     def action_post(self):
