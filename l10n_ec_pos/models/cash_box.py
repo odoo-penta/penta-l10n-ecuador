@@ -15,6 +15,8 @@ class CashBox(models.Model):
 
     _sql_constraints = [
         ('unique_cash_box_name', 'unique(name)', _('The box name already exists.')),
+        ('unique_session_seq_id', 'unique(session_seq_id)', _('The session sequence must be unique per cash box.')),
+        ('unique_movement_seq_id', 'unique(movement_seq_id)', _('The movement sequence must be unique per cash box.')),
     ]
 
     name = fields.Char(required=True, tracking=True)
