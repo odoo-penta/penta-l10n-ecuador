@@ -98,7 +98,7 @@
                             <page name="sessions" string="Sessions">
                                 <field name="session_ids"/>
                             </page>
-                            <page name="settings" string="Settings" groups="l10n_ec_point_of_sale.group_cash_box_admin">
+                            <page name="settings" string="Settings" groups="l10n_ec_pos.group_cash_box_admin">
                                 <group>
                                     <group>
                                         <field name="close_account_id" options="{'no_create': True}"/>

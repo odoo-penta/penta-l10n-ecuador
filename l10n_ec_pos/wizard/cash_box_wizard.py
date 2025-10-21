@@ -161,7 +161,7 @@ class CashBoxClosedWizard(models.TransientModel):
     
     @api.depends('final_balance')
     def _compute_exceeds_limit(self):
-        limit_amount = float(self.env['ir.config_parameter'].sudo().get_param('l10n_ec_point_of_sale.cash_imbalance_limit'))
+        limit_amount = float(self.env['ir.config_parameter'].sudo().get_param('l10n_ec_pos.cash_imbalance_limit'))
         for record in self:
             record.exceeds_limit = False
             if limit_amount > 0.0:

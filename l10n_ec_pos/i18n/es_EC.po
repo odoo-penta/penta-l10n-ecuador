@@ -1,0 +1,1292 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* l10n_ec_pos
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-09-30 20:48+0000\n"
+"PO-Revision-Date: 2025-09-30 15:50-0500\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: es_EC\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.7\n"
+
+#. module: l10n_ec_pos
+#: model:ir.actions.report,print_report_name:l10n_ec_pos.action_cash_closing_report
+msgid "'CashClosing-%s' % (object.name or '')"
+msgstr "'CierreCaja-%s' % (object.name or '')"
+
+#. module: l10n_ec_pos
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.report_cash_closing_template
+msgid ""
+"<br/>\n"
+"                                    <strong>Closing Date:</strong>"
+msgstr ""
+"<br/>\n"
+"                                    <strong>Fecha cierre:</strong>"
+
+#. module: l10n_ec_pos
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.report_cash_closing_template
+msgid ""
+"<br/>\n"
+"                                    <strong>Session:</strong>"
+msgstr ""
+"<br/>\n"
+"                                    <strong>Sesión:</strong>"
+
+#. module: l10n_ec_pos
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.report_cash_closing_template
+msgid ""
+"<br/>\n"
+"                                    <strong>Status:</strong>"
+msgstr ""
+"<br/>\n"
+"                                    <strong>Estado:</strong>"
+
+#. module: l10n_ec_pos
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.report_cash_closing_template
+msgid ""
+"<br/><br/>\n"
+"                                    ________________________<br/>\n"
+"                                    C.I.: __________________"
+msgstr ""
+
+#. module: l10n_ec_pos
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.view_cash_box_session_form
+msgid "<span class=\"o_stat_text\">Journal Items</span>"
+msgstr "<span class=\"o_stat_text\">Apuntes contables</span>"
+
+#. module: l10n_ec_pos
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.view_cash_box_session_form
+msgid "<span class=\"o_stat_text\">Payments</span>"
+msgstr "<span class=\"o_stat_text\">Pagos</span>"
+
+#. module: l10n_ec_pos
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.view_cash_box_session_form
+msgid "<span class=\"o_stat_text\">Summary</span>"
+msgstr "<span class=\"o_stat_text\">Resumen</span>"
+
+#. module: l10n_ec_pos
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.report_cash_closing_template
+msgid "<strong>Cash:</strong>"
+msgstr "<strong>Caja:</strong>"
+
+#. module: l10n_ec_pos
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.view_cash_box_kanban
+msgid "<strong>Currency: </strong>"
+msgstr "<strong>Moneda: </strong>"
+
+#. module: l10n_ec_pos
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.report_cash_closing_template
+msgid "<strong>Opening Date:</strong>"
+msgstr "<strong>Fecha apertura:</strong>"
+
+#. module: l10n_ec_pos
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.report_cash_closing_template
+msgid "<strong>Responsible (Close):</strong><br/>"
+msgstr "<strong>Responsable (Cierre):</strong><br/>"
+
+#. module: l10n_ec_pos
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.report_cash_closing_template
+msgid "<strong>Responsible (Open):</strong><br/>"
+msgstr "<strong>Responsable (Apertura):</strong><br/>"
+
+#. module: l10n_ec_pos
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.view_cash_box_kanban
+msgid "<strong>Warehouse: </strong>"
+msgstr "<strong>Almacén: </strong>"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__message_needaction
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session__message_needaction
+msgid "Action Needed"
+msgstr "Acción requerida"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__activity_ids
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session__activity_ids
+msgid "Activities"
+msgstr "Actividades"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__activity_exception_decoration
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session__activity_exception_decoration
+msgid "Activity Exception Decoration"
+msgstr "Decoración de excepción de actividad"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__activity_state
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session__activity_state
+msgid "Activity State"
+msgstr "Estado de actividad"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__activity_type_icon
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session__activity_type_icon
+msgid "Activity Type Icon"
+msgstr "Icono de tipo de actividad"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session_movement__amount
+msgid "Amount"
+msgstr "Monto"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__analytic_account_id
+msgid "Analytic Account"
+msgstr "Cuenta analítica"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__message_attachment_count
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session__message_attachment_count
+msgid "Attachment Count"
+msgstr "Número de archivos adjuntos"
+
+#. module: l10n_ec_pos
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.report_cash_closing_template
+msgid "Balances"
+msgstr "Saldos"
+
+#. module: l10n_ec_pos
+#: model:ir.model,name:l10n_ec_pos.model_cash_box_base_wizard
+msgid "Base Cash Box Wizard"
+msgstr "Asistente de caja base"
+
+#. module: l10n_ec_pos
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.view_cash_box_closed_wizard_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.view_cash_box_coin_wizard_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.view_cash_box_open_wizard_form
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields.selection,name:l10n_ec_pos.selection__cash_box_session_movement__state__cancelled
+msgid "Cancelled"
+msgstr "Cancelado"
+
+#. module: l10n_ec_pos
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.report_cash_closing_template
+msgid "Card"
+msgstr "Tarjeta"
+
+#. module: l10n_ec_pos
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.report_cash_closing_template
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.view_cash_box_form
+msgid "Cash"
+msgstr "Efectivo"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_base_wizard__cash_id
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_closed_wizard__cash_id
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_open_wizard__cash_id
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session__cash_id
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.view_cash_box_coin_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.view_cash_box_coin_list
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.view_cash_box_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.view_cash_box_list
+msgid "Cash Box"
+msgstr "Caja"
+
+#. module: l10n_ec_pos
+#: model:res.groups,name:l10n_ec_pos.group_cash_box_admin
+msgid "Cash Box Admin"
+msgstr "Administrador Caja"
+
+#. module: l10n_ec_pos
+#: model:ir.actions.act_window,name:l10n_ec_pos.action_cash_box_coin
+#: model:ir.ui.menu,name:l10n_ec_pos.cash_box_coins_menu
+msgid "Cash Box Coin"
+msgstr "Monedas/Billetes"
+
+#. module: l10n_ec_pos
+#: model:ir.model,name:l10n_ec_pos.model_cash_box_session
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session_movement__session_id
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.view_cash_box_session_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.view_cash_box_session_list
+msgid "Cash Box Session"
+msgstr "Sesión de caja"
+
+#. module: l10n_ec_pos
+#: model:ir.model,name:l10n_ec_pos.model_cash_box_session_movement
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.view_cash_box_session_movement_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.view_cash_box_session_movement_list
+msgid "Cash Box Session Movement"
+msgstr "Movimiento de sesión"
+
+#. module: l10n_ec_pos
+#: model:res.groups,name:l10n_ec_pos.group_cash_box_user
+msgid "Cash Box User"
+msgstr "Usuario Caja"
+
+#. module: l10n_ec_pos
+#: model:ir.actions.act_window,name:l10n_ec_pos.action_cash_box
+#: model:ir.ui.menu,name:l10n_ec_pos.cash_box_menu
+msgid "Cash Boxes"
+msgstr "Cajas"
+
+#. module: l10n_ec_pos
+#: model:ir.actions.report,name:l10n_ec_pos.action_cash_closing_report
+#: model:ir.model,name:l10n_ec_pos.model_report_l10n_ec_pos_report_cash_closing_template
+msgid "Cash Closing Report"
+msgstr "Reporte cierre caja"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_res_config_settings__cash_imbalance_limit
+msgid "Cash Imbalance Limit"
+msgstr "Limite diferencia caja"
+
+#. module: l10n_ec_pos
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.report_cash_closing_template
+msgid "Cash Movements"
+msgstr "Movimientos de caja"
+
+#. module: l10n_ec_pos
+#. odoo-python
+#: code:addons/l10n_ec_pos/wizard/cash_box_wizard.py:0
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_account_payment__cash_session_id
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_sale_order__cash_session_id
+msgid "Cash Session"
+msgstr "Sesión"
+
+#. module: l10n_ec_pos
+#: model:ir.model,name:l10n_ec_pos.model_cash_box
+msgid "Cash box"
+msgstr "Caja"
+
+#. module: l10n_ec_pos
+#. odoo-python
+#: code:addons/l10n_ec_pos/models/cash_box.py:0
+msgid "Cash box '%s' closed successfully with a final balance of %s."
+msgstr "La caja '%s' se cerró exitosamente con un saldo final de %s."
+
+#. module: l10n_ec_pos
+#. odoo-python
+#: code:addons/l10n_ec_pos/models/cash_box.py:0
+msgid "Cash box '%s' opend successfully with a initial balance of %s."
+msgstr "La caja '%s' se abrió exitosamente con un saldo inicial de %s."
+
+#. module: l10n_ec_pos
+#: model:ir.model,name:l10n_ec_pos.model_cash_box_coin
+msgid "Cash box Coin"
+msgstr "Monedas/Billetes"
+
+#. module: l10n_ec_pos
+#. odoo-python
+#: code:addons/l10n_ec_pos/models/cash_box.py:0
+msgid "Cash box closed successfully with a final balance of %s."
+msgstr "Caja cerrada exitosamente con saldo final de %s."
+
+#. module: l10n_ec_pos
+#. odoo-python
+#: code:addons/l10n_ec_pos/models/cash_box.py:0
+msgid "Cash box open successfully with a initial balance of %s."
+msgstr "Caja abierta exitosamente con un saldo inicial de %s."
+
+#. module: l10n_ec_pos
+#. odoo-python
+#: code:addons/l10n_ec_pos/models/cash_box.py:0
+msgid "Cash closing %s"
+msgstr "Caja cerrada %s"
+
+#. module: l10n_ec_pos
+#. odoo-python
+#: code:addons/l10n_ec_pos/wizard/cash_box_wizard.py:0
+msgid "Cash closing adjustment"
+msgstr "Ajuste de cierre de caja"
+
+#. module: l10n_ec_pos
+#: model:ir.ui.menu,name:l10n_ec_pos.cash_box_control
+msgid "Cash control"
+msgstr "Control caja"
+
+#. module: l10n_ec_pos
+#: model:ir.module.category,description:l10n_ec_pos.cash_box_access
+msgid "Cash management and cash sessions"
+msgstr "Gestión de caja y sesiones de caja"
+
+#. module: l10n_ec_pos
+#. odoo-python
+#: code:addons/l10n_ec_pos/wizard/cash_box_wizard.py:0
+msgid "Cash shortage"
+msgstr "Perdida de efectivo"
+
+#. module: l10n_ec_pos
+#. odoo-python
+#: code:addons/l10n_ec_pos/wizard/cash_box_wizard.py:0
+msgid "Cash surplus"
+msgstr "Ganancia de efectivo"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session_movement__cashier_id
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.report_cash_closing_template
+msgid "Cashier"
+msgstr "Cajero"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__cashier_ids
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session__cashier_ids
+msgid "Cashiers"
+msgstr "Cajeros"
+
+#. module: l10n_ec_pos
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.view_cash_box_form
+msgid "Close"
+msgstr "Cerrar"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__close_account_id
+msgid "Close Account"
+msgstr "Cuenta cierre"
+
+#. module: l10n_ec_pos
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.view_cash_box_closed_wizard_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.view_cash_box_kanban
+msgid "Close Cash Box"
+msgstr "Cerrar caja"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__close_journal_id
+msgid "Close Journal"
+msgstr "Diario cierre"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session__close_move_id
+msgid "Close Move"
+msgstr "Asiento cierre"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields.selection,name:l10n_ec_pos.selection__cash_box__state__closed
+#: model:ir.model.fields.selection,name:l10n_ec_pos.selection__cash_box_session__state__closed
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.view_cash_box_kanban
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.view_cash_box_search
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.view_cash_box_session_search
+msgid "Closed"
+msgstr "Cerrado"
+
+#. module: l10n_ec_pos
+#. odoo-python
+#: code:addons/l10n_ec_pos/wizard/cash_box_wizard.py:0
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.view_cash_box_closed_wizard_form
+msgid "Closed Cash Box"
+msgstr "Caja cerrada"
+
+#. module: l10n_ec_pos
+#: model:ir.model,name:l10n_ec_pos.model_cash_box_closed_wizard
+msgid "Closed Cash Box Wizard"
+msgstr "Asistente cierre de caja"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_coin_wizard__closed_wizard_id
+msgid "Closed Wizard"
+msgstr "Asistente cierre"
+
+#. module: l10n_ec_pos
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.report_cash_closing_template
+msgid "Closing Balance"
+msgstr "Balance cierre"
+
+#. module: l10n_ec_pos
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.res_config_settings_view_form
+msgid "Closing Cash"
+msgstr "Cierre caja"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session__closing_date
+msgid "Closing Date"
+msgstr "Fecha cierre"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_base_wizard__closing_note
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_closed_wizard__closing_note
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_open_wizard__closing_note
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session__closing_note
+msgid "Closing Note"
+msgstr "Nota de cierre"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session__closing_balance
+msgid "Closing balance"
+msgstr "Balance cierre"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__code
+msgid "Code"
+msgstr "Código"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_account_payment__code_movement
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_sale_order__code_movement
+msgid "Code Movement"
+msgstr "Código movimiento"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_coin_line_wizard__coin_id
+msgid "Coin"
+msgstr "Moneda"
+
+#. module: l10n_ec_pos
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.view_cash_box_coin_wizard_form
+msgid "Coin Cash Box"
+msgstr "Moneda caja"
+
+#. module: l10n_ec_pos
+#: model:ir.model,name:l10n_ec_pos.model_cash_box_coin_line_wizard
+msgid "Coin Line for Initial Balance Wizard"
+msgstr "Asistente de línea de monedas para saldo inicial"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_coin_wizard__coin_line_ids
+msgid "Coins"
+msgstr "Monedas"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__company_id
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_base_wizard__company_id
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_closed_wizard__company_id
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_open_wizard__company_id
+msgid "Company"
+msgstr "Compañía"
+
+#. module: l10n_ec_pos
+#: model:ir.model,name:l10n_ec_pos.model_res_config_settings
+msgid "Config Settings"
+msgstr "Ajustes de configuración"
+
+#. module: l10n_ec_pos
+#: model:ir.ui.menu,name:l10n_ec_pos.cash_box_config_menu
+msgid "Configuration"
+msgstr "Configuración"
+
+#. module: l10n_ec_pos
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.view_cash_box_coin_wizard_form
+msgid "Confirm"
+msgstr "Confirmar"
+
+#. module: l10n_ec_pos
+#: model:ir.actions.act_window,name:l10n_ec_pos.action_cash_box_coin_wizard
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.view_cash_box_closed_wizard_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.view_cash_box_open_wizard_form
+msgid "Count Cash"
+msgstr "Conteo efectivo"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__create_uid
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_closed_wizard__create_uid
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_coin__create_uid
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_coin_line_wizard__create_uid
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_coin_wizard__create_uid
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_open_wizard__create_uid
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session__create_uid
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session_movement__create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__create_date
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_closed_wizard__create_date
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_coin__create_date
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_coin_line_wizard__create_date
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_coin_wizard__create_date
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_open_wizard__create_date
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session__create_date
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session_movement__create_date
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: l10n_ec_pos
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.report_cash_closing_template
+msgid "Credit"
+msgstr "Crédito"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session_movement__credit_note_id
+#: model:ir.model.fields.selection,name:l10n_ec_pos.selection__cash_box_session_movement__operation_type__refund
+msgid "Credit Note"
+msgstr "Nota de crédito"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__currency_id
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_base_wizard__currency_id
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_closed_wizard__currency_id
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_coin__currency_id
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_open_wizard__currency_id
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session__currency_id
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session_movement__currency_id
+msgid "Currency"
+msgstr "Divisa"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__current_session_id
+msgid "Current Session"
+msgstr "Sesión actual"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session_movement__partner_id
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.report_cash_closing_template
+msgid "Customer"
+msgstr "Cliente"
+
+#. module: l10n_ec_pos
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.view_cash_box_closed_wizard_form
+msgid ""
+"Diferencia en cierre de caja sobrepasa el limite permitido, se notificara a "
+"los administradores de caja."
+msgstr ""
+
+#. module: l10n_ec_pos
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.view_cash_box_closed_wizard_form
+msgid ""
+"Diferencia en cierre de caja, valor NEGATIVO se ira a la cuenta de perdidas."
+msgstr ""
+
+#. module: l10n_ec_pos
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.view_cash_box_closed_wizard_form
+msgid ""
+"Diferencia en cierre de caja, valor POSITIVO ira a la cuenta de ganancias"
+msgstr ""
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session__diff_balance
+msgid "Diff Balance"
+msgstr "Balance diferencia"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session__diff_move_id
+msgid "Diff Move"
+msgstr "Asiento diferencia"
+
+#. module: l10n_ec_pos
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.report_cash_closing_template
+msgid "Difference"
+msgstr "Diferencia"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__display_name
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_closed_wizard__display_name
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_coin__display_name
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_coin_line_wizard__display_name
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_coin_wizard__display_name
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_open_wizard__display_name
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session__display_name
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session_movement__display_name
+msgid "Display Name"
+msgstr "Nombre mostrado"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields.selection,name:l10n_ec_pos.selection__cash_box_session_movement__state__done
+msgid "Done"
+msgstr "Hecho"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields.selection,name:l10n_ec_pos.selection__cash_box_session_movement__state__draft
+msgid "Draft"
+msgstr "Borrador"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_closed_wizard__exceeds_limit
+msgid "Exceeds Limit"
+msgstr "Excede el limite"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_closed_wizard__final_balance
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.report_cash_closing_template
+msgid "Final Balance"
+msgstr "Balance Final"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session__final_balance
+msgid "Final balance"
+msgstr "Balance final"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session_movement__state
+msgid "Financial statement"
+msgstr "Estado financiero"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__message_follower_ids
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session__message_follower_ids
+msgid "Followers"
+msgstr "Seguidores"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__message_partner_ids
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session__message_partner_ids
+msgid "Followers (Partners)"
+msgstr "Seguidores (Contactos)"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,help:l10n_ec_pos.field_cash_box__activity_type_icon
+#: model:ir.model.fields,help:l10n_ec_pos.field_cash_box_session__activity_type_icon
+msgid "Font awesome icon e.g. fa-tasks"
+msgstr "Icono de Font Awesome, por ejemplo, fa-tasks"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__gain_account_id
+msgid "Gain Account"
+msgstr "Cuenta ganancias"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__has_message
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session__has_message
+msgid "Has Message"
+msgstr "Tiene un mensaje"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__id
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_closed_wizard__id
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_coin__id
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_coin_line_wizard__id
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_coin_wizard__id
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_open_wizard__id
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session__id
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session_movement__id
+msgid "ID"
+msgstr ""
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__activity_exception_icon
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session__activity_exception_icon
+msgid "Icon"
+msgstr "Icono"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,help:l10n_ec_pos.field_cash_box__activity_exception_icon
+#: model:ir.model.fields,help:l10n_ec_pos.field_cash_box_session__activity_exception_icon
+msgid "Icon to indicate an exception activity."
+msgstr "Icono para indicar una actividad de excepción."
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,help:l10n_ec_pos.field_cash_box__message_needaction
+#: model:ir.model.fields,help:l10n_ec_pos.field_cash_box_session__message_needaction
+msgid "If checked, new messages require your attention."
+msgstr "Si está marcada, hay nuevos mensajes que requieren su atención."
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,help:l10n_ec_pos.field_cash_box__message_has_error
+#: model:ir.model.fields,help:l10n_ec_pos.field_cash_box__message_has_sms_error
+#: model:ir.model.fields,help:l10n_ec_pos.field_cash_box_session__message_has_error
+#: model:ir.model.fields,help:l10n_ec_pos.field_cash_box_session__message_has_sms_error
+msgid "If checked, some messages have a delivery error."
+msgstr "Si está marcada, algunos mensajes tienen error de envío."
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields.selection,name:l10n_ec_pos.selection__cash_box_session__state__in_progress
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.view_cash_box_session_search
+msgid "In progress"
+msgstr "En progreso"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_open_wizard__initial_balance
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.report_cash_closing_template
+msgid "Initial Balance"
+msgstr "Saldo inicial"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session__initial_balance
+msgid "Initial balance"
+msgstr "Balance inicial"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session_movement__invoice_id
+msgid "Invoice"
+msgstr "Factura"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__is_administrator
+msgid "Is Administrator"
+msgstr "Es administrador"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__is_cash_box_admin
+msgid "Is Cash Box Admin"
+msgstr "Administrador Caja"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__is_cash_box_responsible
+msgid "Is Cash Box Responsible"
+msgstr "Es responsable de caja"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__message_is_follower
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session__message_is_follower
+msgid "Is Follower"
+msgstr "Es un seguidor"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__journal_id
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.report_cash_closing_template
+msgid "Journal"
+msgstr "Diario"
+
+#. module: l10n_ec_pos
+#: model:ir.ui.menu,name:l10n_ec_pos.cash_box_account_journal_menu
+msgid "Journals"
+msgstr "Diarios"
+
+#. module: l10n_ec_pos
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.report_cash_closing_template
+msgid "Journals Summary"
+msgstr "Resumen diarios"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__write_uid
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_closed_wizard__write_uid
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_coin__write_uid
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_coin_line_wizard__write_uid
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_coin_wizard__write_uid
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_open_wizard__write_uid
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session__write_uid
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session_movement__write_uid
+msgid "Last Updated by"
+msgstr "Última actualización por"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__write_date
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_closed_wizard__write_date
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_coin__write_date
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_coin_line_wizard__write_date
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_coin_wizard__write_date
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_open_wizard__write_date
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session__write_date
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session_movement__write_date
+msgid "Last Updated on"
+msgstr "Última actualización el"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__loss_account_id
+msgid "Loss Account"
+msgstr "Cuenta perdidas"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__message_has_error
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session__message_has_error
+msgid "Message Delivery error"
+msgstr "Error de envío de mensaje"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__message_ids
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session__message_ids
+msgid "Messages"
+msgstr "Mensajes"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__movement_seq_id
+msgid "Movement Sequence"
+msgstr "Secuencia movimientos"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session__movement_ids
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.view_cash_box_session_form
+msgid "Movements"
+msgstr "Movimientos"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__my_activity_date_deadline
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session__my_activity_date_deadline
+msgid "My Activity Deadline"
+msgstr "Fecha límite de mi actividad"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__name
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_coin__name
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session__name
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session_movement__name
+msgid "Name"
+msgstr "Nombre"
+
+#. module: l10n_ec_pos
+#. odoo-python
+#: code:addons/l10n_ec_pos/models/cash_box.py:0
+msgid "New"
+msgstr "Nuevo"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__activity_calendar_event_id
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session__activity_calendar_event_id
+msgid "Next Activity Calendar Event"
+msgstr "Próximo evento del calendario de actividades"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__activity_date_deadline
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session__activity_date_deadline
+msgid "Next Activity Deadline"
+msgstr "Fecha límite para la próxima actividad"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__activity_summary
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session__activity_summary
+msgid "Next Activity Summary"
+msgstr "Resumen de la próxima actividad"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__activity_type_id
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session__activity_type_id
+msgid "Next Activity Type"
+msgstr "Siguiente tipo de actividad"
+
+#. module: l10n_ec_pos
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.report_cash_closing_template
+msgid "Number"
+msgstr "Número"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__message_needaction_counter
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session__message_needaction_counter
+msgid "Number of Actions"
+msgstr "Número de acciones"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__message_has_error_counter
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session__message_has_error_counter
+msgid "Number of errors"
+msgstr "Número de errores"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,help:l10n_ec_pos.field_cash_box__message_needaction_counter
+#: model:ir.model.fields,help:l10n_ec_pos.field_cash_box_session__message_needaction_counter
+msgid "Number of messages requiring action"
+msgstr "Número de mensajes que requieren una acción"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,help:l10n_ec_pos.field_cash_box__message_has_error_counter
+#: model:ir.model.fields,help:l10n_ec_pos.field_cash_box_session__message_has_error_counter
+msgid "Number of messages with delivery error"
+msgstr "Número de mensajes con error de envío"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields.selection,name:l10n_ec_pos.selection__cash_box__state__open
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.view_cash_box_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.view_cash_box_search
+msgid "Open"
+msgstr "Abrir"
+
+#. module: l10n_ec_pos
+#. odoo-python
+#: code:addons/l10n_ec_pos/wizard/cash_box_wizard.py:0
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.view_cash_box_kanban
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.view_cash_box_open_wizard_form
+msgid "Open Cash Box"
+msgstr "Abrir caja"
+
+#. module: l10n_ec_pos
+#: model:ir.model,name:l10n_ec_pos.model_cash_box_open_wizard
+msgid "Open Cash Box Wizard"
+msgstr "Asistente apertura de caja"
+
+#. module: l10n_ec_pos
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.view_cash_box_kanban
+msgid "Opened"
+msgstr "Abierto"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_coin_wizard__opened_wizard_id
+msgid "Opened Wizard"
+msgstr "Asistente apertura"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session__opening_date
+msgid "Opening Date"
+msgstr "Fecha apertura"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_base_wizard__opening_note
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_closed_wizard__opening_note
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_open_wizard__opening_note
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session__opening_note
+msgid "Opening Note"
+msgstr "Nota de apertura"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session_movement__operation_type
+msgid "Operation Type"
+msgstr "Tipo Operación"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields.selection,name:l10n_ec_pos.selection__cash_box_session_movement__operation_type__order
+msgid "Order"
+msgstr "Orden"
+
+#. module: l10n_ec_pos
+#: model:ir.module.category,name:l10n_ec_pos.cash_box_access
+#: model:ir.ui.menu,name:l10n_ec_pos.cash_box_root_menu
+msgid "POS PENTA"
+msgstr ""
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields.selection,name:l10n_ec_pos.selection__cash_box_session_movement__state__paid
+msgid "Paid"
+msgstr "Pagado"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session_movement__payment_id
+#: model:ir.model.fields.selection,name:l10n_ec_pos.selection__cash_box_session_movement__operation_type__payment
+msgid "Payment"
+msgstr "Pago"
+
+#. module: l10n_ec_pos
+#: model:ir.model,name:l10n_ec_pos.model_account_payment
+msgid "Payments"
+msgstr "Pagos"
+
+#. module: l10n_ec_pos
+#. odoo-python
+#: code:addons/l10n_ec_pos/models/cash_box.py:0
+msgid "Please configure the sequence for cash box sessions."
+msgstr "Configure la secuencia para las sesiones de caja."
+
+#. module: l10n_ec_pos
+#. odoo-python
+#: code:addons/l10n_ec_pos/models/cash_box.py:0
+msgid "Please configure the sequence for cash session movements."
+msgstr ""
+"Por favor configure la secuencia para los movimientos de la sesión de caja."
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields.selection,name:l10n_ec_pos.selection__cash_box_session_movement__state__posted
+msgid "Posted"
+msgstr "Publicado"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_coin_line_wizard__quantity
+msgid "Quantity"
+msgstr "Cantidad"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields.selection,name:l10n_ec_pos.selection__cash_box_session_movement__operation_type__quote
+msgid "Quote"
+msgstr "Cotización"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__rating_ids
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session__rating_ids
+msgid "Ratings"
+msgstr "Calificaciones"
+
+#. module: l10n_ec_pos
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.report_cash_closing_template
+msgid "Reference"
+msgstr "Referencia"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session__responsible_close
+msgid "Responsible (Close)"
+msgstr "Responsable (Cierre)"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session__responsible_open
+msgid "Responsible (Open)"
+msgstr "Responsable (Apertura)"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__activity_user_id
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session__activity_user_id
+msgid "Responsible User"
+msgstr "Usuario Responsable"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__responsible_ids
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.report_cash_closing_template
+msgid "Responsibles"
+msgstr "Responsables"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__message_has_sms_error
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr "Error de envío del SMS"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__l10n_ec_sri_payment_id
+msgid "SRI Payment Method"
+msgstr "Método de pago (SRI)"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session_movement__order_id
+msgid "Sale Order"
+msgstr "Orden de Venta"
+
+#. module: l10n_ec_pos
+#: model:ir.model,name:l10n_ec_pos.model_sale_order
+msgid "Sales Order"
+msgstr "Orden de venta"
+
+#. module: l10n_ec_pos
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.report_cash_closing_template
+msgid "Sales Summary"
+msgstr "Resumen ventas"
+
+#. module: l10n_ec_pos
+#. odoo-python
+#: code:addons/l10n_ec_pos/wizard/cash_box_wizard.py:0
+msgid "Select Coins"
+msgstr "Seleccionar monedas"
+
+#. module: l10n_ec_pos
+#: model:ir.model,name:l10n_ec_pos.model_cash_box_coin_wizard
+msgid "Select Coins for Balance"
+msgstr "Seleccione monedas para el saldo"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_base_wizard__session_id
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_closed_wizard__session_id
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_open_wizard__session_id
+msgid "Session"
+msgstr "Sesión"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__session_seq_id
+msgid "Session Sequence"
+msgstr "Secuencia sesión"
+
+#. module: l10n_ec_pos
+#: model:ir.actions.act_window,name:l10n_ec_pos.action_cash_box_session
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__session_ids
+#: model:ir.ui.menu,name:l10n_ec_pos.cash_box_session_menu
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.view_cash_box_form
+msgid "Sessions"
+msgstr "Sesiones"
+
+#. module: l10n_ec_pos
+#: model:ir.actions.act_window,name:l10n_ec_pos.action_cash_config_settings
+#: model:ir.ui.menu,name:l10n_ec_pos.cash_box_settings_menu
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.view_cash_box_form
+msgid "Settings"
+msgstr "Ajustes"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__state
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session__state
+msgid "State"
+msgstr "Estado"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,help:l10n_ec_pos.field_cash_box__activity_state
+#: model:ir.model.fields,help:l10n_ec_pos.field_cash_box_session__activity_state
+msgid ""
+"Status based on activities\n"
+"Overdue: Due date is already passed\n"
+"Today: Activity date is today\n"
+"Planned: Future activities."
+msgstr ""
+"Estado según actividades\n"
+"Vencido: La fecha de vencimiento ya pasó\n"
+"Hoy: La fecha de la actividad es hoy\n"
+"Planificado: Actividades futuras."
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_closed_wizard__suggested_balance
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session__suggested_balance
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.report_cash_closing_template
+msgid "Suggested Balance"
+msgstr "Balance sugerido"
+
+#. module: l10n_ec_pos
+#. odoo-python
+#: code:addons/l10n_ec_pos/models/cash_box.py:0
+#: model:ir.model.constraint,message:l10n_ec_pos.constraint_cash_box_unique_cash_box_name
+msgid "The box name already exists."
+msgstr "El nombre de la caja ya existe."
+
+#. module: l10n_ec_pos
+#. odoo-python
+#: code:addons/l10n_ec_pos/wizard/cash_box_wizard.py:0
+msgid "The cash box is already closed."
+msgstr "La caja ya está cerrada."
+
+#. module: l10n_ec_pos
+#. odoo-python
+#: code:addons/l10n_ec_pos/wizard/cash_box_wizard.py:0
+msgid "The cash box is already open."
+msgstr "La caja ya está abierta."
+
+#. module: l10n_ec_pos
+#. odoo-python
+#: code:addons/l10n_ec_pos/models/cash_box.py:0
+msgid ""
+"The cashier '%s' is already assigned to the cash box '%s'. Please choose "
+"another cashier."
+msgstr "El cajero '%s' ya está asignado a la caja '%s'. Elija otro cajero."
+
+#. module: l10n_ec_pos
+#. odoo-python
+#: code:addons/l10n_ec_pos/models/cash_box.py:0
+msgid ""
+"The close journal '%s' is already assigned to the cash box '%s'. Please "
+"choose another journal."
+msgstr ""
+"El diario de cierre '%s' ya está asignado a la caja '%s'. Elija otro diario."
+
+#. module: l10n_ec_pos
+#. odoo-python
+#: code:addons/l10n_ec_pos/wizard/cash_box_wizard.py:0
+msgid ""
+"The closing balance exceeds the allowed difference limit. Please contact a "
+"cash box administrator to approve the closing."
+msgstr ""
+"El saldo de cierre supera el límite de diferencia permitido. Comuníquese "
+"con el administrador de la caja para aprobar el cierre."
+
+#. module: l10n_ec_pos
+#. odoo-python
+#: code:addons/l10n_ec_pos/models/coins.py:0
+#: model:ir.model.constraint,message:l10n_ec_pos.constraint_cash_box_coin_unique_cash_box_coin
+msgid "The coin name already exists."
+msgstr "El nombre de la moneda ya existe."
+
+#. module: l10n_ec_pos
+#. odoo-python
+#: code:addons/l10n_ec_pos/models/cash_box.py:0
+msgid ""
+"The journal '%s' is already assigned to the cash box '%s'. Please choose "
+"another journal."
+msgstr "El diario '%s' ya está asignado a la caja '%s'. Elija otro diario."
+
+#. module: l10n_ec_pos
+#. odoo-python
+#: code:addons/l10n_ec_pos/wizard/cash_box_wizard.py:0
+msgid "The journal must have a default account."
+msgstr "El diario debe tener una cuenta predeterminada."
+
+#. module: l10n_ec_pos
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.res_config_settings_view_form
+msgid ""
+"The maximum amount of cash imbalance allowed before a warning is raised"
+msgstr ""
+"La cantidad máxima de descuadre de efectivo permitida antes de que se "
+"levante una advertencia"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,help:l10n_ec_pos.field_res_config_settings__cash_imbalance_limit
+msgid ""
+"The maximum amount of cash imbalance allowed before a warning is raised."
+msgstr ""
+"La cantidad máxima de desequilibrio de efectivo permitido antes de que se "
+"levante una advertencia."
+
+#. module: l10n_ec_pos
+#. odoo-python
+#: code:addons/l10n_ec_pos/models/sale_order.py:0
+msgid ""
+"The user is not assigned to any register. Assign a register before creating "
+"an order."
+msgstr ""
+"El usuario no está asignado a ninguna caja. Asigne una caja antes de crear "
+"un pedido."
+
+#. module: l10n_ec_pos
+#. odoo-python
+#: code:addons/l10n_ec_pos/models/account_payment.py:0
+msgid ""
+"The user is not assigned to any register. Assign a register before creating "
+"an payment."
+msgstr ""
+"El usuario no está asignado a ninguna caja. Asigne una caja antes de crear "
+"un pago."
+
+#. module: l10n_ec_pos
+#. odoo-python
+#: code:addons/l10n_ec_pos/models/account_payment.py:0
+#: code:addons/l10n_ec_pos/models/sale_order.py:0
+msgid "This sales order is related to an already closed cashier session."
+msgstr ""
+"Esta orden de venta está relacionada con una sesión de cajero ya cerrada."
+
+#. module: l10n_ec_pos
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.report_cash_closing_template
+msgid "Total"
+msgstr ""
+
+#. module: l10n_ec_pos
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.report_cash_closing_template
+msgid "Transfer/Deposit"
+msgstr "Tranferencia/Déposito"
+
+#. module: l10n_ec_pos
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.report_cash_closing_template
+msgid "Type"
+msgstr "Tipo"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,help:l10n_ec_pos.field_cash_box__activity_exception_decoration
+#: model:ir.model.fields,help:l10n_ec_pos.field_cash_box_session__activity_exception_decoration
+msgid "Type of the exception activity on record."
+msgstr "Tipo de actividad de excepción registrada."
+
+#. module: l10n_ec_pos
+#: model:res.groups,comment:l10n_ec_pos.group_cash_box_admin
+msgid "Users who can see all boxes"
+msgstr "Usuarios que pueden ver todas las cajas"
+
+#. module: l10n_ec_pos
+#: model:res.groups,comment:l10n_ec_pos.group_cash_box_user
+msgid "Users who can see only their boxes or where they are auxiliary"
+msgstr "Usuarios que solo pueden ver sus cajas o donde son auxiliares"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_coin__value
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_coin_line_wizard__value
+msgid "Value"
+msgstr "Valor"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__warehouse_id
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos.view_cash_box_search
+msgid "Warehouse"
+msgstr "Almacen"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box__website_message_ids
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_session__website_message_ids
+msgid "Website Messages"
+msgstr "Mensajes del sitio web"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,help:l10n_ec_pos.field_cash_box__website_message_ids
+#: model:ir.model.fields,help:l10n_ec_pos.field_cash_box_session__website_message_ids
+msgid "Website communication history"
+msgstr "Historial de comunicación del sitio web"
+
+#. module: l10n_ec_pos
+#: model:ir.model.fields,field_description:l10n_ec_pos.field_cash_box_coin_line_wizard__wizard_id
+msgid "Wizard"
+msgstr "Asistente"
+
+#. module: l10n_ec_pos
+#. odoo-python
+#: code:addons/l10n_ec_pos/models/cash_box.py:0
+msgid "You cannot delete a cash box with active sessions."
+msgstr "No se puede eliminar una caja con sesiones activas."
+
+#. module: l10n_ec_pos
+#. odoo-python
+#: code:addons/l10n_ec_pos/models/sale_order.py:0
+msgid ""
+"You don't have any open cashier sessions. Please open one before creating "
+"an order."
+msgstr ""
+"No tienes ninguna sesión de cajero abierta. Por favor, abre una antes de "
+"crear un pedido."
+
+#. module: l10n_ec_pos
+#. odoo-python
+#: code:addons/l10n_ec_pos/models/account_payment.py:0
+msgid ""
+"You don't have any open cashier sessions. Please open one before creating "
+"an payment."
+msgstr ""
+"No tienes ninguna sesión de cajero abierta. Abre una antes de realizar un "
+"pago."
+
+#. module: l10n_ec_pos
+#. odoo-python
+#: code:addons/l10n_ec_pos/models/cash_box.py:0
+msgid "You must close the current session before making changes to the box."
+msgstr "Debes cerrar la sesión actual antes de realizar cambios en la caja."

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <record id="view_order_sale_stock_form_inherit_sale_stock_l10n_ec_point_of_sale" model="ir.ui.view">
+    <record id="view_order_sale_stock_form_inherit_sale_stock_l10n_ec_pos" model="ir.ui.view">
         <field name="name">sale.order.sale.stock.form.inherit.l10n.ec.point.of.sale</field>
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale_stock.view_order_form_inherit_sale_stock"/>
@@ -15,7 +15,7 @@
         </field>
     </record>
 
-    <record id="view_order_form_inherit_sale_stock_l10n_ec_point_of_sale" model="ir.ui.view">
+    <record id="view_order_form_inherit_sale_stock_l10n_ec_pos" model="ir.ui.view">
         <field name="name">sale.order.form.inherit.l10n.ec.point.of.sale</field>
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
