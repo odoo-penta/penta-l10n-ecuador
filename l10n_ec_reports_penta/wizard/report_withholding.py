@@ -178,9 +178,6 @@ class ReportSalesWithholdingWizard(models.TransientModel):
 					continue
 				if not reten.l10n_ec_withhold_tax_amount:
 					continue
-				# Filtrar solo retenciones de clientes: partner con customer_rank > 0
-				if move.partner_id and move.partner_id.customer_rank <= 0:
-					continue
 				# Aplicar filtro de porcentaje si corresponde
 				percent = abs(reten.tax_ids.amount)
 				if self.apply_percentage_filter or self.use_percentage_range:
