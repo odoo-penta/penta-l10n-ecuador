@@ -82,7 +82,8 @@ class PentalabReportBalanceWizard(models.TransientModel):
     def action_generate_report(self):
         """Genera el reporte y almacena el archivo en el wizard"""
         company_id = self.env.company.id  # Obtener la empresa actual
-        report_id = 23  # ID del reporte fijo
+        report = self.env.ref('l10n_ec_reports.l10n_ec_balance_sheet')
+        report_id = report.id
         ultimo_dia = self.date_to.strftime('%d-%m-%Y')  # Formatear la fecha como espera el método
         date_to = datetime.strptime(ultimo_dia, '%d-%m-%Y').date()
         options = self.extraer_options_generico(company_id,report_id,date_to)
