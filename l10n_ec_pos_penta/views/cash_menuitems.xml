@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <!-- APP -->
+    <menuitem
+        id="cash_box_root_menu"
+        name="POS PENTA"
+        sequence="10"
+        action="action_cash_box"
+        groups="l10n_ec_pos_pentagroup_cash_box_admin,l10n_ec_pos_pentagroup_cash_box_user"
+        web_icon="l10n_ec_pos,static/description/icon.png"
+    />
+    <!-- CAJA -->
+    <menuitem id="cash_box_control" parent="cash_box_root_menu" name="Cash control" sequence="10" groups="l10n_ec_pos_pentagroup_cash_box_admin,l10n_ec_pos_pentagroup_cash_box_user"/>
+    <menuitem id="cash_box_menu" parent="cash_box_control" action="action_cash_box" sequence="1" groups="l10n_ec_pos_pentagroup_cash_box_admin,l10n_ec_pos_pentagroup_cash_box_user"/>
+    <menuitem id="cash_box_session_menu" parent="cash_box_control" action="action_cash_box_session" sequence="2" groups="l10n_ec_pos_pentagroup_cash_box_admin,l10n_ec_pos_pentagroup_cash_box_user"/>
+    <!-- CONFIGURACION -->
+    <menuitem
+        id="cash_box_config_menu"
+        name="Configuration"
+        parent="cash_box_root_menu"
+        sequence="50"
+        groups="l10n_ec_pos_pentagroup_cash_box_admin"
+    />
+    <menuitem id="cash_box_settings_menu" name="Settings" parent="cash_box_config_menu" action="action_cash_config_settings" sequence="1" groups="l10n_ec_pos_pentagroup_cash_box_admin"/>
+    <menuitem id="cash_box_account_journal_menu" parent="cash_box_config_menu" action="account.action_account_journal_form" sequence="2" groups="l10n_ec_pos_pentagroup_cash_box_admin"/>
+    <menuitem id="cash_box_coins_menu" parent="cash_box_config_menu" action="action_cash_box_coin" sequence="3" groups="l10n_ec_pos_pentagroup_cash_box_admin"/>
+
+</odoo>

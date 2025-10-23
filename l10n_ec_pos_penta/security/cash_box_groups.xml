@@ -22,6 +22,6 @@
 
     <!-- Asignar Administrador de Caja al usuario Administrador -->
     <record id="base.user_admin" model="res.users">
-        <field name="groups_id" eval="[(4, ref('l10n_ec_pos.group_cash_box_admin'))]"/>
+        <field name="groups_id" eval="[(4, ref('l10n_ec_pos_pentagroup_cash_box_admin'))]"/>
     </record>
 </odoo>
