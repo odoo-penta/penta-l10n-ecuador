@@ -33,7 +33,7 @@ class AccountPayment(models.Model):
             movement = self.env['cash.box.session']._create_movement(self.cash_session_id.id, self.partner_id.id, 'payment', self.id)
             self.code_movement = movement.name
         res = super().action_post()
-        if self.move_id:
+        if self.move_id and self.cash_session_id:
             if self.move_id.ref:
                 self.move_id.ref += ' - ' + movement.name
             else:
