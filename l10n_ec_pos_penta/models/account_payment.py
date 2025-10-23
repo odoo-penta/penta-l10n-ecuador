@@ -46,7 +46,7 @@ class AccountPayment(models.Model):
     def create(self, vals_list):
         payments  = super().create(vals_list)
         for payment in payments:
-            if not payment.cash_session_id and self.env.user.has_group('l10n_ec_pos_pentagroup_cash_box_user') and payment.payment_type == 'inbound':
+            if not payment.cash_session_id and self.env.user.has_group('l10n_ec_pos_penta.group_cash_box_user') and payment.payment_type == 'inbound':
                 show_error = False
                 cash_box = self.env['cash.box'].search(['|',('cashier_ids', 'in', self.env.user.id),('responsible_ids', 'in', self.env.user.id)], limit=1)
                 if not cash_box:

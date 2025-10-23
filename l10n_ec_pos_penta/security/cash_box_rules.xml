@@ -5,7 +5,7 @@
         <field name="name">Cash Box: Only responsible or additional users</field>
         <field name="model_id" ref="model_cash_box"/>
         <field name="domain_force">['|', ('responsible_ids', 'in', user.id), ('cashier_ids', 'in', user.id)]</field>
-        <field name="groups" eval="[(4, ref('l10n_ec_pos_pentagroup_cash_box_user'))]"/>
+        <field name="groups" eval="[(4, ref('l10n_ec_pos_penta.group_cash_box_user'))]"/>
         <field name="perm_read" eval="True"/>
         <field name="perm_write" eval="True"/>
         <field name="perm_create" eval="True"/>
@@ -17,7 +17,7 @@
         <field name="name">Cash Box: Admin see all</field>
         <field name="model_id" ref="model_cash_box"/>
         <field name="domain_force">[(1,'=',1)]</field>
-        <field name="groups" eval="[(4, ref('l10n_ec_pos_pentagroup_cash_box_admin'))]"/>
+        <field name="groups" eval="[(4, ref('l10n_ec_pos_penta.group_cash_box_admin'))]"/>
         <field name="perm_read" eval="True"/>
         <field name="perm_write" eval="True"/>
         <field name="perm_create" eval="True"/>

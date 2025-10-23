@@ -255,4 +255,4 @@ class CashBoxSession(models.Model):
     
     def print_summary(self):
         self.ensure_one()
-        return self.env.ref('l10n_ec_pos_pentaaction_cash_closing_report').report_action(self)
+        return self.env.ref('l10n_ec_pos_penta.action_cash_closing_report').report_action(self)

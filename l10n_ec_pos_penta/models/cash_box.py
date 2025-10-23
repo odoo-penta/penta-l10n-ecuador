@@ -106,12 +106,12 @@ class CashBox(models.Model):
     @api.depends('name')
     def _compute_is_cash_box_admin(self):
         for rec in self:
-            rec.is_cash_box_admin = self.env.user.has_group('l10n_ec_pos_pentagroup_cash_box_admin')
+            rec.is_cash_box_admin = self.env.user.has_group('l10n_ec_pos_penta.group_cash_box_admin')
             
     @api.depends_context('uid')
     def _compute_is_administrator(self):
         for rec in self:
-            if self.env.user.has_group('l10n_ec_pos_pentagroup_cash_box_admin'):
+            if self.env.user.has_group('l10n_ec_pos_penta.group_cash_box_admin'):
                 rec.is_administrator = True
             else:
                 rec.is_administrator = self.env.user in rec.responsible_ids
@@ -122,8 +122,8 @@ class CashBox(models.Model):
             rec.is_cash_box_responsible = self.env.user in rec.responsible_ids
                 
     def asign_cash_user_group(self, user):
-        user_group = self.env.ref('l10n_ec_pos_pentagroup_cash_box_user')
-        if not user.has_group('l10n_ec_pos_pentagroup_cash_box_user'):
+        user_group = self.env.ref('l10n_ec_pos_penta.group_cash_box_user')
+        if not user.has_group('l10n_ec_pos_penta.group_cash_box_user'):
             user.groups_id = [(4, user_group.id, 0)]
         return True
     

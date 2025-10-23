@@ -8,7 +8,7 @@
         <field name="inherit_id" ref="base.res_config_settings_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//form" position="inside">
-                <app string="Cash Box" data-string="Cash Box" name="l10n_ec_pos" groups="l10n_ec_pos_pentagroup_cash_box_admin">
+                <app string="Cash Box" data-string="Cash Box" name="l10n_ec_pos" groups="l10n_ec_pos_penta.group_cash_box_admin">
                     <block title="Closing Cash" id="cash_setting_container">
                         <setting id="imbalance" help="The maximum amount of cash imbalance allowed before a warning is raised" documentation="">
                             <field name="cash_imbalance_limit"/>
@@ -22,7 +22,7 @@
     <record id="action_cash_config_settings" model="ir.actions.act_window">
         <field name="name">Settings</field>
         <field name="res_model">res.config.settings</field>
-        <field name="view_id" ref="l10n_ec_pos_pentares_config_settings_view_form"/>
+        <field name="view_id" ref="l10n_ec_pos_penta.res_config_settings_view_form"/>
         <field name="view_mode">form</field>
         <field name="target">inline</field>
         <field name="context">{'module' : 'l10n_ec_pos', 'bin_size': False}</field>

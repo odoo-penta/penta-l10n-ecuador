@@ -20,7 +20,7 @@ class SaleOrder(models.Model):
         if 'warehouse_id' not in fields_list:
             fields_list.append('warehouse_id')
         res = super().default_get(fields_list)
-        if self.env.user.has_group('l10n_ec_pos_pentagroup_cash_box_user'):
+        if self.env.user.has_group('l10n_ec_pos_penta.group_cash_box_user'):
             cash_box = self.env['cash.box'].search(['|',('cashier_ids', 'in', self.env.user.id),('responsible_ids', 'in', self.env.user.id)], limit=1)
             if not cash_box:
                 raise UserError(_("The user is not assigned to any register. Assign a register before creating an order."))
