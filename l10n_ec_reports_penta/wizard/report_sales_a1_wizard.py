@@ -122,7 +122,7 @@ class ReportSalesA1Wizard(models.TransientModel):
                     unique_tag_groups.append(tag_names)
             # Si no hay tags, ponemos una lista con un solo elemento '' para que haga una fila igual
             tags_to_iterate = [", ".join(tags) for tags in unique_tag_groups] if unique_tag_groups else ['']
-            for tag in tags_to_iterate:                                    
+            for tag_name in tags_to_iterate:                        
                 row += 1
                 worksheet.write(row, 0, cont, formats['center'])
                 worksheet.write(row, 1, invoice.l10n_latam_document_type_id.name, formats['center'])
@@ -142,12 +142,29 @@ class ReportSalesA1Wizard(models.TransientModel):
                 # Mapear impuestos
                 base_per_group = {tg.id: 0.0 for tg in tax_groups}
                 iva_per_group = {tg.id: 0.0 for tg in tax_groups}
-                for taxes in invoice.tax_totals['subtotals']:
-                    for tax in taxes['tax_groups']:
-                        if tax['id'] in tax_groups.ids:
-                            tg_id = tax['id']
-                            base_per_group[tg_id] += taxes['base_amount']
-                            iva_per_group[tg_id] += taxes['tax_amount']
+                # Buscar todas las líneas que contienen este mismo tag
+                tag_lines = invoice.invoice_line_ids.filtered(
+                    lambda l, tag=tag_name: ", ".join(sorted(l.tax_tag_ids.mapped('name'))) == tag
+                )
+                for line in tag_lines:
+                    # Para cada impuesto en la línea
+                    for tax in line.tax_ids:
+                        tax_group_id = tax.tax_group_id.id
+                        if tax_group_id in tax_groups.ids:
+                            # Calcular los montos (base e impuesto)
+                            taxes_res = tax.compute_all(
+                                line.price_unit,
+                                currency=invoice.currency_id,
+                                quantity=line.quantity,
+                                product=line.product_id,
+                                partner=invoice.partner_id
+                            )
+                            base_amount = taxes_res['total_excluded']
+                            iva_amount = sum(t['amount'] for t in taxes_res['taxes'])
+                            # Sumar al grupo correspondiente
+                            base_per_group[tax_group_id] += base_amount
+                            iva_per_group[tax_group_id] += iva_amount
+                # Escribir bases e impuestos por grupo
                 for tg in tax_groups:
                     worksheet.write(row, tax_struct[tg.id]['base'], base_per_group[tg.id], formats['number'])
                     worksheet.write(row, tax_struct[tg.id]['iva'], iva_per_group[tg.id], formats['number'])
@@ -157,7 +174,7 @@ class ReportSalesA1Wizard(models.TransientModel):
                 # Casilla Retenciones
                 has_posted_withhold = any(ret.state == 'posted' for ret in invoice.l10n_ec_withhold_ids)
                 worksheet.write(row, tax_col+1, 'SI' if has_posted_withhold else 'NO', formats['center'])
-                worksheet.write(row, tax_col+2, tag or '', formats['border'])
+                worksheet.write(row, tax_col+2, tag_name or '', formats['border'])
                 worksheet.write(row, tax_col+3, invoice.invoice_payment_term_id.name if invoice.invoice_payment_term_id else '', formats['border'])
                 worksheet.write(row, tax_col+4, invoice.l10n_ec_sri_payment_id.name if invoice.l10n_ec_sri_payment_id else '', formats['border'])
                 cont += 1
