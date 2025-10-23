@@ -56,6 +56,7 @@
                         <table class="table table-sm" style="width:100%; border-collapse:collapse; border:1px solid #000;">
                             <thead>
                                 <tr style="background:#dde6f1; text-align:center;">
+                                    <th>Journal</th>
                                     <th>Number</th>
                                     <th>Reference</th>
                                     <th>Customer</th>
@@ -67,14 +68,26 @@
                             </thead>
                             <tbody>
                                 <t t-if="payments">
+                                    <!-- Inicializar totales -->
+                                    <t t-set="total_cash" t-value="0.0"/>
+                                    <t t-set="total_transfer" t-value="0.0"/>
+                                    <t t-set="total_card" t-value="0.0"/>
+                                    <t t-set="total_general" t-value="0.0"/>
                                     <t t-foreach="payments" t-as="p">
+                                        <!-- Sumar totales -->
+                                        <t t-set="pay" t-value="payment_summary.get(p.id, {})"/>
+                                        <t t-set="total_cash" t-value="total_cash + pay.get('cash', 0.0)"/>
+                                        <t t-set="total_transfer" t-value="total_transfer + pay.get('transfer', 0.0)"/>
+                                        <t t-set="total_card" t-value="total_card + pay.get('card', 0.0)"/>
+                                        <t t-set="total_general" t-value="total_general + p.amount"/>
+                                        <!-- Datos inicio -->
                                         <tr style="text-align:left;">
+                                            <td><t t-esc="p.journal_id.name or ''"/></td>
                                             <td><t t-esc="p.name or ''"/></td>
                                             <td><t t-esc="p.code_movement"/></td>
                                             <td><t t-esc="p.partner_id.name"/></td>
                                             <!-- PAGOS -->
                                             <td class="text-center">
-                                                <t t-set="pay" t-value="payment_summary.get(p.id, {})"/>
                                                 <t t-out="'%.2f' % pay.get('cash', 0.00)"/>
                                             </td>
                                             <td class="text-center">
@@ -86,6 +99,14 @@
                                             <td><t t-esc="p.amount"/></td>
                                         </tr>
                                     </t>
+                                    <!-- Totalizador -->
+                                    <tr style="background:#e0e0e0; font-weight:bold; text-align:center;">
+                                        <td colspan="4">Total</td>
+                                        <td><t t-out="'%.2f' % total_cash"/></td>
+                                        <td><t t-out="'%.2f' % total_transfer"/></td>
+                                        <td><t t-out="'%.2f' % total_card"/></td>
+                                        <td><t t-out="'%.2f' % total_general"/></td>
+                                    </tr>
                                 </t>
                                 <t t-else="">
                                     <tr>
@@ -111,13 +132,12 @@
                                         <td><t t-out="'%.2f' % journal_data[1]"/></td> <!-- Total del diario -->
                                     </tr>
                                 </t>
-                            </tbody>
-                            <tfoot>
+                                <!-- Totalizador -->
                                 <tr style="background:#e0e0e0; font-weight:bold; text-align:center;">
                                     <td>Total</td>
                                     <td><t t-out="'%.2f' % sum(journal_payment_summary.values())"/></td>
                                 </tr>
-                            </tfoot>
+                            </tbody>
                         </table>
                         <!-- Facturas -->
                         <h4 style="margin-top:20px; margin-bottom:5px;">Invoices</h4>
@@ -140,6 +160,7 @@
                                             <td><t t-esc="i.name or ''"/></td>
                                             <td><t t-esc="i.payment_reference"/></td>
                                             <td><t t-esc="i.partner_id.name"/></td>
+                                            <td><t t-esc="i.journal_id.name"/></td>
                                             <td><t t-esc="i.amount_untaxed"/></td>
                                             <td><t t-esc="i.amount_tax"/></td>
                                             <td><t t-esc="i.amount_total"/></td>

@@ -42,8 +42,7 @@ class CashBoxSessionMovement(models.Model):
             if vals.get('name', 'New') == 'New':
                 seq = self.get_sequence(vals.get('session_id', None))
                 if seq:
-                    session_name = self.env['cash.box.session'].browse(vals.get('session_id', False)).name.split("/")[-1] if vals.get('session_id') else 'Session'
-                    vals['name'] = session_name + '/' + seq.next_by_id() or '00000'
+                    vals['name'] = seq.next_by_id() or '00000'
                 else:
                     raise UserError(_("Please configure the sequence for cash session movements."))
         return super().create(vals_list)

@@ -7,7 +7,9 @@
         <field name="inherit_id" ref="account.view_move_form"/>
         <field name="arch" type="xml">
             <xpath expr="//group[@id='other_tab_group']/group/field[@name='delivery_date']" position='after'>
-                <field name="cash_session_id"/>
+                <field name="show_cash_session" invisible="1"/>
+                <field name="cash_session_id" options="{'no_create': True, 'no_open': True}" invisible="not show_cash_session or state != 'draft'" required="show_cash_session" readonly="not show_cash_session or state != 'draft'"/>
+                <field name="code_movement"/>
             </xpath>
         </field>
     </record>

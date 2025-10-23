@@ -216,7 +216,7 @@ class CashBoxClosedWizard(models.TransientModel):
         if not account_cash:
             raise UserError(_("The journal must have a default account."))
         move_vals = {
-            'ref': _('Cash closing adjustment'),
+            'ref': _('Cash closing adjustment') + ' -' + self.cash_id.current_session_id.name,
             'journal_id': journal.id,
             'date': fields.Date.context_today(self),
             'line_ids': [],
@@ -276,18 +276,6 @@ class CashBoxClosedWizard(models.TransientModel):
         # si excede el limite de diferencia, notifica a los administardores de caja
         if self.exceeds_limit:
             raise UserError(_("The closing balance exceeds the allowed difference limit. Please contact a cash box administrator to approve the closing."))
-            """
-            for user in self.cash_id.responsible_ids:
-                self.env['mail.activity'].sudo().create({
-                    'res_model_id': self.env['ir.model']._get('cash.box').id,
-                    'res_id': self.cash_id.id,
-                    'activity_type_id': self.env.ref('mail.mail_activity_data_todo').id,
-                    'summary': 'Revisar exceso de efectivo',
-                    'note': f'La caja {self.cash_id.name} se cerró con exceso de diferencia. Por favor, revisa.',
-                    'user_id': user.id,
-                    'date_deadline': fields.Date.today(),
-                })
-            """
         else:
             # proceso de cierre
             self.cash_id.closed_cash(self.final_balance)
