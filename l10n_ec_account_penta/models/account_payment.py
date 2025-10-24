@@ -53,10 +53,16 @@ class AccountPayment(models.Model):
     
     @api.model_create_multi
     def create(self, vals_list):
-        for record in vals_list:
-            if record.get('memo') and record['memo']:
-                record['payment_reference'] = record['memo']
-                record['memo'] = False
+        from_wizard = (
+            self._context.get('active_model') == 'account.move'
+            and self._context.get('active_ids')
+            and self._context.get('default_payment_type') == 'outbound'
+        )
+        if from_wizard:
+            for record in vals_list:
+                if record.get('memo') and record['memo']:
+                    record['payment_reference'] = record['memo']
+                    record['memo'] = False
         return super().create(vals_list)
 
     @api.depends('journal_type')
