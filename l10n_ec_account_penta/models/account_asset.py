@@ -12,6 +12,14 @@ class AccountAsset(models.Model):
         index=True,
     )
 
+    custodian_id = fields.Many2one('hr.employee', string='Custodio')
+    brand = fields.Char('Marca')
+    model = fields.Char('Modelo')
+    serial_number = fields.Char('Número de Serie')
+    location = fields.Char('Ubicación física')
+    department_id = fields.Many2one('hr.department', string='Departamento o Área')
+    photo_info = fields.Html('Otra información relevante')
+
     @api.constrains('asset_code')
     def _check_asset_code_unique(self):
         """Validar que el código del activo sea único"""
