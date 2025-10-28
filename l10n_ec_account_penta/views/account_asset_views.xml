@@ -16,6 +16,10 @@
                                style="font-weight: bold;"/>
                     </group>
                 </xpath>
+                <field name="asset_group_id" position="before">
+                    <field name="plate"/>
+                    <field name="color"/>
+                </field>
             </field>
         </record>
 

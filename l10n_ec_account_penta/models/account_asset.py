@@ -10,15 +10,17 @@ class AccountAsset(models.Model):
         help='Código único alfanumérico para identificar el activo (ej: EQP-001, MOB2025)',
         size=30,
         index=True,
+        tracking=True
     )
-
-    custodian_id = fields.Many2one('hr.employee', string='Custodio')
-    brand = fields.Char('Marca')
-    model = fields.Char('Modelo')
-    serial_number = fields.Char('Número de Serie')
-    location = fields.Char('Ubicación física')
-    department_id = fields.Many2one('hr.department', string='Departamento o Área')
+    custodian_id = fields.Many2one('hr.employee', string='Custodio', tracking=True)
+    brand = fields.Char('Marca', tracking=True)
+    model = fields.Char('Modelo', tracking=True)
+    serial_number = fields.Char('Número de Serie', tracking=True)
+    location = fields.Char('Ubicación física', tracking=True)
+    department_id = fields.Many2one('hr.department', string='Departamento o Área', tracking=True)
     photo_info = fields.Html('Otra información relevante')
+    plate = fields.Char(tracking=True)
+    color = fields.Char(tracking=True)
 
     @api.constrains('asset_code')
     def _check_asset_code_unique(self):
