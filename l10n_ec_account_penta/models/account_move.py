@@ -1,9 +1,20 @@
 from odoo import models,fields, _
 from odoo.exceptions import UserError
+from datetime import datetime
 
 
 class AccountMove(models.Model):
     _inherit = 'account.move'
+    
+    def action_post(self):
+        for record in self:
+            # Validamos el control de asientos
+            if record.journal_id and record.journal_id.entry_control == 'current_month':
+                now = fields.Datetime.context_timestamp(record, datetime.now())
+                # Validamos que la fecha del asiento esté en el mismo mes y año
+                if record.date.month != now.month or record.date.year != now.year:
+                    raise UserError(_("This journal only allows entries within the current month."))
+        return super().action_post()
 
     def penta_cb_action_conciliation(self):
         """ This function is called by the 'Reconcile' button of account.move.line's

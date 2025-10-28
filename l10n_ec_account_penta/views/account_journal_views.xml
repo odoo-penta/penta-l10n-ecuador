@@ -9,6 +9,11 @@
             <field name="type" position="after">
                 <field name="payment_info_type" invisible="type not in ('cash', 'bank')"/>
             </field>
+            <xpath expr="//page[@name='advanced_settings']/group/group[9]" position="before">
+                <group string="Accounting entries control">
+                    <field name="entry_control"/>
+                </group>
+            </xpath>
         </field>
     </record>
 
