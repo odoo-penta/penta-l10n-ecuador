@@ -74,9 +74,20 @@ class PentaBankReconReportWizard(models.TransientModel):
         ]
 
     def _get_lines(self):
-        return self.env["account.move.line"].sudo().search(
-            self._get_domain_move_lines(), order="date asc, id asc"
-        )
+        domain = self._get_domain_move_lines()
+        amls = self.env["account.move.line"].sudo().search(domain, order="date asc, id asc")
+
+        # Si no hay datos, avisamos con pistas útiles
+        if not amls:
+            raise UserError(
+                "No se encontraron apuntes para los filtros seleccionados.\n\n"
+                "Verifica:\n"
+                "1) Diario tipo Banco seleccionado y con asientos 'Publicados' en el rango.\n"
+                "2) Los apuntes provengan de pagos (payment_id ≠ vacío).\n"
+                "3) Las CUENTAS contables usadas en esos apuntes tengan marcado 'Ocultar en reporte'.\n"
+                "   (Menú: Contabilidad → Configuración → Plan contable → editar cuenta y marcar la casilla)."
+            )
+        return amls
 
     # ------------------ Presentación ------------------
     def _is_reconciled(self, aml):
