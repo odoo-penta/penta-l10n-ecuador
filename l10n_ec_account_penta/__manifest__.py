@@ -28,5 +28,6 @@
         'views/account_journal_views.xml',
         'views/account_asset_views.xml',
     ],
+    'license': 'OPL-1',
 }
 
