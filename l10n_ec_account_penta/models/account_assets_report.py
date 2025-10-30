@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-
 from odoo import fields, models, _
 from collections import defaultdict
 
 MAX_NAME_LENGTH = 50
+
 
 class AssetsReportCustomHandler(models.AbstractModel):
     _inherit = 'account.asset.report.handler'
