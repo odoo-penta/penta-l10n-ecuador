@@ -18,11 +18,29 @@ class AccountAsset(models.Model):
     brand = fields.Char('Marca', tracking=True)
     model = fields.Char('Modelo', tracking=True)
     serial_number = fields.Char('Número de Serie', tracking=True)
-    location = fields.Char('Ubicación física', tracking=True)
+    location_id = fields.Many2one('hr.work.location', tracking=True)
     department_id = fields.Many2one('hr.department', string='Departamento o Área', tracking=True)
     photo_info = fields.Html('Otra información relevante')
     plate = fields.Char(tracking=True)
     color = fields.Char(tracking=True)
+    
+    analytic_distribution_text = fields.Char(
+        string="Distribución analítica",
+        compute="_compute_analytic_distribution_text",
+        store=True,
+        tracking=True,
+    )
+
+    @api.depends('analytic_distribution')
+    def _compute_analytic_distribution_text(self):
+        for rec in self:
+            if rec.analytic_distribution:
+                rec.analytic_distribution_text = ', '.join(
+                    self.env['account.analytic.account'].browse(int(key)).name
+                    for key, value in rec.analytic_distribution.items()
+                )
+            else:
+                rec.analytic_distribution_text = ''
 
     @api.constrains('asset_code')
     def _check_asset_code_unique(self):
