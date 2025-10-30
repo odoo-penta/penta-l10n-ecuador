@@ -6,7 +6,10 @@
     This module extends the account payment functionalities to include additional fields and features specific to Ecuadorian accounting practices.
     """,
     'author': "PentaLab",
-    'contributors': ['Bernardo Bustamante <bbustamante@pentalab.tech>'],
+    'contributors': [
+        'Bernardo Bustamante <bbustamante@pentalab.tech>',
+        'AntonyPineda <vini16.av@gmail.com>'
+    ],
     'website': "https://pentalab.tech/",
     'category': 'Accounting',
     'version': '0.1',
