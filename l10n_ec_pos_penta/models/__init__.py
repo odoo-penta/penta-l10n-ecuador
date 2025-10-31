@@ -7,6 +7,6 @@ from . import cash_box
 from . import cash_box_session
 from . import cash_box_session_movement
 from . import coins
-from . import sale_order
+#from . import sale_order
 from . import account_payment
 from . import account_move

@@ -43,13 +43,11 @@ class AccountPayment(models.Model):
     )
     number_lot = fields.Char(store=True, readonly=False)
     authorization_number = fields.Char(string="Authorization number")
-    bank_id = fields.Many2one("res.partner.bank")
+    bank_id = fields.Many2one("res.bank")
     show_ref = fields.Boolean(compute="_compute_visibility_flags", store=False)
     show_bank_cc = fields.Boolean(compute="_compute_visibility_flags", store=False)  # bank_id en card o check
     show_card = fields.Boolean(compute="_compute_visibility_flags", store=False)     # resto solo en card
     payment_reference = fields.Char(string="Payment reference", readonly=True)
-    issuing_entity = fields.Char(string="Entidad emisora")
-    show_issuing_entity = fields.Boolean(compute="_compute_show_issuing_entity", store=False)
     
     @api.model_create_multi
     def create(self, vals_list):
@@ -76,8 +74,3 @@ class AccountPayment(models.Model):
                 rec.show_ref = ptype in ('bank', 'check')
                 rec.show_bank_cc = ptype in ('card', 'check')
                 rec.show_card = (ptype == 'card')
-
-    @api.depends('payment_type')
-    def _compute_show_issuing_entity(self):
-        for rec in self:
-            rec.show_issuing_entity = (rec.payment_type == 'inbound')

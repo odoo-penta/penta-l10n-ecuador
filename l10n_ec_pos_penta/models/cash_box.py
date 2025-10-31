@@ -81,8 +81,8 @@ class CashBox(models.Model):
             args += ['|',('responsible_ids', 'in', self.env.uid),('cashier_ids', 'in', self.env.uid)]
         return super().search(args, offset=offset, limit=limit, order=order)
     
-    @api.constrains('journal_id', 'close_journal_id')
-    def _check_unique_journals(self):
+    @api.constrains('journal_id')
+    def _check_unique_journal(self):
         for rec in self:
             # Mismo diario de apertura
             if rec.journal_id:
@@ -93,15 +93,6 @@ class CashBox(models.Model):
                 ], limit=1)
                 if other:
                     raise UserError(_("The journal '%s' is already assigned to the cash box '%s'. Please choose another journal.") % (rec.journal_id.name, other.name))
-            # Mismo diario de cierre
-            if rec.close_journal_id:
-                other = self.env['cash.box'].search([
-                    ('id', '!=', rec.id),
-                    ('close_journal_id', '=', rec.close_journal_id.id),
-                    ('company_id', '=', rec.company_id.id)
-                ], limit=1)
-                if other:
-                    raise UserError(_("The close journal '%s' is already assigned to the cash box '%s'. Please choose another journal.") % (rec.close_journal_id.name, other.name))
     
     @api.depends('name')
     def _compute_is_cash_box_admin(self):

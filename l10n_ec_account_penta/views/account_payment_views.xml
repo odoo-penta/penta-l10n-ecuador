@@ -22,7 +22,6 @@
                 <field name="number_months" invisible="not show_card"/>
                 <field name="number_lot" invisible="not show_card"/>
                 <field name="authorization_number" invisible="not show_card"/>
-                <field name="issuing_entity" invisible="not show_issuing_entity"/>
             </xpath>
         </field>
     </record>

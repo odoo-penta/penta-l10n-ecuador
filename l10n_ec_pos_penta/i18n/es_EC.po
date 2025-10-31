@@ -434,7 +434,7 @@ msgstr "Código"
 #: model:ir.model.fields,field_description:l10n_ec_pos_penta.field_account_payment__code_movement
 #: model:ir.model.fields,field_description:l10n_ec_pos_penta.field_sale_order__code_movement
 msgid "Code Movement"
-msgstr "Código movimiento"
+msgstr "Secuencia movimiento"
 
 #. module: l10n_ec_pos
 #: model:ir.model.fields,field_description:l10n_ec_pos_penta.field_cash_box_coin_line_wizard__coin_id

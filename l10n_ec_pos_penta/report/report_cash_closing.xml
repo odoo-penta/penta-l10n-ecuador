@@ -2,10 +2,21 @@
     <template id="report_cash_closing_template">
         <t t-call="web.html_container">
             <t t-call="web.external_layout">
+                <style>
+                    /* Oculta el logo en todas las páginas */
+                    .header .company_logo {
+                        display: none !important;
+                    }
+
+                    /* Muestra el logo solo en la primera página */
+                    @page:first .header .company_logo {
+                        display: block !important;
+                    }
+                </style>
                 <div class="page">
                     <t t-foreach="docs" t-as="o">
                         <!-- Encabezado -->
-                        <div style="text-align:center; margin-top:80px; margin-bottom:80px;">
+                        <div style="text-align:center; margin-top:100px; margin-bottom:100px;">
                             <h2 style="color:#7c5c47;">SALES SUMMARY</h2>
                             <h4>
                                 <t t-out="o.name or ''"/>

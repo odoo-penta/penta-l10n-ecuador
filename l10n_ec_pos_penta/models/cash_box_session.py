@@ -187,7 +187,7 @@ class CashBoxSession(models.Model):
         self.ensure_one()
         # Obtener asientos de facturas y pagos
         invoice_moves = self._get_invoices().mapped('move_id') if self._get_invoices() else self.env['account.move']
-        payment_moves = self._get_payments().mapped('move_id') if self._get_payments() else self.env['account.payment']
+        payment_moves = self._get_payments().mapped('move_id') if self._get_payments() else self.env['account.move']
         # Unirlos valores
         move_ids = (invoice_moves + payment_moves)
         # Si tenemos asiento de cierre lo agg
@@ -228,7 +228,7 @@ class CashBoxSession(models.Model):
         def categorize_payment(payment):
             """ Categoriza el pago según su tipo """
             if payment.journal_id.type == 'bank':
-                if payment.card_id:
+                if payment.used_card_id:
                     return 'card'
                 else:
                     return 'transfer'
