@@ -1,6 +1,7 @@
 from odoo import models, fields
 import base64
 import io
+import math
 from odoo.tools.misc import xlsxwriter
 
 class ReportPurchaseRetentionsWizard(models.TransientModel):
@@ -68,12 +69,14 @@ class ReportPurchaseRetentionsWizard(models.TransientModel):
         worksheet.set_column('E:E', 20)
         worksheet.set_column('F:F', 35)
         worksheet.set_column('G:J', 12)
-        worksheet.set_column('T:T', 20)
+        worksheet.set_column('K:K', 15)
+        worksheet.set_column('T:U', 20)
         # Titulo
         worksheet.merge_range('A1:K1', 'REPORTE DE COMPRAS', title_format)
         worksheet.merge_range('L1:P1', 'RETENCIONES RENTA', title_format)
         worksheet.merge_range('Q1:S1', 'RETENCIONES IVA', title_format)
         worksheet.merge_range('T1:T2', 'VALOR A PAGAR', title_format)
+        worksheet.merge_range('U1:U2', 'NÚMERO RETENCIÓN', title_format)
         row = 1
         # Subtitulo
         worksheet.write(row, 0, 'CANT', bold_center)
@@ -106,11 +109,15 @@ class ReportPurchaseRetentionsWizard(models.TransientModel):
             worksheet.write(row, 4, invoice.name or '', border)
             worksheet.write(row, 5, invoice.ref or '', border)
             # Valores
-            worksheet.write(row, 6, '', border)
-            worksheet.write(row, 7, invoice.amount_untaxed or 0.0, number)
+            if math.isclose(invoice.amount_tax, 0.0, abs_tol=1e-9):
+                worksheet.write(row, 6, invoice.amount_untaxed, border)
+                worksheet.write(row, 7, 0.00, number)
+            else:
+                worksheet.write(row, 6, 0.00, border)
+                worksheet.write(row, 7, invoice.amount_untaxed, number)
             worksheet.write(row, 8, '', border)
-            worksheet.write(row, 9, invoice.amount_tax or 0.0, number)
-            worksheet.write(row, 10, invoice.amount_total or 0.0, number)
+            worksheet.write(row, 9, invoice.amount_tax, number)
+            worksheet.write(row, 10, invoice.amount_total, number)
             # Mapeo de porcentaje a columna
             amount_to_col = {
                 -1.75: 11,
@@ -126,17 +133,26 @@ class ReportPurchaseRetentionsWizard(models.TransientModel):
             for col in amount_to_col.values():
                 worksheet.write(row, col, 0.0, number)
             # Retenciones
+            retention_names = []
             retentions = self._get_retentions_data(invoice)
             for retention in retentions:
+                retention_names.append(retention.name or '')
                 for line in retention.l10n_ec_withhold_line_ids:
                     for tax in line.tax_ids:
                         if tax.amount_type == 'percent':
                             col = amount_to_col.get(tax.amount)
                             if col:
                                 worksheet.write(row, col, line.l10n_ec_withhold_tax_amount or 0.0, number)
+            # Generar texto de retenciones
+            if retention_names:
+                retention_txt = ', '.join([f"{name}" for name in retention_names if name])
+            else:
+                retention_txt = ''
             # Total a pagar (TOTAL - SUMA DE RETENCIONES RENTA)
             formula = f"K{row+1}-SUM(L{row+1}:S{row+1})"
             worksheet.write_formula(row, 19, formula, number)
+            # Texto retenciones
+            worksheet.write(row, 20, retention_txt, border)
             cont += 1
         # Totales por columna
         row += 1
