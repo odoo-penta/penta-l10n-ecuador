@@ -34,13 +34,23 @@ class AccountAsset(models.Model):
     @api.depends('analytic_distribution')
     def _compute_analytic_distribution_text(self):
         for rec in self:
-            if rec.analytic_distribution:
-                rec.analytic_distribution_text = ', '.join(
-                    self.env['account.analytic.account'].browse(int(key)).name
-                    for key, value in rec.analytic_distribution.items()
-                )
-            else:
-                rec.analytic_distribution_text = ''
+            names = []
+            dist = rec.analytic_distribution or {}
+            for key in dist.keys():
+                # Convertir a string y limpiar espacios
+                key_str = str(key).strip()
+                # Si tiene varias claves separadas por coma → recorrer todas
+                key_parts = [p.strip() for p in key_str.split(',') if p.strip()]
+                for part in key_parts:
+                    try:
+                        acc_id = int(part)
+                        acc = self.env['account.analytic.account'].browse(acc_id)
+                        if acc.exists():
+                            names.append(acc.name)
+                    except (ValueError, TypeError):
+                        continue
+            # Unir los nombres con coma y espacio
+            rec.analytic_distribution_text = ', '.join(names)
 
     @api.constrains('asset_code')
     def _check_asset_code_unique(self):
