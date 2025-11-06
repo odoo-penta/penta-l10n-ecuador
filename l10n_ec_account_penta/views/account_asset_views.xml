@@ -89,5 +89,14 @@
             </field>
         </record>
 
+        <record id="account_asset_action_server_print_minute" model="ir.actions.server">
+            <field name="name">Print Asset Report</field>
+            <field name="model_id" ref="account_asset.model_account_asset"/>
+            <field name="binding_model_id" ref="account_asset.model_account_asset"/>
+            <field name="binding_type">action</field>
+            <field name="state">code</field>
+            <field name="code">action = records.action_print_assets_report()</field>
+        </record>
+
     </data>
 </odoo>
