@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <template id="report_payment_receipt_document_inherit_auth_final_sintabla"
+            inherit_id="account.report_payment_receipt_document">
+    <xpath expr="//div[@class='page']" position="inside">
+
+      <!-- Vars -->
+      <t t-set="prep_user" t-value="o.company_id.payment_prepared_by_id"/>
+      <t t-set="rev_user"  t-value="o.company_id.payment_reviewed_by_id"/>
+      <t t-set="recv_partner" t-value="o.partner_id and (o.partner_id.commercial_partner_id or o.partner_id)"/>
+      <t t-set="prep_name" t-value="prep_user and prep_user.name or ''"/>
+      <t t-set="prep_vat"  t-value="(prep_user and prep_user.partner_id and prep_user.partner_id.vat) or ''"/>
+      <t t-set="rev_name"  t-value="rev_user and rev_user.name or ''"/>
+      <t t-set="rev_vat"   t-value="(rev_user and rev_user.partner_id and rev_user.partner_id.vat) or ''"/>
+      <t t-set="recv_name" t-value="(recv_partner and recv_partner.name) or ''"/>
+      <t t-set="recv_vat"  t-value="(recv_partner and recv_partner.vat) or ''"/>
+
+      <div style="margin-top:12px; border:1px solid #000;">
+
+        <!-- HEADER (sin <table>): 3 celdas iguales -->
+        <div style="display:table; width:100%; border-bottom:1px solid #000; font-weight:600; font-size:11px; text-align:center;">
+          <div style="display:table-cell; width:33.33%; padding:6px; border-right:1px solid #000; box-sizing:border-box;">ELABORADO POR</div>
+          <div style="display:table-cell; width:33.33%; padding:6px; border-right:1px solid #000; box-sizing:border-box;">REVISADO POR</div>
+          <div style="display:table-cell; width:33.33%; padding:6px; box-sizing:border-box;">RECIBÍ CONFORME</div>
+        </div>
+
+        <!-- BODY (sin <table>): una fila con 3 celdas -->
+        <div style="display:table; width:100%; font-size:9px; text-align:left;">
+          <!-- Col 1 -->
+          <div style="display:table-cell; width:33.33%; padding:8px 10px; border-right:1px solid #000; box-sizing:border-box; vertical-align:top;">
+            <div style="margin-top: 13px;">
+              <span style="display:inline-block; width:15px; font-size:8px;">F:</span>
+              <span style="display:inline-block; width:92%; height:20px; border-bottom:1px solid #555; vertical-align:bottom;">&#160;</span>
+            </div>
+            <div style="margin-top:8px;">
+              <span style="display:inline-block; width:15px; font-size:8px;">N:</span>
+              <span style="display:inline-block; width:92%; border-bottom:1px solid #555; vertical-align:bottom; font-size:12px;">
+                <t t-if="prep_name"><span t-esc="prep_name"/></t>
+                <t t-else=""><span t-raw="'&#160;'"/></t>
+              </span>
+            </div>
+            <div style="margin-top:8px;">
+              <span style="display:inline-block; width:15px; font-size:8px;">I:</span>
+              <span style="display:inline-block; width:92%; border-bottom:1px solid #555; vertical-align:bottom; font-size:12px;">
+                <t t-if="prep_vat"><span t-esc="prep_vat"/></t>
+                <t t-else=""><span t-raw="'&#160;'"/></t>
+              </span>
+            </div>
+          </div>
+
+          <!-- Col 2 -->
+          <div style="display:table-cell; width:33.33%; padding:8px 10px; border-right:1px solid #000; box-sizing:border-box; vertical-align:top;">
+            <div style="margin-top:13px;">
+              <span style="display:inline-block; width:14px; font-size:8px;">F:</span>
+              <span style="display:inline-block; width:92%; height:20px; border-bottom:1px solid #555; vertical-align:bottom;">&#160;</span>
+            </div>
+            <div style="margin-top:8px;">
+              <span style="display:inline-block; width:14px; ffont-size:8px;">N:</span>
+              <span style="display:inline-block; width:92%; border-bottom:1px solid #555; vertical-align:bottom; font-size:12px;">
+                <t t-if="rev_name"><span t-esc="rev_name"/></t>
+                <t t-else=""><span t-raw="'&#160;'"/></t>
+              </span>
+            </div>
+            <div style="margin-top:8px;">
+              <span style="display:inline-block; width:14px; font-size:8px;">I:</span>
+              <span style="display:inline-block; width:92%; border-bottom:1px solid #555; vertical-align:bottom; font-size:12px;">
+                <t t-if="rev_vat"><span t-esc="rev_vat"/></t>
+                <t t-else=""><span t-raw="'&#160;'"/></t>
+              </span>
+            </div>
+          </div>
+
+          <!-- Col 3 -->
+          <div style="display:table-cell; width:33.33%; padding:8px 10px; box-sizing:border-box; vertical-align:top;">
+            <div style="margin-top:13px;">
+              <span style="display:inline-block; width:14px; font-size:8px;">F:</span>
+              <span style="display:inline-block; width:92%; height:20px; border-bottom:1px solid #555; vertical-align:bottom;">&#160;</span>
+            </div>
+            <div style="margin-top:8px;">
+              <span style="display:inline-block; width:14px; font-size:8px;">N:</span>
+              <span style="display:inline-block; width:92%; border-bottom:1px solid #555; vertical-align:bottom; font-size:12px;">
+                <t t-if="recv_name"><span t-esc="recv_name"/></t>
+                <t t-else=""><span t-raw="'&#160;'"/></t>
+              </span>
+            </div>
+            <div style="margin-top:8px;">
+              <span style="display:inline-block; width:14px; font-size:8px;">I:</span>
+              <span style="display:inline-block; width:92%; border-bottom:1px solid #555; vertical-align:bottom; font-size:12px;">
+                <t t-if="recv_vat"><span t-esc="recv_vat"/></t>
+                <t t-else=""><span t-raw="'&#160;'"/></t>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </xpath>
+  </template>
+    <template id="report_account_move_document_inherit_auth_sign"
+            inherit_id="l10n_ec_reports_penta.report_account_move_document">
+    <xpath expr="//div[contains(@class,'page')]" position="after">
+
+
+      <!-- ===== Vars para firmas (ASIENTOS) ===== -->
+      <t t-set="prep_user" t-value="o.company_id.move_prepared_by_id"/>
+      <t t-set="rev_user"  t-value="o.company_id.move_reviewed_by_id"/>
+      <t t-set="recv_partner" t-value="o.partner_id and (o.partner_id.commercial_partner_id or o.partner_id)"/>
+
+      <t t-set="prep_name" t-value="prep_user and prep_user.name or ''"/>
+      <t t-set="prep_vat"  t-value="(prep_user and prep_user.partner_id and prep_user.partner_id.vat) or ''"/>
+      <t t-set="rev_name"  t-value="rev_user and rev_user.name or ''"/>
+      <t t-set="rev_vat"   t-value="(rev_user and rev_user.partner_id and rev_user.partner_id.vat) or ''"/>
+      <t t-set="recv_name" t-value="(recv_partner and recv_partner.name) or ''"/>
+      <t t-set="recv_vat"  t-value="(recv_partner and recv_partner.vat) or ''"/>
+
+      <!-- ===== Bloque de firmas: ELABORADO / REVISADO / RECIBÍ ===== -->
+      <div style="margin-top:12px; border:1px solid #000;">
+
+        <!-- Header (sin <table>): 3 celdas iguales -->
+        <div style="display:table; width:100%; border-bottom:1px solid #000; font-weight:600; font-size:11px; text-align:center;">
+          <div style="display:table-cell; width:33.33%; padding:6px; border-right:1px solid #000; box-sizing:border-box;">ELABORADO POR</div>
+          <div style="display:table-cell; width:33.33%; padding:6px; border-right:1px solid #000; box-sizing:border-box;">REVISADO POR</div>
+          <div style="display:table-cell; width:33.33%; padding:6px; box-sizing:border-box;">RECIBÍ CONFORME</div>
+        </div>
+
+        <!-- Body (sin <table>): fila con 3 celdas -->
+        <div style="display:table; width:100%; font-size:9px; text-align:left;">
+          <!-- Col 1: Elaborado -->
+          <div style="display:table-cell; width:33.33%; padding:8px 10px; border-right:1px solid #000; box-sizing:border-box; vertical-align:top;">
+            <!-- F -->
+            <div style="margin-top:12px;">
+              <span style="display:inline-block; width:14px; font-size:10px; font-weight:600;">F:</span>
+              <span style="display:inline-block; width:92%; height:20px; border-bottom:1px solid #555; vertical-align:bottom;">&#160;</span>
+            </div>
+            <!-- N -->
+            <div style="margin-top:8px;">
+              <span style="display:inline-block; width:14px; font-size:10px; font-weight:600;">N:</span>
+              <span style="display:inline-block; width:92%; border-bottom:1px solid #555; vertical-align:bottom;">
+                <t t-if="prep_name"><span t-esc="prep_name"/></t>
+                <t t-else=""><span t-raw="'&#160;'"/></t>
+              </span>
+            </div>
+            <!-- I -->
+            <div style="margin-top:8px;">
+              <span style="display:inline-block; width:14px; font-size:10px; font-weight:600;">I:</span>
+              <span style="display:inline-block; width:92%; border-bottom:1px solid #555; vertical-align:bottom;">
+                <t t-if="prep_vat"><span t-esc="prep_vat"/></t>
+                <t t-else=""><span t-raw="'&#160;'"/></t>
+              </span>
+            </div>
+          </div>
+
+          <!-- Col 2: Revisado -->
+          <div style="display:table-cell; width:33.33%; padding:8px 10px; border-right:1px solid #000; box-sizing:border-box; vertical-align:top;">
+            <div style="margin-top:12px;">
+              <span style="display:inline-block; width:14px; font-size:10px; font-weight:600;">F:</span>
+              <span style="display:inline-block; width:92%; height:20px; border-bottom:1px solid #555; vertical-align:bottom;">&#160;</span>
+            </div>
+            <div style="margin-top:8px;">
+              <span style="display:inline-block; width:14px; font-size:10px; font-weight:600;">N:</span>
+              <span style="display:inline-block; width:92%; border-bottom:1px solid #555; vertical-align:bottom;">
+                <t t-if="rev_name"><span t-esc="rev_name"/></t>
+                <t t-else=""><span t-raw="'&#160;'"/></t>
+              </span>
+            </div>
+            <div style="margin-top:8px;">
+              <span style="display:inline-block; width:14px; font-size:10px; font-weight:600;">I:</span>
+              <span style="display:inline-block; width:92%; border-bottom:1px solid #555; vertical-align:bottom;">
+                <t t-if="rev_vat"><span t-esc="rev_vat"/></t>
+                <t t-else=""><span t-raw="'&#160;'"/></t>
+              </span>
+            </div>
+          </div>
+
+          <!-- Col 3: Recibí conforme (partner del asiento) -->
+          <div style="display:table-cell; width:33.33%; padding:8px 10px; box-sizing:border-box; vertical-align:top;">
+            <div style="margin-top:12px;">
+              <span style="display:inline-block; width:14px; font-size:10px; font-weight:600;">F:</span>
+              <span style="display:inline-block; width:92%; height:20px; border-bottom:1px solid #555; vertical-align:bottom;">&#160;</span>
+            </div>
+            <div style="margin-top:8px;">
+              <span style="display:inline-block; width:14px; font-size:10px; font-weight:600;">N:</span>
+              <span style="display:inline-block; width:92%; border-bottom:1px solid #555; vertical-align:bottom;">
+                <t t-if="recv_name"><span t-esc="recv_name"/></t>
+                <t t-else=""><span t-raw="'&#160;'"/></t>
+              </span>
+            </div>
+            <div style="margin-top:8px;">
+              <span style="display:inline-block; width:14px; font-size:10px; font-weight:600;">I:</span>
+              <span style="display:inline-block; width:92%; border-bottom:1px solid #555; vertical-align:bottom;">
+                <t t-if="recv_vat"><span t-esc="recv_vat"/></t>
+                <t t-else=""><span t-raw="'&#160;'"/></t>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </xpath>
+  </template>
+
+  <!-- Inherit: imprimir lote de pagos -> bloque de firmas al final -->
+  <template id="print_batch_payment_inherit_auth_sign"
+            inherit_id="account_batch_payment.print_batch_payment">
+    <!-- Inserta justo después del último oe_structure dentro de la página -->
+    <xpath expr="//div[contains(@class,'page_batch_payment')]/div[@class='oe_structure'][last()]" position="after">
+
+      <!-- Vars (Pagos en lote) -->
+      <t t-set="prep_user" t-value="o.company_id.batch_payment_prepared_by_id"/>
+      <t t-set="rev_user"  t-value="o.company_id.batch_payment_reviewed_by_id"/>
+
+      <t t-set="prep_name" t-value="prep_user and prep_user.name or ''"/>
+      <t t-set="prep_vat"  t-value="(prep_user and prep_user.partner_id and prep_user.partner_id.vat) or ''"/>
+      <t t-set="rev_name"  t-value="rev_user and rev_user.name or ''"/>
+      <t t-set="rev_vat"   t-value="(rev_user and rev_user.partner_id and rev_user.partner_id.vat) or ''"/>
+
+      <!-- BLOQUE DE FIRMAS FINAL (sin <table>, PDF-safe con display:table) -->
+      <div style="margin-top:20px; border:1px solid #000;">
+
+        <!-- Header -->
+        <div style="display:table; width:100%; border-bottom:1px solid #000; font-weight:600; font-size:11px; text-align:center;">
+          <div style="display:table-cell; width:33.33%; padding:6px; border-right:1px solid #000;">ELABORADO POR</div>
+          <div style="display:table-cell; width:33.33%; padding:6px; border-right:1px solid #000;">REVISADO POR</div>
+          <div style="display:table-cell; width:33.33%; padding:6px;">RECIBÍ CONFORME</div>
+        </div>
+
+        <!-- Body -->
+        <div style="display:table; width:100%; font-size:9px; text-align:left;">
+          <!-- Col 1 -->
+          <div style="display:table-cell; width:33.33%; padding:8px 10px; border-right:1px solid #000; vertical-align:top; box-sizing:border-box;">
+            <div style="margin-top:12px;">
+              <span style="display:inline-block; width:14px; font-size:10px; font-weight:600;">F:</span>
+              <span style="display:inline-block; width:92%; height:20px; border-bottom:1px solid #555;">&#160;</span>
+            </div>
+            <div style="margin-top:8px;">
+              <span style="display:inline-block; width:14px; font-size:10px; font-weight:600;">N:</span>
+              <span style="display:inline-block; width:92%; border-bottom:1px solid #555;">
+                <t t-if="prep_name"><span t-esc="prep_name"/></t>
+                <t t-else=""><span t-raw="'&#160;'"/></t>
+              </span>
+            </div>
+            <div style="margin-top:8px;">
+              <span style="display:inline-block; width:14px; font-size:10px; font-weight:600;">I:</span>
+              <span style="display:inline-block; width:92%; border-bottom:1px solid #555;">
+                <t t-if="prep_vat"><span t-esc="prep_vat"/></t>
+                <t t-else=""><span t-raw="'&#160;'"/></t>
+              </span>
+            </div>
+          </div>
+
+          <!-- Col 2 -->
+          <div style="display:table-cell; width:33.33%; padding:8px 10px; border-right:1px solid #000; vertical-align:top; box-sizing:border-box;">
+            <div style="margin-top:12px;">
+              <span style="display:inline-block; width:14px; font-size:10px; font-weight:600;">F:</span>
+              <span style="display:inline-block; width:92%; height:20px; border-bottom:1px solid #555;">&#160;</span>
+            </div>
+            <div style="margin-top:8px;">
+              <span style="display:inline-block; width:14px; font-size:10px; font-weight:600;">N:</span>
+              <span style="display:inline-block; width:92%; border-bottom:1px solid #555;">
+                <t t-if="rev_name"><span t-esc="rev_name"/></t>
+                <t t-else=""><span t-raw="'&#160;'"/></t>
+              </span>
+            </div>
+            <div style="margin-top:8px;">
+              <span style="display:inline-block; width:14px; font-size:10px; font-weight:600;">I:</span>
+              <span style="display:inline-block; width:92%; border-bottom:1px solid #555;">
+                <t t-if="rev_vat"><span t-esc="rev_vat"/></t>
+                <t t-else=""><span t-raw="'&#160;'"/></t>
+              </span>
+            </div>
+          </div>
+
+          <!-- Col 3 (Recibí conforme vacío en lote) -->
+          <div style="display:table-cell; width:33.33%; padding:8px 10px; vertical-align:top; box-sizing:border-box;">
+            <div style="margin-top:12px;">
+              <span style="display:inline-block; width:14px; font-size:10px; font-weight:600;">F:</span>
+              <span style="display:inline-block; width:92%; height:20px; border-bottom:1px solid #555;">&#160;</span>
+            </div>
+            <div style="margin-top:8px;">
+              <span style="display:inline-block; width:14px; font-size:10px; font-weight:600;">N:</span>
+              <span style="display:inline-block; width:92%; border-bottom:1px solid #555;"><span t-raw="'&#160;'"/></span>
+            </div>
+            <div style="margin-top:8px;">
+              <span style="display:inline-block; width:14px; font-size:10px; font-weight:600;">I:</span>
+              <span style="display:inline-block; width:92%; border-bottom:1px solid #555;"><span t-raw="'&#160;'"/></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </xpath>
+  </template>
+
+</odoo>

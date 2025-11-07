@@ -15,5 +15,54 @@
             </block>
         </field>
     </record>
+     <record id="view_res_config_settings_auth_staff" model="ir.ui.view">
+        <field name="name">res.config.settings.personal.autorizacion.por.empresa</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="account.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
 
+            <block name="audit_trail_setting_container" position="after">
+                <block title="Personal de autorización" name="authorization_staff_settings">
+
+                    <!-- Pagos -->
+                    <block title="Pagos" name="auth_staff_payments_block">
+                        <setting string="Elaborado por" company_dependent="1"
+                                 help="Usuario responsable de elaborar pagos en esta compañía.">
+                            <field name="payment_prepared_by_id" options="{'no_open': True}"/>
+                        </setting>
+                        <setting string="Revisado por" company_dependent="1"
+                                 help="Usuario responsable de revisar pagos en esta compañía.">
+                            <field name="payment_reviewed_by_id" options="{'no_open': True}"/>
+                        </setting>
+                    </block>
+
+                    <!-- Asiento -->
+                    <block title="Asiento" name="auth_staff_moves_block">
+                        <setting string="Elaborado por" company_dependent="1"
+                                 help="Usuario responsable de elaborar asientos contables en esta compañía.">
+                            <field name="move_prepared_by_id" options="{'no_open': True}"/>
+                        </setting>
+                        <setting string="Revisado por" company_dependent="1"
+                                 help="Usuario responsable de revisar asientos contables en esta compañía.">
+                            <field name="move_reviewed_by_id" options="{'no_open': True}"/>
+                        </setting>
+                    </block>
+
+                    <!-- Pagos en lote -->
+                    <block title="Pagos en lote" name="auth_staff_batch_payments_block">
+                        <setting string="Elaborado por" company_dependent="1"
+                                 help="Usuario responsable de elaborar pagos en lote en esta compañía.">
+                            <field name="batch_payment_prepared_by_id" options="{'no_open': True}"/>
+                        </setting>
+                        <setting string="Revisado por" company_dependent="1"
+                                 help="Usuario responsable de revisar pagos en lote en esta compañía.">
+                            <field name="batch_payment_reviewed_by_id" options="{'no_open': True}"/>
+                        </setting>
+                    </block>
+
+                </block>
+            </block>
+
+        </field>
+    </record>
 </odoo>
