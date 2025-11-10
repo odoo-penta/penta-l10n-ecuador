@@ -104,7 +104,7 @@ class PentalabReportCustom(models.Model):
 
         for row in range(ws.max_row, 3, -1):
             cell_b = ws.cell(row=row, column=2)
-            if cell_b.value and isinstance(cell_b.value, str) and "Ganancias / Pérdida del año actual" in cell_b.value:
+            if cell_b.value and isinstance(cell_b.value, str) and ("Ganancias / Pérdida del año actual" in cell_b.value or "Ganancias del año actual" in cell_b.value):
                 estilo_pp_b = None
                 for r in range(ws.max_row, 3, -1):
                     bval = ws.cell(row=r, column=2).value
@@ -115,7 +115,7 @@ class PentalabReportCustom(models.Model):
                             break
                 
                 # 1) Renombrar etiqueta
-                new_text = cell_b.value.replace("Ganancias / Pérdida del año actual", "Resultado del ejercicio")
+                new_text = cell_b.value.replace("Ganancias / Pérdida del año actual", "Resultado del ejercicio").replace("Ganancias del año actual", "Resultado del ejercicio")
                 cell_b.value = new_text
             
                 # 2) APLICAR estilo de PP AHORA (antes de copiar estilos de la fila)
@@ -127,7 +127,6 @@ class PentalabReportCustom(models.Model):
                 row_styles = [ws.cell(row=row, column=col)._style for col in range(1, ws.max_column + 1)]
         
                 # Eliminar las filas siguientes (row+1 y row+2)
-                ws.delete_rows(row+1, 1)
                 ws.delete_rows(row+1, 1)
         
                 # Eliminar la fila actual
