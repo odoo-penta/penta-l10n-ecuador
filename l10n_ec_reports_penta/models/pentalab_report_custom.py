@@ -149,7 +149,6 @@ class PentalabReportCustom(models.Model):
                 estilo_pp_b = ws.cell(row=row, column=2)._style
                 # Guardar valores originales de A, B y C
                 valor_a = ws.cell(row=row, column=1).value
-                valor_b = ws.cell(row=row, column=2).value
                 valor_c = ws.cell(row=row, column=3).value
         
                 # Guardar estilos originales de A, B y C
