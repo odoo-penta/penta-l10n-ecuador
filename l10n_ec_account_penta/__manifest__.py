@@ -17,7 +17,8 @@
         'account_accountant',
         'account_asset',
         'mail',
-        'account_reports'
+        'account_reports',
+        'product_brand',
     ],
     'data': [
         'data/account_cards_data.xml',

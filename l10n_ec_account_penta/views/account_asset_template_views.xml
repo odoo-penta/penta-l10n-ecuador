@@ -26,7 +26,7 @@
                 <li><code>{custodio_cargo}</code> → Puesto de trabajo del custodio</li>
                 <li><code>{partner}</code> → Nombre del partner</li>
                 <li><code>{partner_ci}</code> → Cédula del partner</li>
-                <li><code>{custodio_cargo}</code> → Puesto de trabajo del partner</li>
+                <li><code>{partner_cargo}</code> → Puesto de trabajo del partner</li>
                 <li><code>{activos}</code> → Lista de activos en formato HTML</li>
             </ul>
             <p style="margin-top: 5px;">

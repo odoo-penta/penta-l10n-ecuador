@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-28 22:42+0000\n"
-"PO-Revision-Date: 2025-10-28 17:44-0500\n"
+"POT-Creation-Date: 2025-11-11 21:13+0000\n"
+"PO-Revision-Date: 2025-11-11 16:18-0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es_EC\n"
@@ -16,6 +16,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.8\n"
+
+#. module: l10n_ec_account_penta
+#: model:ir.actions.report,print_report_name:l10n_ec_account_penta.action_report_minutes_assets
+msgid "'Minute assets report'"
+msgstr "'Informe de activos fijos'"
 
 #. module: l10n_ec_account_penta
 #: model:ir.model.fields.selection,name:l10n_ec_account_penta.selection__account_payment__number_months__12
@@ -30,7 +35,7 @@ msgstr ""
 #. module: l10n_ec_account_penta
 #: model:ir.model.fields.selection,name:l10n_ec_account_penta.selection__account_payment__number_months__24
 msgid "24"
-msgstr "24"
+msgstr ""
 
 #. module: l10n_ec_account_penta
 #: model:ir.model.fields.selection,name:l10n_ec_account_penta.selection__account_payment__number_months__36
@@ -48,6 +53,82 @@ msgid "60"
 msgstr ""
 
 #. module: l10n_ec_account_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_account_penta.view_account_asset_template_form
+msgid "<code>{activos}</code> → Lista de activos en formato HTML"
+msgstr ""
+
+#. module: l10n_ec_account_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_account_penta.view_account_asset_template_form
+msgid "<code>{anio}</code> → Año actual"
+msgstr ""
+
+#. module: l10n_ec_account_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_account_penta.view_account_asset_template_form
+msgid "<code>{custodio_cargo}</code> → Puesto de trabajo del custodio"
+msgstr ""
+
+#. module: l10n_ec_account_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_account_penta.view_account_asset_template_form
+msgid "<code>{custodio_ci}</code> → Cédula del custodio"
+msgstr ""
+
+#. module: l10n_ec_account_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_account_penta.view_account_asset_template_form
+msgid "<code>{custodio}</code> → Nombre del custodio"
+msgstr ""
+
+#. module: l10n_ec_account_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_account_penta.view_account_asset_template_form
+msgid "<code>{dia}</code> → Día actual"
+msgstr ""
+
+#. module: l10n_ec_account_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_account_penta.view_account_asset_template_form
+msgid "<code>{empresa}</code> → Nombre de la compañía"
+msgstr ""
+
+#. module: l10n_ec_account_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_account_penta.view_account_asset_template_form
+msgid "<code>{fecha}</code> → Fecha actual"
+msgstr ""
+
+#. module: l10n_ec_account_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_account_penta.view_account_asset_template_form
+msgid "<code>{mes}</code> → Mes actual"
+msgstr ""
+
+#. module: l10n_ec_account_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_account_penta.view_account_asset_template_form
+msgid "<code>{partner_cargo}</code> → Puesto de trabajo del partner"
+msgstr ""
+
+#. module: l10n_ec_account_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_account_penta.view_account_asset_template_form
+msgid "<code>{partner_ci}</code> → Cédula del partner"
+msgstr ""
+
+#. module: l10n_ec_account_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_account_penta.view_account_asset_template_form
+msgid "<code>{partner}</code> → Nombre del partner"
+msgstr ""
+
+#. module: l10n_ec_account_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_account_penta.view_account_asset_template_form
+msgid "<strong>🧩 Variables disponibles:</strong>"
+msgstr ""
+
+#. module: l10n_ec_account_penta
+#. odoo-python
+#: code:addons/l10n_ec_account_penta/models/account_asset.py:0
+msgid "A fixed asset record template has not been configured in the accounting settings."
+msgstr "No se ha configurado una plantilla de registro de activos fijos en los ajustes contables."
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.constraint,message:l10n_ec_account_penta.constraint_account_asset_template_unique_name_company
+msgid "A template with that name already exists for this company."
+msgstr "Ya existe una plantilla con ese nombre para esta empresa."
+
+#. module: l10n_ec_account_penta
 #: model:ir.model,name:l10n_ec_account_penta.model_account_reconcile_wizard
 msgid "Account reconciliation wizard"
 msgstr "Asistente de conciliación bancaria"
@@ -56,6 +137,11 @@ msgstr "Asistente de conciliación bancaria"
 #: model_terms:ir.ui.view,arch_db:l10n_ec_account_penta.view_account_journal_form_inherited_penta
 msgid "Accounting entries control"
 msgstr "Control asientos contables"
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_asset_template__active
+msgid "Active"
+msgstr "Activo"
 
 #. module: l10n_ec_account_penta
 #: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_cards__active
@@ -69,14 +155,46 @@ msgid "Activos"
 msgstr ""
 
 #. module: l10n_ec_account_penta
+#. odoo-python
+#: code:addons/l10n_ec_account_penta/models/account_asset.py:0
+msgid "All selected assets must belong to the same custodian."
+msgstr "Todos los activos seleccionados deben pertenecer al mismo custodio."
+
+#. module: l10n_ec_account_penta
+#. odoo-python
+#: code:addons/l10n_ec_account_penta/models/account_asset.py:0
+msgid "All selected assets must have an assigned custodian."
+msgstr "Todos los activos seleccionados deben tener un custodio asignado."
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_res_company__asset_template_id
+msgid "Asset Template"
+msgstr "Plantilla de activos"
+
+#. module: l10n_ec_account_penta
 #: model:ir.model,name:l10n_ec_account_penta.model_account_asset
 msgid "Asset/Revenue Recognition"
 msgstr "Reconocimiento de activos e ingresos"
 
 #. module: l10n_ec_account_penta
+#: model:ir.ui.menu,name:l10n_ec_account_penta.menu_account_asset_root
+msgid "Assets"
+msgstr "Activos"
+
+#. module: l10n_ec_account_penta
 #: model:ir.model,name:l10n_ec_account_penta.model_account_asset_report_handler
 msgid "Assets Report Custom Handler"
-msgstr "Gestor personalizado de reporte de activos"
+msgstr "Gestor personalizado de reporte de activos "
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_res_config_settings__asset_template_id
+msgid "Assets template report minute"
+msgstr "Plantilla de activos fijos"
+
+#. module: l10n_ec_account_penta
+#: model:ir.ui.menu,name:l10n_ec_account_penta.menu_account_asset_template
+msgid "Assets templates"
+msgstr "Plantillas de activos"
 
 #. module: l10n_ec_account_penta
 #: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_payment__authorization_number
@@ -94,17 +212,33 @@ msgid "Bank reference"
 msgstr "Referencia"
 
 #. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_asset__brand
+msgid "Brand"
+msgstr "Marca"
+
+#. module: l10n_ec_account_penta
 #. odoo-python
 #: code:addons/l10n_ec_account_penta/models/account_assets_report.py:0
 msgid "Características"
 msgstr ""
 
 #. module: l10n_ec_account_penta
-#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_asset__color
-msgid "Color"
-msgstr "Color"
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_asset__characteristics
+msgid "Characteristics"
+msgstr "Características"
 
 #. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_asset__color
+msgid "Color"
+msgstr ""
+
+#. module: l10n_ec_account_penta
+#: model:ir.model,name:l10n_ec_account_penta.model_res_company
+msgid "Companies"
+msgstr "Empresas"
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_asset_template__company_id
 #: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_cards__company_id
 msgid "Company"
 msgstr "Compañía"
@@ -115,16 +249,38 @@ msgid "Con Código"
 msgstr ""
 
 #. module: l10n_ec_account_penta
+#: model:ir.model,name:l10n_ec_account_penta.model_res_config_settings
+msgid "Config Settings"
+msgstr "Ajustes de configuración"
+
+#. module: l10n_ec_account_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_account_penta.res_config_settings_view_form
+msgid "Configurations for the Assets"
+msgstr "Configuraciones para los activos"
+
+#. module: l10n_ec_account_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_account_penta.view_account_asset_template_form
+msgid "Contenido de la plantilla"
+msgstr ""
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_asset_template__body_html
+msgid "Contents of the Minutes"
+msgstr "Contenido del acta"
+
+#. module: l10n_ec_account_penta
 #: model:ir.model.fields.selection,name:l10n_ec_account_penta.selection__account_payment__card_payment_type__corriente
 msgid "Corriente"
 msgstr ""
 
 #. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_asset_template__create_uid
 #: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_cards__create_uid
 msgid "Created by"
 msgstr "Creado por"
 
 #. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_asset_template__create_date
 #: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_cards__create_date
 msgid "Created on"
 msgstr "Creado el"
@@ -140,7 +296,6 @@ msgid "Custodio"
 msgstr ""
 
 #. module: l10n_ec_account_penta
-#: model_terms:ir.ui.view,arch_db:l10n_ec_account_penta.view_account_asset_model_tree_inherit_penta
 #: model_terms:ir.ui.view,arch_db:l10n_ec_account_penta.view_account_asset_tree_inherit_penta
 msgid "Código"
 msgstr ""
@@ -172,8 +327,7 @@ msgstr ""
 
 #. module: l10n_ec_account_penta
 #: model:ir.model.fields,help:l10n_ec_account_penta.field_account_asset__asset_code
-msgid ""
-"Código único alfanumérico para identificar el activo (ej: EQP-001, MOB2025)"
+msgid "Código único alfanumérico para identificar el activo (ej: EQP-001, MOB2025)"
 msgstr ""
 
 #. module: l10n_ec_account_penta
@@ -210,9 +364,15 @@ msgid "Diferido sin interés"
 msgstr ""
 
 #. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_asset_template__display_name
 #: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_cards__display_name
 msgid "Display Name"
 msgstr "Nombre para mostrar"
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_asset__analytic_distribution_text
+msgid "Distribución analítica"
+msgstr ""
 
 #. module: l10n_ec_account_penta
 #: model:ir.model.fields.selection,name:l10n_ec_account_penta.selection__account_payment__card_payment_type__débito
@@ -223,8 +383,8 @@ msgstr ""
 #. odoo-python
 #: code:addons/l10n_ec_account_penta/models/account_asset.py:0
 msgid ""
-"El código del activo sólo puede contener caracteres imprimibles (letras, "
-"números y símbolos como _ - / *)."
+"El código del activo sólo puede contener caracteres imprimibles (letras, números y símbolos como _ "
+"- / *)."
 msgstr ""
 
 #. module: l10n_ec_account_penta
@@ -234,22 +394,39 @@ msgid "El código ingresado ya existe, por favor ingrese uno diferente."
 msgstr ""
 
 #. module: l10n_ec_account_penta
-#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_payment__issuing_entity
-msgid "Entidad emisora"
-msgstr ""
-
-#. module: l10n_ec_account_penta
 #: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_journal__entry_control
 msgid "Entry Control"
 msgstr "Control asientos"
 
 #. module: l10n_ec_account_penta
-#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_cards__id
-msgid "ID"
-msgstr "ID"
+#: model:ir.model,name:l10n_ec_account_penta.model_account_asset_template
+msgid "Fixed Asset Records Template"
+msgstr "Plantilla de registros de activos fijos"
 
 #. module: l10n_ec_account_penta
-#: model_terms:ir.ui.view,arch_db:l10n_ec_account_penta.view_account_asset_form_custom
+#: model_terms:ir.ui.view,arch_db:l10n_ec_account_penta.res_config_settings_view_form
+msgid "Fixed Assets"
+msgstr "Activos fijos"
+
+#. module: l10n_ec_account_penta
+#: model:ir.model,name:l10n_ec_account_penta.model_report_l10n_ec_account_penta_report_acta_assets
+msgid "Fixed Assets Act Report"
+msgstr "Activos fijos reporte de acta"
+
+#. module: l10n_ec_account_penta
+#: model:ir.actions.act_window,name:l10n_ec_account_penta.action_account_asset_template
+#: model_terms:ir.ui.view,arch_db:l10n_ec_account_penta.view_account_asset_template_form
+msgid "Fixed Assets Report Template"
+msgstr "Plantilla de activos fijos"
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_asset_template__id
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_cards__id
+msgid "ID"
+msgstr ""
+
+#. module: l10n_ec_account_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_account_penta.view_account_asset_form_inherit_penta
 msgid "Información adicional"
 msgstr ""
 
@@ -270,16 +447,23 @@ msgid "Journal Entry"
 msgstr "Asiento contable"
 
 #. module: l10n_ec_account_penta
+#: model:ir.model,name:l10n_ec_account_penta.model_account_move_line
+msgid "Journal Item"
+msgstr "Apunte contable"
+
+#. module: l10n_ec_account_penta
 #: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_payment__journal_type
 msgid "Journal Type"
 msgstr "Tipo de diario"
 
 #. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_asset_template__write_uid
 #: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_cards__write_uid
 msgid "Last Updated by"
 msgstr "Última actualización por"
 
 #. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_asset_template__write_date
 #: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_cards__write_date
 msgid "Last Updated on"
 msgstr "Última actualización el"
@@ -291,14 +475,24 @@ msgid "Linear"
 msgstr ""
 
 #. module: l10n_ec_account_penta
-#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_asset__brand
-msgid "Marca"
-msgstr ""
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_asset__location_id
+msgid "Location"
+msgstr "Ubicación"
+
+#. module: l10n_ec_account_penta
+#: model:ir.actions.report,name:l10n_ec_account_penta.action_report_minutes_assets
+msgid "Minute Fixed Assets"
+msgstr "Acta de activos fijos"
 
 #. module: l10n_ec_account_penta
 #: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_asset__model
 msgid "Modelo"
 msgstr ""
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_asset_template__name
+msgid "Name"
+msgstr "Nombre"
 
 #. module: l10n_ec_account_penta
 #. odoo-python
@@ -362,6 +556,18 @@ msgid "Por Código"
 msgstr ""
 
 #. module: l10n_ec_account_penta
+#: model:ir.actions.server,name:l10n_ec_account_penta.account_asset_action_server_print_minute
+msgid "Print Asset Report"
+msgstr "Imprimir reporte activos"
+
+#. module: l10n_ec_account_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_account_penta.view_account_asset_template_form
+msgid ""
+"Puedes usar estas variables dentro del cuerpo de la plantilla.\n"
+"                <br/>Ejemplo: <code>&lt;p&gt;Acta generada por {empresa} el {fecha}&lt;/p&gt;</code>"
+msgstr ""
+
+#. module: l10n_ec_account_penta
 #. odoo-python
 #: code:addons/l10n_ec_account_penta/models/account_move.py:0
 #: model_terms:ir.ui.view,arch_db:l10n_ec_account_penta.account_move_form_inherit
@@ -370,12 +576,15 @@ msgstr "Conciliar"
 
 #. module: l10n_ec_account_penta
 #: model:ir.model.fields,help:l10n_ec_account_penta.field_account_payment__payment_reference
-msgid ""
-"Reference of the document used to issue this payment. Eg. check number, "
-"file name, etc."
+msgid "Reference of the document used to issue this payment. Eg. check number, file name, etc."
 msgstr ""
-"Referencia del documento que se utiliza para emitir este pago. Por ejemplo: "
-"número de cheque, nombre de archivo, etc."
+"Referencia del documento que se utiliza para emitir este pago. Por ejemplo: número de cheque, "
+"nombre de archivo, etc."
+
+#. module: l10n_ec_account_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_account_penta.res_config_settings_view_form
+msgid "Reports"
+msgstr "Reportes"
 
 #. module: l10n_ec_account_penta
 #: model:ir.model.fields.selection,name:l10n_ec_account_penta.selection__account_journal__payment_info_type__bank
@@ -415,11 +624,6 @@ msgid "Show Card"
 msgstr "Mostrar tarjeta"
 
 #. module: l10n_ec_account_penta
-#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_payment__show_issuing_entity
-msgid "Show Issuing Entity"
-msgstr "Mostrar entidad emisora"
-
-#. module: l10n_ec_account_penta
 #: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_payment__show_ref
 msgid "Show Ref"
 msgstr "Mostrar referencia"
@@ -443,20 +647,33 @@ msgstr ""
 
 #. module: l10n_ec_account_penta
 #. odoo-python
+#: code:addons/l10n_ec_account_penta/models/account_asset.py:0
+msgid "The configured template no longer exists or has been deleted."
+msgstr "La plantilla configurada ya no existe o ha sido eliminada."
+
+#. module: l10n_ec_account_penta
+#. odoo-python
 #: code:addons/l10n_ec_account_penta/models/account_move.py:0
 msgid "This journal only allows entries within the current month."
 msgstr "Este diario sólo permite entradas dentro del mes actual."
-
-#. module: l10n_ec_account_penta
-#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_asset__location
-msgid "Ubicación física"
-msgstr ""
 
 #. module: l10n_ec_account_penta
 #. odoo-python
 #: code:addons/l10n_ec_account_penta/models/account_assets_report.py:0
 msgid "Valor contable"
 msgstr ""
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,help:l10n_ec_account_penta.field_res_config_settings__asset_template_id
+msgid "We configured the default template to be used for asset records."
+msgstr "Hemos configurado la plantilla predeterminada que se utilizará para los registros de activos."
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,help:l10n_ec_account_penta.field_res_company__asset_template_id
+msgid "We specify the amount that customer purchases must reach to be considered in the UAFE report."
+msgstr ""
+"Especificamos el monto que deben alcanzar las compras de los clientes para ser consideradas en el "
+"informe UAFE."
 
 #. module: l10n_ec_account_penta
 #: model:ir.model.fields.selection,name:l10n_ec_account_penta.selection__account_journal__entry_control__without_control
@@ -466,10 +683,14 @@ msgstr "Sin control"
 #. module: l10n_ec_account_penta
 #. odoo-python
 #: code:addons/l10n_ec_account_penta/models/account_asset.py:0
-msgid ""
-"Ya existe un activo con el código \"%s\". El código del activo debe ser "
-"único."
+msgid "Ya existe un activo con el código \"%s\". El código del activo debe ser único."
 msgstr ""
+
+#. module: l10n_ec_account_penta
+#. odoo-python
+#: code:addons/l10n_ec_account_penta/models/account_asset.py:0
+msgid "You must select at least one asset to generate the record."
+msgstr "Debe seleccionar al menos un activo para generar el registro."
 
 #. module: l10n_ec_account_penta
 #: model_terms:ir.ui.view,arch_db:l10n_ec_account_penta.view_account_asset_form_inherit_penta

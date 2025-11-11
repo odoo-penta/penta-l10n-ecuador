@@ -18,7 +18,7 @@ class AccountAsset(models.Model):
         tracking=True
     )
     custodian_id = fields.Many2one('hr.employee', string='Custodio', tracking=True)
-    brand = fields.Char('Marca', tracking=True)
+    brand = fields.Many2one('product.brand', tracking=True)
     model = fields.Char('Modelo', tracking=True)
     serial_number = fields.Char('Número de Serie', tracking=True)
     location_id = fields.Many2one('hr.work.location', tracking=True)
@@ -26,7 +26,7 @@ class AccountAsset(models.Model):
     photo_info = fields.Html('Otra información relevante')
     plate = fields.Char(tracking=True)
     color = fields.Char(tracking=True)
-    
+    characteristics = fields.Html()
     analytic_distribution_text = fields.Char(
         string="Distribución analítica",
         compute="_compute_analytic_distribution_text",
@@ -187,6 +187,14 @@ class AccountAsset(models.Model):
             partner_name = self.env.user.partner_id.name
         custodian = custodians[0]
         today = date.today()
+        state_vals = {
+            'model': 'Modelo',
+            'draft': 'Borrador',
+            'open': 'En proceso',
+            'paused': 'En espera',
+            'close': 'Cerrado',
+            'cancelled': 'Candelado',
+        }
         # Mapeamos la tabla de activos
         activos_html = """
         <table style="width:100%; border-collapse: collapse; margin-top: 10px;" border="1">
@@ -210,11 +218,11 @@ class AccountAsset(models.Model):
             <td style="padding:6px;">{a.asset_code or ''}</td>
             <td style="padding:6px;">{a.name or ''}</td>
             <td style="padding:6px;">{a.model or ''}</td>
-            <td style="padding:6px;">{a.brand or ''}</td>
+            <td style="padding:6px;">{a.brand.name if a.brand else ''}</td>
             <td style="padding:6px;">{a.serial_number or ''}</td>
-            <td style="padding:6px;">{a.state or ''}</td>
-            <td style="padding:6px;">{''}</td>
-            <td style="padding:6px;">{''}</td>
+            <td style="padding:6px;">{a.characteristics or ''}</td>
+            <td style="padding:6px;">{state_vals.get(a.state) or ''}</td>
+            <td style="padding:6px;">{a.photo_info or ''}</td>
             </tr>
             """
         activos_html += """
