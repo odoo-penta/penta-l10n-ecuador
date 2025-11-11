@@ -14,6 +14,18 @@ class AccountMove(models.Model):
     code_movement = fields.Char(string='Code Movement', readonly=True)
     show_cash_session = fields.Boolean()
     
+    @api.model
+    def default_get(self, fields_list):
+        res = super().default_get(fields_list)
+        # Buscar sesiones abiertas del usuario
+        cash_boxs = self.env['cash.box'].search([('state', '=', 'open'),'|',('cashier_ids', 'in', self.env.user.id),('responsible_ids', 'in', self.env.user.id)])
+        # Mostrar campo solo si tiene más de una sesión
+        res['show_cash_session'] = len(cash_boxs) > 1
+        # Si solo hay una sesión, asignarla automáticamente
+        if len(cash_boxs) == 1:
+            res['cash_session_id'] = cash_boxs.current_session_id.id
+        return res
+    
     @api.onchange('journal_id')
     def _onchange_journal_id(self):
         super()._onchange_journal_id()
@@ -36,6 +48,7 @@ class AccountMove(models.Model):
             if self.cash_session_id.state == 'closed':
                 raise UserError(_("This invoice is related to an already closed cashier session."))
             movement = self.env['cash.box.session']._create_movement(self.cash_session_id.id, self.partner_id.id, 'invoice', self.id)
+            self.code_movement = movement.name
             for line in self.line_ids:
                 if not line.name:
                     line.name = movement.name

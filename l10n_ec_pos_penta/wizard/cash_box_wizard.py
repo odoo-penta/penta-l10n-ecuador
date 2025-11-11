@@ -307,25 +307,12 @@ class CashBoxClosedWizard(models.TransientModel):
         for movement in movement_ids:
             # instanciamos el diccionario de resumen por movimiento
             summary = {'cash': 0.00, 'transfer': 0.00, 'card': 0.00, 'credit': 0.00}
-            # si el movimeinto es factura o cotizacion
-            if movement.operation_type in ('invoice', 'quote'):
-                # obtenemos los pagos asociados a la factura o cotizacion(factura)
-                dict_payments = movement.invoice_id.open_payments()
-                payments = self.env['account.payment'].browse(
-                    dict_payments.get('res_id') or
-                    (dict_payments.get('domain') and dict_payments.get('domain')[0][2]) or
-                    []
-                ) 
-                # iteramos los pagos obtenidos
-                for payment in payments:
-                    key = categorize_payment(payment)
-                    summary[key] += payment.amount
             # si el movimiento es una nota de credito
-            elif movement.operation_type == 'refund':
+            if movement.operation_type == 'refund':
                 summary['credit'] += movement.credit_note_id.amount_total
             # si el movimiento es un pago
             else:
-                # obtenmos el pago
+                # obtenemos el pago
                 payment = movement.payment_id
                 key = categorize_payment(payment)
                 summary[key] += payment.amount

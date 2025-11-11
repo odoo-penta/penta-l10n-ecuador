@@ -180,7 +180,7 @@ class CashBoxSession(models.Model):
             'views': [(list_view_id, 'list'), (form_view_id, 'form')],
             'domain': [('id', 'in', payments.ids)],
             'target': 'current',
-            'context': {'create': False},
+            'context': {'create': False, 'show_cash_movement': True},
         }
         
     def open_journal_items_view(self):
