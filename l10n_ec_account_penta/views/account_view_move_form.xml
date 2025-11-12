@@ -33,7 +33,7 @@
                 invisible="payment_type != 'inbound'"/>
 
         <!-- PROVEEDORES: bills -->
-        <field name="reconcile_bill_ids"
+        <field name="reconciled_bill_ids"
               string="Facturas"
               widget="many2many_tags"
               optional="show"
