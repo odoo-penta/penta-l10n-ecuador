@@ -160,10 +160,11 @@ class ReportPurchaseA2Wizard(models.TransientModel):
                                 currency=invoice.currency_id,
                                 quantity=line.quantity,
                                 product=line.product_id,
-                                partner=invoice.partner_id
+                                partner=invoice.partner_id,
+                                rounding_method='round_globally',
                             )
                             base_amount = taxes_res['total_excluded']
-                            iva_amount = sum(t['amount'] for t in taxes_res['taxes'])
+                            iva_amount = round(sum(t['amount'] for t in taxes_res['taxes']), 2)
                             # Sumar al grupo correspondiente
                             base_per_group[tax_group_id] += base_amount
                             iva_per_group[tax_group_id] += iva_amount

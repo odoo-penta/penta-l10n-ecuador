@@ -157,7 +157,8 @@ class ReportSalesA1Wizard(models.TransientModel):
                                 currency=invoice.currency_id,
                                 quantity=line.quantity,
                                 product=line.product_id,
-                                partner=invoice.partner_id
+                                partner=invoice.partner_id,
+                                rounding_method='round_globally',
                             )
                             base_amount = taxes_res['total_excluded']
                             iva_amount = sum(t['amount'] for t in taxes_res['taxes'])
