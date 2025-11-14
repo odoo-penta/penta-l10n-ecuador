@@ -3,3 +3,4 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_penta_account_asset_extend,penta.account.asset.extend,account_asset.model_account_asset,account.group_account_user,1,1,1,0
 access_penta_account_asset_extend_manager,penta.account.asset.extend.manager,account_asset.model_account_asset,account.group_account_manager,1,1,1,1
 access_penta_account_asset_template_manager,penta.account.asset.template.manager,model_account_asset_template,account.group_account_manager,1,1,1,1
+access_penta_res_partner_type_manager,penta.res.partner.type.manager,model_res_partner_type,account.group_account_manager,1,1,1,1

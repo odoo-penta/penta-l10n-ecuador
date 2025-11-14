@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Vista list partner type -->
+    <record id="view_res_partner_type_list" model="ir.ui.view">
+        <field name="name">res.partner.type.list</field>
+        <field name="model">res.partner.type</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+    <!-- Vista form partner type -->
+    <record id="view_res_partner_type_form" model="ir.ui.view">
+        <field name="name">res.partner.type.form</field>
+        <field name="model">res.partner.type</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_res_partner_type" model="ir.actions.act_window">
+        <field name="name">Customers type</field>
+        <field name="res_model">res.partner.type</field>
+        <field name="view_mode">list,form</field>
+        <field name="target">current</field>
+    </record>
+
+    <menuitem id="menu_res_partner_type_action" name="Customer type" parent="contacts.menu_localisation" action="action_res_partner_type" sequence="99"/>
+
+    <record id="view_partner_form_inherit_pentalab" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit.pentalab</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="account.view_partner_property_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='vat']" position="after">
+                <field name="is_customer"/>
+                <field name="customer_type" options="{'no_create': True, 'no_open': True}" required="is_customer" invisible="not is_customer"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

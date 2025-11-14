@@ -11,3 +11,4 @@ from . import account_assets_report
 from . import account_asset_template
 from . import res_company
 from . import res_config_settings
+from . import res_partner
