@@ -37,6 +37,7 @@
         'views/res_config_settings_views.xml',
         'views/res_partner_views.xml',
         'views/product_views.xml',
+        'views/account_payment_term_views.xml',
     ],
     'license': 'OPL-1',
 }
