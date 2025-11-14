@@ -70,7 +70,7 @@
 
     <menuitem id="menu_res_partner_profile" name="Customer profile" parent="contacts.menu_localisation" action="action_res_partner_profile" sequence="99"/>
 
-    <record id="view_partner_form_inherit_pentalab" model="ir.ui.view">
+    <record id="view_partner_form_inherit_penta" model="ir.ui.view">
         <field name="name">res.partner.form.inherit.pentalab</field>
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="account.view_partner_property_form"/>
