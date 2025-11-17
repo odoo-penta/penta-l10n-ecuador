@@ -151,9 +151,10 @@ class ReportSalesA1Wizard(models.TransientModel):
                     for tax in line.tax_ids:
                         tax_group_id = tax.tax_group_id.id
                         if tax_group_id in tax_groups.ids:
+                            discounted_price = line.price_unit * (1 - (line.discount / 100.0))
                             # Calcular los montos (base e impuesto)
                             taxes_res = tax.compute_all(
-                                line.price_unit,
+                                discounted_price,
                                 currency=invoice.currency_id,
                                 quantity=line.quantity,
                                 product=line.product_id,

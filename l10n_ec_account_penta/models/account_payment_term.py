@@ -52,14 +52,3 @@ class AccountPaymentTerm(models.Model):
             if term.generate_installments and ('generate_installments' in vals or 'installments_number' in vals):
                 term._generate_installment_lines()
         return res
-
-class AccountPaymentTermLine(models.Model):
-    _inherit = 'account.payment.term.line'
-    
-    delay_type = fields.Selection([
-            ('days_after', 'Days after invoice date'),
-            ('days_after_end_of_month', 'Days after end of month'),
-            ('days_after_end_of_next_month', 'Days after end of next month'),
-            ('days_after_delivery', 'Days after the delivery date'),
-            ('days_end_of_month_on_the', 'Days end of month on the'),
-        ], required=True, default='days_after')
