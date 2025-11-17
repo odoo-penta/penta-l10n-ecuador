@@ -9,6 +9,7 @@ class ResConfigSettings(models.TransientModel):
         string='Sales amount reported by UAFE', readonly=False,
         help='We specify the amount that customer purchases must reach to be considered in the UAFE report.')
     
+    #Pagos 
     payment_prepared_by_id = fields.Many2one(
         related='company_id.payment_prepared_by_id',
         comodel_name='res.users',

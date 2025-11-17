@@ -747,3 +747,164 @@ msgstr ""
 #: model:ir.model,name:l10n_ec_account_penta.model_res_partner_type
 msgid "res.partner.type"
 msgstr ""
+
+
+
+#. module: l10n_ec_account_penta
+#: model:ir.actions.act_window,name:l10n_ec_account_penta.action_check_l10n_latam_document_type
+msgid "Action for open check document type menu"
+msgstr "Acción para abrir el menú de verificación de tipo de documento"
+
+#. module: l10n_ec_account_penta
+#: model:ir.model,name:l10n_ec_account_penta.model_penta_cb_move_type
+msgid "Allowed Move Type"
+msgstr "Tipo de Asiento Permitido"
+
+#. module: l10n_ec_account_penta
+#. odoo-python
+#: code:addons/l10n_ec_account_penta/models/l10n_latam_document_type.py:0
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_l10n_latam_document_type__penta_cb_move_type
+msgid "Allowed Move Types"
+msgstr "Tipos de Asiento Permitidos"
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_penta_cb_move_type__create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_penta_cb_move_type__create_date
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: l10n_ec_account_penta
+#. odoo-python
+#: code:addons/l10n_ec_account_penta/models/penta_cb_move_type.py:0
+#: model:ir.model.fields.selection,name:l10n_ec_account_penta.selection__penta_cb_move_type__code__out_invoice
+#: model:penta.cb.move.type,name:l10n_ec_account_penta.penta_cb_move_type_out_invoice
+msgid "Customer Invoice"
+msgstr "Factura de Cliente"
+
+#. module: l10n_ec_account_penta
+#. odoo-python
+#: code:addons/l10n_ec_account_penta/models/penta_cb_move_type.py:0
+#: model:ir.model.fields.selection,name:l10n_ec_account_penta.selection__penta_cb_move_type__code__out_refund
+#: model:penta.cb.move.type,name:l10n_ec_account_penta.penta_cb_move_type_out_refund
+msgid "Customer Refund"
+msgstr "Reembolso a Cliente"
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_penta_cb_move_type__display_name
+msgid "Display Name"
+msgstr "Nombre mostrado"
+
+#. module: l10n_ec_account_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_account_penta.l10_latam_document_type_list_inherit
+msgid "Document Types"
+msgstr "Tipos de Documento"
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_penta_cb_move_type__id
+msgid "ID"
+msgstr "ID"
+
+#. module: l10n_ec_account_penta
+#. odoo-python
+#: code:addons/l10n_ec_account_penta/models/penta_cb_move_type.py:0
+#: model:ir.model,name:l10n_ec_account_penta.model_account_move
+#: model:ir.model.fields.selection,name:l10n_ec_account_penta.selection__penta_cb_move_type__code__entry
+#: model:penta.cb.move.type,name:l10n_ec_account_penta.penta_cb_move_type_entry
+msgid "Journal Entry"
+msgstr "Asiento contable"
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_penta_cb_move_type__write_uid
+msgid "Last Updated by"
+msgstr "Última actualización por"
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_penta_cb_move_type__write_date
+msgid "Last Updated on"
+msgstr "Última actualización el"
+
+#. module: l10n_ec_account_penta
+#: model:ir.model,name:l10n_ec_account_penta.model_l10n_latam_document_type
+msgid "Latam Document Type"
+msgstr "Tipo de Documento Latam"
+
+#. module: l10n_ec_account_penta
+#. odoo-python
+#: code:addons/l10n_ec_account_penta/models/l10n_latam_document_type.py:0
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_l10n_latam_document_type__penta_cb_length_auth_number
+msgid "Lenght of Authorization Number"
+msgstr "Longitud del Número de Autorización"
+
+#. module: l10n_ec_account_penta
+#. odoo-python
+#: code:addons/l10n_ec_account_penta/models/l10n_latam_document_type.py:0
+#: model:ir.model.fields,help:l10n_ec_account_penta.field_l10n_latam_document_type__penta_cb_length_auth_number
+msgid ""
+"Length of the authorization number for this document type. If specified, the"
+" authorization number will be validated for length when creating or editing "
+"documents."
+msgstr ""
+"Longitud del número de autorización para este tipo de documento. Si se "
+"especifica, el número de autorización será validado por longitud al crear o "
+"editar documentos."
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_penta_cb_move_type__code
+msgid "Move Type"
+msgstr "Tipo de Asiento"
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.constraint,message:l10n_ec_account_penta.constraint_penta_cb_move_type_penta_move_type_unique
+msgid "Move type must be unique."
+msgstr "El tipo de asiento debe ser único."
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_penta_cb_move_type__name
+msgid "Name"
+msgstr "Nombre"
+
+#. module: l10n_ec_account_penta
+#. odoo-python
+#: code:addons/l10n_ec_account_penta/models/l10n_latam_document_type.py:0
+#: model:ir.model.fields,help:l10n_ec_account_penta.field_l10n_latam_document_type__penta_cb_move_type
+msgid ""
+"Select the move types that are allowed for authorization number validation."
+msgstr ""
+"Seleccione los tipos de asiento permitidos para la validación del número de "
+"autorización."
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,help:l10n_ec_account_penta.field_penta_cb_move_type__code
+msgid "Technical move_type used in account.move"
+msgstr "Tipo de asiento técnico utilizado en account.move"
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,help:l10n_ec_account_penta.field_penta_cb_move_type__name
+msgid "The name of the move type."
+msgstr "El nombre del tipo de asiento."
+
+#. module: l10n_ec_account_penta
+#. odoo-python
+#: code:addons/l10n_ec_account_penta/models/penta_cb_move_type.py:0
+#: model:ir.model.fields.selection,name:l10n_ec_account_penta.selection__penta_cb_move_type__code__in_invoice
+#: model:penta.cb.move.type,name:l10n_ec_account_penta.penta_cb_move_type_in_invoice
+msgid "Vendor Bill"
+msgstr "Factura de Proveedor"
+
+#. module: l10n_ec_account_penta
+#. odoo-python
+#: code:addons/l10n_ec_account_penta/models/penta_cb_move_type.py:0
+#: model:ir.model.fields.selection,name:l10n_ec_account_penta.selection__penta_cb_move_type__code__in_refund
+#: model:penta.cb.move.type,name:l10n_ec_account_penta.penta_cb_move_type_in_refund
+msgid "Vendor Refund"
+msgstr "Reembolso a Proveedor"
+
+#. module: l10n_ec_account_penta
+#: model:ir.ui.menu,name:l10n_ec_account_penta.menu_check_l10n_latam_document_type
+msgid "Verificaciones por tipo de documento"
+msgstr ""
+

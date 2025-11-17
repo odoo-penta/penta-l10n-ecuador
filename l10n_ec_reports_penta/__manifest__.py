@@ -70,7 +70,8 @@
         "report/report_bank_recon_pdf.xml",
         'report/account_move_report.xml',
         'views/menuitems.xml',
-        'views/report_payment_receipt_inherit_auth.xml'
+        'views/report_payment_receipt_inherit_auth.xml',
+        'wizard/pentalab_report_cartera_reporte_wizard.xml'
     ],
     "installable": True,
     'application': False,

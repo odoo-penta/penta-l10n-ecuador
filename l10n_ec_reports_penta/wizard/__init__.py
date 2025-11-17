@@ -7,3 +7,4 @@ from . import report_purchase_a2_wizard
 from . import report_retention_a3_wizard
 from . import report_uafe_wizard
 from . import report_withholding
+from . import pentalab_report_cartera_reporte_wizard

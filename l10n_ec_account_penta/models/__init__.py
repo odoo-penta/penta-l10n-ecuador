@@ -14,3 +14,5 @@ from . import res_config_settings
 from . import res_partner
 from . import product_template
 from . import account_payment_term
+from . import l10n_latam_document_type
+from . import penta_cb_move_type

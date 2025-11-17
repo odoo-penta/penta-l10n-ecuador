@@ -23,7 +23,8 @@
     'data': [
         'data/account_cards_data.xml',
         'data/assets_report_extend.xml',
-        
+        'data/penta_cb_move_type_data.xml',
+
         'security/ir.model.access.csv',
         
         'report/account_asset_acta_report.xml',
@@ -38,6 +39,7 @@
         'views/res_partner_views.xml',
         'views/product_views.xml',
         'views/account_payment_term_views.xml',
+        'views/l10n_latam_document_type_views.xml'
     ],
     'license': 'OPL-1',
 }
