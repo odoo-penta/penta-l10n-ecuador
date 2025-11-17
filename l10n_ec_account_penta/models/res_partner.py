@@ -24,4 +24,4 @@ class ResPartner(models.Model):
     
     is_customer = fields.Boolean(tracking=True)
     customer_type = fields.Many2one('res.partner.type', tracking=True)
-    customer_profile = fields.Many2one('res.partner.profile', required=True, tracking=True)
+    customer_profile = fields.Many2one('res.partner.profile', tracking=True)
