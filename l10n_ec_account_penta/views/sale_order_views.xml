@@ -14,6 +14,21 @@
                         <field name="apply_interest_grace"/>
                         <field name="minimum_fee"/>
                     </group>
+                    <notebook>
+                        <page name="deferred_lines" string="Amortization Table">
+                            <field name="line_deferred_ids">
+                                <list>
+                                    <field name="month"/>
+                                    <field name="initial_balance"/>
+                                    <field name="interest_amount"/>
+                                    <field name="amortization"/>
+                                    <field name="installment"/>
+                                    <field name="final_balance"/>
+                                    <field name="due_date"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
                 </page>
             </xpath>
         </field>
