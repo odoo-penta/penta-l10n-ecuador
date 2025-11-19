@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Terminos de pago -->
+    <record id="loyalty_reward_view_form_inherit_penta" model="ir.ui.view">
+        <field name="name">loyalty.reward.form.inherit.penta</field>
+        <field name="model">loyalty.reward</field>
+        <field name="inherit_id" ref="loyalty.loyalty_reward_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='reward_type_group']" position="after">
+                <group string="Credit" invisible="program_type != 'financing_promotion'">
+                    <field name="interest"/>
+                    <field name="months_of_grace"/>
+                    <field name="apply_interest_grace"/>
+                    <field name="minimum_fee"/>
+                    <field name="apply_payment_terms" options="{'no_create': True, 'no_open': True}"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

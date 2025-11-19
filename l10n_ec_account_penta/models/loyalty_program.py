@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from odoo import fields, models
+from odoo import fields, models, api, _
 
 
 class LoyaltyProgram(models.Model):
@@ -18,3 +18,17 @@ class LoyaltyProgram(models.Model):
         ('financing_promotion', 'Financing promotion')],
         default='promotion', required=True,
     )
+    
+    @api.model
+    def _program_items_name(self):
+        return {
+            'coupons': _('Coupons'),
+            'promotion': _('Promos'),
+            'gift_card': _('Gift Cards'),
+            'loyalty': _('Loyalty Cards'),
+            'ewallet': _('eWallets'),
+            'promo_code': _('Discounts'),
+            'buy_x_get_y': _('Promos'),
+            'next_order_coupons': _('Coupons'),
+            'financing_promotion': _('Financing promotion'),
+        }
