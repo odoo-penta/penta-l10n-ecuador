@@ -6,10 +6,14 @@ from odoo import fields, models, api, _
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
     
-    interest = fields.Integer(string='Interest (%)', default=0, readonly=True)
+    factor_to_apply = fields.Float(string='Entry amount')
+    entry_percentage = fields.Float(string='Entry (%)', default=0)
+    risk_percentage = fields.Float(string='Risk (%)', default=0)
+    interest = fields.Float(string='Interest (%)', default=0, readonly=True)
     months_of_grace = fields.Integer(string='Months of Grace', default=0)
     apply_interest_grace = fields.Boolean(string='Apply Interest Grace', default=False, readonly=True)
     minimum_fee = fields.Monetary(string='Minimum Fee', default=0.0, readonly=True)
+    payment_period = fields.Integer(string='Payment Period (Months)', default=0, readonly=True)
     line_deferred_ids = fields.One2many('sale.order.line.deferred', 'sale_order_id', string='Deferred Lines', readonly=True)
     
     def _compute_financing_amounts(self, reward, coupon, **kwargs):
@@ -52,9 +56,18 @@ class SaleOrder(models.Model):
     def calculate_lines_deferred(self, reward, coupon, **kwargs):
         self.ensure_one()
         self.line_deferred_ids.unlink()
-        values = self._compute_financing_amounts(reward, coupon, **kwargs)
+        # Calcular valores iniciales
+        financing_amounts = self._compute_financing_amounts(reward, coupon, **kwargs)
+        entry_percentage = self.entry_percentage / 100
+        risk_percentage = self.risk_percentage / 100
+        # Calcular monto de entrada
+        entry_amount = round((financing_amounts['total_subject_financing'] * entry_percentage), 2)
+        self.factor_to_apply = entry_amount
+        new_base_amount = round(financing_amounts['total_subject_financing'], 2)
+        new_iva_amount = round(financing_amounts['financing_iva'], 2)
+        new_total_sale = round(financing_amounts['total_subject_financing'], 2)
+        new_total_amount = round(financing_amounts['total_subject_financing'] - self.factor_to_apply, 2)
         import pdb;pdb.set_trace()
-        global_discount_reward_lines = self._get_applied_global_discount_lines()
 
     def _apply_program_reward(self, reward, coupon, **kwargs):
         self.ensure_one()
@@ -79,10 +92,13 @@ class SaleOrder(models.Model):
             return {'error': _('The coupon does not have enough points for the selected reward.')}
         # Add campos para financiar
         if reward.program_type == 'financing_promotion':
+            self.entry_percentage = reward.entry_percentage
+            self.risk_percentage = reward.risk_percentage
             self.interest = reward.interest
             self.months_of_grace = reward.months_of_grace
             self.apply_interest_grace = reward.apply_interest_grace
             self.minimum_fee = reward.minimum_fee
+            self.payment_period = reward.payment_period
             self.payment_term_id = reward.apply_payment_terms.id
             import pdb;pdb.set_trace()
             self.calculate_lines_deferred(reward, coupon, **kwargs)

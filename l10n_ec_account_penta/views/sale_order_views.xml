@@ -9,10 +9,17 @@
             <xpath expr="//page[@name='other_information']" position="after">
                 <page string="Financing" name="financing">
                     <group>
-                        <field name="interest"/>
-                        <field name="months_of_grace"/>
-                        <field name="apply_interest_grace"/>
-                        <field name="minimum_fee"/>
+                        <group>
+                            <field name="entry_percentage"/>
+                            <field name="risk_percentage"/>
+                            <field name="interest"/>
+                            <field name="apply_interest_grace"/>
+                        </group>
+                        <group>
+                            <field name="months_of_grace"/>
+                            <field name="minimum_fee"/>
+                            <field name="payment_period"/>
+                        </group>
                     </group>
                     <notebook>
                         <page name="deferred_lines" string="Amortization Table">

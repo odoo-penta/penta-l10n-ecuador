@@ -8,10 +8,13 @@
         <field name="arch" type="xml">
             <xpath expr="//group[@name='reward_type_group']" position="after">
                 <group string="Credit" invisible="program_type != 'financing_promotion'">
+                    <field name="entry_percentage"/>
+                    <field name="risk_percentage"/>
                     <field name="interest"/>
                     <field name="months_of_grace"/>
                     <field name="apply_interest_grace"/>
                     <field name="minimum_fee"/>
+                    <field name="payment_period"/>
                     <field name="apply_payment_terms" options="{'no_create': True, 'no_open': True}"/>
                 </group>
             </xpath>
