@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import fields, models, api, _
+from dateutil.relativedelta import relativedelta
 
 
 class SaleOrder(models.Model):
@@ -10,13 +11,25 @@ class SaleOrder(models.Model):
     entry_percentage = fields.Float(string='Entry (%)', default=0)
     risk_percentage = fields.Float(string='Risk (%)', default=0)
     interest = fields.Float(string='Interest (%)', default=0, readonly=True)
+    month_interest = fields.Float(string='Monthly Interest (%)', compute='_compute_monthly_interest', readonly=True)
     months_of_grace = fields.Integer(string='Months of Grace', default=0)
     apply_interest_grace = fields.Boolean(string='Apply Interest Grace', default=False, readonly=True)
     minimum_fee = fields.Monetary(string='Minimum Fee', default=0.0, readonly=True)
-    payment_period = fields.Integer(string='Payment Period (Months)', default=0, readonly=True)
+    payment_period = fields.Integer(
+        comodel_name='account.payment.term',
+        related='payment_term_id.installments_number',
+        string='Payment Period (Months)',
+        readonly=True,
+    )
     line_deferred_ids = fields.One2many('sale.order.line.deferred', 'sale_order_id', string='Deferred Lines', readonly=True)
+    recalculation_pending = fields.Boolean(string='Recalculation Pending', default=False)
     
-    def _compute_financing_amounts(self, reward, coupon, **kwargs):
+    @api.depends('interest')
+    def _compute_monthly_interest(self):
+        for order in self:
+            order.month_interest = order.interest / 12 if order.interest else 0.0
+    
+    def _compute_financing_amounts(self, reward=None):
         """Calcula:
             - monto_base_financiable
             - monto_base_contado
@@ -28,24 +41,31 @@ class SaleOrder(models.Model):
         counted_base_amount = 0.0 
         financing_iva = 0.0
         # Obtener productos financiables
-        product_ids = reward.program_id.rule_ids.mapped('valid_product_ids').ids
-        for line in self.order_line:
-            taxes_res = line.tax_id.compute_all(
-                line.price_unit * (1 - (line.discount / 100)),
-                currency=self.currency_id,
-                quantity=line.product_uom_qty,
-                product=line.product_id,
-                partner=self.partner_id
-            )
-            base_amount = taxes_res['total_excluded']
-            iva_amount = sum(t['amount'] for t in taxes_res['taxes'])
-            # Sumar base e impuestos SOLO para las líneas financiables
-            if line.product_id.id in product_ids:
-                financing_base_amount += base_amount
-                financing_iva += iva_amount
-            else:
-                counted_base_amount += base_amount
-        total_subject_financing = financing_base_amount + financing_iva
+        if not reward:
+            card = self.env['loyalty.card'].search([('order_id', '=', self.id)], limit=1)
+            if card:
+                program = card.program_id
+        else:
+            program = reward.program_id
+        if program:
+            product_ids = program.rule_ids.mapped('valid_product_ids').ids
+            for line in self.order_line:
+                taxes_res = line.tax_id.compute_all(
+                    line.price_unit * (1 - (line.discount / 100)),
+                    currency=self.currency_id,
+                    quantity=line.product_uom_qty,
+                    product=line.product_id,
+                    partner=self.partner_id
+                )
+                base_amount = taxes_res['total_excluded']
+                iva_amount = sum(t['amount'] for t in taxes_res['taxes'])
+                # Sumar base e impuestos SOLO para las líneas financiables
+                if line.product_id.id in product_ids:
+                    financing_base_amount += base_amount
+                    financing_iva += iva_amount
+                else:
+                    counted_base_amount += base_amount
+            total_subject_financing = financing_base_amount + financing_iva
         return {
             'financing_base_amount': financing_base_amount,
             'counted_base_amount': counted_base_amount,
@@ -53,21 +73,54 @@ class SaleOrder(models.Model):
             'total_subject_financing': total_subject_financing,
         }
     
-    def calculate_lines_deferred(self, reward, coupon, **kwargs):
+    def calculate_lines_deferred(self, reward=None):
         self.ensure_one()
         self.line_deferred_ids.unlink()
         # Calcular valores iniciales
-        financing_amounts = self._compute_financing_amounts(reward, coupon, **kwargs)
+        financing_amounts = self._compute_financing_amounts(reward)
         entry_percentage = self.entry_percentage / 100
         risk_percentage = self.risk_percentage / 100
+        month_interest = self.month_interest / 100
         # Calcular monto de entrada
-        entry_amount = round((financing_amounts['total_subject_financing'] * entry_percentage), 2)
-        self.factor_to_apply = entry_amount
-        new_base_amount = round(financing_amounts['total_subject_financing'], 2)
+        calc_entry_amount = self.env.context.get('calc_entry_amount')
+        if calc_entry_amount:
+            entry_amount = round((financing_amounts['total_subject_financing'] * entry_percentage), 2)
+            self.factor_to_apply = entry_amount
+        new_base_amount = round(financing_amounts['financing_base_amount'], 2)
         new_iva_amount = round(financing_amounts['financing_iva'], 2)
         new_total_sale = round(financing_amounts['total_subject_financing'], 2)
         new_total_amount = round(financing_amounts['total_subject_financing'] - self.factor_to_apply, 2)
-        import pdb;pdb.set_trace()
+        # Calculo de cuota fija
+        fixed_fee = round(new_total_amount*(month_interest*((1+month_interest)**self.payment_period) / (((1+month_interest)**self.payment_period)-1)), 2)
+        # Calcular tabla
+        balance = new_total_amount
+        base_date = fields.Date.to_date(self.date_order)
+        for i in range(1, (self.payment_period + self.months_of_grace) + 1):
+            if i == 1:
+                line_date = base_date
+            else:
+                line_date = line_date + relativedelta(days=30)
+            interest_amount = round(balance * month_interest, 2)
+            if i <= self.months_of_grace and self.apply_interest_grace:
+                amortization = 0.00
+                line_fixed_fee = interest_amount
+            else:
+                amortization = round(fixed_fee - interest_amount, 2)
+                line_fixed_fee = fixed_fee
+            if i == (self.payment_period + self.months_of_grace):
+                amortization = round(balance, 2)
+                line_fixed_fee = round(interest_amount + amortization, 2)
+            self.env['sale.order.line.deferred'].create({
+                'sale_order_id': self.id,
+                'month': i,
+                'initial_balance': balance,
+                'interest_amount': interest_amount,
+                'amortization': amortization,
+                'final_balance': round(balance - amortization, 2),
+                'fixed_fee': line_fixed_fee,
+                'due_date': line_date,
+            })
+            balance -= amortization
 
     def _apply_program_reward(self, reward, coupon, **kwargs):
         self.ensure_one()
@@ -100,12 +153,30 @@ class SaleOrder(models.Model):
             self.minimum_fee = reward.minimum_fee
             self.payment_period = reward.payment_period
             self.payment_term_id = reward.apply_payment_terms.id
-            import pdb;pdb.set_trace()
-            self.calculate_lines_deferred(reward, coupon, **kwargs)
+            self.with_context(calc_entry_amount=True).calculate_lines_deferred(reward)
         else:
             reward_vals = self._get_reward_line_values(reward, coupon, **kwargs)
             self._write_vals_from_reward_vals(reward_vals, old_reward_lines)
         return {}
+    
+    @api.onchange(
+        'factor_to_apply',
+        'entry_percentage',
+        'risk_percentage',
+        'interest',
+        'month_interest',
+        'apply_interest_grace',
+        'months_of_grace',
+        'minimum_fee',
+        'payment_period',
+    )
+    def _onchange_recalculate_deferred(self):
+        self.recalculation_pending = True
+        
+    def action_recalculate_financing(self):
+        for order in self:
+            order.calculate_lines_deferred()
+            order.recalculation_pending = False
     
 class SaleOrderLineDeferred(models.Model):
     _name = 'sale.order.line.deferred'
@@ -123,5 +194,5 @@ class SaleOrderLineDeferred(models.Model):
     interest_amount = fields.Monetary(string='Interest Amount', currency_field='currency_id')
     amortization = fields.Monetary(string='Amortization', currency_field='currency_id')
     final_balance = fields.Monetary(string='Final Balance', currency_field='currency_id')
-    installment = fields.Integer(string='Installment')
+    fixed_fee = fields.Float(string='Fixed fee', currency_field='currency_id')
     due_date = fields.Date(string='Due Date')

@@ -10,26 +10,36 @@
                 <page string="Financing" name="financing">
                     <group>
                         <group>
+                            <field name="recalculation_pending" invisible="1"/>
                             <field name="entry_percentage"/>
                             <field name="risk_percentage"/>
                             <field name="interest"/>
+                            <field name="month_interest"/>
                             <field name="apply_interest_grace"/>
                         </group>
                         <group>
                             <field name="months_of_grace"/>
                             <field name="minimum_fee"/>
                             <field name="payment_period"/>
+                            <field name="factor_to_apply"/>
                         </group>
+                        <button name="action_recalculate_financing"
+                            type="object"
+                            string="Recalculate"
+                            class="btn-primary"
+                            invisible="not recalculation_pending"/>
+
                     </group>
                     <notebook>
                         <page name="deferred_lines" string="Amortization Table">
                             <field name="line_deferred_ids">
                                 <list>
+                                    <field name="currency_id" column_invisible="1"/>
                                     <field name="month"/>
                                     <field name="initial_balance"/>
                                     <field name="interest_amount"/>
-                                    <field name="amortization"/>
-                                    <field name="installment"/>
+                                    <field name="amortization" sum="total"/>
+                                    <field name="fixed_fee"/>
                                     <field name="final_balance"/>
                                     <field name="due_date"/>
                                 </list>
