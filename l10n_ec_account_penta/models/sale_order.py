@@ -40,7 +40,9 @@ class SaleOrder(models.Model):
         financing_base_amount = 0.0 
         counted_base_amount = 0.0 
         financing_iva = 0.0
+        total_subject_financing = 0.0
         # Obtener productos financiables
+        program = False
         if not reward:
             card = self.env['loyalty.card'].search([('order_id', '=', self.id)], limit=1)
             if card:
