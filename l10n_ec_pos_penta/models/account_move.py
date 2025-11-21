@@ -39,11 +39,21 @@ class AccountMove(models.Model):
                 ('cashier_ids', 'in', self.env.user.id),
                 ('responsible_ids', 'in', self.env.user.id)
             ])
+            import pdb;pdb.set_trace()
             self.show_cash_session = len(cash_boxs) > 1
             if len(cash_boxs) == 1:
                 self.cash_session_id = cash_boxs.current_session_id.id
     
     def action_post(self):
+        cash_boxs = self.env['cash.box'].search([
+            ('state', '=', 'open'),
+            ('journal_id', '=', self.journal_id.id),
+            '|',
+            ('cashier_ids', 'in', self.env.user.id),
+            ('responsible_ids', 'in', self.env.user.id)
+        ])
+        if not self.cash_session_id and len(cash_boxs) == 1:
+            self.cash_session_id = cash_boxs.current_session_id.id
         if self.cash_session_id:
             if self.cash_session_id.state == 'closed':
                 raise UserError(_("This invoice is related to an already closed cashier session."))
