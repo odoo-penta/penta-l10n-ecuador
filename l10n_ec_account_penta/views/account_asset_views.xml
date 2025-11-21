@@ -19,7 +19,7 @@
                 <xpath expr="//page[@name='main_page']" position="inside">
                     <group string="Información adicional">
                     <field name="custodian_id" options="{'no_create': True}"/>
-                    <field name="brand"/>
+                    <field name="brand_id"/>
                     <field name="model"/>
                     <field name="serial_number"/>
                     <field name="plate"/>

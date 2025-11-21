@@ -16,3 +16,6 @@ from . import product_template
 from . import account_payment_term
 from . import l10n_latam_document_type
 from . import penta_cb_move_type
+from . import loyalty_program
+from . import loyalty_reward
+from . import sale_order

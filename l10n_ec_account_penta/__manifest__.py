@@ -39,7 +39,9 @@
         'views/res_partner_views.xml',
         'views/product_views.xml',
         'views/account_payment_term_views.xml',
-        'views/l10n_latam_document_type_views.xml'
+        'views/l10n_latam_document_type_views.xml',
+        'views/loyalty_reward_views.xml',
+        'views/sale_order_views.xml',
     ],
     'license': 'OPL-1',
 }
