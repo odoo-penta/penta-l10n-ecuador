@@ -39,7 +39,6 @@ class AccountMove(models.Model):
                 ('cashier_ids', 'in', self.env.user.id),
                 ('responsible_ids', 'in', self.env.user.id)
             ])
-            import pdb;pdb.set_trace()
             self.show_cash_session = len(cash_boxs) > 1
             if len(cash_boxs) == 1:
                 self.cash_session_id = cash_boxs.current_session_id.id
