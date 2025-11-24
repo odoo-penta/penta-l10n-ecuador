@@ -19,6 +19,7 @@
         'mail',
         'account_reports',
         'product_brand',
+        'loyalty',
     ],
     'data': [
         'data/account_cards_data.xml',
