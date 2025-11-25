@@ -108,10 +108,13 @@ class CashBoxOpenWizard(models.TransientModel):
             [('cash_id', '=', cash.id), ('state', '=', 'closed')],
             order="closing_date desc", limit=1
         )
+        # Comentado no se ocupa tener el balance de la ultima sesion
+        """
         last_balance = last_session.closing_balance if last_session else 0.0
         res.update({
             'initial_balance': last_balance,
         })
+        """
         return res
     
     def action_open_coin_wizard(self):
