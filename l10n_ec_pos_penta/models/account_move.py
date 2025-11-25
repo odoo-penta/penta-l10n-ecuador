@@ -34,7 +34,7 @@ class AccountMove(models.Model):
             # Buscar caja abierta asociada al diario y usuario
             cash_boxs = self.env['cash.box'].search([
                 ('state', '=', 'open'),
-                ('journal_id', '=', self.journal_id.id),
+                ('journal_ids', 'in', self.journal_id.id),
                 '|',
                 ('cashier_ids', 'in', self.env.user.id),
                 ('responsible_ids', 'in', self.env.user.id)
@@ -46,7 +46,7 @@ class AccountMove(models.Model):
     def action_post(self):
         cash_boxs = self.env['cash.box'].search([
             ('state', '=', 'open'),
-            ('journal_id', '=', self.journal_id.id),
+            ('journal_ids', 'in', self.journal_id.id),
             '|',
             ('cashier_ids', 'in', self.env.user.id),
             ('responsible_ids', 'in', self.env.user.id)

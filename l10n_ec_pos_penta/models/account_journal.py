@@ -3,11 +3,10 @@
 # © 2025 PentaLab
 # License Odoo Proprietary License v1.0 (https://www.odoo.com/documentation/user/16.0/legal/licenses/licenses.html#odoo-proprietary-license)
 
-from . import account_journal
-from . import cash_box
-from . import cash_box_session
-from . import cash_box_session_movement
-from . import coins
-#from . import sale_order
-from . import account_payment
-from . import account_move
+from odoo import models, fields, api, _
+
+
+class AccountJournal(models.Model):
+    _inherit = 'account.journal'
+    
+    cashbox_id = fields.Many2one('cash.box', string="Cash Box", tracking=True)

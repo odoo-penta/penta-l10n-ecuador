@@ -23,7 +23,7 @@ class CashBox(models.Model):
     currency_id = fields.Many2one('res.currency', default=lambda self: self.env.company.currency_id)
     company_id = fields.Many2one('res.company', string='Company', required=True, default=lambda self: self.env.company)
     warehouse_id = fields.Many2one('stock.warehouse', string="Warehouse", check_company=True, tracking=True)
-    journal_id = fields.Many2one('account.journal', string="Journal", domain=[('type', 'in', ['sale'])], tracking=True)
+    journal_ids = fields.Many2many('account.journal', string="Journals")
     session_ids = fields.One2many('cash.box.session', 'cash_id', string="Sessions", readonly=True)
     current_session_id = fields.Many2one('cash.box.session', string="Current Session", readonly=True)
     state = fields.Selection([('open', 'Open'), ('closed', 'Closed')], default='closed', string="State", readonly=True)
@@ -80,18 +80,18 @@ class CashBox(models.Model):
             args += ['|',('responsible_ids', 'in', self.env.uid),('cashier_ids', 'in', self.env.uid)]
         return super().search(args, offset=offset, limit=limit, order=order)
     
-    @api.constrains('journal_id')
+    @api.constrains('journal_ids')
     def _check_unique_journal(self):
         for rec in self:
             # Mismo diario de apertura
-            if rec.journal_id:
+            if rec.journal_ids:
                 other = self.env['cash.box'].search([
                     ('id', '!=', rec.id),
-                    ('journal_id', '=', rec.journal_id.id),
+                    ('journal_ids', '=', rec.journal_ids.ids),
                     ('company_id', '=', rec.company_id.id)
                 ], limit=1)
                 if other:
-                    raise UserError(_("The journal '%s' is already assigned to the cash box '%s'. Please choose another journal.") % (rec.journal_id.name, other.name))
+                    raise UserError(_("The journal '%s' is already assigned to the cash box '%s'. Please choose another journal.") % (", ".join(rec.journal_ids.mapped('name')), other.name))
     
     @api.depends('name')
     def _compute_is_cash_box_admin(self):

@@ -57,7 +57,7 @@
                     <field name="currency_id" column_invisible="True"/>
                     <field name="name" decoration-bf="1"/>
                     <field name="warehouse_id"/>
-                    <field name="journal_id"/>
+                    <field name="journal_ids" widget="one2many_list"/>
                     <field name="responsible_ids" widget="many2many_tags"/>
                     <field name="cashier_ids" widget="many2many_tags"/>
                     <field name="state" widget="badge"/>
@@ -90,7 +90,7 @@
                                 <field name="warehouse_id" readonly="not is_cash_box_admin" options="{'no_create': True}"/>
                             </group>
                             <group>
-                                <field name="journal_id" readonly="not is_cash_box_admin" options="{'no_create': True}"/>
+                                <field name="journal_ids" readonly="not is_cash_box_admin" options="{'no_create': True}" widget="many2many_tags"/>
                                 <field name="current_session_id"/>
                             </group>
                         </group>
