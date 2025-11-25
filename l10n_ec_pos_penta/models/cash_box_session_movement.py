@@ -15,7 +15,7 @@ class CashBoxSessionMovement(models.Model):
     name = fields.Char(required=True, copy=False, readonly=True, default=_('New'))
     session_id = fields.Many2one('cash.box.session', string="Cash Box Session", readonly=True)
     currency_id = fields.Many2one(related='session_id.currency_id', depends=['session_id'])
-    partner_id = fields.Many2one('res.partner', string='Customer', required=True)
+    partner_id = fields.Many2one('res.partner', string='Customer')
     operation_type = fields.Selection([
         ('order', 'Order'),
         ('invoice', 'Invoice'),
