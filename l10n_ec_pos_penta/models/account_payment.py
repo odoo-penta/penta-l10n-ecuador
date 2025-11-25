@@ -13,6 +13,7 @@ class AccountPayment(models.Model):
     cash_session_id = fields.Many2one('cash.box.session', string="Cash Session", copy=False)
     code_movement = fields.Char(string='Code Movement', readonly=True)
     show_cash_session = fields.Boolean()
+    allowed_cash_boxes = fields.Many2many('cash.box')
     
     @api.model
     def default_get(self, fields_list):
@@ -21,6 +22,7 @@ class AccountPayment(models.Model):
         cash_boxs = self.env['cash.box'].search([('state', '=', 'open'),'|',('cashier_ids', 'in', self.env.user.id),('responsible_ids', 'in', self.env.user.id)])
         # Mostrar campo solo si tiene más de una sesión
         res['show_cash_session'] = len(cash_boxs) > 1
+        res['allowed_cash_boxes'] = [(6, 0, cash_boxs.ids)]
         # Si solo hay una sesión, asignarla automáticamente
         if len(cash_boxs) == 1:
             res['cash_session_id'] = cash_boxs.current_session_id.id
