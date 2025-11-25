@@ -18,10 +18,12 @@
         <field name="model">account.payment</field>
         <field name="inherit_id" ref="account.view_account_payment_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='memo']" position='after'>
-                <field name="show_cash_session" invisible="1"/>
-                <field name="cash_session_id" options="{'no_create': True, 'no_open': True}" required="show_cash_session" readonly="not show_cash_session or state != 'draft'"/>
-                <field name="code_movement" invisible="payment_type != 'inbound'"/>
+            <xpath expr="//group[@name='group2']" position='after'>
+                <group name="pos">
+                    <field name="show_cash_session" invisible="1"/>
+                    <field name="cash_session_id" options="{'no_create': True, 'no_open': True}" required="show_cash_session" readonly="not show_cash_session or state != 'draft'"/>
+                    <field name="code_movement" invisible="payment_type != 'inbound'"/>
+                </group>
             </xpath>
         </field>
     </record>
