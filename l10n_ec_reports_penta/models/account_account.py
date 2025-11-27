@@ -9,107 +9,88 @@ class AccountAccount(models.Model):
 
     hide_in_report = fields.Boolean(string="Ocultar en reporte", default=False)
 
-    def _get_group_level(self, group):
-        """Nivel real basado en parent_id del grupo."""
-        level = 0
-        parent = group.parent_id
-        while parent:
-            level += 1
-            parent = parent.parent_id
-        return level
-
-    def _get_account_level(self, account):
-        """
-        Nivel REAL de la cuenta:
-        nivel = nivel del grupo + 1
-        """
-        if account.group_id:
-            return self._get_group_level(account.group_id) + 1
-        return 0  # cuentas sin grupo
-
-    def _build_group_tree(self, groups):
-        """Retorna lista jerárquica de grupos."""
-        tree = []
-        lookup = {g.id: {'group': g, 'children': []} for g in groups}
-
-        for g in groups:
-            if g.parent_id and g.parent_id.id in lookup:
-                lookup[g.parent_id.id]['children'].append(lookup[g.id])
-            else:
-                tree.append(lookup[g.id])
-
-        return tree
-
-    def _walk_tree(self, node, full_list):
-        """Recorre el árbol y agrega grupos + cuentas al listado final."""
-        group = node['group']
-        group_level = self._get_group_level(group)
-
-        full_list.append({
-            'level': group_level,
-            'type': 'Grupo',
-            'code': group.code_prefix_start,
-            'name': group.name,
-            'reconcile': '',
-        })
-
-        # Cuentas del grupo
-        accounts_in_group = self.env['account.account'].search([
-            ('group_id', '=', group.id),
-            ('deprecated', '!=', True),
-        ], order='code')
-
-        for account in accounts_in_group:
-            full_list.append({
-                'level': group_level + 1,
-                'type': 'Cuenta',
-                'code': self._format_code(account.code),
-                'name': account.name,
-                'reconcile': account.reconcile,
-            })
-
-        # Procesar subgrupos
-        for child in node['children']:
-            self._walk_tree(child, full_list)
-            
     def _format_code(self, code):
         if not code:
             return ''
-        return code.replace('.', '')
 
-    #  Exportar excel
+        code = code.replace('.', '')
 
+        if len(code) == 1:
+            first = code
+            rest = ''
+
+        elif len(code) == 2:
+            first = code[0] + "0" + code[1]
+            rest = ''
+
+        elif len(code) == 3:
+            first = code[0] + "0" + code[2]
+            rest = ''
+
+        else:
+            first = code[0] + "0" + code[2]
+            rest = code[3:]
+
+        if rest:
+            parts = [rest[i:i+2] for i in range(0, len(rest), 2)]
+            return first + "." + ".".join(parts)
+
+        return first
+
+    def _get_level_from_code(self, formatted_code):
+        return formatted_code.count('.') + 1 if formatted_code else 1
+
+    def _get_account_type_label(self, acc):
+        selection = acc._fields['account_type'].selection
+        value = acc.account_type
+        for key, label in selection:
+            if key == value:
+                return label
+        return ''
+
+    def _hierarchy_key(self, code):
+        if not code:
+            return [999999]
+        return [int(x) for x in code.split('.')]
+
+    # EXPORTAR EXCEL COMPLETO
     def action_export_account_group_tree_excel(self):
 
-        # 1. Obtener grupos y ordenarlos
-        groups = self.env['account.group'].search([], order='code_prefix_start')
-
-        # 2. Construir árbol real basado en parent_id
-        group_tree = self._build_group_tree(groups)
-
-        # 3. Lista final en orden jerárquico
         full_list = []
 
-        for root in group_tree:
-            self._walk_tree(root, full_list)
+        groups = self.env['account.group'].search([])
 
-        # 4. Cuentas sin grupo
-        accounts_without_group = self.env['account.account'].search([
-            ('group_id', '=', False),
-            ('deprecated', '!=', True),
-        ], order='code')
+        for g in groups:
+            formatted = self._format_code(g.code_prefix_start)
 
-        for account in accounts_without_group:
             full_list.append({
-                'level': self._get_account_level(account),
-                'type': 'Cuenta',
-                'code': self._format_code(account.code),
-                'name': account.name,
-                'reconcile': account.reconcile,
+                'level': self._get_level_from_code(formatted),
+                'type': '',
+                'code': formatted,
+                'name': g.name,
+                'reconcile': '',
+                'is_group': True,
             })
 
-        # CREAR EXCEL
+        accounts = self.env['account.account'].search([
+            ('deprecated', '!=', True)
+        ])
 
+        for acc in accounts:
+            formatted = self._format_code(acc.code)
+
+            full_list.append({
+                'level': self._get_level_from_code(formatted),
+                'type': self._get_account_type_label(acc),
+                'code': formatted,
+                'name': acc.name,
+                'reconcile': acc.reconcile,
+                'is_group': False,
+            })
+
+        full_list = sorted(full_list, key=lambda x: self._hierarchy_key(x['code']))
+
+        # CREAR EXCEL
         output = io.BytesIO()
         workbook = xlsxwriter.Workbook(output, {'in_memory': True})
         worksheet = workbook.add_worksheet("Plan de Cuentas")
@@ -117,11 +98,12 @@ class AccountAccount(models.Model):
         header = workbook.add_format({'bold': True, 'align': 'center', 'bg_color': '#D9D9D9'})
         border = workbook.add_format({'border': 1})
         center = workbook.add_format({'border': 1, 'align': 'center'})
+        bold = workbook.add_format({'bold': True, 'border': 1})
 
         worksheet.set_column('A:A', 18)
         worksheet.set_column('B:B', 50)
         worksheet.set_column('C:C', 10)
-        worksheet.set_column('D:D', 15)
+        worksheet.set_column('D:D', 25)
         worksheet.set_column('E:E', 20)
 
         headers = ['Código contable', 'Nombre de la cuenta', 'Nivel', 'Tipo', 'Permitir conciliación']
@@ -133,13 +115,20 @@ class AccountAccount(models.Model):
         for item in full_list:
             row += 1
 
-            indent = workbook.add_format({'indent': item['level'], 'border': 1})
+            indent = workbook.add_format({'indent': item['level'] - 1, 'border': 1})
 
-            worksheet.write(row, 0, item['code'], border)
-            worksheet.write(row, 1, item['name'], indent)
-            worksheet.write(row, 2, item['level'], center)
-            worksheet.write(row, 3, item['type'], center)
-            worksheet.write(row, 4, 'Sí' if item.get('reconcile') else 'No', center)
+            if item['is_group']:
+                worksheet.write_string(row, 0, item['code'], bold)
+                worksheet.write(row, 1, item['name'], bold)
+                worksheet.write(row, 2, item['level'], center)
+                worksheet.write(row, 3, '', center)
+                worksheet.write(row, 4, '', center)
+            else:
+                worksheet.write_string(row, 0, item['code'], border)
+                worksheet.write(row, 1, item['name'], indent)
+                worksheet.write(row, 2, item['level'], center)
+                worksheet.write(row, 3, item['type'], center)
+                worksheet.write(row, 4, 'Sí' if item['reconcile'] else 'No', center)
 
         workbook.close()
         output.seek(0)
