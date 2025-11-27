@@ -44,29 +44,62 @@ class AccountAccount(models.Model):
         return formatted_code.count('.') + 1 if formatted_code else 1
 
     def _get_account_type_label(self, acc):
-        selection = acc._fields['account_type'].selection
+        """
+        Devuelve la etiqueta traducida del campo account_type,
+        usando el idioma del contexto (es_ES, es_EC, etc.).
+        """
+        field_info = acc.fields_get(['account_type'])['account_type']
+        selection = field_info.get('selection', [])
         value = acc.account_type
+
         for key, label in selection:
             if key == value:
-                return label
+                # label ya viene traducido por fields_get
+                return label or ''
         return ''
 
     def _hierarchy_key(self, code):
+        """
+        Devuelve una clave numérica para ordenar jerárquicamente los códigos.
+        - Pone primero los grupos raíz (1,2,...)
+        - Luego sus cuentas hijas (101, 101.01, etc.)
+        - Nunca revienta aunque el código venga con basura rara.
+        """
         if not code:
             return [999999]
 
-        # 🔥 Limpieza fuerte
         clean = str(code).strip().replace('\n', '').replace('\r', '')
 
         parts = clean.split('.')
-
         key = []
-        for p in parts:
+
+        for idx, p in enumerate(parts):
             p = p.strip()
-            if not p or not p.isdigit():
+            if not p:
                 key.append(999999)
+                continue
+
+            # Primer segmento: tratamos "101" como [1, 1], "2" como [2, -1]
+            if idx == 0 and p.isdigit():
+                if len(p) == 1:
+                    # Grupo raíz: 1, 2, 3...
+                    key.extend([int(p), -1])
+                else:
+                    # Ej: 101 -> grupo 1, subnivel 01
+                    root = int(p[0])
+                    rest = int(p[1:]) if p[1:] else 0
+                    key.extend([root, rest])
             else:
-                key.append(int(p))
+                # Segmentos normales: 01, 02, etc.
+                if p.isdigit():
+                    key.append(int(p))
+                else:
+                    # Intentar rescatar solo dígitos
+                    digits = ''.join(ch for ch in p if ch.isdigit())
+                    if digits:
+                        key.append(int(digits))
+                    else:
+                        key.append(999999)
 
         return key
 
