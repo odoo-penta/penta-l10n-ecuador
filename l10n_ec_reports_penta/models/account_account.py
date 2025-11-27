@@ -13,6 +13,9 @@ class AccountAccount(models.Model):
         if not code:
             return ''
 
+        # 🔥 Limpieza fuerte
+        code = str(code).strip().replace('\n', '').replace('\r', '').replace(' ', '')
+
         code = code.replace('.', '')
 
         if len(code) == 1:
@@ -51,7 +54,21 @@ class AccountAccount(models.Model):
     def _hierarchy_key(self, code):
         if not code:
             return [999999]
-        return [int(x) for x in code.split('.')]
+
+        # 🔥 Limpieza fuerte
+        clean = str(code).strip().replace('\n', '').replace('\r', '')
+
+        parts = clean.split('.')
+
+        key = []
+        for p in parts:
+            p = p.strip()
+            if not p or not p.isdigit():
+                key.append(999999)
+            else:
+                key.append(int(p))
+
+        return key
 
     # EXPORTAR EXCEL COMPLETO
     def action_export_account_group_tree_excel(self):
