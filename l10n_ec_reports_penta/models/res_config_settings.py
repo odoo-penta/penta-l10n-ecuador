@@ -50,3 +50,23 @@ class ResConfigSettings(models.TransientModel):
         readonly=False,
         string='Pagos en lote - Revisado por'
     )
+
+    #Retenciones 
+    retention_prepared_by_id = fields.Many2one(
+        related='company_id.retention_prepared_by_id',
+        comodel_name='res.users',
+        readonly=True,
+        string='Retenciones - Elaborado por'
+    )
+    retention_reviewed_by_id = fields.Many2one(
+        related='company_id.retention_reviewed_by_id',
+        comodel_name='res.users',
+        readonly=False,
+        string='Retenciones - Revisado por'
+    )
+    retention_delivered_by_id = fields.Many2one(
+        related='company_id.retention_delivered_by_id',
+        comodel_name='res.users',
+        readonly=True,
+        string='Retenciones - Entregue conforme'
+    )

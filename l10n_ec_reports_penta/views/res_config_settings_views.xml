@@ -60,6 +60,13 @@
                         </setting>
                     </block>
 
+                    <block title="Retenciones" name="auth_staff_retentions_block">
+                        <setting string="Revisado por" company_dependent="1"
+                                 help="Usuario responsable de revisar retenciones en esta compañía.">
+                            <field name="retention_reviewed_by_id" options="{'no_open': True}"/>
+                        </setting>
+                    </block>
+
                 </block>
             </block>
 

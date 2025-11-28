@@ -41,3 +41,17 @@ class ResCompany(models.Model):
         help='Usuario responsable de revisar pagos en lote.'
     )
 
+
+    # Retenciones
+    retention_prepared_by_id = fields.Many2one(
+        'res.users', string='Retenciones - Elaborado por',
+        help='Usuario responsable de elaborar retenciones.'
+    )
+    retention_reviewed_by_id = fields.Many2one(
+        'res.users', string='Retenciones - Revisado por',
+        help='Usuario responsable de revisar retenciones.'
+    )
+    retention_delivered_by_id = fields.Many2one(
+        'res.users', string='Retenciones - Entregue conforme',
+        help='Usuario responsable de entregar comformes de retenciones.'
+    )
