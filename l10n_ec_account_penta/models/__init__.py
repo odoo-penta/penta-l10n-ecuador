@@ -19,3 +19,4 @@ from . import penta_cb_move_type
 from . import loyalty_program
 from . import loyalty_reward
 from . import sale_order
+from . import sale_make_invoice_advance

@@ -7,3 +7,4 @@ access_penta_res_partner_type_manager,penta.res.partner.type.manager,model_res_p
 access_penta_res_partner_profile_manager,penta.res.partner.profile.manager,model_res_partner_profile,account.group_account_manager,1,1,1,1
 access_penta_cb_move_type_user,penta.cb.move.type user,model_penta_cb_move_type,base.group_user,1,1,1,1
 access_penta_sale_order_line_deferred_manager,penta.sale.order.line.deferred.manager,model_sale_order_line_deferred,account.group_account_manager,1,1,1,1
+access_penta_account_move_line_deferred_manager,penta.account.move.line.deferred.manager,model_account_move_line_deferred,account.group_account_manager,1,1,1,1

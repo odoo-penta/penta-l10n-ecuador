@@ -16,6 +16,7 @@
     'depends': [
         'account_accountant',
         'account_asset',
+        'sale',
         'mail',
         'account_reports',
         'product_brand',
@@ -30,7 +31,7 @@
         
         'report/account_asset_acta_report.xml',
         
-        'views/account_view_move_form.xml',
+        'views/account_move_views.xml',
         'views/account_payment_views.xml',
         'views/account_cards_view.xml',
         'views/account_journal_views.xml',

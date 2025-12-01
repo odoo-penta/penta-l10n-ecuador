@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <record id="account_move_form_inherit" model="ir.ui.view">
+    <field name="name">account.move.form.inherit</field>
+    <field name="model">account.move</field>
+    <field name="inherit_id" ref="account.view_move_form"/>
+    <field name="arch" type="xml">
+      <xpath expr="//button[@name='button_cancel']" position="after">
+        <button name="penta_cb_action_conciliation" type="object" string="Reconcile" data-hotkey="r" invisible=" move_type != 'in_invoice' or state in ['cancel', 'draft'] 
+                or amount_residual == 0"/>
+      </xpath>
+      <xpath expr="//sheet/notebook/page[@name='other_info']" position="after">
+        <page string="Financing" name="financing">
+          <group>
+            <group>
+              <field name="entry_percentage"/>
+              <field name="risk_percentage"/>
+              <field name="interest"/>
+              <field name="month_interest"/>
+              <field name="apply_interest_grace"/>
+            </group>
+            <group>
+              <field name="months_of_grace"/>
+              <field name="minimum_fee"/>
+              <field name="payment_period"/>
+              <field name="factor_to_apply"/>
+              <field name="financing_amount"/>
+            </group>
+          </group>
+          <notebook>
+            <page name="deferred_lines" string="Amortization Table">
+                <field name="line_deferred_ids">
+                    <list>
+                        <field name="currency_id" column_invisible="1"/>
+                        <field name="month"/>
+                        <field name="initial_balance"/>
+                        <field name="interest_amount"/>
+                        <field name="amortization" sum="total"/>
+                        <field name="fixed_fee"/>
+                        <field name="final_balance"/>
+                        <field name="due_date"/>
+                    </list>
+                </field>
+            </page>
+        </notebook>
+        </page>
+      </xpath>
+    </field>
+  </record>
+  <record id="view_batch_payment_form_inherit_invoice_links" model="ir.ui.view">
+    <field name="name">account_batch_payment.view_batch_payment_form.inherit.invoice.links</field>
+    <field name="model">account.batch.payment</field>
+    <field name="inherit_id" ref="account_batch_payment.view_batch_payment_form"/>
+    <field name="arch" type="xml">
+      <!-- Insertar columna con facturas enlazadas dentro del listado de pagos -->
+      <xpath expr="//field[@name='payment_ids']/list" position="inside">
+        <!-- (Opcional) Deja los tags, pero el botón es el que asegura la apertura -->
+        <!-- CLIENTES: invoices -->
+        <field name="reconciled_invoice_ids" string="Facturas" widget="many2many_tags" optional="show" options="{'no_create': True, 'no_quick_create': True, 'no_create_edit': True, 'open_tag_form': true}" invisible="payment_type != 'inbound'"/>
+        <button name="button_open_invoices" type="object" string="Facturas" class="btn-link" invisible="payment_type != 'inbound'"/>
+
+        <!-- PROVEEDORES: bills -->
+        <field name="reconciled_bill_ids" string="Facturas" widget="many2many_tags" optional="show" options="{'no_create': True, 'no_quick_create': True, 'no_create_edit': True, 'open_tag_form': true}" invisible="payment_type != 'outbound'"/>
+        <button name="button_open_bills" type="object" string="Facturas" class="btn-link" invisible="payment_type != 'outbound'"/>
+      </xpath>
+    </field>
+  </record>
+
+  <template id="print_batch_payment_inherit_invoices" inherit_id="account_batch_payment.print_batch_payment">
+
+    <!-- 1) Encabezado: insertar antes del último th (Amount) -->
+    <xpath expr="//table/thead/tr/th[last()]" position="before">
+      <th class="text-start">Facturas</th>
+    </xpath>
+
+    <!-- 2) Celda por pago: insertar antes del último td (Amount) -->
+    <xpath expr="//table//tr[@t-foreach='o.payment_ids']/td[span[@t-out='payment.amount']]" position="before">
+      <td class="text-start">
+        <!-- Une solo los 'name' (o move_name/ref si name viene vacío o "/"); si no hay facturas, muestra '-' -->
+        <span t-out="', '.join([ (m.name or m.move_name or m.ref or '-') for m in payment.reconciled_invoice_ids ]) if payment.reconciled_invoice_ids else '-'"/>
+      </td>
+    </xpath>
+
+    <!-- 3) Fila TOTAL: insertar celda vacía antes del último td (Total en Amount) -->
+    <xpath expr="//table//tr[td[normalize-space()='TOTAL']]/td[last()]" position="before">
+      <td></td>
+    </xpath>
+
+  </template>
+
+</odoo>

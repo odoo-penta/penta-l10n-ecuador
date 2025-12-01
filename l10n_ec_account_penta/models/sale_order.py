@@ -24,6 +24,18 @@ class SaleOrder(models.Model):
     line_deferred_ids = fields.One2many('sale.order.line.deferred', 'sale_order_id', string='Deferred Lines', readonly=True)
     financing_amount = fields.Monetary(string='Financing Amount', readonly=True)
     recalculation_pending = fields.Boolean(string='Recalculation Pending', default=False)
+    financing_locked = fields.Boolean(
+        string="Financing Locked",
+        compute="_compute_financing_locked",
+        store=False
+    )
+    
+    @api.depends('invoice_ids.state')
+    def _compute_financing_locked(self):
+        for order in self:
+            # Facturas ligadas al pedido (confirmadas o borrador)
+            invoices = order.invoice_ids.filtered(lambda inv: inv.state in ['draft', 'posted'])
+            order.financing_locked = bool(invoices)
     
     @api.depends('interest')
     def _compute_monthly_interest(self):
