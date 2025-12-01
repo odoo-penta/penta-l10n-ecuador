@@ -179,7 +179,7 @@ class SaleOrder(models.Model):
         
     def action_recalculate_financing(self):
         for order in self:
-            order.with_context(calc_entry_amount=True).calculate_lines_deferred()
+            order.calculate_lines_deferred()
             order.recalculation_pending = False
     
 class SaleOrderLineDeferred(models.Model):
