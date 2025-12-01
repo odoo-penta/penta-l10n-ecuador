@@ -22,6 +22,7 @@ class SaleOrder(models.Model):
         readonly=True,
     )
     line_deferred_ids = fields.One2many('sale.order.line.deferred', 'sale_order_id', string='Deferred Lines', readonly=True)
+    financing_amount = fields.Monetary(string='Financing Amount', readonly=True)
     recalculation_pending = fields.Boolean(string='Recalculation Pending', default=False)
     
     @api.depends('interest')
@@ -75,23 +76,22 @@ class SaleOrder(models.Model):
             'total_subject_financing': total_subject_financing,
         }
     
-    def calculate_lines_deferred(self, reward=None):
+    def calculate_lines_deferred(self):
         self.ensure_one()
         self.line_deferred_ids.unlink()
-        # Calcular valores iniciales
-        financing_amounts = self._compute_financing_amounts(reward)
+        # Verificar el monto a financiar
+        financing_amount = self.financing_amount
+        if financing_amount <= 0.00:
+            return
         entry_percentage = self.entry_percentage / 100
         risk_percentage = self.risk_percentage / 100
         month_interest = self.month_interest / 100
         # Calcular monto de entrada
         calc_entry_amount = self.env.context.get('calc_entry_amount')
         if calc_entry_amount:
-            entry_amount = round((financing_amounts['total_subject_financing'] * entry_percentage), 2)
+            entry_amount = round((financing_amount * entry_percentage), 2)
             self.factor_to_apply = entry_amount
-        new_base_amount = round(financing_amounts['financing_base_amount'], 2)
-        new_iva_amount = round(financing_amounts['financing_iva'], 2)
-        new_total_sale = round(financing_amounts['total_subject_financing'], 2)
-        new_total_amount = round(financing_amounts['total_subject_financing'] - self.factor_to_apply, 2)
+        new_total_amount = round(financing_amount - self.factor_to_apply, 2)
         # Calculo de cuota fija
         fixed_fee = round(new_total_amount*(month_interest*((1+month_interest)**self.payment_period) / (((1+month_interest)**self.payment_period)-1)), 2)
         # Calcular tabla
@@ -155,7 +155,9 @@ class SaleOrder(models.Model):
             self.minimum_fee = reward.minimum_fee
             self.payment_period = reward.payment_period
             self.payment_term_id = reward.apply_payment_terms.id
-            self.with_context(calc_entry_amount=True).calculate_lines_deferred(reward)
+            self.financing_amount = self._compute_financing_amounts(reward)['total_subject_financing']
+            # Calcular líneas diferidas
+            self.with_context(calc_entry_amount=True).calculate_lines_deferred()
         else:
             reward_vals = self._get_reward_line_values(reward, coupon, **kwargs)
             self._write_vals_from_reward_vals(reward_vals, old_reward_lines)
