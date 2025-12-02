@@ -18,8 +18,19 @@ class AccountMoveLine(models.Model):
         return super().create(vals_list)
     
     def write(self, vals):
-        if 'analytic_distribution' in vals:
-            account = self.env['account.account'].browse(vals['account_id']) if vals.get('account_id') else self.account_id
-            if account.code[0] in ['1', '2', '3']:
+        account_by_vals = None
+        if vals.get('account_id'):
+            account_by_vals = self.env['account.account'].browse(vals['account_id'])
+        
+        for line in self:
+            account = account_by_vals or line.account_id
+            if (
+                account 
+                and account.code 
+                and isinstance(account.code, str)
+                and account.code[:1] in ['1', '2', '3']
+                and vals.get('analytic_distribution')
+            ):
                 vals.pop('analytic_distribution', None)
+
         return super().write(vals)

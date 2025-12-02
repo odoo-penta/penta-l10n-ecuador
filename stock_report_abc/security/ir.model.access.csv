@@ -1,5 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_product_sold_manager,product_sold_manager,model_product_sold,,1,1,1,1
-access_abc_classification_config_manager,abc_classification_config_manager,model_abc_classification_config,base.group_user,1,1,1,1
-access_product_abc_history_batch,access_product_abc_history_batch,model_product_abc_history_batch,base.group_user,1,0,0,0
-access_product_abc_history_line,access_product_abc_history_line,model_product_abc_history_line,base.group_user,1,0,0,0
