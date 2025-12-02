@@ -12,6 +12,7 @@ class SaleAdvancePaymentInv(models.TransientModel):
             invoice = res.filtered(lambda inv: inv.invoice_origin == order.name)
             if len(invoice) == 1:
                 invoice.write({
+                    'active_financing': order.active_financing,
                     'entry_percentage': order.entry_percentage,
                     'risk_percentage': order.risk_percentage,
                     'interest': order.interest,

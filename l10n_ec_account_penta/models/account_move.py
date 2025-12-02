@@ -8,6 +8,7 @@ from datetime import datetime
 class AccountMove(models.Model):
     _inherit = 'account.move'
     
+    active_financing = fields.Boolean(string='Active Financing', default=False)
     factor_to_apply = fields.Float(string='Entry amount', readonly=True)
     entry_percentage = fields.Float(string='Entry (%)', default=0, readonly=True)
     risk_percentage = fields.Float(string='Risk (%)', default=0, readonly=True)

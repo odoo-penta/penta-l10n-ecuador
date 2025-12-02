@@ -7,6 +7,7 @@ from dateutil.relativedelta import relativedelta
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
     
+    active_financing = fields.Boolean(string='Active Financing', default=False)
     factor_to_apply = fields.Float(string='Entry amount')
     entry_percentage = fields.Float(string='Entry (%)', default=0)
     risk_percentage = fields.Float(string='Risk (%)', default=0)
@@ -193,6 +194,7 @@ class SaleOrder(models.Model):
             return {'error': _('The coupon does not have enough points for the selected reward.')}
         # Add campos para financiar
         if reward.program_type == 'financing_promotion':
+            self.active_financing = True
             self.entry_percentage = reward.entry_percentage
             self.risk_percentage = reward.risk_percentage
             self.interest = reward.interest
