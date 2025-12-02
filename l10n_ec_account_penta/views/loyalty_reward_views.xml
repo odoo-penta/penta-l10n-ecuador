@@ -12,7 +12,8 @@
                     <field name="risk_percentage"/>
                     <field name="interest"/>
                     <field name="months_of_grace"/>
-                    <field name="apply_interest_grace"/>
+                    <field name="apply_interest_grace" widget="boolean_toggle"/>
+                    <field name="proration" widget="boolean_toggle" invisible="not apply_interest_grace"/>
                     <field name="minimum_fee"/>
                     <field name="payment_period"/>
                     <field name="apply_payment_terms" options="{'no_create': True, 'no_open': True}"/>

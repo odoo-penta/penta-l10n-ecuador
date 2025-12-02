@@ -13,7 +13,8 @@ class SaleOrder(models.Model):
     interest = fields.Float(string='Interest (%)', default=0, readonly=True)
     month_interest = fields.Float(string='Monthly Interest (%)', compute='_compute_monthly_interest', readonly=True)
     months_of_grace = fields.Integer(string='Months of Grace', default=0)
-    apply_interest_grace = fields.Boolean(string='Apply Interest Grace', default=False, readonly=True)
+    apply_interest_grace = fields.Boolean(string='Apply Interest Grace', default=False, readonly=False)
+    proration = fields.Boolean(string='Proration', readonly=False)
     minimum_fee = fields.Monetary(string='Minimum Fee', default=0.0, readonly=True)
     payment_period = fields.Integer(
         comodel_name='account.payment.term',
@@ -109,29 +110,47 @@ class SaleOrder(models.Model):
         # Calcular tabla
         balance = new_total_amount
         base_date = fields.Date.to_date(self.date_order)
+        interest_amount = round(balance * month_interest, 2)
+        total_grace_interest_amount = self.months_of_grace * interest_amount if self.apply_interest_grace else 0.0
+        interest_grace_value_line = round(total_grace_interest_amount / self.payment_period, 2)
+
         for i in range(1, (self.payment_period + self.months_of_grace) + 1):
+            # Calcular fecha de vencimiento
             if i == 1:
                 line_date = base_date
             else:
                 line_date = line_date + relativedelta(days=30)
-            interest_amount = round(balance * month_interest, 2)
-            if i <= self.months_of_grace and self.apply_interest_grace:
+            # Si es mes de gracia
+            if i <= self.months_of_grace:
+                interest_line = 0.00
                 amortization = 0.00
-                line_fixed_fee = interest_amount
+                grace_interest = 0.00
+                line_fixed_fee = 0.00
+                # Si aplica interes en meses de gracia y NO es prorrateado
+                if self.apply_interest_grace and not self.proration:
+                    interest_line = interest_amount
+                    line_fixed_fee = interest_amount
+            # Si no es mes de gracia
             else:
-                amortization = round(fixed_fee - interest_amount, 2)
+                interest_line = round(balance * month_interest, 2)
+                amortization = round(fixed_fee - interest_line, 2)
+                grace_interest = 0.00
                 line_fixed_fee = fixed_fee
+                if self.apply_interest_grace and self.proration:
+                    grace_interest = interest_grace_value_line
+                    line_fixed_fee += interest_grace_value_line
             if i == (self.payment_period + self.months_of_grace):
                 amortization = round(balance, 2)
-                line_fixed_fee = round(interest_amount + amortization, 2)
+                line_fixed_fee = round(interest_line + amortization + grace_interest, 2)
             self.env['sale.order.line.deferred'].create({
                 'sale_order_id': self.id,
                 'month': i,
                 'initial_balance': balance,
-                'interest_amount': interest_amount,
+                'interest_amount': interest_line,
                 'amortization': amortization,
-                'final_balance': round(balance - amortization, 2),
+                'additional_grace_interest': grace_interest,
                 'fixed_fee': line_fixed_fee,
+                'final_balance': round(balance - amortization, 2),
                 'due_date': line_date,
             })
             balance -= amortization
@@ -209,6 +228,7 @@ class SaleOrderLineDeferred(models.Model):
     initial_balance = fields.Monetary(string='Initial Balance', currency_field='currency_id')
     interest_amount = fields.Monetary(string='Interest Amount', currency_field='currency_id')
     amortization = fields.Monetary(string='Amortization', currency_field='currency_id')
+    additional_grace_interest = fields.Monetary(string='Additional Grace Interest', currency_field='currency_id')
     final_balance = fields.Monetary(string='Final Balance', currency_field='currency_id')
     fixed_fee = fields.Float(string='Fixed fee', currency_field='currency_id')
     due_date = fields.Date(string='Due Date')

@@ -16,7 +16,8 @@
                             <field name="risk_percentage" readonly="financing_locked"/>
                             <field name="interest"/>
                             <field name="month_interest"/>
-                            <field name="apply_interest_grace"/>
+                            <field name="apply_interest_grace" widget="boolean_toggle"/>
+                            <field name="proration" widget="boolean_toggle" invisible="not apply_interest_grace"/>
                         </group>
                         <group>
                             <field name="months_of_grace" readonly="financing_locked"/>
@@ -38,8 +39,9 @@
                                     <field name="currency_id" column_invisible="1"/>
                                     <field name="month"/>
                                     <field name="initial_balance"/>
-                                    <field name="interest_amount"/>
+                                    <field name="interest_amount" sum="total"/>
                                     <field name="amortization" sum="total"/>
+                                    <field name="additional_grace_interest" sum="total"/>
                                     <field name="fixed_fee"/>
                                     <field name="final_balance"/>
                                     <field name="due_date"/>
