@@ -30,13 +30,16 @@ class SaleOrder(models.Model):
         compute="_compute_financing_locked",
         store=False
     )
+    applied_financing = fields.Boolean(string='Applied Financing', default=False)
     
-    @api.depends('invoice_ids.state')
+    @api.depends('invoice_ids.state', 'applied_financing')
     def _compute_financing_locked(self):
         for order in self:
             # Facturas ligadas al pedido (confirmadas o borrador)
             invoices = order.invoice_ids.filtered(lambda inv: inv.state in ['draft', 'posted'])
             order.financing_locked = bool(invoices)
+            if order.applied_financing:
+                order.financing_locked = True
     
     @api.depends('interest')
     def _compute_monthly_interest(self):
@@ -212,6 +215,21 @@ class SaleOrder(models.Model):
         for order in self:
             order.calculate_lines_deferred()
             order.recalculation_pending = False
+            
+    def action_apply_financing(self):
+        for order in self:
+            import pdb;pdb.set_trace()
+            product = self.env['product.template'].search([('financing_interest_product', '=', True)], limit=1)
+            if not product:
+                raise ValueError(_("No 'Financing Interest Product' configured in the system."))
+            self.env['sale.order.line'].create({
+                'order_id': self.id,
+                'product_id': product.product_variant_id.id,
+                'product_uom_qty': 1,
+                'price_unit': self.financing_amount - self.factor_to_apply,
+                'tax_id': [(6, 0, product.taxes_id.ids)],
+            })
+            order.applied_financing = True
     
 class SaleOrderLineDeferred(models.Model):
     _name = 'sale.order.line.deferred'

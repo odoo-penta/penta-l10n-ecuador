@@ -10,7 +10,13 @@
                 <page string="Financing" name="financing">
                     <group>
                         <field name="recalculation_pending" invisible="1"/>
+                        <field name="applied_financing" invisible="1"/>
                         <field name="financing_locked" invisible="1"/>
+                        <button name="action_apply_financing"
+                            type="object"
+                            string="Apply financing"
+                            class="btn-primary"
+                            invisible="recalculation_pending or applied_financing"/>
                         <group>
                             <field name="entry_percentage" readonly="financing_locked"/>
                             <field name="risk_percentage" readonly="financing_locked"/>
