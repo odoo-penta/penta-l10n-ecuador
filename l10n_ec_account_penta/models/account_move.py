@@ -19,6 +19,7 @@ class AccountMove(models.Model):
     minimum_fee = fields.Monetary(string='Minimum Fee', default=0.0, readonly=True)
     payment_period = fields.Integer(readonly=True)
     financing_amount = fields.Monetary(string='Financing Amount', readonly=True)
+    total_interest_amount = fields.Monetary(string='Total Interest Amount', readonly=True)
     line_deferred_ids = fields.One2many('account.move.line.deferred', 'move_id', string='Deferred Lines', readonly=True)
 
     def penta_cb_action_conciliation(self):

@@ -23,6 +23,7 @@ class SaleAdvancePaymentInv(models.TransientModel):
                     'payment_period': order.payment_period,
                     'factor_to_apply': order.factor_to_apply,
                     'financing_amount': order.financing_amount,
+                    'total_interest_amount': order.total_interest_amount,
                 })
                 line_deferred_vals = []
                 for line in order.line_deferred_ids:

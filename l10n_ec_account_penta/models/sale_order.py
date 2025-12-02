@@ -13,8 +13,8 @@ class SaleOrder(models.Model):
     interest = fields.Float(string='Interest (%)', default=0, readonly=True)
     month_interest = fields.Float(string='Monthly Interest (%)', compute='_compute_monthly_interest', readonly=True)
     months_of_grace = fields.Integer(string='Months of Grace', default=0)
-    apply_interest_grace = fields.Boolean(string='Apply Interest Grace', default=False, readonly=False)
-    proration = fields.Boolean(string='Proration', readonly=False)
+    apply_interest_grace = fields.Boolean(string='Apply Interest Grace', default=False, readonly=True)
+    proration = fields.Boolean(string='Proration', readonly=True)
     minimum_fee = fields.Monetary(string='Minimum Fee', default=0.0, readonly=True)
     payment_period = fields.Integer(
         comodel_name='account.payment.term',
@@ -31,6 +31,18 @@ class SaleOrder(models.Model):
         store=False
     )
     applied_financing = fields.Boolean(string='Applied Financing', default=False)
+    total_interest_amount = fields.Monetary(
+        string='Total Interest Amount',
+        compute='_compute_total_interest_amount',
+        store=False
+    )
+    
+    @api.depends('line_deferred_ids.interest_amount', 'line_deferred_ids.additional_grace_interest')
+    def _compute_total_interest_amount(self):
+        for order in self:
+            total_interest = sum(order.line_deferred_ids.mapped('interest_amount'))
+            total_grace_interest = sum(order.line_deferred_ids.mapped('additional_grace_interest'))
+            order.total_interest_amount = total_interest + total_grace_interest
     
     @api.depends('invoice_ids.state', 'applied_financing')
     def _compute_financing_locked(self):
@@ -218,7 +230,6 @@ class SaleOrder(models.Model):
             
     def action_apply_financing(self):
         for order in self:
-            import pdb;pdb.set_trace()
             product = self.env['product.template'].search([('financing_interest_product', '=', True)], limit=1)
             if not product:
                 raise ValueError(_("No 'Financing Interest Product' configured in the system."))
@@ -226,7 +237,7 @@ class SaleOrder(models.Model):
                 'order_id': self.id,
                 'product_id': product.product_variant_id.id,
                 'product_uom_qty': 1,
-                'price_unit': self.financing_amount - self.factor_to_apply,
+                'price_unit': self.total_interest_amount,
                 'tax_id': [(6, 0, product.taxes_id.ids)],
             })
             order.applied_financing = True
