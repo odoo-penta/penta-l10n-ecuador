@@ -1,4 +1,13 @@
 # -*- coding: utf-8 -*-
+#################################################################################
+# Author      : PentaLab (<https://pentalab.tech>)
+# Copyright(c): 2025
+# All Rights Reserved.
+#
+# This module is copyright property of the author mentioned above.
+# You can`t redistribute it and/or modify it.
+#
+#################################################################################
 {
     'name': "Pentalab Custom Account",
     'summary': "Pentalab Custom Account module for Ecuador",
