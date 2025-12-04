@@ -12,7 +12,6 @@
 {
     "name": "POS",
     'summary': 'POS in backend',
-    "version": "18.0.1.0",
     'description': """
         Adds a new POS sales menu that processes everything in real time on the backend
     """,
@@ -22,6 +21,7 @@
     'website': 'https://pentalab.tech/',
     'license': 'OPL-1',
     'category': 'Sales/Sales',
+    'version': '18.0.0.0',
     'depends': [
         'sale_stock',
         'l10n_ec_account_penta',
