@@ -56,11 +56,4 @@ class AccountMove(models.Model):
         if self.cash_session_id:
             if self.cash_session_id.state == 'closed':
                 raise UserError(_("This invoice is related to an already closed cashier session."))
-            movement = self.env['cash.box.session']._create_movement(self.cash_session_id.id, self.partner_id.id, 'invoice', self.id)
-            self.code_movement = movement.name
-            for line in self.line_ids:
-                if not line.name:
-                    line.name = movement.name
-                else:
-                    line.name += ' - ' + movement.name
         return super().action_post()

@@ -29,19 +29,25 @@ class AccountPayment(models.Model):
         return res
         
     def action_post(self):
-        if self.cash_session_id:
-            if self.cash_session_id.state == 'closed':
+        session = self.cash_session_id
+        movement = False
+        if session:
+            if session.state == 'closed':
                 raise UserError(_("This sales order is related to an already closed cashier session."))
-            movement = self.env['cash.box.session']._create_movement(self.cash_session_id.id, self.partner_id.id, 'payment', self.id)
-            self.code_movement = movement.name
+            if self.env['cash.box.session.movement'].get_sequence(session.id):
+                movement = self.env['cash.box.session']._create_movement(session.id, self.partner_id.id, 'payment', self.id)
+                self.code_movement = movement.name
         res = super().action_post()
-        if self.move_id and self.cash_session_id:
+        if self.move_id and session:
+            ref = session.name
+            if movement:
+                ref = session.name + ' - ' + movement.name
             if self.move_id.ref:
-                self.move_id.ref += ' - ' + movement.name
+                self.move_id.ref += ' - ' + ref
             else:
-                self.move_id.ref = movement.name
+                self.move_id.ref = ref
             for move_line in self.move_id.line_ids:
-                move_line.name += ' - ' + movement.name
+                move_line.name += ' - ' + ref
         return res
     
     @api.model_create_multi

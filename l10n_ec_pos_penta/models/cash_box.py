@@ -34,7 +34,7 @@ class CashBox(models.Model):
     responsible_ids = fields.Many2many('res.users', 'cash_user_rel', 'cash_id', 'user_id', domain=[('share', '=', False)], default=lambda self: [self.env.uid], string="Responsibles", tracking=True)
     cashier_ids = fields.Many2many('res.users', 'cash_aditional_user_rel', 'cash_id', 'user_id', domain=[('share', '=', False)], string="Cashiers")
     session_seq_id = fields.Many2one('ir.sequence', string="Session Sequence", domain="[('code', '=', 'cash.session')]", required=True)
-    movement_seq_id = fields.Many2one('ir.sequence', string="Movement Sequence", domain="[('code', '=', 'cash.session.movement')]", required=True)
+    movement_seq_id = fields.Many2one('ir.sequence', string="Movement Sequence", domain="[('code', '=', 'cash.session.movement')]")
     close_account_id = fields.Many2one('account.account', required=True, check_company=True, copy=False, ondelete='restrict', tracking=True, string='Close Account', domain=[('deprecated', '=', False),('account_type', '=', 'asset_cash')])
     gain_account_id = fields.Many2one('account.account', required=True, check_company=True, copy=False, ondelete='restrict', tracking=True, string='Gain Account', domain=[('deprecated', '=', False),('account_type', '=', 'income')])
     loss_account_id = fields.Many2one('account.account', required=True, check_company=True, copy=False, ondelete='restrict', tracking=True, string='Loss Account', domain=[('deprecated', '=', False),('account_type', '=', 'expense')])
