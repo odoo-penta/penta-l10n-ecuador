@@ -208,7 +208,7 @@ msgid "Bank"
 msgstr "Banco"
 
 #. module: l10n_ec_account_penta
-#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_asset__brand
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_asset__brand_id
 msgid "Brand"
 msgstr "Marca"
 
