@@ -21,6 +21,7 @@
         'account_reports',
         'product_brand',
         'loyalty',
+        'penta_base'
     ],
     'data': [
         'data/account_cards_data.xml',
