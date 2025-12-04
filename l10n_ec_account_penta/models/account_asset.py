@@ -18,7 +18,7 @@ class AccountAsset(models.Model):
         tracking=True
     )
     custodian_id = fields.Many2one('hr.employee', string='Custodio', tracking=True)
-    brand_id = fields.Many2one('product.brand', tracking=True)
+    brand_id = fields.Many2one('product.brand', string="Brand", tracking=True)
     model = fields.Char('Modelo', tracking=True)
     serial_number = fields.Char('Número de Serie', tracking=True)
     location_id = fields.Many2one('hr.work.location', tracking=True)
