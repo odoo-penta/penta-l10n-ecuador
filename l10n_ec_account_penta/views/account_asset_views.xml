@@ -8,7 +8,7 @@
             <field name="model">account.asset</field>
             <field name="inherit_id" ref="account_asset.view_account_asset_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//div[@class='oe_title']" position="before">
+                <xpath expr="//div[hasclass('oe_title')]" position="before">
                     <group name="asset_code_group" invisible="state == 'model'">
                         <field name="asset_code" 
                                placeholder="ej: EQP-001, MOB2025"
