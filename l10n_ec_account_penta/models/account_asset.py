@@ -218,7 +218,7 @@ class AccountAsset(models.Model):
             <td style="padding:6px;">{a.asset_code or ''}</td>
             <td style="padding:6px;">{a.name or ''}</td>
             <td style="padding:6px;">{a.model or ''}</td>
-            <td style="padding:6px;">{a.brand.name if a.brand else ''}</td>
+            <td style="padding:6px;">{a.brand_id.name if a.brand_id else ''}</td>
             <td style="padding:6px;">{a.serial_number or ''}</td>
             <td style="padding:6px;">{a.characteristics or ''}</td>
             <td style="padding:6px;">{state_vals.get(a.state) or ''}</td>
