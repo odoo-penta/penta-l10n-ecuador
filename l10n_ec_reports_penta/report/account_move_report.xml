@@ -42,7 +42,12 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <t t-set="jelines" t-value="o.line_ids"/>
+                    <t t-set="jelines" t-value=" o.line_ids.filtered(
+                      lambda l: l.account_id not in (
+                        env.ref('account.1_ec_sale_withhold_tax_base'),
+                        env.ref('account.1_ec_purchase_withhold_tax_base')
+                      )
+                    )"/>
                     <t t-foreach="jelines" t-as="jeline">
                       <tr>
                         <td><span t-field="jeline.account_id"/></td>
@@ -62,31 +67,16 @@
                       <tr>
                         <td class="text-end"><strong>Total Débito:</strong></td>
                         <td class="text-end">
-                          <span t-esc="('%.2f' % sum(j.debit for j in o.line_ids))"/>
+                          <span t-esc="('%.2f' % sum(j.debit for j in jelines))"/>
                         </td>
                         <td class="text-end"><strong>Total Crédito:</strong></td>
                         <td class="text-end">
-                          <span t-esc="('%.2f' % sum(j.credit for j in o.line_ids))"/>
+                          <span t-esc="('%.2f' % sum(j.credit for j in jelines))"/>
                         </td>
                       </tr>
                     </table>
                   </div>
                 </div>
-
-                <!-- Pie de firma -->
-                <!-- <div class="mt-5">
-                  <table class="table table-sm table-borderless">
-                    <tr>
-                      <td>Elaborado por: ____________________</td>
-                      <td>Revisado por: ____________________</td>
-                      <td>Autorizado por: ____________________</td>
-                    </tr>
-                    <tr>
-                      <td colspan="2">Recibí conforme: ____________________</td>
-                      <td>Nombre: ____________________ | CI: ________________</td>
-                    </tr>
-                  </table>
-                </div> -->
                 
               </div>
             </div>

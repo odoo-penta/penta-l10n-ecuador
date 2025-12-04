@@ -13,7 +13,7 @@ class AccountAccount(models.Model):
         if not code:
             return ''
 
-        # 🔥 Limpieza fuerte
+        # Limpieza fuerte
         code = str(code).strip().replace('\n', '').replace('\r', '').replace(' ', '')
 
         code = code.replace('.', '')
@@ -41,7 +41,28 @@ class AccountAccount(models.Model):
         return first
 
     def _get_level_from_code(self, formatted_code):
-        return formatted_code.count('.') + 1 if formatted_code else 1
+        if not formatted_code:
+            return 1
+
+        # quitar puntos
+        clean = formatted_code.replace('.', '')
+
+        digit_count = len(clean)
+
+        if digit_count == 1:
+            return 1  # nivel 1
+        elif digit_count == 3:
+            return 2  # nivel 2
+        elif digit_count == 5:
+            return 3  # nivel 3
+        elif digit_count == 7:
+            return 4 # nivel 4
+        elif digit_count == 9:
+            return 5 # nivel 5
+        elif digit_count == 11:
+            return 6 # nivel 6
+        elif digit_count == 13:
+            return 7 # nivel 7
 
     def _get_account_type_label(self, acc):
         """
@@ -60,10 +81,10 @@ class AccountAccount(models.Model):
 
     def _hierarchy_key(self, code):
         """
-        Devuelve una clave numérica para ordenar jerárquicamente los códigos.
-        - Pone primero los grupos raíz (1,2,...)
+        Devuelve una clave num茅rica para ordenar jer谩rquicamente los c贸digos.
+        - Pone primero los grupos ra铆z (1,2,...)
         - Luego sus cuentas hijas (101, 101.01, etc.)
-        - Nunca revienta aunque el código venga con basura rara.
+        - Nunca revienta aunque el c贸digo venga con basura rara.
         """
         if not code:
             return [999999]
@@ -82,7 +103,7 @@ class AccountAccount(models.Model):
             # Primer segmento: tratamos "101" como [1, 1], "2" como [2, -1]
             if idx == 0 and p.isdigit():
                 if len(p) == 1:
-                    # Grupo raíz: 1, 2, 3...
+                    # Grupo ra铆z: 1, 2, 3...
                     key.extend([int(p), -1])
                 else:
                     # Ej: 101 -> grupo 1, subnivel 01
@@ -94,7 +115,7 @@ class AccountAccount(models.Model):
                 if p.isdigit():
                     key.append(int(p))
                 else:
-                    # Intentar rescatar solo dígitos
+                    # Intentar rescatar solo d铆gitos
                     digits = ''.join(ch for ch in p if ch.isdigit())
                     if digits:
                         key.append(int(digits))
@@ -156,7 +177,7 @@ class AccountAccount(models.Model):
         worksheet.set_column('D:D', 25)
         worksheet.set_column('E:E', 20)
 
-        headers = ['Código contable', 'Nombre de la cuenta', 'Nivel', 'Tipo', 'Permitir conciliación']
+        headers = ['C贸digo contable', 'Nombre de la cuenta', 'Nivel', 'Tipo', 'Permitir conciliaci贸n']
 
         row = 0
         for col, h in enumerate(headers):
@@ -178,7 +199,7 @@ class AccountAccount(models.Model):
                 worksheet.write(row, 1, item['name'], indent)
                 worksheet.write(row, 2, item['level'], center)
                 worksheet.write(row, 3, item['type'], center)
-                worksheet.write(row, 4, 'Sí' if item['reconcile'] else 'No', center)
+                worksheet.write(row, 4, 'S铆' if item['reconcile'] else 'No', center)
 
         workbook.close()
         output.seek(0)

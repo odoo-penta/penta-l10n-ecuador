@@ -20,6 +20,10 @@ class ResCompany(models.Model):
         'res.users', string='Pagos - Revisado por',
         help='Usuario responsable de revisar pagos.'
     )
+    payment_delivered_by_id = fields.Many2one(
+        'res.users', string='Pagos - Recibí/Entregue conforme',
+        help='Usuario responsable de recibir o entregar comformes de pagos.'
+    )
 
     # Asiento
     move_prepared_by_id = fields.Many2one(
@@ -29,6 +33,10 @@ class ResCompany(models.Model):
     move_reviewed_by_id = fields.Many2one(
         'res.users', string='Asiento - Revisado por',
         help='Usuario responsable de revisar asientos contables.'
+    )
+    move_approved_by_id = fields.Many2one(
+        'res.users', string='Asiento - Aprobado por',
+        help='Usuario responsable de aprobar asientos contables.'
     )
 
     # Pagos en lote
@@ -40,7 +48,10 @@ class ResCompany(models.Model):
         'res.users', string='Pagos en lote - Revisado por',
         help='Usuario responsable de revisar pagos en lote.'
     )
-
+    batch_payment_received_by_id = fields.Many2one(
+        'res.users', string='Pagos en lote - Recibí conforme',
+        help='Usuario responsable de recibir conformes de pagos en lote.'
+    )
 
     # Retenciones
     retention_prepared_by_id = fields.Many2one(

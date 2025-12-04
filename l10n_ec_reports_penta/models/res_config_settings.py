@@ -13,7 +13,7 @@ class ResConfigSettings(models.TransientModel):
     payment_prepared_by_id = fields.Many2one(
         related='company_id.payment_prepared_by_id',
         comodel_name='res.users',
-        readonly=False,
+        readonly=True,
         string='Pagos - Elaborado por'
     )
     payment_reviewed_by_id = fields.Many2one(
@@ -22,12 +22,18 @@ class ResConfigSettings(models.TransientModel):
         readonly=False,
         string='Pagos - Revisado por'
     )
+    payment_delivered_by_id = fields.Many2one(
+        related='company_id.payment_delivered_by_id',
+        comodel_name='res.users',
+        readonly=True,
+        string='Pagos - Recibí/Entregue conforme'
+    )
 
     # Asiento
     move_prepared_by_id = fields.Many2one(
         related='company_id.move_prepared_by_id',
         comodel_name='res.users',
-        readonly=False,
+        readonly=True,
         string='Asiento - Elaborado por'
     )
     move_reviewed_by_id = fields.Many2one(
@@ -36,12 +42,18 @@ class ResConfigSettings(models.TransientModel):
         readonly=False,
         string='Asiento - Revisado por'
     )
+    move_approved_by_id = fields.Many2one(
+        related='company_id.move_approved_by_id',
+        comodel_name='res.users',
+        readonly=False,
+        string='Asiento - Aprobado por'
+    )
 
     # Pagos en lote
     batch_payment_prepared_by_id = fields.Many2one(
         related='company_id.batch_payment_prepared_by_id',
         comodel_name='res.users',
-        readonly=False,
+        readonly=True,
         string='Pagos en lote - Elaborado por'
     )
     batch_payment_reviewed_by_id = fields.Many2one(
@@ -50,8 +62,14 @@ class ResConfigSettings(models.TransientModel):
         readonly=False,
         string='Pagos en lote - Revisado por'
     )
-
-    #Retenciones 
+    batch_payment_received_by_id = fields.Many2one(
+        related='company_id.batch_payment_received_by_id',
+        comodel_name='res.users',
+        readonly=True,
+        string='Pagos en lote - Recibí conforme'
+    )
+    
+        #Retenciones 
     retention_prepared_by_id = fields.Many2one(
         related='company_id.retention_prepared_by_id',
         comodel_name='res.users',

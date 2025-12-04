@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
   <template id="report_payment_receipt_document_inherit_auth_final_sintabla"
             inherit_id="account.report_payment_receipt_document">
@@ -307,7 +308,7 @@
           inherit_id="l10n_ec_edi.report_withhold_document">
 
     <!-- Insertar al final del contenido dentro de la página -->
-    <xpath expr="//tbody[@class='withhold_tbody']" position="after">
+    <xpath expr="//div[contains(@class,'page')]" position="after">
 
       <!-- Vars -->
       <t t-set="prep_user" t-value="o.create_uid"/>
