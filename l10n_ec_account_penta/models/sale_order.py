@@ -2,6 +2,7 @@
 
 from odoo import fields, models, api, _
 from dateutil.relativedelta import relativedelta
+from odoo.exceptions import ValidationError
 
 
 class SaleOrder(models.Model):
@@ -234,7 +235,7 @@ class SaleOrder(models.Model):
         for order in self:
             product = self.env['product.template'].search([('financing_interest_product', '=', True)], limit=1)
             if not product:
-                raise ValueError(_("No 'Financing Interest Product' configured in the system."))
+                raise ValidationError(_("No 'Financing Interest Product' configured in the system."))
             self.env['sale.order.line'].create({
                 'order_id': self.id,
                 'product_id': product.product_variant_id.id,
