@@ -426,8 +426,8 @@ msgstr "Control asientos"
 #. module: l10n_ec_account_penta
 #: model_terms:ir.ui.view,arch_db:l10n_ec_account_penta.print_batch_payment_inherit_invoices
 #: model_terms:ir.ui.view,arch_db:l10n_ec_account_penta.view_batch_payment_form_inherit_invoice_links
-msgid "Facturas"
-msgstr ""
+msgid "Invoices"
+msgstr "Facturas"
 
 #. module: l10n_ec_account_penta
 #: model:ir.model,name:l10n_ec_account_penta.model_account_asset_template

@@ -64,12 +64,12 @@
       <xpath expr="//field[@name='payment_ids']/list" position="inside">
         <!-- (Opcional) Deja los tags, pero el botón es el que asegura la apertura -->
         <!-- CLIENTES: invoices -->
-        <field name="reconciled_invoice_ids" string="Facturas" widget="many2many_tags" optional="show" options="{'no_create': True, 'no_quick_create': True, 'no_create_edit': True, 'open_tag_form': true}" invisible="payment_type != 'inbound'"/>
-        <button name="button_open_invoices" type="object" string="Facturas" class="btn-link" invisible="payment_type != 'inbound'"/>
+        <field name="reconciled_invoice_ids" string="Invoices" widget="many2many_tags" optional="show" options="{'no_create': True, 'no_quick_create': True, 'no_create_edit': True, 'open_tag_form': true}" invisible="batch_type != 'inbound'"/>
+        <button name="button_open_invoices" type="object" string="Invoices" class="btn-link" invisible="batch_type != 'inbound'"/>
 
         <!-- PROVEEDORES: bills -->
-        <field name="reconciled_bill_ids" string="Facturas" widget="many2many_tags" optional="show" options="{'no_create': True, 'no_quick_create': True, 'no_create_edit': True, 'open_tag_form': true}" invisible="payment_type != 'outbound'"/>
-        <button name="button_open_bills" type="object" string="Facturas" class="btn-link" invisible="payment_type != 'outbound'"/>
+        <field name="reconciled_bill_ids" string="Invoices" widget="many2many_tags" optional="show" options="{'no_create': True, 'no_quick_create': True, 'no_create_edit': True, 'open_tag_form': true}" invisible="batch_type != 'outbound'"/>
+        <button name="button_open_bills" type="object" string="Invoices" class="btn-link" invisible="batch_type != 'outbound'"/>
       </xpath>
     </field>
   </record>
