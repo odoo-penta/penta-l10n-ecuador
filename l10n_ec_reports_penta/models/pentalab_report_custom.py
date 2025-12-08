@@ -51,7 +51,10 @@ class PentalabReportCustom(models.Model):
             cell_b = ws.cell(row=row, column=2)
             cell_a = ws.cell(row=row, column=1)
             cell_c = ws.cell(row=row, column=3)
-
+            if cell_b.value and isinstance(cell_b.value, str):
+                texto_b = cell_b.value.strip().lower()
+                if "beneficio" in texto_b and "total" in texto_b:
+                    cell_b.value = "Estado de Resultados"
             # -- 1) Eliminar fila si B comienza con "total"
             if cell_b.value and isinstance(cell_b.value, str) and cell_b.value.lstrip().lower().startswith("total"):
                 ws.delete_rows(row, 1)
