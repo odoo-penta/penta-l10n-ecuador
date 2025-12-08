@@ -176,7 +176,7 @@
             </div>
           </div>
 
-          <!-- Col 3: Recibí conforme (partner del asiento) -->
+          <!-- Col 3: Aprobado por (partner del asiento) -->
           <div style="display:table-cell; width:33.33%; padding:8px 10px; box-sizing:border-box; vertical-align:top;">
             <div style="margin-top:12px;">
               <span style="display:inline-block; width:14px; font-size:10px; font-weight:600;">F:</span>
@@ -211,44 +211,50 @@
 
       <!-- Vars (Pagos en lote) -->
       <t t-set="prep_user" t-value="o.create_uid"/>
-      <t t-set="rev_user"  t-value="o.company_id.batch_payment_reviewed_by_id"/>
-      <t t-set="recv_partner" t-value="o.partner_id and (o.partner_id.commercial_partner_id or o.partner_id)"/>
+      <t t-set="prep_partner" t-value="prep_user and prep_user.partner_id or None"/>
+      <t t-set="rev_user" t-value="o.company_id.batch_payment_reviewed_by_id"/>
+      <t t-set="rev_partner" t-value="rev_user and rev_user.partner_id or None"/>
+      <t t-set="recv_partner" t-value="o.company_id.batch_payment_received_by_id"/>
 
-      <t t-set="prep_name" t-value="prep_user and prep_user.partner_id.name or ''"/>
-      <t t-set="prep_vat"  t-value="(prep_user and prep_user.partner_id and prep_user.partner_id.vat) or ''"/>
-      <t t-set="rev_name"  t-value="rev_user and rev_user.partner_id.name or ''"/>
-      <t t-set="rev_vat"   t-value="(rev_user and rev_user.partner_id and rev_user.partner_id.vat) or ''"/>      
-      <t t-set="recv_name" t-value="(recv_partner and recv_partner.name) or ''"/>
-      <t t-set="recv_vat"  t-value="(recv_partner and recv_partner.vat) or ''"/>
+      <t t-set="prep_name" t-value="prep_partner and prep_partner.name or ''"/>
+      <t t-set="prep_vat" t-value="prep_partner and prep_partner.vat or ''"/>
+      <t t-set="rev_name" t-value="rev_partner and rev_partner.name or ''"/>
+      <t t-set="rev_vat" t-value="rev_partner and rev_partner.vat or ''"/>     
+      <t t-set="recv_name" t-value="recv_partner and recv_partner.name or ''"/>
+      <t t-set="recv_vat" t-value="recv_partner and recv_partner.vat or ''"/>
 
       <!-- BLOQUE DE FIRMAS FINAL (sin <table>, PDF-safe con display:table) -->
       <div style="margin-top:20px; border:1px solid #000;">
 
         <!-- Header -->
         <div style="display:table; width:100%; border-bottom:1px solid #000; font-weight:600; font-size:11px; text-align:center;">
-          <div style="display:table-cell; width:33.33%; padding:6px; border-right:1px solid #000;">ELABORADO POR</div>
+          <div style="display:table-cell; width:33.33%; padding:6px; border-right:1px solid #000; box-sizing:border-box;">ELABORADO POR</div>
           <div style="display:table-cell; width:33.33%; padding:6px; border-right:1px solid #000;">REVISADO POR</div>
-          <div style="display:table-cell; width:33.33%; padding:6px;">RECIBÍ CONFORME</div>
+          <div style="display:table-cell; width:33.33%; padding:6px;">APROBADO POR</div>
         </div>
 
         <!-- Body -->
         <div style="display:table; width:100%; font-size:9px; text-align:left;">
-          <!-- Col 1 -->
-          <div style="display:table-cell; width:33.33%; padding:8px 10px; border-right:1px solid #000; vertical-align:top; box-sizing:border-box;">
+
+          <!-- Col 1: Elaborado -->
+          <div style="display:table-cell; width:33.33%; padding:8px 10px; border-right:1px solid #000; box-sizing:border-box; vertical-align:top;">
+            <!-- F -->
             <div style="margin-top:12px;">
               <span style="display:inline-block; width:14px; font-size:10px; font-weight:600;">F:</span>
-              <span style="display:inline-block; width:92%; height:20px; border-bottom:1px solid #555;">&#160;</span>
+              <span style="display:inline-block; width:92%; height:20px; border-bottom:1px solid #555; vertical-align:bottom;">&#160;</span>
             </div>
+            <!-- N -->
             <div style="margin-top:8px;">
               <span style="display:inline-block; width:14px; font-size:10px; font-weight:600;">N:</span>
-              <span style="display:inline-block; width:92%; border-bottom:1px solid #555;">
+              <span style="display:inline-block; width:92%; border-bottom:1px solid #555; vertical-align:bottom;">
                 <t t-if="prep_name"><span t-esc="prep_name"/></t>
                 <t t-else=""><span t-raw="'&#160;'"/></t>
               </span>
             </div>
+            <!-- I -->
             <div style="margin-top:8px;">
               <span style="display:inline-block; width:14px; font-size:10px; font-weight:600;">I:</span>
-              <span style="display:inline-block; width:92%; border-bottom:1px solid #555;">
+              <span style="display:inline-block; width:92%; border-bottom:1px solid #555; vertical-align:bottom;">
                 <t t-if="prep_vat"><span t-esc="prep_vat"/></t>
                 <t t-else=""><span t-raw="'&#160;'"/></t>
               </span>
@@ -277,7 +283,7 @@
             </div>
           </div>
 
-          <!-- Col 3 (Recibí conforme vacío en lote) -->
+          <!-- Col 3 (Aprobado por vacío en lote) -->
           <div style="display:table-cell; width:33.33%; padding:8px 10px; vertical-align:top; box-sizing:border-box;">
             <div style="margin-top:12px;">
               <span style="display:inline-block; width:14px; font-size:10px; font-weight:600;">F:</span>
