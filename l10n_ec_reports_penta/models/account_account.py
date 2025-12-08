@@ -177,7 +177,13 @@ class AccountAccount(models.Model):
         worksheet.set_column('D:D', 25)
         worksheet.set_column('E:E', 20)
 
-        headers = ['C贸digo contable', 'Nombre de la cuenta', 'Nivel', 'Tipo', 'Permitir conciliaci贸n']
+        headers = [
+            'Código contable',
+            'Nombre de la cuenta',
+            'Nivel',
+            'Tipo',
+            'Permitir conciliación'
+        ]
 
         row = 0
         for col, h in enumerate(headers):
@@ -186,7 +192,9 @@ class AccountAccount(models.Model):
         for item in full_list:
             row += 1
 
-            indent = workbook.add_format({'indent': item['level'] - 1, 'border': 1})
+            level = item['level'] or 1
+            indent = workbook.add_format({'indent': level - 1, 'border': 1})
+
 
             if item['is_group']:
                 worksheet.write_string(row, 0, item['code'], bold)
@@ -199,7 +207,7 @@ class AccountAccount(models.Model):
                 worksheet.write(row, 1, item['name'], indent)
                 worksheet.write(row, 2, item['level'], center)
                 worksheet.write(row, 3, item['type'], center)
-                worksheet.write(row, 4, 'S铆' if item['reconcile'] else 'No', center)
+                worksheet.write(row, 4, 'Sí' if item['reconcile'] else 'No', center)
 
         workbook.close()
         output.seek(0)
