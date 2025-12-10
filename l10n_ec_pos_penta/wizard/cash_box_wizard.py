@@ -178,10 +178,9 @@ class CashBoxClosedWizard(models.TransientModel):
         cash_id = self.env.context.get('default_cash_id', False)
         if cash_id:
             cash = self.env['cash.box'].browse(cash_id)
-            movement_ids = cash.current_session_id.movement_ids
-            summary = self._get_payment_summary(movement_ids=movement_ids)
+            summary = self._get_payment_summary(cash.current_session_id)
             total_cash = sum(item['cash'] for item in summary.values())
-            total_cash += cash.current_session_id.initial_balance
+            total_cash += cash.current_session_id.initial_balance 
             res['suggested_balance'] = total_cash
         return res
     
@@ -292,7 +291,7 @@ class CashBoxClosedWizard(models.TransientModel):
             'target': 'current',
         }
     
-    def _get_payment_summary(self, movement_ids=None):
+    def _get_payment_summary(self, session):
         """ Obtiene un resumen de los pagos realizados por movimiento """
         
         def categorize_payment(payment):
@@ -305,19 +304,10 @@ class CashBoxClosedWizard(models.TransientModel):
                 return 'cash'
         
         payment_summary = {}
-        if not movement_ids:
-            movement_ids = self.cash_id.current_session_id.movement_ids
-        for movement in movement_ids:
-            # instanciamos el diccionario de resumen por movimiento
+        payments = self.env['account.payment'].search([('cash_session_id', '=', session.id)])
+        for payment in payments:
             summary = {'cash': 0.00, 'transfer': 0.00, 'card': 0.00, 'credit': 0.00}
-            # si el movimiento es una nota de credito
-            if movement.operation_type == 'refund':
-                summary['credit'] += movement.credit_note_id.amount_total
-            # si el movimiento es un pago
-            else:
-                # obtenemos el pago
-                payment = movement.payment_id
-                key = categorize_payment(payment)
-                summary[key] += payment.amount
-            payment_summary[movement.id] = summary
+            key = categorize_payment(payment)
+            summary[key] += payment.amount
+            payment_summary[payment.id] = summary
         return payment_summary
