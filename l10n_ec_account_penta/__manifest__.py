@@ -21,7 +21,7 @@
     ],
     'website': "https://pentalab.tech/",
     'category': 'Accounting',
-    'version': '18.0.0.0.7',
+    'version': '18.0.1.0.0',
     'depends': [
         'account_accountant',
         'account_asset',
@@ -29,7 +29,6 @@
         'mail',
         'account_reports',
         'product_brand',
-        'loyalty',
         'penta_base'
     ],
     'data': [
@@ -48,12 +47,7 @@
         'views/account_asset_views.xml',
         'views/account_asset_template_views.xml',
         'views/res_config_settings_views.xml',
-        'views/res_partner_views.xml',
-        'views/product_views.xml',
-        'views/account_payment_term_views.xml',
         'views/l10n_latam_document_type_views.xml',
-        'views/loyalty_reward_views.xml',
-        'views/sale_order_views.xml',
     ],
     'license': 'OPL-1',
 }
