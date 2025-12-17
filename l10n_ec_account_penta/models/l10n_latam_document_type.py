@@ -10,7 +10,6 @@ class L10nLatamDocumentType(models.Model):
                "If specified, the authorization number will be validated for length when creating or editing documents.")
     )
     
-      
     penta_cb_move_type = fields.Many2many(
         comodel_name='penta.cb.move.type',
         relation='l10n_latam_document_type_penta_cb_move_type_rel',
