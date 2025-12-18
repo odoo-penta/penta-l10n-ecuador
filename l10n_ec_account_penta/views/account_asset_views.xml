@@ -100,4 +100,22 @@
         </record>
 
     </data>
+    <record id="view_account_asset_form_custom" model="ir.ui.view">
+        <field name="name">account.asset.form.inherit.custom</field>
+        <field name="model">account.asset</field>
+        <field name="inherit_id" ref="account_asset.view_account_asset_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='main_page']" position="inside">
+                <group string="Información adicional">
+                <field name="custodian_id" options="{'no_create': True}"/>
+                <field name="brand"/>
+                <field name="model"/>
+                <field name="serial_number"/>
+                <field name="location"/>
+                <field name="department_id"/>
+                <field name="photo_info" widget="html"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
 </odoo>
