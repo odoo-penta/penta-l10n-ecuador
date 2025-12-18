@@ -1,0 +1,149 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <!-- CASH BOX -->
+        <record id="view_cash_box_kanban" model="ir.ui.view">
+            <field name="name">cash.box.kanban</field>
+            <field name="model">cash.box</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_dashboard">
+                    <field name="name"/>
+                    <field name="currency_id"/>
+                    <field name="warehouse_id"/>
+                    <field name="responsible_ids"/>
+                    <field name="is_cash_box_responsible"/>
+                    <field name="state"/>
+                    <templates>
+                        <t t-name="card">
+                            <div class="o_kanban_card o_kanban_global_click">
+                                <div class="o_kanban_card_header d-flex justify-content-between align-items-center">
+                                    <strong class="text-primary">
+                                        <t t-esc="record.name.value"/>
+                                    </strong>
+                                    <span t-if="record.state.raw_value == 'open'" class="badge bg-success">Opened</span>
+                                    <span t-if="record.state.raw_value == 'closed'" class="badge bg-secondary">Closed</span>
+                                </div>
+                                <div class="mt-2">
+                                    <div>
+                                        <strong>Warehouse: </strong>
+                                        <t t-esc="record.warehouse_id.value"/>
+                                    </div>
+                                    <div>
+                                        <strong>Currency: </strong>
+                                        <t t-esc="record.currency_id.value"/>
+                                    </div>
+                                </div>
+                                <!-- Botones de accion -->
+                                <div class="mt-3 text-end">
+                                    <t t-if="record.state.raw_value === 'closed' and record.is_cash_box_responsible.raw_value">
+                                        <button string="Open Cash Box" name="action_open" type="object" class="btn btn-sm btn-primary"/>
+                                    </t>
+                                    <t t-if="record.state.raw_value === 'open' and record.is_cash_box_responsible.raw_value">
+                                        <button string="Close Cash Box" name="action_close" type="object" class="btn btn-sm btn-primary"/>
+                                    </t>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="view_cash_box_list" model="ir.ui.view">
+            <field name="name">cash.box.list</field>
+            <field name="model">cash.box</field>
+            <field name="arch" type="xml">
+                <list string="Cash Box">
+                    <field name="currency_id" column_invisible="True"/>
+                    <field name="name" decoration-bf="1"/>
+                    <field name="warehouse_id"/>
+                    <field name="journal_ids" widget="one2many_list"/>
+                    <field name="responsible_ids" widget="many2many_tags"/>
+                    <field name="cashier_ids" widget="many2many_tags"/>
+                    <field name="state" widget="badge"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_cash_box_form" model="ir.ui.view">
+            <field name="name">cash.box.form</field>
+            <field name="model">cash.box</field>
+            <field name="arch" type="xml">
+                <form string="Cash Box">
+                    <header>
+                        <button string="Open" invisible="state not in ('closed') or not is_cash_box_responsible" name="action_open" type="object" class="btn btn-sm btn-primary"/>
+                        <button string="Close" invisible="state not in ('open') or not is_cash_box_responsible" name="action_close" type="object" class="btn btn-sm btn-primary"/>
+                        <field name="state" widget="statusbar" statusbar_visible="open,closed"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="not is_cash_box_admin" placeholder="Cash"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="is_cash_box_admin" invisible="1"/>
+                                <field name="is_cash_box_responsible" invisible="1"/>
+                                <field name="is_administrator" invisible="1"/>
+                                <field name="code" readonly="not is_cash_box_admin"/>
+                                <field name="warehouse_id" readonly="not is_cash_box_admin" options="{'no_create': True}"/>
+                            </group>
+                            <group>
+                                <field name="journal_ids" readonly="not is_cash_box_admin" options="{'no_create': True}" widget="many2many_tags"/>
+                                <field name="current_session_id"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name="sessions" string="Sessions">
+                                <field name="session_ids"/>
+                            </page>
+                            <page name="settings" string="Settings" groups="l10n_ec_pos_penta.group_cash_box_admin">
+                                <group>
+                                    <group>
+                                        <field name="close_account_id" options="{'no_create': True}"/>
+                                        <field name="gain_account_id" options="{'no_create': True}"/>
+                                        <field name="loss_account_id" options="{'no_create': True}"/>
+                                        <field name="close_journal_id" options="{'no_create': True}"/>
+                                        <field name="l10n_ec_sri_payment_id"/>
+                                        <field name="responsible_ids" widget="many2many_tags" readonly="not is_cash_box_admin" options="{'no_open': True, 'no_create': True}"/>
+                                        <field name="cashier_ids" widget="many2many_tags" readonly="not is_cash_box_admin" options="{'no_open': True, 'no_create': True}"/>
+                                    </group>
+                                    <group>
+                                        <field name="session_seq_id"/>
+                                        <field name="movement_seq_id"/>
+                                        <field name="analytic_account_id"/>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_cash_box_search" model="ir.ui.view">
+            <field name="name">cash.box.search</field>
+            <field name="model">cash.box</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="warehouse_id"/>
+                    <separator/>
+                    <filter name="open_cash" string="Open" domain="[('state', '=', 'open')]"/>
+                    <filter name="closed_cash" string="Closed" domain="[('state', '=', 'closed')]"/>
+                    <separator/>
+                    <filter name="warehouse_id" string="Warehouse" context="{'group_by': 'warehouse_id'}"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_cash_box" model="ir.actions.act_window">
+            <field name="name">Cash Boxes</field>
+            <field name="res_model">cash.box</field>
+            <field name="view_mode">kanban,list,form</field>
+        </record>
+
+    </data>
+</odoo>

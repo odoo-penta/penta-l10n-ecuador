@@ -63,7 +63,7 @@ class PentalabInvoiceReportWizard(models.TransientModel):
 
         return {
             "type": "ir.actions.act_window",
-            "name": "Anexo de Compras",
+            "name": "Detalle de Compras",
             "res_model": "pentalab.invoice.report.line",
             "view_mode": "list",
             "views": [(self.env.ref("l10n_ec_reports_penta.view_pentalab_invoice_report_line_list").id, "list")],

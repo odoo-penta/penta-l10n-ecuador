@@ -1,0 +1,42 @@
+<odoo>
+  <template id="report_acta_assets_document">
+    <t t-call="web.html_container">
+      <t t-set="doc_css">
+        <style>
+          @page {
+            margin: 1.5cm;
+          }
+          body {
+            margin: 0;
+            padding: 0;
+          }
+          main {
+            margin: 0;
+            padding: 0;
+          }
+          .page {
+            margin: 0;
+          }
+        </style>
+      </t>
+      <main>
+        <div class="page" style="margin: 2cm;">
+          <meta charset="utf-8"/>
+          <t t-raw="html"/>
+        </div>
+      </main>
+    </t>
+  </template>
+
+  <record id="action_report_minutes_assets" model="ir.actions.report">
+    <field name="name">Minute Fixed Assets</field>
+    <field name="model">account.asset</field>
+    <field name="report_type">qweb-pdf</field>
+    <field name="report_name">l10n_ec_account_penta.report_acta_assets_document</field>
+    <field name="report_file">l10n_ec_account_penta.report_acta_assets</field>
+    <field name="binding_model_id" ref="account_asset.model_account_asset"/>
+    <field name="binding_type">report</field>
+    <field name="print_report_name">'Minute assets report'</field>
+  </record>
+
+</odoo>

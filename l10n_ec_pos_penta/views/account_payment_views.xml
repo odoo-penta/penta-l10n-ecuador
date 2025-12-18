@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_account_customer_payment_list_inherit_pos" model="ir.ui.view">
+        <field name="name">account.customer.payment.list.inherit.pos</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_tree"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="cash_session_id" column_invisible="context.get('default_payment_type') not in ('inbound')" optional="hide"/>
+                <field name="code_movement" column_invisible="context.get('default_payment_type') not in ('inbound')" optional="hide"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_account_payment_form_inherit_point_of_sale" model="ir.ui.view">
+        <field name="name">account.payment.form.inherit.point.of.sale</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='group2']" position='after'>
+                <group name="pos">
+                    <field name="show_cash_session" invisible="1"/>
+                    <field name="allowed_cash_boxes" invisible="1"/>
+                    <field name="cash_session_id" domain="[('state','=','in_progress'), ('cash_id','in', allowed_cash_boxes)]" options="{'no_create': True, 'no_open': True}" required="show_cash_session" readonly="not show_cash_session or state != 'draft'"/>
+                    <field name="code_movement" invisible="payment_type != 'inbound'"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

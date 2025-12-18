@@ -8,7 +8,6 @@ import logging
 import json
 from openpyxl.styles import Alignment
 from openpyxl.styles import Font
-_logger = logging.getLogger(__name__)
 
 class PentalabReportCustom(models.Model):
     _name = 'pentalab.report.custom'
@@ -32,6 +31,7 @@ class PentalabReportCustom(models.Model):
         # -----------------------------------------------
         # Buscar estilo base de la primera celda no vacía en la col. A (fila >= 4)
         # -----------------------------------------------
+
         estilo_base = None
         for row in range(4, ws.max_row + 1):
             cell_a = ws.cell(row=row, column=1)
@@ -46,11 +46,15 @@ class PentalabReportCustom(models.Model):
         # - Si A está vacía y B y C tienen valor, eliminar la fila si la fila siguiente tiene el mismo valor en C
         # - Separar texto B -> A si A está vacío y B empieza con número
         # -----------------------------------------------
+
         for row in range(ws.max_row, 3, -1):  # desde abajo hacia la fila 4
             cell_b = ws.cell(row=row, column=2)
             cell_a = ws.cell(row=row, column=1)
             cell_c = ws.cell(row=row, column=3)
-
+            if cell_b.value and isinstance(cell_b.value, str):
+                texto_b = cell_b.value.strip().lower()
+                if "beneficio" in texto_b and "total" in texto_b:
+                    cell_b.value = "Resultado del ejercicio"
             # -- 1) Eliminar fila si B comienza con "total"
             if cell_b.value and isinstance(cell_b.value, str) and cell_b.value.lstrip().lower().startswith("total"):
                 ws.delete_rows(row, 1)
@@ -77,11 +81,11 @@ class PentalabReportCustom(models.Model):
                         # Aplicar estilo base a la celda A
                         if estilo_base:
                             cell_a._style = estilo_base
-                            
-
+                        
         # -----------------------------------------------
         # SEGUNDO FOR: Eliminar filas con cuentas ocultas (hide_in_report)
         # -----------------------------------------------
+
         accounts_dict = {
             acc.code_store.strip(): acc
             for acc in self.env['account.account'].search(['|', ('code_store', '!=', False), ('code_store', '!=', '')])
@@ -94,8 +98,6 @@ class PentalabReportCustom(models.Model):
                 if account and account.hide_in_report:
                     ws.delete_rows(row, 1)
 
-        
-
         # -----------------------------------------------
         # TERCER FOR: Buscar "Ganancias del año actual"
         # - Reemplazar texto en B por "Resultados del año actual"
@@ -105,17 +107,29 @@ class PentalabReportCustom(models.Model):
 
         for row in range(ws.max_row, 3, -1):
             cell_b = ws.cell(row=row, column=2)
-            if cell_b.value and isinstance(cell_b.value, str) and "Ganancias del año actual" in cell_b.value:
-                # Reemplazar texto en B
-                new_text = cell_b.value.replace("Ganancias del año actual", "Resultados del año actual")
+            if cell_b.value and isinstance(cell_b.value, str) and ("Ganancias / Pérdida del año actual" in cell_b.value or "Ganancias del año actual" in cell_b.value):
+                estilo_pp_b = None
+                for r in range(ws.max_row, 3, -1):
+                    bval = ws.cell(row=r, column=2).value
+                    if isinstance(bval, str):
+                        txt = bval.strip()
+                        if txt in ("Pasivo + Patrimonio", "Pasivos + Capital"):
+                            estilo_pp_b = ws.cell(row=r, column=2)._style
+                            break
+                
+                # 1) Renombrar etiqueta
+                new_text = cell_b.value.replace("Ganancias / Pérdida del año actual", "Resultado del ejercicio").replace("Ganancias del año actual", "Resultado del ejercicio")
                 cell_b.value = new_text
-        
+            
+                # 2) APLICAR estilo de PP AHORA (antes de copiar estilos de la fila)
+                if estilo_pp_b:
+                    ws.cell(row=row, column=2)._style = estilo_pp_b
+                    ws.cell(row=row, column=3)._style = estilo_pp_b
                 # Guardar valores de la fila antes de eliminarla
                 row_values = [ws.cell(row=row, column=col).value for col in range(1, ws.max_column + 1)]
                 row_styles = [ws.cell(row=row, column=col)._style for col in range(1, ws.max_column + 1)]
         
                 # Eliminar las filas siguientes (row+1 y row+2)
-                ws.delete_rows(row+1, 1)
                 ws.delete_rows(row+1, 1)
         
                 # Eliminar la fila actual
@@ -130,16 +144,14 @@ class PentalabReportCustom(models.Model):
                     ws.cell(row=new_row, column=col)._style = row_styles[col-1]  # Aplicar el estilo original
         # Variable para almacenar la fila donde se copiarán los valores
         nueva_fila = None
-        
         # Buscar la celda en la columna B con "Pasivos + Capital"
         for row in range(ws.max_row, 3, -1):
             cell_b = ws.cell(row=row, column=2)
         
             if cell_b.value and isinstance(cell_b.value, str) and cell_b.value == "Pasivos + Capital":
-                
+                estilo_pp_b = ws.cell(row=row, column=2)._style
                 # Guardar valores originales de A, B y C
                 valor_a = ws.cell(row=row, column=1).value
-                valor_b = ws.cell(row=row, column=2).value
                 valor_c = ws.cell(row=row, column=3).value
         
                 # Guardar estilos originales de A, B y C
@@ -148,12 +160,12 @@ class PentalabReportCustom(models.Model):
                 estilo_c = ws.cell(row=row, column=3)._style
         
                 # Modificar la celda B en la fila original
-                ws.cell(row=row, column=2).value = "Pasivos + Patrimonio"
+                ws.cell(row=row, column=2).value = "Pasivo + Patrimonio"
         
                 # Copiar los valores y estilos 5 filas más abajo
                 nueva_fila = row + 5
                 ws.cell(nueva_fila, 1).value = valor_a  # Columna A
-                ws.cell(nueva_fila, 2).value = "PASIVO +PATRIMONIO+RESULTADOS"  # Modificar columna B
+                ws.cell(nueva_fila, 2).value = "PASIVO + PATRIMONIO + RESULTADO DEL EJERCICIO"  # Modificar columna B
                 ws.cell(nueva_fila, 3).value = valor_c  # Columna C
         
                 # Aplicar estilos copiados a las nuevas celdas
@@ -177,14 +189,15 @@ class PentalabReportCustom(models.Model):
         
         # Si encontramos ambas celdas, sumamos sus valores
         if valor_c_a3 is not None and valor_c_a2 is not None and nueva_fila:
-            suma_c = int(valor_c_a3) + int(valor_c_a2)
+            suma_c = float(valor_c_a3) + float(valor_c_a2)
             ws.cell(nueva_fila-5, 3, suma_c)  # Guardamos la suma en la celda C de la fila copiada
 
         textos_a_eliminar = {
             "Ganancias sin asignar",
             "Ganancias no asignadas del año en curso",
             "Patrimonio Neto",
-            "Ganancias acumuladas"
+            "Ganancias acumuladas",
+            "Ganancias no asignados de años anteriores"
         }
         
         # Recorrer desde la última fila hasta la cuarta fila (para evitar encabezados)
@@ -220,7 +233,6 @@ class PentalabReportCustom(models.Model):
         # Fila 3 - Fecha de generación del reporte
         fecha_generacion = datetime.today().strftime('%d-%m-%Y')
         
-        
         ws.cell(row=2, column=3).font = header_font
         
         ws.cell(row=2, column=2).alignment = Alignment(horizontal="center")
@@ -231,13 +243,13 @@ class PentalabReportCustom(models.Model):
         ws.cell(row=3, column=3).value = fecha_generacion
         ws.cell(row=3, column=2).font = header_font   # Aplicar estilo
         ws.cell(row=3, column=3).font = header_font
-        # Guardar cambios finales
-        wb.save(file)
 
+        wb.save(file)
 
     # -----------------------------------------------
     # MÉTODOS DE APOYO
     # -----------------------------------------------
+
     def _is_zero_value(self, value):
         """Retorna True si el valor representa cero (0 o '0.00', etc.)"""
         if value is None:

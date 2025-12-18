@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <template id="report_penta_bank_recon_pdf_template">
+    <!-- Asegura <main> -->
+    <t t-call="web.html_container">
+      <!-- Header/foooter estándar -->
+      <t t-call="web.external_layout">
+
+        <!-- Opción A: ocultar datos de empresa y dejar solo el logo -->
+        <t t-call-assets="web.report_assets_pdf" t-js="false">
+          <style>
+            /* Oculta datos de la empresa en el header SOLO para este reporte */
+            header .header .o_company_address,
+            header .header .o_report_company_name,
+            header .header .o_address,
+            header .header .company_address,
+            header .header .col-7,
+            header .header .col-8,
+            header .header .col-md-7,
+            header .header .col-md-8 { display: none !important; }
+            /* Alinea el logo */
+            header .header .row { align-items: center; }
+          </style>
+        </t>
+
+        <t t-set="doc" t-value="docs and docs[0] or False"/>
+        <t t-if="doc">
+          <t t-set="vals" t-value="doc.get_report_values_for_pdf()"/>
+
+          <div class="page">
+            <h2 style="margin-bottom:8px;"><t t-esc="vals['header']['titulo']"/></h2>
+
+            <!-- Cabecera -->
+            <table class="table table-sm o_main_table" style="width:100%; margin-bottom:8px;">
+              <tbody>
+                <tr>
+                  <td><strong>Compañía</strong></td>
+                  <td><t t-esc="vals['header']['company']"/></td>
+                  <td><strong>Usuario</strong></td>
+                  <td><t t-esc="vals['header']['usuario']"/></td>
+                </tr>
+                <tr>
+                  <td><strong>Desde</strong></td>
+                  <td><t t-esc="vals['header']['desde']"/></td>
+                  <td><strong>Hasta</strong></td>
+                  <td><t t-esc="vals['header']['hasta']"/></td>
+                </tr>
+                <tr>
+                  <td><strong>Diario</strong></td>
+                  <td><t t-esc="vals['header']['diario']"/></td>
+                  <td><strong>N.º de Cuenta</strong></td>
+                  <td><t t-esc="vals['header']['cuenta']"/></td>
+                </tr>
+              </tbody>
+            </table>
+
+            <!-- Tabla -->
+            <table class="table table-sm o_main_table" style="width:100%;">
+              <thead>
+                <tr>
+                  <th style="white-space:nowrap;">Fecha</th>
+                  <th>Tipo de Movimiento</th>
+                  <th>Número de Documento</th>
+                  <th>Referencia Contable</th>
+                  <th style="text-align:right;">Debe</th>
+                  <th style="text-align:right;">Haber</th>
+                  <th style="text-align:right;">Saldo</th>
+                  <th>Estado de Conciliación</th>
+                  <th>Memo</th>
+                </tr>
+              </thead>
+              <tbody>
+                <t t-foreach="vals['rows']" t-as="r">
+                  <tr>
+                    <td><t t-esc="r['fecha']"/></td>
+                    <td><t t-esc="r['tipo_mov']"/></td>
+                    <td><t t-esc="r['numero_doc']"/></td>
+                    <td><t t-esc="r['ref_cont']"/></td>
+                    <td style="text-align:right;"><t t-esc="'{:,.2f}'.format(r['debe'])"/></td>
+                    <td style="text-align:right;"><t t-esc="'{:,.2f}'.format(r['haber'])"/></td>
+                    <td style="text-align:right;"><t t-esc="'{:,.2f}'.format(r['saldo'])"/></td>
+                    <td><t t-esc="r['estado']"/></td>
+                    <td><t t-esc="r['memo']"/></td>
+                  </tr>
+                </t>
+                <t t-if="not vals['rows']">
+                  <tr>
+                    <td colspan="9" style="text-align:center; color:#666;">Sin resultados para los filtros seleccionados.</td>
+                  </tr>
+                </t>
+              </tbody>
+            </table>
+
+            <!-- RESUMEN -->
+            <div style="margin-top:10px;">
+              <strong>Resumen</strong>
+              <table class="table table-sm o_main_table" style="width:60%; margin-top:4px;">
+                <tbody>
+                  <tr>
+                    <td style="width:70%;"><strong>Saldo contable final</strong></td>
+                    <td style="text-align:right;">
+                      <strong><t t-esc="'{:,.2f}'.format(vals['summary']['saldo_final'])"/></strong>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>Saldo según extracto</strong></td>
+                    <td style="text-align:right;">
+                      <t t-if="vals['summary']['saldo_extracto'] is None">
+                        <em>(sin estado de cuenta)</em>
+                      </t>
+                      <t t-else="">
+                        <strong><t t-esc="'{:,.2f}'.format(vals['summary']['saldo_extracto'])"/></strong>
+                      </t>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>Cheques girados y no cobrados</strong></td>
+                    <td style="text-align:right;">
+                      <strong><t t-esc="'{:,.2f}'.format(vals['summary']['cheques_no_cobrados'])"/></strong>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>Depósitos/Transferencias en tránsito</strong></td>
+                    <td style="text-align:right;">
+                      <strong><t t-esc="'{:,.2f}'.format(vals['summary']['depositos_transito'])"/></strong>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </t>
+      </t>
+    </t>
+  </template>
+</odoo>

@@ -5,7 +5,7 @@ import io
 from odoo.tools.misc import xlsxwriter
 from odoo.addons.penta_base.reports.xlsx_formats import get_xlsx_formats
 from odoo.tools import format_invoice_number
-
+from openpyxl.utils import get_column_letter
 
 
 class ReportSalesA1Wizard(models.TransientModel):
@@ -62,6 +62,8 @@ class ReportSalesA1Wizard(models.TransientModel):
         formats = get_xlsx_formats(workbook)
         # Obtener data
         invoices = self._get_invoices_data()
+        # Obtener grupos de impuestos para el reporte
+        tax_groups = self.env['account.tax.group'].search([('show_report', '=', True)], order="report_name")
         # Ancho de columnas
         worksheet.set_column('A:A', 6)
         worksheet.set_column('B:C', 24)
@@ -70,11 +72,16 @@ class ReportSalesA1Wizard(models.TransientModel):
         worksheet.set_column('F:G', 20)
         worksheet.set_column('H:I', 22)
         worksheet.set_column('J:J', 15)
+        # Ajustar anchos de columna segun cantidad de grupos de impuestos
+        last_column = len(tax_groups) * 2 + 10
+        worksheet.set_column(get_column_letter(11)+':'+get_column_letter(last_column), 15)
+        worksheet.set_column(get_column_letter(last_column+1)+':'+get_column_letter(last_column+2), 15)
+        worksheet.set_column(get_column_letter(last_column+3)+':'+get_column_letter(last_column+3), 35)
+        worksheet.set_column(get_column_letter(last_column+4)+':'+get_column_letter(last_column+4), 15)
+        worksheet.set_column(get_column_letter(last_column+5)+':'+get_column_letter(last_column+5), 37)
         # Encabezados
         headers = ['#', 'TIPO DE COMPROBANTE', 'TIPO DE IDENTIFICACIÓN', 'IDENTIFICACIÓN', 'RAZÓN SOCIAL', 'PARTE RELACIONADA', 'TIPO DE SUJETO', 'NÚMERO DE DOCUMENTO',
                     'NÚMERO AUTORIZACIÓN', 'FECHA EMISIÓN']
-        # Obtener grupos de impuestos para el reporte
-        tax_groups = self.env['account.tax.group'].search([('show_report', '=', True)], order="report_name")
         tax_col = 10
         tax_struct = {}
         # Mapear bases
@@ -88,7 +95,7 @@ class ReportSalesA1Wizard(models.TransientModel):
             tax_struct[tax_group.id]['iva'] = tax_col
             tax_col += 1
         # LLenar el resto del texto de la cabecera
-        headers += ['TOTAL VENTA', 'RETENCIÓN', 'CASILLA 104 RETENCIÓN', 'DÍAS CRÉDITO', 'FORMA DE PAGO']
+        headers += ['TOTAL VENTA', 'RETENCIÓN', 'CASILLA 104', 'DÍAS CRÉDITO', 'FORMA DE PAGO']
         # Mapear cabecera
         company_name = self.env.company.display_name
         worksheet.merge_range('A1:E1', company_name)
@@ -107,19 +114,22 @@ class ReportSalesA1Wizard(models.TransientModel):
         # Mapear datos
         cont = 1
         for invoice in invoices:
-            # Obtenemos tags (puede venir de invoice_line_ids, withholding, etc.)
-            all_tags = invoice.l10n_ec_withhold_ids.filtered(lambda w: w.state == "posted").line_ids.mapped("tax_tag_ids.name")
-            all_tags = list(set(all_tags))
+            # Obtenemos tags (invoice_line_ids)
+            unique_tag_groups = []
+            for line in invoice.invoice_line_ids:
+                tag_names = sorted(line.tax_tag_ids.mapped('name'))
+                if tag_names and tag_names not in unique_tag_groups:
+                    unique_tag_groups.append(tag_names)
             # Si no hay tags, ponemos una lista con un solo elemento '' para que haga una fila igual
-            tags_to_iterate = all_tags if all_tags else ['']
-            for tag in tags_to_iterate:                                    
+            tags_to_iterate = [", ".join(tags) for tags in unique_tag_groups] if unique_tag_groups else ['']
+            for tag_name in tags_to_iterate:                        
                 row += 1
                 worksheet.write(row, 0, cont, formats['center'])
                 worksheet.write(row, 1, invoice.l10n_latam_document_type_id.name, formats['center'])
-                worksheet.write(row, 2, invoice.partner_id.l10n_latam_identification_type_id.name or '', formats['center'])
+                worksheet.write(row, 2, invoice.partner_id.l10n_latam_identification_type_id.name or '', formats['border'])
                 worksheet.write(row, 3, invoice.partner_id.vat or '', formats['border'])
                 worksheet.write(row, 4, invoice.partner_id.complete_name or '', formats['border'])
-                worksheet.write(row, 5, 'SI' if invoice.partner_id.l10n_ec_related_party else 'NO', formats['border'])
+                worksheet.write(row, 5, 'SI' if invoice.partner_id.l10n_ec_related_party else 'NO', formats['center'])
                 subjet_type = ''
                 if invoice.partner_id.company_type == 'person':
                     subjet_type = 'Persona Natural'
@@ -129,53 +139,44 @@ class ReportSalesA1Wizard(models.TransientModel):
                 worksheet.write(row, 7, format_invoice_number(invoice.name) or '', formats['border'])
                 worksheet.write(row, 8, invoice.l10n_ec_authorization_number or '', formats['border'])
                 worksheet.write(row, 9, invoice.invoice_date.strftime("%d/%m/%Y") or '', formats['border'])
-                # Mapear impuestos BASE
-                for tax_group in tax_groups:
-                    base_amount = 0.0
-                    iva_amount = 0.0
-                    for line in invoice.invoice_line_ids:
-                        for l_tax in line.tax_ids:
-                            if l_tax.tax_group_id == tax_group:
-                                base_amount += line.price_subtotal
-                                iva_amount  += line.price_subtotal * (l_tax.amount / 100.0)
-                    if base_amount > 0.00:
-                        worksheet.write(row, tax_struct[tax_group.id]['base'], base_amount or 0.00, formats['number'])
-                        worksheet.write(row, tax_struct[tax_group.id]['iva'], iva_amount or 0.00, formats['number'])
-                    else:
-                        worksheet.write(row, tax_struct[tax_group.id]['base'], 0.00, formats['number'])
-                        worksheet.write(row, tax_struct[tax_group.id]['iva'], 0.00, formats['number'])
+                # Mapear impuestos
+                base_per_group = {tg.id: 0.0 for tg in tax_groups}
+                iva_per_group = {tg.id: 0.0 for tg in tax_groups}
+                # Buscar todas las líneas que contienen este mismo tag
+                tag_lines = invoice.invoice_line_ids.filtered(
+                    lambda l, tag=tag_name: ", ".join(sorted(l.tax_tag_ids.mapped('name'))) == tag
+                )
+                for line in tag_lines:
+                    # Para cada impuesto en la línea
+                    for tax in line.tax_ids:
+                        tax_group_id = tax.tax_group_id.id
+                        if tax_group_id in tax_groups.ids:
+                            discounted_price = line.price_unit * (1 - (line.discount / 100.0))
+                            # Calcular los montos (base e impuesto)
+                            taxes_res = tax.compute_all(
+                                discounted_price,
+                                currency=invoice.currency_id,
+                                quantity=line.quantity,
+                                product=line.product_id,
+                                partner=invoice.partner_id,
+                                rounding_method='round_globally',
+                            )
+                            base_amount = taxes_res['total_excluded']
+                            iva_amount = sum(t['amount'] for t in taxes_res['taxes'])
+                            # Sumar al grupo correspondiente
+                            base_per_group[tax_group_id] += base_amount
+                            iva_per_group[tax_group_id] += iva_amount
+                # Escribir bases e impuestos por grupo
+                for tg in tax_groups:
+                    worksheet.write(row, tax_struct[tg.id]['base'], base_per_group[tg.id], formats['number'])
+                    worksheet.write(row, tax_struct[tg.id]['iva'], iva_per_group[tg.id], formats['number'])
                 # Total venta
-                worksheet.write(row, tax_col, invoice.amount_total, formats['number'])
-                # Se comenta se puede volver a utilizar en algun momento
-                """
-                # Retenciones
-                iva_tax_groups = self.env['account.tax.group'].search([('type_ret', 'in', ['withholding_iva_purchase', 'withholding_iva_sales'])])
-                rent_tax_groups = self.env['account.tax.group'].search([('type_ret', 'in', ['withholding_rent_purchase', 'withholding_rent_sales'])])
-                ret_iva = 0.00
-                ret_rent = 0.00
-                for reten in invoice.l10n_ec_withhold_ids:
-                    if reten.state != 'posted':
-                        continue
-                    for line in reten.invoice_line_ids:
-                        for l_tax in line.tax_ids:
-                            if l_tax.tax_group_id in iva_tax_groups:
-                                ret_iva += line.l10n_ec_withhold_tax_amount
-                            if l_tax.tax_group_id in rent_tax_groups:
-                                ret_rent += line.l10n_ec_withhold_tax_amount
-                worksheet.write(row, tax_col+1, ret_iva, formats['number'])
-                worksheet.write(row, tax_col+2, ret_rent, formats['number'])
-                # Casilla 104
-                all_tags = invoice.invoice_line_ids.mapped("tax_tag_ids.name")
-                all_tags = list(set(all_tags))
-                worksheet.write(row, tax_col+3, all_tags[0] if all_tags else '', formats['border'])
-                """
+                total_line = sum(base_per_group.values()) + sum(iva_per_group.values())
+                worksheet.write(row, tax_col, total_line, formats['number'])    
                 # Casilla Retenciones
-                if tag:
-                    worksheet.write(row, tax_col+1, 'SI', formats['center'])
-                    worksheet.write(row, tax_col+2, tag, formats['border'])
-                else:
-                    worksheet.write(row, tax_col+1, 'NO', formats['center'])
-                    worksheet.write(row, tax_col+2, '', formats['border'])
+                has_posted_withhold = any(ret.state == 'posted' for ret in invoice.l10n_ec_withhold_ids)
+                worksheet.write(row, tax_col+1, 'SI' if has_posted_withhold else 'NO', formats['center'])
+                worksheet.write(row, tax_col+2, tag_name or '', formats['border'])
                 worksheet.write(row, tax_col+3, invoice.invoice_payment_term_id.name if invoice.invoice_payment_term_id else '', formats['border'])
                 worksheet.write(row, tax_col+4, invoice.l10n_ec_sri_payment_id.name if invoice.l10n_ec_sri_payment_id else '', formats['border'])
                 cont += 1

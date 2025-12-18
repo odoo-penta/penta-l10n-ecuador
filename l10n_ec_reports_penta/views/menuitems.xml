@@ -5,50 +5,28 @@
     <menuitem id="menu_action_report_sales_a1" name="A1 Ventas" parent="menu_reports_tax_annexes" action="action_report_sales_a1_wizard" sequence="1" />
     <menuitem id="menu_action_report_purchase_a2" name="A2 Compras" parent="menu_reports_tax_annexes" action="action_report_purchase_a2_wizard" sequence="2" />
     <menuitem id="menu_action_report_sales_a3" name="A3 Retenciones compras" parent="menu_reports_tax_annexes" action="action_report_retentions_a3_wizard" sequence="3" />
-    <!--
-    <menuitem id="menu_action_report_sales_retention" name="Retenciones Ventas" parent="menu_reports_tax_annexes" action="" sequence="4" />
-    -->
+    <menuitem id="menu_action_report_sales_withholding_wizard" name="Retenciones Ventas" parent="menu_reports_tax_annexes" action="action_report_sales_withholding_wizard" sequence="4"/>
     <!-- REPORTES PENTA -->
     <menuitem id="menu_reports_penta" name="Reportes Penta" parent="account.menu_finance_reports" sequence="97"/>
     <menuitem id="menu_cobros_por_ventas" name="Cobros por Ventas" parent="menu_reports_penta" action="action_cobros_por_ventas" sequence="1"/>
     <menuitem id="menu_pagos_por_compras" name="Pagos por Compras" parent="menu_reports_penta"
               action="action_pagos_por_compras" sequence="2"/>
-    <menuitem id="menu_pentalab_report_antiguedad_wizard" name="Antigüedad de cartera V." parent="menu_reports_penta"
+    <menuitem id="menu_pentalab_report_antiguedad_wizard" name="Antigüedad de cartera" parent="menu_reports_penta"
               action="action_pentalab_report_antiguedad_wizard" sequence="3"/>
+    <menuitem id="menu_pentalab_report_cartera_reporte_wizard" name="Antigüedad de cartera extendida" parent="menu_reports_penta"
+          action="action_pentalab_report_cartera_reporte_wizard"
+          sequence="4"/>
     <menuitem id="menu_pentalab_purchase_retentions_wizard" name="Compras y Retenciones" parent="menu_reports_penta"
-              action="action_report_purchase_retentions_wizard_wizard" sequence="4"/>
-    <menuitem id="menu_pentalab_anexo_compras" name="Anexo de compras" parent="menu_reports_penta" action="action_pentalab_anexo_compras_wizard" sequence="5"/>
+              action="action_report_purchase_retentions_wizard_wizard" sequence="5"/>
+    <menuitem id="menu_pentalab_anexo_compras" name="Detalle de compras" parent="menu_reports_penta" action="action_pentalab_anexo_compras_wizard" sequence="6"/>
+    <menuitem id="menu_penta_bank_recon_report" name="Reporte de Conciliación Bancaria" parent="menu_reports_penta" action="action_penta_bank_recon_report_wizard" sequence="10"/>
     <!-- OTROS REPORTES -->
     <menuitem id="menu_reports_others" name="Otros Reportes" parent="account.menu_finance_reports" sequence="98"/>
     <menuitem id="menu_report_uafe" name="UAFE" parent="menu_reports_others" action="action_report_uafe_wizard" sequence="1" />
-    <menuitem id="menu_reports_informe_pentalab_balance"
-              name="Reportes Corporativo"
-              parent="account.menu_finance_reports"
-              sequence="100" />
-    <menuitem id="menu_action_informe_pentalab_balance"
-              name="Balance General (EXCEL)"
-              parent="menu_reports_informe_pentalab_balance"
-              action="action_pentalab_report_balance_wizard"
-              sequence="1" />
-
-    <menuitem id="menu_action_informe_pentalab_estado"
-              name="Estado de resultados (EXCEL)"
-              parent="menu_reports_informe_pentalab_balance"
-              action="action_pentalab_report_estado_wizard"
-              sequence="2" />
-
-    <menuitem
-        id="menu_export_plan_de_cuentas"
-        name="Exportar Plan de Cuentas"
-        parent="menu_reports_informe_pentalab_balance"
-        action="action_export_account_group_tree_excel"
-        sequence="3"/>
-
-    	<menuitem id="menu_action_report_sales_withholding_wizard"
-			  name="Retenciones Ventas"
-			  parent="l10n_ec_reports_penta.menu_reports_tax_annexes"
-			  action="action_report_sales_withholding_wizard"
-			  sequence="4"/>
-
-        
+    <!-- REPORTES COORPORATIVO -->
+    <menuitem id="menu_reports_informe_pentalab_balance" name="Reportes Corporativo" parent="account.menu_finance_reports" sequence="100" />
+    <menuitem id="menu_action_informe_pentalab_balance" name="Balance General (EXCEL)" parent="menu_reports_informe_pentalab_balance" action="action_pentalab_report_balance_wizard" sequence="1"/>
+    <menuitem id="menu_action_informe_pentalab_estado" name="Estado de resultados (EXCEL)" parent="menu_reports_informe_pentalab_balance" action="action_pentalab_report_estado_wizard" sequence="2"/>
+    <menuitem id="menu_export_plan_de_cuentas" name="Exportar Plan de Cuentas" parent="menu_reports_informe_pentalab_balance" action="action_export_account_group_tree_excel" sequence="3"/>
+    
 </odoo>

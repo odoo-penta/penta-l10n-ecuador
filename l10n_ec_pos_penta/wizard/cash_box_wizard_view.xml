@@ -1,0 +1,119 @@
+<odoo>
+    <!-- COINS WIZARD -->
+    <record id="view_cash_box_coin_wizard_form" model="ir.ui.view">
+        <field name="name">cash.box.coin.wizard.form</field>
+        <field name="model">cash.box.coin.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Coin Cash Box" version="7.0">
+                <group>
+                    <group colspan="2">
+                        <field name="coin_line_ids" widget="product_label_section_and_note_field_o2m" mode="list,kanban" nolabel="1">
+                            <list editable="bottom" create="false">
+                                <field name="coin_id" readonly="1"/>
+                                <field name="value" readonly="1"/>
+                                <field name="quantity"/>
+                            </list>
+                        </field>
+                    </group>
+                </group>
+                <footer>
+                    <button string="Confirm" type="object" name="action_confirm_coins" class="btn-primary"/>
+                    <button string="Cancel" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_cash_box_coin_wizard" model="ir.actions.act_window">
+        <field name="name">Count Cash</field>
+        <field name="res_model">cash.box.coin.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- OPEN WIZARD -->
+    <record id="view_cash_box_open_wizard_form" model="ir.ui.view">
+        <field name="name">cash.box.open.wizard.form</field>
+        <field name="model">cash.box.open.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Open Cash Box" version="7.0">
+                <group>
+                    <group>
+                        <field name="cash_id" readonly="1"/>
+                        <div class="o_row">
+                            <div class="o_col_6">
+                                <field name="initial_balance"/>
+                            </div>
+                            <div class="o_col_6" style="margin-top: 5px;">
+                                <button name="action_open_coin_wizard"
+                                    string="Count Cash"
+                                    type="object"
+                                    context="{'default_opened_wizard_id': id}"
+                                    class="btn-secondary"
+                                    icon="fa-money"/>
+                            </div>
+                        </div>
+                    </group>
+                    <group>
+                        <field name="currency_id" readonly="1"/>
+                    </group>
+                    <group colspan="2">
+                        <field name="opening_note"/>
+                    </group>
+                </group>
+                <footer>
+                    <button string="Open Cash Box" type="object" name="action_confirm_open" class="btn-primary"/>
+                    <button string="Cancel" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- CLOSE WIZARD -->
+    <record id="view_cash_box_closed_wizard_form" model="ir.ui.view">
+        <field name="name">cash.box.closed.wizard.form</field>
+        <field name="model">cash.box.closed.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Closed Cash Box" version="7.0">
+                <group>
+                    <group>
+                        <field name="cash_id" readonly="1"/>
+                        <field name="suggested_balance"/>
+                        <field name="exceeds_limit" invisible="1"/>
+                        <div class="o_col_6">
+                            <field name="final_balance" decoration-success="final_balance > suggested_balance" decoration-danger="suggested_balance > final_balance"/>
+                        </div>
+                        <div class="o_col_6" style="margin-top: 5px;">
+                            <button name="action_close_coin_wizard"
+                                string="Count Cash"
+                                type="object"
+                                context="{'default_closed_wizard_id': id}"
+                                class="btn-secondary"
+                                icon="fa-money"/>
+                        </div>
+                    </group>
+                    <group>
+                        <field name="currency_id" readonly="1"/>
+                    </group>
+                    <group colspan="2">
+                        <field name="closing_note"/>
+                    </group>
+                    <div class="alert alert-info o_form_label" invisible="suggested_balance >= final_balance" style="width: 500px">
+                        Difference in cash closing, POSITIVE value will go to the profit account
+                    </div>
+                    <div class="alert alert-warning o_form_label" invisible="final_balance >= suggested_balance" style="width: 500px">
+                        Difference in cash closing, NEGATIVE value will go to the loss account
+                    </div>
+                    <div class="alert alert-danger o_form_label" invisible="not exceeds_limit" style="width: 700px">
+                        If the cash closing difference exceeds the permitted limit, cash managers will be notified
+                    </div>
+                </group>
+                <footer>
+                    <button string="Close Cash Box" type="object" name="action_confirm_closed" class="btn-primary"/>
+                    <button string="Cancel" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>

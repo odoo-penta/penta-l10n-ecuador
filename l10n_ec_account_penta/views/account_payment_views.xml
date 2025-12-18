@@ -6,23 +6,38 @@
         <field name="model">account.payment</field>
         <field name="inherit_id" ref="account.view_account_payment_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//group[@name='group1']/field[@name='memo']" position='after'>
+            <xpath expr="//group[@name='group1']/field[@name='memo']" position="after">
                 <field name="payment_reference"/>
             </xpath>
-            <xpath expr="//group[@name='group2']" position='inside'>
+
+            <xpath expr="//group[@name='group2']" position="inside">
                 <separator/>
-                <!-- reference: bank o check -->
-                <field name="bank_reference" invisible="not show_ref"/>
+
+                <!-- reference: banco -->
+                <field name="bank_reference"
+                       string="Referencia"
+                       invisible="journal_type != 'bank'"/>
+
+                <!-- reference: cheque -->
+                <field name="bank_reference"
+                       string="Entidad emisora"
+                       invisible="journal_type != 'check'"/>
+
                 <!-- bank_id: card o check -->
-                <field name="bank_id" options="{'no_create': True, 'no_open': True}" invisible="not show_bank_cc"/>
+                <field name="bank_id"
+                       options="{'no_create': True, 'no_open': True}"
+                       invisible="not show_bank_cc"/>
+
                 <!-- resto: solo card -->
-                <field name="used_card_id" domain="[('active','=',True), ('company_id','in',[False, company_id])]" options="{'no_create': True, 'no_open': True}" invisible="not show_card"/>
+                <field name="used_card_id"
+                       domain="[('active','=',True), ('company_id','in',[False, company_id])]"
+                       options="{'no_create': True, 'no_open': True}"
+                       invisible="not show_card"/>
 
                 <field name="card_payment_type" invisible="not show_card"/>
                 <field name="number_months" invisible="not show_card"/>
                 <field name="number_lot" invisible="not show_card"/>
                 <field name="authorization_number" invisible="not show_card"/>
-                <field name="issuing_entity" invisible="not show_issuing_entity"/>
             </xpath>
         </field>
     </record>

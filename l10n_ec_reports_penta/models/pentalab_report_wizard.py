@@ -220,6 +220,7 @@ class PentalabReportWizard(models.TransientModel):
             row_idx = ultima_fila_procesada + 1  # Ajustar el índice de fila
 
             nombre_sheet1 = sheet1.cell(row=row_idx, column=1).value  # Nombre principal
+
             if nombre_sheet1 in nombres_sheet1_procesados:
                 continue  # Saltar si el nombre ya fue procesado
 

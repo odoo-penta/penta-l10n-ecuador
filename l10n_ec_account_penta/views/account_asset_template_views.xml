@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+  <record id="view_account_asset_template_form" model="ir.ui.view">
+    <field name="name">account.asset.template.form</field>
+    <field name="model">account.asset.template</field>
+    <field name="arch" type="xml">
+      <form string="Fixed Assets Report Template">
+        <sheet>
+          <group>
+            <field name="name"/>
+            <field name="company_id" invisible="1"/>
+            <field name="active"/>
+          </group>
+          <!-- Caja de información destacada -->
+          <div class="alert alert-info" style="margin-top: 10px; margin-bottom: 10px;">
+            <strong>🧩 Variables disponibles:</strong>
+            <ul style="margin-left: 15px;">
+                <li><code>{fecha}</code> → Fecha actual</li>
+                <li><code>{dia}</code> → Día actual</li>
+                <li><code>{mes}</code> → Mes actual</li>
+                <li><code>{anio}</code> → Año actual</li>
+                <li><code>{empresa}</code> → Nombre de la compañía</li>
+                <li><code>{custodio}</code> → Nombre del custodio</li>
+                <li><code>{custodio_ci}</code> → Cédula del custodio</li>
+                <li><code>{custodio_cargo}</code> → Puesto de trabajo del custodio</li>
+                <li><code>{partner}</code> → Nombre del partner</li>
+                <li><code>{partner_ci}</code> → Cédula del partner</li>
+                <li><code>{partner_cargo}</code> → Puesto de trabajo del partner</li>
+                <li><code>{activos}</code> → Lista de activos en formato HTML</li>
+            </ul>
+            <p style="margin-top: 5px;">
+                Puedes usar estas variables dentro del cuerpo de la plantilla.
+                <br/>Ejemplo: <code>&lt;p&gt;Acta generada por {empresa} el {fecha}&lt;/p&gt;</code>
+            </p>
+          </div>
+          <!-- Editor HTML moderno -->
+          <group string="Contenido de la plantilla">
+            <field name="body_html" widget="html" nolabel="1" options="{'style-inline': true}" />
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="view_account_asset_template_list" model="ir.ui.view">
+    <field name="name">account.asset.template.list</field>
+    <field name="model">account.asset.template</field>
+    <field name="arch" type="xml">
+      <list>
+        <field name="name"/>
+        <field name="active"/>
+      </list>
+    </field>
+  </record>
+
+  <record id="action_account_asset_template" model="ir.actions.act_window">
+    <field name="name">Fixed Assets Report Template</field>
+    <field name="res_model">account.asset.template</field>
+    <field name="view_mode">list,form</field>
+  </record>
+
+  <!-- Menú padre "Activos" -->
+  <menuitem id="menu_account_asset_root" name="Assets" parent="account.menu_finance_configuration" sequence="55"/>
+
+  <!-- Submenú "Plantillas de Actas" -->
+  <menuitem id="menu_account_asset_template" name="Assets templates" parent="menu_account_asset_root" action="action_account_asset_template" sequence="60"/>
+
+</odoo>

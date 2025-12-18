@@ -12,7 +12,6 @@
 {
     "name": "Pentalab Reports",
     'summary': 'Pentalab accounting reports',
-    "version": "18.0.0.1",
     'description': """
         Add new reports needed in the accounting section.
     """,
@@ -22,6 +21,7 @@
     'website': 'https://pentalab.tech/',
     'license': 'OPL-1',
     "category": "Accounting/Accounting",
+    'version': '18.0.0.0',
     "depends": [
         'account',
         'report_xlsx',
@@ -64,8 +64,15 @@
         'views/pentalab_report_estado_wizard.xml',
         'views/view_account_form_inherit_hide_in_report.xml',
         'views/account_move_report_action.xml',
+        "views/bank_recon_report_wizard_views.xml",
+        "data/report_paperformat.xml", 
+        "data/report_action.xml",
+        "report/report_bank_recon_pdf.xml",
         'report/account_move_report.xml',
+        'wizard/pentalab_report_cartera_reporte_wizard.xml',
         'views/menuitems.xml',
+        'views/report_payment_receipt_inherit_auth.xml',
+        
     ],
     "installable": True,
     'application': False,
