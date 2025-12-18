@@ -33,13 +33,6 @@ class AccountAsset(models.Model):
         store=True,
         tracking=True,
     )
-    custodian_id = fields.Many2one('hr.employee', string='Custodio')
-    brand = fields.Char('Marca')
-    model = fields.Char('Modelo')
-    serial_number = fields.Char('Número de Serie')
-    location = fields.Char('Ubicación física')
-    department_id = fields.Many2one('hr.department', string='Departamento o Área')
-    photo_info = fields.Html('Otra información relevante')
 
     @api.depends('analytic_distribution')
     def _compute_analytic_distribution_text(self):
