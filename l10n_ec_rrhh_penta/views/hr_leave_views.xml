@@ -1,4 +1,4 @@
-<!-- penta_cb_rrhh/views/hr_leave_views.xml -->
+<!-- l10n_ec_rrhh_penta/views/hr_leave_views.xml -->
 <odoo>
   <record id="view_hr_leave_form_inherit_vac_kpis" model="ir.ui.view">
     <field name="name">hr.leave.form.vac.kpis.penta</field>

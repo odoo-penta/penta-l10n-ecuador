@@ -1,15 +1,15 @@
 <!-- Banner -->
 <p align="center">
-  <img src="static/description/banner.svg" alt="penta_cb_rrhh banner" width="100%" />
+  <img src="static/description/banner.svg" alt="l10n_ec_rrhh_penta banner" width="100%" />
 </p>
 
-<h1 align="center">penta_cb_rrhh</h1>
+<h1 align="center">l10n_ec_rrhh_penta</h1>
 <p align="center">
   Adaptaciones de RRHH para Odoo 18 (Ecuador).
 </p>
 
 <p align="center">
-  <img src="static/description/icon.svg" alt="penta_cb_rrhh icon" width="96" />
+  <img src="static/description/icon.svg" alt="l10n_ec_rrhh_penta icon" width="96" />
 </p>
 
 ---
@@ -46,9 +46,9 @@ Módulo para Odoo 18 Enterprise que añade:
 - Módulo `hr`
 
 ## ⚙️ Instalación
-1. Copia `penta_cb_rrhh` en tu ruta de addons.
+1. Copia `l10n_ec_rrhh_penta` en tu ruta de addons.
 2. Reinicia Odoo.
-3. Apps → *Actualizar lista* → Instalar **penta_cb_rrhh**.
+3. Apps → *Actualizar lista* → Instalar **l10n_ec_rrhh_penta**.
 
 > Opcional: en `__manifest__.py` puedes añadir:
 > ```python
@@ -78,4 +78,4 @@ Módulo para Odoo 18 Enterprise que añade:
 ## 🧪 Tests
 Ejecuta:
 ```bash
-odoo-bin -d <db> -i penta_cb_rrhh --test-enable --stop-after-init
+odoo-bin -d <db> -i l10n_ec_rrhh_penta --test-enable --stop-after-init

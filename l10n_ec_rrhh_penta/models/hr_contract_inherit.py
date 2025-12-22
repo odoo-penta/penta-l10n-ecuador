@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# penta_cb_rrhh – Contratos Ecuador
+# l10n_ec_rrhh_penta – Contratos Ecuador
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 from dateutil.relativedelta import relativedelta
@@ -291,7 +291,7 @@ class HrContract(models.Model):
             "name": "Ajustar vacaciones",
             "res_model": "l10n_ec.ptb.add.vacation.wizard",
             "view_mode": "form",
-            "view_id": self.env.ref("penta_cb_rrhh.view_l10n_ec_ptb_add_vacation_wizard_form").id,
+            "view_id": self.env.ref("l10n_ec_rrhh_penta.view_l10n_ec_ptb_add_vacation_wizard_form").id,
             "target": "new",
             "context": {
                 "default_contract_id": self.id,

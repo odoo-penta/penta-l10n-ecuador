@@ -7,8 +7,8 @@ class TestPaymentMode(TransactionCase):
 
     def test_default_data_exists(self):
         # precargados
-        transfer = self.env.ref("penta_cb_rrhh.hr_payment_mode_transfer")
-        check = self.env.ref("penta_cb_rrhh.hr_payment_mode_check")
+        transfer = self.env.ref("l10n_ec_rrhh_penta.hr_payment_mode_transfer")
+        check = self.env.ref("l10n_ec_rrhh_penta.hr_payment_mode_check")
         self.assertEqual(transfer.name, "Transferencia")
         self.assertEqual(check.name, "Cheque")
 
@@ -31,6 +31,6 @@ class TestPaymentMode(TransactionCase):
     def test_employee_link(self):
         # Asignar modo de pago al empleado y leer
         employee = self.env["hr.employee"].create({"name": "Empleado ModoPago"})
-        transfer = self.env.ref("penta_cb_rrhh.hr_payment_mode_transfer")
+        transfer = self.env.ref("l10n_ec_rrhh_penta.hr_payment_mode_transfer")
         employee.payment_mode_id = transfer.id
         self.assertEqual(employee.payment_mode_id, transfer)

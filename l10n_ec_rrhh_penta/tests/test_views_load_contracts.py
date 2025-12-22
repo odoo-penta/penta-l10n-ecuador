@@ -13,32 +13,32 @@ class TestViewsLoadContracts(TransactionCase):
         # CONTRATOS
         # ============
         # Pestañas y páginas en hr.contract (herencias)
-        self.env.ref("penta_cb_rrhh.view_hr_contract_details")
-        self.env.ref("penta_cb_rrhh.view_hr_contract_previous")
-        self.env.ref("penta_cb_rrhh.view_hr_contract_other_parameters")
+        self.env.ref("l10n_ec_rrhh_penta.view_hr_contract_details")
+        self.env.ref("l10n_ec_rrhh_penta.view_hr_contract_previous")
+        self.env.ref("l10n_ec_rrhh_penta.view_hr_contract_other_parameters")
 
         # ============
         # CONFIG: IESS
         # ============
-        self.env.ref("penta_cb_rrhh.view_hr_iess_option_tree")
-        self.env.ref("penta_cb_rrhh.view_hr_iess_option_form")
-        self.env.ref("penta_cb_rrhh.action_hr_iess_option")
-        self.env.ref("penta_cb_rrhh.menu_hr_iess_option")
+        self.env.ref("l10n_ec_rrhh_penta.view_hr_iess_option_tree")
+        self.env.ref("l10n_ec_rrhh_penta.view_hr_iess_option_form")
+        self.env.ref("l10n_ec_rrhh_penta.action_hr_iess_option")
+        self.env.ref("l10n_ec_rrhh_penta.menu_hr_iess_option")
 
         # ======================
         # CONFIG: SECCIÓN CONTABLE
         # ======================
-        self.env.ref("penta_cb_rrhh.view_hr_account_section_tree")
-        self.env.ref("penta_cb_rrhh.view_hr_account_section_form")
-        self.env.ref("penta_cb_rrhh.action_hr_account_section")
-        self.env.ref("penta_cb_rrhh.menu_hr_account_section")
+        self.env.ref("l10n_ec_rrhh_penta.view_hr_account_section_tree")
+        self.env.ref("l10n_ec_rrhh_penta.view_hr_account_section_form")
+        self.env.ref("l10n_ec_rrhh_penta.action_hr_account_section")
+        self.env.ref("l10n_ec_rrhh_penta.menu_hr_account_section")
 
         # ======================
         # WORK LOCATION (branch_code)
         # ======================
         # Vistas propias (no dependen de XMLIDs nativos)
-        self.env.ref("penta_cb_rrhh.view_hr_work_location_tree_penta")
-        self.env.ref("penta_cb_rrhh.view_hr_work_location_form_penta")
+        self.env.ref("l10n_ec_rrhh_penta.view_hr_work_location_tree_penta")
+        self.env.ref("l10n_ec_rrhh_penta.view_hr_work_location_form_penta")
 
         # Inyección de nuestras vistas en la acción (el XMLID de la acción varía según base):
         # Intentamos los 2 comunes; si no existen, no romper el test.

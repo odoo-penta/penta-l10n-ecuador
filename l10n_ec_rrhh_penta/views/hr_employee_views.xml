@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <!-- Ocultar certificate nativo y mostrar nuestro M2O de educación -->
-    <record id="view_employee_form_inherit_penta_cb_rrhh_education" model="ir.ui.view">
+    <record id="view_employee_form_inherit_l10n_ec_rrhh_penta_education" model="ir.ui.view">
         <field name="name">hr.employee.form.penta.education</field>
         <field name="model">hr.employee</field>
         <field name="inherit_id" ref="hr.view_employee_form"/>
@@ -30,7 +30,7 @@
     </record>
 
     <!-- Insertar grupo Discapacidad DESPUÉS del grupo Emergency -->
-    <record id="view_employee_form_inherit_penta_cb_rrhh_disability" model="ir.ui.view">
+    <record id="view_employee_form_inherit_l10n_ec_rrhh_penta_disability" model="ir.ui.view">
         <field name="name">hr.employee.form.penta.disability</field>
         <field name="model">hr.employee</field>
         <field name="inherit_id" ref="hr.view_employee_form"/>
@@ -77,7 +77,7 @@
 
     
     <!-- Cargas familiares: botón y contador junto a children -->
-    <record id="view_employee_form_inherit_penta_cb_rrhh_family" model="ir.ui.view">
+    <record id="view_employee_form_inherit_l10n_ec_rrhh_penta_family" model="ir.ui.view">
         <field name="name">hr.employee.form.penta.family</field>
         <field name="model">hr.employee</field>
         <field name="inherit_id" ref="hr.view_employee_form"/>

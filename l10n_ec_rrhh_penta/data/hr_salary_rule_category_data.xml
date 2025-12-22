@@ -23,7 +23,7 @@
     <field name="name">Impuestos</field>
     <field name="code">IMP</field>
     <field name="note">Retenciones o impuestos aplicables</field>
-    <field name="parent_id" ref="penta_cb_rrhh.cat_descuentos"/>
+    <field name="parent_id" ref="l10n_ec_rrhh_penta.cat_descuentos"/>
   </record>
 
   <record id="cat_total" model="hr.salary.rule.category">

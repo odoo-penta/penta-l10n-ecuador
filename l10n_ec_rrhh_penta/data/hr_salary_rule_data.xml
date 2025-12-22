@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <odoo>
   <record id="rule_reglas_salariales_administrativo_40" model="hr.salary.rule">
-    <field name="struct_id" ref="penta_cb_rrhh.structure_ec_employee"/>
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
     <field name="category_id" ref="hr_payroll.ALW"/>
     <field name="name">Reglas Salariales Administrativo (40)</field>
     <field name="code">REGLAS_SALARIALES_ADMINISTRATIVO_40</field>
@@ -14,7 +14,7 @@
   </record>
   
   <record id="rule_basic" model="hr.salary.rule">
-    <field name="struct_id" ref="penta_cb_rrhh.structure_ec_employee"/>
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
     <field name="category_id" ref="hr_payroll.BASIC"/>
     <field name="name">Salario nominal</field>
     <field name="code">BASIC</field>
@@ -32,7 +32,7 @@ result = (contract.wage * dias_trabajados) / 30]]></field>
   </record>
 
   <record id="rule_pl_hora_extra_nocturna" model="hr.salary.rule">
-    <field name="struct_id" ref="penta_cb_rrhh.structure_ec_employee"/>
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
     <field name="category_id" ref="hr_payroll.ALW"/>
     <field name="name">Horas Nocturnas</field>
     <field name="code">PL_HORA_EXTRA_NOCTURNA</field>
@@ -46,7 +46,7 @@ result = (contract.wage * dias_trabajados) / 30]]></field>
   </record>
   
   <record id="rule_pl_hora_extra_suplementaria" model="hr.salary.rule">
-    <field name="struct_id" ref="penta_cb_rrhh.structure_ec_employee"/>
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
     <field name="category_id" ref="hr_payroll.ALW"/>
     <field name="name">Horas Suplementarias</field>
     <field name="code">PL_HORA_EXTRA_SUPLEMENTARIA</field>
@@ -60,7 +60,7 @@ result = (contract.wage * dias_trabajados) / 30]]></field>
   </record>
 
   <record id="rule_pl_hora_extra_extraordinaria" model="hr.salary.rule">
-    <field name="struct_id" ref="penta_cb_rrhh.structure_ec_employee"/>
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
     <field name="category_id" ref="hr_payroll.ALW"/>
     <field name="name">Horas Extras Extraordinarias</field>
     <field name="code">PL_HORA_EXTRA_EXTRAORDINARIA</field>
@@ -74,7 +74,7 @@ result = (contract.wage * dias_trabajados) / 30]]></field>
   </record>
 
   <record id="rule_basicec" model="hr.salary.rule">
-    <field name="struct_id" ref="penta_cb_rrhh.structure_ec_employee"/>
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
     <field name="category_id" ref="hr_payroll.ALW"/>
     <field name="name">Sueldo básico EC</field>
     <field name="code">BASICEC</field>
@@ -87,7 +87,7 @@ result = (contract.wage * dias_trabajados) / 30]]></field>
   </record>
 
   <record id="rule_bono" model="hr.salary.rule">
-    <field name="struct_id" ref="penta_cb_rrhh.structure_ec_employee"/>
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
     <field name="category_id" ref="hr_payroll.BASIC"/>
     <field name="name">Bonificaciones</field>
     <field name="code">BONO</field>
@@ -101,7 +101,7 @@ result = (contract.wage * dias_trabajados) / 30]]></field>
   </record>
 
   <record id="rule_pl_comision" model="hr.salary.rule">
-    <field name="struct_id" ref="penta_cb_rrhh.structure_ec_employee"/>
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
     <field name="category_id" ref="hr_payroll.BASIC"/>
     <field name="name">Comisiones</field>
     <field name="code">PL_COMISION</field>
@@ -116,8 +116,8 @@ result_name = inputs['PL_COMISION'].name]]></field>
   </record>
 
   <record id="rule_gross" model="hr.salary.rule">
-    <field name="struct_id" ref="penta_cb_rrhh.structure_ec_employee"/>
-    <field name="category_id" ref="penta_cb_rrhh.cat_impuestos"/>
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
+    <field name="category_id" ref="l10n_ec_rrhh_penta.cat_impuestos"/>
     <field name="name">Bruto</field>
     <field name="code">GROSS</field>
     <field name="sequence">103</field>
@@ -129,7 +129,7 @@ result_name = inputs['PL_COMISION'].name]]></field>
   </record>
 
   <record id="rule_resvm" model="hr.salary.rule">
-    <field name="struct_id" ref="penta_cb_rrhh.structure_ec_employee"/>
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
     <field name="category_id" ref="hr_payroll.ALW"/>
     <field name="name">Fondos de Reserva Mensual</field>
     <field name="code">RESVM</field>
@@ -156,7 +156,7 @@ elif (payslip.date_to-contract.date_start).days > 395:
   </record>
 
   <record id="rule_dcuarmen" model="hr.salary.rule">
-    <field name="struct_id" ref="penta_cb_rrhh.structure_ec_employee"/>
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
     <field name="category_id" ref="hr_payroll.ALW"/>
     <field name="name">Décimo Cuarto Mensual</field>
     <field name="code">DCUARMEN</field>
@@ -171,7 +171,7 @@ elif (payslip.date_to-contract.date_start).days > 395:
   </record>
 
   <record id="rule_dtermen" model="hr.salary.rule">
-    <field name="struct_id" ref="penta_cb_rrhh.structure_ec_employee"/>
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
     <field name="category_id" ref="hr_payroll.ALW"/>
     <field name="name">Décimo Tercero Mensual</field>
     <field name="code">DTERMEN</field>
@@ -185,8 +185,8 @@ elif (payslip.date_to-contract.date_start).days > 395:
   </record>
 
   <record id="rule_totingotros" model="hr.salary.rule">
-    <field name="struct_id" ref="penta_cb_rrhh.structure_ec_employee"/>
-    <field name="category_id" ref="penta_cb_rrhh.cat_total"/>
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
+    <field name="category_id" ref="l10n_ec_rrhh_penta.cat_total"/>
     <field name="name">Total otros ingresos</field>
     <field name="code">TOTINGOTROS</field>
     <field name="sequence">106</field>
@@ -197,8 +197,8 @@ elif (payslip.date_to-contract.date_start).days > 395:
     <field name="amount_python_compute"><![CDATA[result =  categories['BENEFICIOS']]]></field>
   </record>
   <record id="rule_toting" model="hr.salary.rule">
-    <field name="struct_id" ref="penta_cb_rrhh.structure_ec_employee"/>
-    <field name="category_id" ref="penta_cb_rrhh.cat_total"/>
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
+    <field name="category_id" ref="l10n_ec_rrhh_penta.cat_total"/>
     <field name="name">TOTAL DE INGRESOS</field>
     <field name="code">TOTING</field>
     <field name="sequence">107</field>
@@ -210,7 +210,7 @@ elif (payslip.date_to-contract.date_start).days > 395:
   </record>
 
   <record id="rule_iessper" model="hr.salary.rule">
-    <field name="struct_id" ref="penta_cb_rrhh.structure_ec_employee"/>
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
     <field name="category_id" ref="hr_payroll.ALW"/>
     <field name="name">IESS Personal</field>
     <field name="code">IESSPER</field>
@@ -225,7 +225,7 @@ elif (payslip.date_to-contract.date_start).days > 395:
 
 
   <record id="rule_palim" model="hr.salary.rule">
-    <field name="struct_id" ref="penta_cb_rrhh.structure_ec_employee"/>
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
     <field name="category_id" ref="hr_payroll.ALW"/>
     <field name="name">Pensión alimenticia</field>
     <field name="code">PALIM</field>
@@ -240,7 +240,7 @@ result_name = inputs['PL_PENSION_ALIM'].name]]></field>
   </record>
 
   <record id="rule_quirografario" model="hr.salary.rule">
-    <field name="struct_id" ref="penta_cb_rrhh.structure_ec_employee"/>
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
     <field name="category_id" ref="hr_payroll.ALW"/>
     <field name="name">Préstamo Quirografario</field>
     <field name="code">QUIROGRAFARIO</field>
@@ -255,8 +255,8 @@ result_name = inputs['PL_QUIROGRAFARIO'].name]]></field>
   </record>
 
   <record id="rule_otring" model="hr.salary.rule">
-    <field name="struct_id" ref="penta_cb_rrhh.structure_ec_employee"/>
-    <field name="category_id" ref="penta_cb_rrhh.hr_salary_rule_category_bono"/>
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
+    <field name="category_id" ref="l10n_ec_rrhh_penta.hr_salary_rule_category_bono"/>
     <field name="name">Otros ingresos no deducibles</field>
     <field name="code">OTRING</field>
     <field name="sequence">109</field>
@@ -270,7 +270,7 @@ result_name = inputs['PL_QUIROGRAFARIO'].name]]></field>
   </record>
 
   <record id="rule_hipotecario" model="hr.salary.rule">
-    <field name="struct_id" ref="penta_cb_rrhh.structure_ec_employee"/>
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
     <field name="category_id" ref="hr_payroll.ALW"/>
     <field name="name">Préstamo Hipotecario</field>
     <field name="code">HIPOTECARIO</field>
@@ -285,7 +285,7 @@ result_name = inputs['PL_HIPOTECARIO'].name]]></field>
   </record>
 
   <record id="rule_extcobcony" model="hr.salary.rule">
-    <field name="struct_id" ref="penta_cb_rrhh.structure_ec_employee"/>
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
     <field name="category_id" ref="hr_payroll.ALW"/>
     <field name="name">Extensión de la cobertura de salud para cónyuges</field>
     <field name="code">EXTCOBCONY</field>
@@ -299,7 +299,7 @@ result_name = inputs['PL_HIPOTECARIO'].name]]></field>
   </record>
   
   <record id="rule_imprenta" model="hr.salary.rule">
-    <field name="struct_id" ref="penta_cb_rrhh.structure_ec_employee"/>
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
     <field name="category_id" ref="hr_payroll.ALW"/>
     <field name="name">Impuesto a la Renta</field>
     <field name="code">IMPRENTA</field>
@@ -314,7 +314,7 @@ result_name = inputs['PL_IMPUESTA_RENTA'].name]]></field>
   </record>
 
   <record id="rule_retjud" model="hr.salary.rule">
-    <field name="struct_id" ref="penta_cb_rrhh.structure_ec_employee"/>
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
     <field name="category_id" ref="hr_payroll.ALW"/>
     <field name="name">Retencion Judicial</field>
     <field name="code">RETJUD</field>
@@ -329,7 +329,7 @@ result_name = inputs['PL_RETENCION_JUDICIAL'].name]]></field>
   </record>
 
   <record id="rule_antic" model="hr.salary.rule">
-    <field name="struct_id" ref="penta_cb_rrhh.structure_ec_employee"/>
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
     <field name="category_id" ref="hr_payroll.ALW"/>
     <field name="name">Anticipo</field>
     <field name="code">ANTIC</field>
@@ -344,7 +344,7 @@ result_name = inputs['PL_ANTCIPO'].name]]></field>
   </record>
 
   <record id="rule_prestamos" model="hr.salary.rule">
-    <field name="struct_id" ref="penta_cb_rrhh.structure_ec_employee"/>
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
     <field name="category_id" ref="hr_payroll.ALW"/>
     <field name="name">Prestamo</field>
     <field name="code">PRESTAMOS</field>
@@ -359,7 +359,7 @@ result_name = inputs['PL_PRESTAMOS'].name]]></field>
   </record>
 
   <record id="rule_otros" model="hr.salary.rule">
-    <field name="struct_id" ref="penta_cb_rrhh.structure_ec_employee"/>
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
     <field name="category_id" ref="hr_payroll.ALW"/>
     <field name="name">Otros descuentos</field>
     <field name="code">OTROS</field>
@@ -374,7 +374,7 @@ result_name = inputs['PL_OTROS_DSCTOS'].name]]></field>
   </record>
 
   <record id="rule_atrmult" model="hr.salary.rule">
-    <field name="struct_id" ref="penta_cb_rrhh.structure_ec_employee"/>
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
     <field name="category_id" ref="hr_payroll.ALW"/>
     <field name="name">Atrasos y multas</field>
     <field name="code">ATRMULT</field>
@@ -388,7 +388,7 @@ result_name = inputs['PL_OTROS_DSCTOS'].name]]></field>
 result_name = inputs['PL_ATRASOS_MULTAS'].name]]></field>
   </record>
   <record id="rule_conalm" model="hr.salary.rule">
-    <field name="struct_id" ref="penta_cb_rrhh.structure_ec_employee"/>
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
     <field name="category_id" ref="hr_payroll.ALW"/>
     <field name="name">Consumo Almacenes</field>
     <field name="code">CONALM</field>
@@ -403,7 +403,7 @@ result_name = inputs['PL_CONSUMO_ALMACEN'].name]]></field>
   </record>
 
   <record id="rule_fact" model="hr.salary.rule">
-    <field name="struct_id" ref="penta_cb_rrhh.structure_ec_employee"/>
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
     <field name="category_id" ref="hr_payroll.ALW"/>
     <field name="name">Factura</field>
     <field name="code">FACT</field>
@@ -418,7 +418,7 @@ result_name = inputs['PL_FACTURA'].name]]></field>
   </record>
 
   <record id="rule_segconf" model="hr.salary.rule">
-    <field name="struct_id" ref="penta_cb_rrhh.structure_ec_employee"/>
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
     <field name="category_id" ref="hr_payroll.ALW"/>
     <field name="name">Seguro médico privado</field>
     <field name="code">SEGCONF</field>
@@ -433,8 +433,8 @@ result_name = inputs['PL_MEDICO_PRIVADO'].name]]></field>
   </record>
   
   <record id="rule_totegr" model="hr.salary.rule">
-    <field name="struct_id" ref="penta_cb_rrhh.structure_ec_employee"/>
-    <field name="category_id" ref="penta_cb_rrhh.cat_total"/>
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
+    <field name="category_id" ref="l10n_ec_rrhh_penta.cat_total"/>
     <field name="name">TOTAL DE EGRESOS</field>
     <field name="code">TOTEGR</field>
     <field name="sequence">121</field>
@@ -446,8 +446,8 @@ result_name = inputs['PL_MEDICO_PRIVADO'].name]]></field>
   </record>
 
   <record id="rule_net" model="hr.salary.rule">
-    <field name="struct_id" ref="penta_cb_rrhh.structure_ec_employee"/>
-    <field name="category_id" ref="penta_cb_rrhh.cat_total"/>
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
+    <field name="category_id" ref="l10n_ec_rrhh_penta.cat_total"/>
     <field name="name">SALARIO NETO A RECIBIR</field>
     <field name="code">NET</field>
     <field name="sequence">122</field>
@@ -459,7 +459,7 @@ result_name = inputs['PL_MEDICO_PRIVADO'].name]]></field>
   </record>
 
   <record id="rule_dter" model="hr.salary.rule">
-    <field name="struct_id" ref="penta_cb_rrhh.structure_ec_employee"/>
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
     <field name="category_id" ref="hr_payroll.ALW"/>
     <field name="name">Décimo Tercero Provisionado</field>
     <field name="code">DTER</field>
@@ -473,7 +473,7 @@ result_name = inputs['PL_MEDICO_PRIVADO'].name]]></field>
   </record>
 
   <record id="rule_dcuar" model="hr.salary.rule">
-    <field name="struct_id" ref="penta_cb_rrhh.structure_ec_employee"/>
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
     <field name="category_id" ref="hr_payroll.ALW"/>
     <field name="name">Décimo Cuarto Provisionado</field>
     <field name="code">DCUAR</field>
@@ -487,7 +487,7 @@ result_name = inputs['PL_MEDICO_PRIVADO'].name]]></field>
          #['WORK100'].number_of_days]]></field>
   </record>
   <record id="rule_vacac" model="hr.salary.rule">
-    <field name="struct_id" ref="penta_cb_rrhh.structure_ec_employee"/>
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
     <field name="category_id" ref="hr_payroll.ALW"/>
     <field name="name">Vacaciones</field>
     <field name="code">VACAC</field>
@@ -500,7 +500,7 @@ result_name = inputs['PL_MEDICO_PRIVADO'].name]]></field>
   </record>
 
   <record id="rule_emc" model="hr.salary.rule">
-    <field name="struct_id" ref="penta_cb_rrhh.structure_ec_employee"/>
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
     <field name="category_id" ref="hr_payroll.ALW"/>
     <field name="name">IESS Patronal</field>
     <field name="code">EMC</field>
@@ -514,7 +514,7 @@ result_name = inputs['PL_MEDICO_PRIVADO'].name]]></field>
   </record>
 
   <record id="rule_resv" model="hr.salary.rule">
-    <field name="struct_id" ref="penta_cb_rrhh.structure_ec_employee"/>
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
     <field name="category_id" ref="hr_payroll.ALW"/>
     <field name="name">Fondos de Reserva Acumulado</field>
     <field name="code">RESV</field>
@@ -541,8 +541,8 @@ elif (payslip.date_to-contract.date_start).days > 395:
   </record>
 
   <record id="rule_totpro" model="hr.salary.rule">
-    <field name="struct_id" ref="penta_cb_rrhh.structure_ec_employee"/>
-    <field name="category_id" ref="penta_cb_rrhh.cat_total"/>
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
+    <field name="category_id" ref="l10n_ec_rrhh_penta.cat_total"/>
     <field name="name">TOTAL DE PROVISIONES</field>
     <field name="code">TOTPRO</field>
     <field name="sequence">128</field>
@@ -554,7 +554,7 @@ elif (payslip.date_to-contract.date_start).days > 395:
   </record>
 
   <record id="rule_illnessiess50" model="hr.salary.rule">
-    <field name="struct_id" ref="penta_cb_rrhh.structure_ec_employee"/>
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
     <field name="category_id" ref="hr_payroll.ALW"/>
     <field name="name">Ausencia por Enfermedad 1 a 3 </field>
     <field name="code">ILLNESSIESS50</field>
@@ -568,7 +568,7 @@ elif (payslip.date_to-contract.date_start).days > 395:
   </record>
 
   <record id="rule_illnessiess66" model="hr.salary.rule">
-    <field name="struct_id" ref="penta_cb_rrhh.structure_ec_employee"/>
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
     <field name="category_id" ref="hr_payroll.ALW"/>
     <field name="name">Ausencia por Enfermedad (IESS reconoce el 66%)</field>
     <field name="code">ILLNESSIESS66</field>
@@ -582,7 +582,7 @@ elif (payslip.date_to-contract.date_start).days > 395:
   </record>
 
   <record id="rule_illnessiess75" model="hr.salary.rule">
-    <field name="struct_id" ref="penta_cb_rrhh.structure_ec_employee"/>
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
     <field name="category_id" ref="hr_payroll.ALW"/>
     <field name="name">Ausencia por Enfermedad a partir del 4to día (IESS reconoce el 75%)</field>
     <field name="code">ILLNESSIESS75</field>
@@ -596,8 +596,8 @@ elif (payslip.date_to-contract.date_start).days > 395:
   </record>
 
   <record id="rule_subt_subsidios" model="hr.salary.rule">
-    <field name="struct_id" ref="penta_cb_rrhh.structure_ec_employee"/>
-    <field name="category_id" ref="penta_cb_rrhh.cat_total"/>
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
+    <field name="category_id" ref="l10n_ec_rrhh_penta.cat_total"/>
     <field name="name">Subtotal: Subsidios</field>
     <field name="code">SUBT_SUBSIDIOS</field>
     <field name="sequence">295</field>

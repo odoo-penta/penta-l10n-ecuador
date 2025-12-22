@@ -34,6 +34,6 @@ class TestLeaveTypeVacationFlag(SavepointCase):
         """Si cargaste data XML para tipos (vacaciones/enfermedad), que se puedan resolver."""
         # assert del valor exacto
         try:
-            self.env.ref("penta_cb_rrhh.hr_leave_type_vacaciones")
+            self.env.ref("l10n_ec_rrhh_penta.hr_leave_type_vacaciones")
         except Exception:
             self.skipTest("No hay hr_leave_type_vacaciones por XML en este entorno.")

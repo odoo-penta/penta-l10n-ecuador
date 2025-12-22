@@ -1,4 +1,4 @@
-# penta_cb_rrhh – interno Penta Lab
+# l10n_ec_rrhh_penta – interno Penta Lab
 from odoo import models, fields
 
 class HrPaymentMode(models.Model):
