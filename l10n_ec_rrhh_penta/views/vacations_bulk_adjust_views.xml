@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="view_penta_vacation_bulk_adjust_wizard" model="ir.ui.view">
+    <field name="name">penta.vacation.bulk.adjust.wizard.form</field>
+    <field name="model">penta.vacation.bulk.adjust.wizard</field>
+    <field name="arch" type="xml">
+      <form string="Carga masiva de vacaciones">
+        <group>
+          <group>
+            <field name="company_id" required="1"/>
+            <field name="dry_run"/>
+          </group>
+          <group>
+            <button name="action_download_template" type="object" string="Descargar plantilla" class="btn-primary"/>
+          </group>
+        </group>
+
+        <separator string="Importar Excel con 'Días tomados (nuevo)'" colspan="4"/>
+        <group>
+          <field name="import_filename" readonly="1"/>
+          <field name="import_file" filename="import_filename"/>
+        </group>
+
+        <footer>
+          <button name="action_import_and_apply" type="object" string="Validar y (si no es Simulación) aplicar" class="btn-primary"/>
+          <button string="Cerrar" special="cancel"/>
+        </footer>
+
+        <separator string="Resultado" colspan="4"/>
+        <group>
+          <field name="log_text" nolabel="1" readonly="1" widget="text"/>
+          <field name="log_file" filename="log_filename" invisible="not log_file"/>
+          <field name="log_filename" invisible="1"/>
+        </group>
+      </form>
+    </field>
+  </record>
+
+  <!-- Acción y menú -->
+  <record id="action_penta_vacation_bulk_adjust_wizard" model="ir.actions.act_window">
+    <field name="name">Carga masiva de vacaciones</field>
+    <field name="res_model">penta.vacation.bulk.adjust.wizard</field>
+    <field name="view_mode">form</field>
+    <field name="target">new</field>
+    <field name="context">{}</field>
+  </record>
+
+  <menuitem id="menu_penta_vac_root"
+            name="Vacaciones"
+            parent="hr_work_entry_contract_enterprise.menu_hr_payroll_configuration"
+            sequence="90"/>
+  <menuitem id="menu_penta_vac_bulk_wizard"
+            name="Carga masiva con plantilla"
+            parent="menu_penta_vac_root"
+            action="action_penta_vacation_bulk_adjust_wizard"
+            sequence="10"/>
+</odoo>

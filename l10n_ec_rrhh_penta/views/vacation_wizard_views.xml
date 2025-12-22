@@ -1,0 +1,31 @@
+<odoo>
+  <!-- Acción del wizard -->
+  <record id="action_l10n_ec_ptb_add_vacation_wizard" model="ir.actions.act_window">
+    <field name="name">Ajustar vacaciones</field>
+    <field name="res_model">l10n_ec.ptb.add.vacation.wizard</field>
+    <field name="view_mode">form</field>
+    <field name="target">new</field>
+    <field name="context">{'default_contract_id': active_id}</field>
+  </record>
+
+  <!-- Vista del wizard -->
+  <record id="view_l10n_ec_ptb_add_vacation_wizard_form" model="ir.ui.view">
+    <field name="name">l10n.ec.ptb.add.vacation.wizard.form</field>
+    <field name="model">l10n_ec.ptb.add.vacation.wizard</field>
+    <field name="arch" type="xml">
+      <form string="Ajustar vacaciones">
+        <group>
+          <field name="contract_id" readonly="1"/>
+          <group>
+            <field name="operation" required="1"/>
+            <field name="quantity" required="1"/>
+          </group>
+        </group>
+        <footer>
+          <button string="Confirmar" type="object" name="action_confirm" class="btn-primary"/>
+          <button string="Cancelar" special="cancel" class="btn-secondary"/>
+        </footer>
+      </form>
+    </field>
+  </record>
+</odoo>
