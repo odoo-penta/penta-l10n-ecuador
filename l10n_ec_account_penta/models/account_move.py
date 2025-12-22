@@ -61,7 +61,7 @@ class AccountMove(models.Model):
                 ('l10n_ec_authorization_number', '=', auth_number),
                 ('l10n_latam_document_type_id', '=', move.l10n_latam_document_type_id.id),
                 ('id', '!=', move.id)
-            ])
+            ], limit=1)
             if record_account and len(record_account) > 0:
                 auth_number = re.sub(r"\s+", "", str(record_account.l10n_ec_authorization_number))
                 doc_name = re.sub(self.REGEX_PATTERN_DOC_TYPE, "", str(record_account.name))  # solo inicio/fin
