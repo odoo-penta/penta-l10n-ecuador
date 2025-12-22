@@ -15,30 +15,4 @@
         </field>    
     </record>
 
-    <record id="action_check_l10n_latam_document_type" model="ir.actions.act_window">
-        <field name="name">Action for open check document type menu</field>
-        <field name="res_model">l10n_latam.document.type</field>
-        <field name="view_mode">list,form</field>
-        <field name="context">{}</field>
-        <field name="domain">[]</field>
-        <field name="view_id" ref="l10_latam_document_type_list_inherit"/>
-    </record>
-
-    <menuitem
-        id="menu_check_l10n_latam_document_type"
-        name="Verificaciones por tipo de documento"
-        parent="account.account_account_menu"
-        action="action_check_l10n_latam_document_type"
-        sequence="21"
-        groups="account.group_account_manager"/>
 </odoo>
-
-<!-- 
-    Vista lista personalizada para l10n_latam.document.type 
-    ⚠️ Nota: No se heredó la vista original porque está definida con edit="0" 
-    en el módulo base. 
-    Esta acción crea una nueva vista editable, accesible solo para usuarios 
-    con rol de Contabilidad (group_account_manager). 
-    Razón: necesitamos permitir edición controlada del número de autorización 
-    y tipo de movimiento para la integración de Penta CB.
--->
