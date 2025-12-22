@@ -14,12 +14,8 @@ class AccountMove(models.Model):
     def _check_move_type(self):
         for record in self:
             document_type = record.l10n_latam_document_type_id
-            print(document_type.penta_cb_length_auth_number)
-            print(record.move_type)
-            print(record.l10n_latam_document_type_id.penta_cb_move_type.mapped('code'))
             if document_type.penta_cb_length_auth_number <= 0 or \
             record.move_type not in record.l10n_latam_document_type_id.penta_cb_move_type.mapped('code'):
-                print('FALSE')
                 return False
         return True
 
@@ -54,6 +50,8 @@ class AccountMove(models.Model):
                 
     def _check_authorization_unique(self):
         for move in self:
+            if move.l10n_latam_document_type_id.code == '02':
+                continue
             auth_number = move.l10n_ec_authorization_number or ''
             if not auth_number:
                 continue
