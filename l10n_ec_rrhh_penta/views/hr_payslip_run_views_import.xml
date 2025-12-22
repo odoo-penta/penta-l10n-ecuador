@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+
+    <record id="view_hr_payslip_run_form_export_import" model="ir.ui.view">
+      <field name="name">hr.payslip.run.form.export.import.monthly.inputs</field>
+      <field name="model">hr.payslip.run</field>
+      <field name="inherit_id" ref="hr_payroll.hr_payslip_run_form"/>
+      <field name="arch" type="xml">
+
+        <!-- Botón EXPORTAR: antes del statusbar -->
+        <xpath expr="//form/header/field[@name='state']" position="before">
+          <button name="action_export_monthly_inputs_xlsx"
+                  type="object"
+                  string="Exportar novedades mensuales"
+                  class="btn-primary"
+                  invisible="payslip_count == 0"/>
+        </xpath>
+
+        <!-- Botón IMPORTAR: antes del statusbar -->
+        <xpath expr="//form/header/field[@name='state']" position="before">
+          <button name="action_open_import_monthly_inputs_wizard"
+                  type="object"
+                  string="Importar novedades mensuales"
+                  class="btn-secondary"
+                  invisible="payslip_count == 0"/>
+        </xpath>
+
+      </field>
+    </record>
+
+  </data>
+</odoo>

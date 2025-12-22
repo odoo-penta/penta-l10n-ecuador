@@ -14,12 +14,8 @@ class AccountMove(models.Model):
     def _check_move_type(self):
         for record in self:
             document_type = record.l10n_latam_document_type_id
-            print(document_type.penta_cb_length_auth_number)
-            print(record.move_type)
-            print(record.l10n_latam_document_type_id.penta_cb_move_type.mapped('code'))
             if document_type.penta_cb_length_auth_number <= 0 or \
             record.move_type not in record.l10n_latam_document_type_id.penta_cb_move_type.mapped('code'):
-                print('FALSE')
                 return False
         return True
 
@@ -40,8 +36,9 @@ class AccountMove(models.Model):
             auth_number = move.l10n_ec_authorization_number or ''
             if not document_type or not auth_number:
                 raise ValidationError(
-                    f"El numero de autorizacion y tipo de documento son obligatorios para el movimiento contable {move.name.strip()}."
+                    f"El número de autorización y el tipo de documento son obligatorios para el movimiento contable {move.name.strip()}."
                 )
+
             
             if document_type.penta_cb_length_auth_number and \
                 document_type.penta_cb_length_auth_number > 0  and \
@@ -49,11 +46,13 @@ class AccountMove(models.Model):
                 length = re.sub(r"\s+", "", str(document_type.penta_cb_length_auth_number))
                 doc_name = re.sub(self.REGEX_PATTERN_DOC_TYPE, "", str(document_type.display_name))  # solo inicio/fin
                 raise ValidationError(
-                    f"El numero de autorizacion debe contener exactamente {length} digitos para el tipo de documento {doc_name}."
+                    f"El número de autorización debe contener exactamente {length} dígitos para el tipo de documento {doc_name}."
                 )
                 
     def _check_authorization_unique(self):
         for move in self:
+            if move.l10n_latam_document_type_id.code == '02':
+                continue
             auth_number = move.l10n_ec_authorization_number or ''
             if not auth_number:
                 continue
@@ -62,13 +61,13 @@ class AccountMove(models.Model):
                 ('l10n_ec_authorization_number', '=', auth_number),
                 ('l10n_latam_document_type_id', '=', move.l10n_latam_document_type_id.id),
                 ('id', '!=', move.id)
-            ])
+            ], limit=1)
             if record_account and len(record_account) > 0:
                 auth_number = re.sub(r"\s+", "", str(record_account.l10n_ec_authorization_number))
                 doc_name = re.sub(self.REGEX_PATTERN_DOC_TYPE, "", str(record_account.name))  # solo inicio/fin
                 doc_type_name = re.sub(self.REGEX_PATTERN_DOC_TYPE, "", str(record_account.l10n_latam_document_type_id.display_name))  # solo inicio/fin
                 raise ValidationError(
-                    f"El numero de autorizacion {auth_number} ya existe en el documento {doc_name} con el tipo de documento {doc_type_name}."
+                    f"El número de autorización {auth_number} ya existe en el documento {doc_name} con el tipo de documento {doc_type_name}."
                 )
             
     def action_post(self):

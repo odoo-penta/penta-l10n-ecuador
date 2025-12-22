@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <!-- Patronal (quitar 16.56%) -->
+  <record id="iess_patronal_1215" model="hr.iess.option">
+    <field name="name">12.15% IESS patronal</field>
+    <field name="option_type">patronal</field>
+    <field name="percentage">12.15</field>
+    <field name="sequence">10</field>
+  </record>
+
+  <!-- Personal (9.45% correcto; eliminar 17.60%) -->
+  <record id="iess_personal_945" model="hr.iess.option">
+    <field name="name">9.45% IESS personal</field>
+    <field name="option_type">personal</field>
+    <field name="percentage">9.45</field>
+    <field name="sequence">10</field>
+  </record>
+
+  <!-- Extensión conyugal -->
+  <record id="iess_conyugal_341" model="hr.iess.option">
+    <field name="name">3.41% Extensión conyugal</field>
+    <field name="option_type">conyugal</field>
+    <field name="percentage">3.41</field>
+    <field name="sequence">10</field>
+  </record>
+  <record id="iess_conyugal_none" model="hr.iess.option">
+    <field name="name">No aplica</field>
+    <field name="option_type">conyugal</field>
+    <field name="percentage">0</field>
+    <field name="sequence">20</field>
+  </record>
+</odoo>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Ocultar certificate nativo y mostrar nuestro M2O de educación -->
+    <record id="view_employee_form_inherit_l10n_ec_rrhh_penta_education" model="ir.ui.view">
+        <field name="name">hr.employee.form.penta.education</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <!-- Reemplazar certificate por education_level_id -->
+            <xpath expr="//field[@name='certificate']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='certificate']" position="after">
+                <field name="education_level_id" options="{'no_open': False, 'no_create': False}"/>
+            </xpath>
+            <xpath expr="//field[@name='private_car_plate']" position="after">
+                <field name="cupo"/>
+            </xpath>
+            
+            <xpath expr="//field[@name='study_school']" position="attributes">
+                <attribute name="string">Institución educativa</attribute>
+            </xpath>
+            <xpath expr="//field[@name='spouse_complete_name']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='spouse_birthdate']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Insertar grupo Discapacidad DESPUÉS del grupo Emergency -->
+    <record id="view_employee_form_inherit_l10n_ec_rrhh_penta_disability" model="ir.ui.view">
+        <field name="name">hr.employee.form.penta.disability</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='emergency']" position="after">
+                <!-- Parent con 8 columnas para granularidad (pares de 2 col) -->
+                <group string="Discapacidad" name="penta_disability" col="8">
+                    <!-- Columna izquierda (50%) -->
+                    <group col="2" colspan="4">
+                    <field name="disability_type_id" options="{'no_open': False, 'no_create': False}"/>
+                    <field name="disability_percentage" invisible="not disability_type_id"/>
+                    </group>
+
+                    <!-- Columna derecha (50%) -->
+                    <group string="Datos de subrogación" col="2" colspan="4" invisible="not has_subrogation">
+                    <field name="subrogated_name"/>
+                    <field name="subrogated_certificate"/>
+                    <field name="subrogated_identification_type"/>
+                    <field name="subrogated_identification"/>
+                    </group>
+                </group>
+
+                <group name="disability" position="after">
+                    <group string="Enfermedad Catastrófica" col="2">
+                    <field name="has_catastrophic_disease"/>
+                    <field name="catastrophic_certificate_date" invisible="not has_catastrophic_disease"/>
+                    <field name="catastrophic_certificate_number" invisible="not has_catastrophic_disease"/>
+                    <field name="catastrophic_description" invisible="not has_catastrophic_disease"/>
+                    </group>
+                </group>
+            </xpath>
+            <xpath expr="//field[@name='bank_account_id']" position="after">
+                <field name="payment_mode_id"/> 
+                <field name="blood_type"/> 
+            </xpath>
+            <!--
+            <xpath expr="//field[@name='disabled']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            -->
+
+        </field>
+    </record>
+
+    
+    <!-- Cargas familiares: botón y contador junto a children -->
+    <record id="view_employee_form_inherit_l10n_ec_rrhh_penta_family" model="ir.ui.view">
+        <field name="name">hr.employee.form.penta.family</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='children']" position="after">
+                <field name="num_family_dependent_tax" readonly="1" invisible="children == 0"/>
+                <button name="%(action_l10_ec_ptb_family_dependents)d"
+                        string="Cargas familiares"
+                        type="action"
+                        class="oe_highlight"
+                        context="{'default_employee_id': id}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

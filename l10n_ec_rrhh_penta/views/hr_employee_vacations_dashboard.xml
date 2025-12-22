@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <!-- 1) VISTA LISTA (debe ir antes de la acción) -->
+  <record id="view_hr_employee_vacations_tree" model="ir.ui.view">
+    <field name="name">hr.employee.vacations.tree</field>
+    <field name="model">hr.employee</field>
+    <field name="arch" type="xml">
+      <list string="Control de Vacaciones" editable="bottom" create="0">
+        <field name="name"/>
+        <field name="work_email"/>
+        <field name="department_id"/>
+        <field name="current_contract_id"/>
+        <field name="vac_total_entitled" readonly="1"/>
+        <field name="vac_total_taken" readonly="1"/>
+        <field name="vac_total_available" readonly="1"/>
+        <field name="vac_consume_adjust"/>
+        <button name="action_open_contracts"
+              type="object"
+              string="Ver contratos"
+              icon="fa-file-text-o"/>
+      </list>
+    </field>
+  </record>
+
+  <!-- 2) ACCIÓN (ya puede referenciar la vista definida arriba) -->
+  <record id="action_hr_employee_vacations_dashboard" model="ir.actions.act_window">
+    <field name="name">Control de Vacaciones</field>
+    <field name="res_model">hr.employee</field>
+    <field name="view_mode">list,form</field>
+    <field name="view_id" ref="view_hr_employee_vacations_tree"/>
+    <field name="context">{}</field>
+    <field name="domain">[]</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">
+        Administra y ajusta vacaciones por empleado.
+      </p>
+      <p>
+        Edite la columna <b>Restar (ajuste)</b> con los días a consumir; al guardar, se descuenta por FIFO.
+      </p>
+    </field>
+  </record>
+
+  <!-- 3) Vincular explícitamente la vista a   acción -->
+  <record id="action_hr_employee_vacations_dashboard_list" model="ir.actions.act_window.view">
+    <field name="sequence" eval="1"/>
+    <field name="view_mode">list</field>
+    <field name="view_id" ref="view_hr_employee_vacations_tree"/>
+    <field name="act_window_id" ref="action_hr_employee_vacations_dashboard"/>
+  </record>
+
+  <!-- 4) MENÚ -->
+  <menuitem id="menu_hr_employee_vacations_dashboard"
+            name="Control de Vacaciones"
+            parent="hr.menu_hr_root"
+            action="action_hr_employee_vacations_dashboard"
+            sequence="60"/>
+</odoo>

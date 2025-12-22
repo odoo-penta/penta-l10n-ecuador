@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <!-- Carpeta de menús dentro de Nómina 
+  <record id="view_hr_payslip_run_form_inherit_generar_btn" model="ir.ui.view">
+    <field name="name">hr.payslip.run.form.inherit.generar.btn</field>
+    <field name="model">hr.payslip.run</field>
+   
+    <field name="inherit_id" ref="hr_payroll.hr_payslip_run_form"/>
+    <field name="arch" type="xml">
+      <xpath expr="//form/header/button[@type='action' and @name='786' and contains(@class,'btn-primary')]" position="attributes">
+        <attribute name="string">Generar roles</attribute>
+      </xpath>
+
+    
+      <xpath expr="//form/header/button[@type='action' and @name='786' and contains(@class,'btn-secondary')]" position="attributes">
+        <attribute name="string">Generar roles</attribute>
+      </xpath>
+
+    </field>
+  </record>
+   -->
+  
+  <menuitem id="menu_penta_benefits_root"
+            name="Beneficios sociales"
+            parent="hr_work_entry_contract_enterprise.menu_hr_payroll_root"
+            sequence="75"
+            groups="hr_payroll.group_hr_payroll_user"/>
+
+  <!-- Acción + menú-->
+  <record id="action_penta_payslip_run_14th_costa" model="ir.actions.act_window">
+    <field name="name">Décimo cuarto sueldo (Región Costa)</field>
+    <field name="res_model">hr.payslip.run</field>
+    <field name="view_mode">list,form</field>
+    <!-- vistas nativas de hr_payroll -->
+    <field name="context">{'penta_benefit_key': '14_costa'}</field>
+    <field name="domain">[('penta_benefit_key','=','14_costa')]</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">
+        Crea y gestiona lotes para el Décimo cuarto sueldo (Región Costa).
+      </p>
+    </field>
+  </record>
+
+  <menuitem id="menu_penta_payslip_run_14th_costa"
+            name="Décimo cuarto sueldo (Región Costa)"
+            parent="menu_penta_benefits_root"
+            action="action_penta_payslip_run_14th_costa"
+            sequence="10"
+            groups="hr_payroll.group_hr_payroll_user"/>
+
+  <!-- Acción + menú: Décimo cuarto sueldo (Región Sierra) -->
+  <record id="action_penta_payslip_run_14th_sierra" model="ir.actions.act_window">
+    <field name="name">Décimo cuarto sueldo (Región Sierra)</field>
+    <field name="res_model">hr.payslip.run</field>
+    <field name="view_mode">list,form</field>
+    <field name="context">{'penta_benefit_key': '14_sierra'}</field>
+    <field name="domain">[('penta_benefit_key','=','14_sierra')]</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">
+        Crea y gestiona lotes para el Décimo cuarto sueldo (Región Sierra).
+      </p>
+    </field>
+  </record>
+
+  <menuitem id="menu_penta_payslip_run_14th_sierra"
+            name="Décimo cuarto sueldo (Región Sierra)"
+            parent="menu_penta_benefits_root"
+            action="action_penta_payslip_run_14th_sierra"
+            sequence="20"
+            groups="hr_payroll.group_hr_payroll_user"/>
+
+  <!-- Acción + menú: Décimo tercer sueldo -->
+  <record id="action_penta_payslip_run_13th" model="ir.actions.act_window">
+    <field name="name">Décimo tercer sueldo</field>
+    <field name="res_model">hr.payslip.run</field>
+    <field name="view_mode">list,form</field>
+    <field name="context">{'penta_benefit_key': '13th'}</field>
+    <field name="domain">[('penta_benefit_key','=','13th')]</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">
+        Crea y gestiona lotes para el Décimo tercer sueldo.
+      </p>
+    </field>
+  </record>
+
+  <menuitem id="menu_penta_payslip_run_13th"
+            name="Décimo tercer sueldo"
+            parent="menu_penta_benefits_root"
+            action="action_penta_payslip_run_13th"
+            sequence="30"
+            groups="hr_payroll.group_hr_payroll_user"/>
+
+  <!-- Acción + menú: Utilidades -->
+  <record id="action_penta_payslip_run_utilities" model="ir.actions.act_window">
+    <field name="name">Utilidades</field>
+    <field name="res_model">hr.payslip.run</field>
+    <field name="view_mode">list,form</field>
+    <field name="context">{'penta_benefit_key': 'utilities'}</field>
+    <field name="domain">[('penta_benefit_key','=','utilities')]</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">
+        Crea y gestiona lotes para Utilidades.
+      </p>
+    </field>
+  </record>
+
+  <menuitem id="menu_penta_payslip_run_utilities"
+            name="Utilidades"
+            parent="menu_penta_benefits_root"
+            action="action_penta_payslip_run_utilities"
+            sequence="40"
+            groups="hr_payroll.group_hr_payroll_user"/>
+
+</odoo>

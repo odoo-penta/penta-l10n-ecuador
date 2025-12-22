@@ -1,0 +1,41 @@
+<odoo noupdate="1">
+  <record id="penta_benefit_cfg_13th" model="penta.benefit.config">
+    <field name="benefit_key">13th</field>
+    <field name="name">Décimo Tercer Sueldo</field>
+    <field name="start_month">12</field>
+    <field name="start_day">1</field>
+    <field name="end_month">11</field>
+    <field name="end_day">30</field>
+    <field name="crosses_year">False</field>
+  </record>
+
+  <record id="penta_benefit_cfg_14_costa" model="penta.benefit.config">
+    <field name="benefit_key">14_costa</field>
+    <field name="name">Décimo Cuarto - Costa/Galápagos</field>
+    <field name="start_month">3</field>
+    <field name="start_day">1</field>
+    <field name="end_month">2</field>
+    <field name="end_day">29</field> <!-- se ajusta a fin de febrero real -->
+    <field name="crosses_year">True</field>
+  </record>
+
+  <record id="penta_benefit_cfg_14_sierra" model="penta.benefit.config">
+    <field name="benefit_key">14_sierra</field>
+    <field name="name">Décimo Cuarto - Sierra/Amazonía</field>
+    <field name="start_month">8</field>
+    <field name="start_day">1</field>
+    <field name="end_month">7</field>
+    <field name="end_day">31</field>
+    <field name="crosses_year">False</field>
+  </record>
+
+  <record id="penta_benefit_cfg_utilities" model="penta.benefit.config">
+    <field name="benefit_key">utilities</field>
+    <field name="name">Utilidades</field>
+    <field name="start_month">1</field>
+    <field name="start_day">1</field>
+    <field name="end_month">12</field>
+    <field name="end_day">31</field>
+    <field name="crosses_year">False</field>
+  </record>
+</odoo>

@@ -1,0 +1,34 @@
+<!-- views/hr_account_section_inline_views.xml -->
+<odoo>
+  <record id="view_hr_account_section_list_inline" model="ir.ui.view">
+    <field name="name">hr.account.section.list.inline</field>
+    <field name="model">hr.account.section</field>
+    <field name="arch" type="xml">
+      <list string="Secciones contables">
+        <field name="name"/>
+        <field name="code"/>
+        <field name="active"/>
+        <field name="sequence"/>
+      </list>
+    </field>
+  </record>
+
+  <record id="view_hr_account_section_form_inline" model="ir.ui.view">
+    <field name="name">hr.account.section.form.inline</field>
+    <field name="model">hr.account.section</field>
+    <field name="arch" type="xml">
+      <form string="Sección contable">
+        <group>
+          <group>
+            <field name="name" required="1"/>
+            <field name="code"/>
+            <field name="sequence"/>
+            <field name="active"/>
+          </group>
+          <group string="Cuentas">
+          </group>
+        </group>
+      </form>
+    </field>
+  </record>
+</odoo>

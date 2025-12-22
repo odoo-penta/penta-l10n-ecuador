@@ -1,0 +1,18 @@
+l10n_ec_rrhh_penta – Módulo interno de RRHH para Odoo 18
+Copyright (c) 2025, Penta Lab.
+Todos los derechos reservados.
+
+LICENCIA DE USO INTERNO (PROPIETARIA)
+
+Este software es propiedad de Penta Lab (“Titular”). El uso, copia, modificación
+y distribución están permitidos únicamente dentro de Penta Lab y sus filiales, o
+en clientes de Penta Lab debidamente autorizados por contrato, con fines internos
+de operación, por personal autorizado y con una suscripción válida de Odoo Enterprise.
+Cualquier uso distinto —incluyendo pero no limitado a redistribución a terceros,
+publicación pública, venta, sublicenciamiento, o uso por entidades no autorizadas—
+está estrictamente prohibido sin permiso previo y por escrito del Titular.
+
+
+Este módulo puede interactuar con Odoo Enterprise, el cual está sujeto a los
+términos de licencia de Odoo S.A. El uso de este módulo no otorga derechos sobre
+Odoo Enterprise. El usuario final debe cumplir con su contrato y licencias de Odoo.

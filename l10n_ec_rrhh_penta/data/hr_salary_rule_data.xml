@@ -1,0 +1,612 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+  <record id="rule_reglas_salariales_administrativo_40" model="hr.salary.rule">
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
+    <field name="category_id" ref="hr_payroll.ALW"/>
+    <field name="name">Reglas Salariales Administrativo (40)</field>
+    <field name="code">REGLAS_SALARIALES_ADMINISTRATIVO_40</field>
+    <field name="sequence">10</field>
+    <field name="active">1</field>
+    <field name="condition_select">none</field>
+    <field name="quantity">1.0</field>
+    <field name="amount_select">fix</field>
+    <field name="amount_fix">470.00</field>
+  </record>
+  
+  <record id="rule_basic" model="hr.salary.rule">
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
+    <field name="category_id" ref="hr_payroll.BASIC"/>
+    <field name="name">Salario nominal</field>
+    <field name="code">BASIC</field>
+    <field name="sequence">1</field>
+    <field name="active">1</field>
+    <field name="condition_select">none</field>
+    <field name="quantity">1.0</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute"><![CDATA[if 'WORK100' in worked_days:
+    dias_trabajados = worked_days['WORK100'].number_of_days
+    dias_trabajados = min(dias_trabajados, 30)
+else:
+    dias_trabajados = 0  # Valor predeterminado si no se encuentran días trabajados
+result = (contract.wage * dias_trabajados) / 30]]></field>
+  </record>
+
+  <record id="rule_pl_hora_extra_nocturna" model="hr.salary.rule">
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
+    <field name="category_id" ref="hr_payroll.ALW"/>
+    <field name="name">Horas Nocturnas</field>
+    <field name="code">PL_HORA_EXTRA_NOCTURNA</field>
+    <field name="sequence">1</field>
+    <field name="active">1</field>
+    <field name="condition_select">python</field>
+    <field name="condition_python"><![CDATA[result = inputs.get('PL_HORA_EXTRA_NOCTURNA', 0).amount if inputs.get('PL_HORA_EXTRA_NOCTURNA') else 0]]></field>
+    <field name="quantity">1.0</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute"><![CDATA[result =(contract.wage / contract.l10n_ec_ptb_legal_hours)*1.25* inputs['PL_HORA_EXTRA_NOCTURNA'].amount]]></field>
+  </record>
+  
+  <record id="rule_pl_hora_extra_suplementaria" model="hr.salary.rule">
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
+    <field name="category_id" ref="hr_payroll.ALW"/>
+    <field name="name">Horas Suplementarias</field>
+    <field name="code">PL_HORA_EXTRA_SUPLEMENTARIA</field>
+    <field name="sequence">1</field>
+    <field name="active">1</field>
+    <field name="condition_select">python</field>
+    <field name="condition_python"><![CDATA[result = inputs.get('PL_HORA_EXTRA_SUPLEMENTARIA', 0).amount if inputs.get('PL_HORA_EXTRA_SUPLEMENTARIA') else 0]]></field>
+    <field name="quantity">1.0</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute"><![CDATA[result =(contract.wage / contract.l10n_ec_ptb_legal_hours)*1.50* inputs['PL_HORA_EXTRA_SUPLEMENTARIA'].amount]]></field>
+  </record>
+
+  <record id="rule_pl_hora_extra_extraordinaria" model="hr.salary.rule">
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
+    <field name="category_id" ref="hr_payroll.ALW"/>
+    <field name="name">Horas Extras Extraordinarias</field>
+    <field name="code">PL_HORA_EXTRA_EXTRAORDINARIA</field>
+    <field name="sequence">1</field>
+    <field name="active">1</field>
+    <field name="condition_select">none</field> 
+    <field name="condition_select">none</field> 
+    <field name="quantity">1.0</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute"><![CDATA[result = inputs.get('PL_HORA_EXTRA_EXTRAORDINARIA', 0).amount if inputs.get('PL_HORA_EXTRA_EXTRAORDINARIA') else 0]]></field>
+  </record>
+
+  <record id="rule_basicec" model="hr.salary.rule">
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
+    <field name="category_id" ref="hr_payroll.ALW"/>
+    <field name="name">Sueldo básico EC</field>
+    <field name="code">BASICEC</field>
+    <field name="sequence">5</field>
+    <field name="active">1</field>
+    <field name="condition_select">none</field>
+    <field name="quantity">1.0</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute"><![CDATA[result = contract.wage * 0.10]]></field>
+  </record>
+
+  <record id="rule_bono" model="hr.salary.rule">
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
+    <field name="category_id" ref="hr_payroll.BASIC"/>
+    <field name="name">Bonificaciones</field>
+    <field name="code">BONO</field>
+    <field name="sequence">101</field>
+    <field name="active">1</field>
+    <field name="condition_select">python</field>
+    <field name="condition_python"><![CDATA[result = inputs.get('BONO', 0).amount if inputs.get('BONO') else 0]]></field>
+    <field name="quantity">1.0</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute"><![CDATA[result = inputs['BONO'].amount]]></field>
+  </record>
+
+  <record id="rule_pl_comision" model="hr.salary.rule">
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
+    <field name="category_id" ref="hr_payroll.BASIC"/>
+    <field name="name">Comisiones</field>
+    <field name="code">PL_COMISION</field>
+    <field name="sequence">102</field>
+    <field name="active">1</field>
+    <field name="condition_select">python</field>
+    <field name="condition_python"><![CDATA[result = inputs.get('PL_COMISION', 0).amount if inputs.get('PL_COMISION') else 0]]></field>
+    <field name="quantity">1.0</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute"><![CDATA[result = inputs['PL_COMISION'].amount
+result_name = inputs['PL_COMISION'].name]]></field>
+  </record>
+
+  <record id="rule_gross" model="hr.salary.rule">
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
+    <field name="category_id" ref="l10n_ec_rrhh_penta.cat_impuestos"/>
+    <field name="name">Bruto</field>
+    <field name="code">GROSS</field>
+    <field name="sequence">103</field>
+    <field name="active">1</field>
+    <field name="condition_select">none</field>
+    <field name="quantity">1.0</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute"><![CDATA[result = categories['BASIC'] + categories['ALW'] + categories['INGRESOS']]]></field>
+  </record>
+
+  <record id="rule_resvm" model="hr.salary.rule">
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
+    <field name="category_id" ref="hr_payroll.ALW"/>
+    <field name="name">Fondos de Reserva Mensual</field>
+    <field name="code">RESVM</field>
+    <field name="sequence">105</field>
+    <field name="active">1</field>
+    <field name="condition_select">python</field>
+    <field name="condition_python"><![CDATA[total_dias_trabajados = 0
+for c in employee.contract_ids:
+    if not c.date_start or c.date_start > payslip.date_to:
+        continue
+    fecha_inicio = c.date_start
+    fecha_fin = c.date_end if c.date_end and c.date_end <= payslip.date_to else payslip.date_to
+    if fecha_inicio <= fecha_fin:
+        total_dias_trabajados += (fecha_fin - fecha_inicio).days + 1
+
+# Activar fondo de reserva mensual si corresponde
+result = contract.l10n_ec_ptb_reserve_fund_periodicity == 'monthly' and total_dias_trabajados >= 366]]></field>
+    <field name="quantity">1.0</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute"><![CDATA[if (payslip.date_to-contract.date_start).days >= 366 and (payslip.date_to-contract.date_start).days <=395 : #del treceavo mes en adelante
+    result =  ((categories['GROSS']/30)* ((30-contract.date_start.day  * 1)+1))  * 0.0833
+elif (payslip.date_to-contract.date_start).days > 395:
+    result =  ((categories['GROSS']/30)* ((30* 1)))  * 0.0833]]></field>
+  </record>
+
+  <record id="rule_dcuarmen" model="hr.salary.rule">
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
+    <field name="category_id" ref="hr_payroll.ALW"/>
+    <field name="name">Décimo Cuarto Mensual</field>
+    <field name="code">DCUARMEN</field>
+    <field name="sequence">105</field>
+    <field name="active">1</field>
+    <field name="condition_select">python</field>
+    <field name="condition_python"><![CDATA[result = contract.l10n_ec_ptb_fourteenth_fund_paid == 'monthly']]></field>
+    <field name="quantity">1.0</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute"><![CDATA[result = (categories['BASICEC']/360)*worked_days['WORK100'].number_of_days
+         #['WORK100'].number_of_days]]></field>
+  </record>
+
+  <record id="rule_dtermen" model="hr.salary.rule">
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
+    <field name="category_id" ref="hr_payroll.ALW"/>
+    <field name="name">Décimo Tercero Mensual</field>
+    <field name="code">DTERMEN</field>
+    <field name="sequence">105</field>
+    <field name="active">1</field>
+    <field name="condition_select">python</field>
+    <field name="condition_python"><![CDATA[result = contract.l10n_ec_ptb_thirteenth_fund_paid == 'monthly']]></field>
+    <field name="quantity">1.0</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute"><![CDATA[result = categories['GROSS']/12]]></field>
+  </record>
+
+  <record id="rule_totingotros" model="hr.salary.rule">
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
+    <field name="category_id" ref="l10n_ec_rrhh_penta.cat_total"/>
+    <field name="name">Total otros ingresos</field>
+    <field name="code">TOTINGOTROS</field>
+    <field name="sequence">106</field>
+    <field name="active">1</field>
+    <field name="condition_select">none</field>
+    <field name="quantity">1.0</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute"><![CDATA[result =  categories['BENEFICIOS']]]></field>
+  </record>
+  <record id="rule_toting" model="hr.salary.rule">
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
+    <field name="category_id" ref="l10n_ec_rrhh_penta.cat_total"/>
+    <field name="name">TOTAL DE INGRESOS</field>
+    <field name="code">TOTING</field>
+    <field name="sequence">107</field>
+    <field name="active">1</field>
+    <field name="condition_select">none</field>
+    <field name="quantity">1.0</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute"><![CDATA[result = categories['GROSS'] + categories['BONO'] + categories['BENEFICIOS']]]></field>
+  </record>
+
+  <record id="rule_iessper" model="hr.salary.rule">
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
+    <field name="category_id" ref="hr_payroll.ALW"/>
+    <field name="name">IESS Personal</field>
+    <field name="code">IESSPER</field>
+    <field name="sequence">108</field>
+    <field name="active">1</field>
+    <field name="condition_select">python</field>
+    <field name="condition_python"><![CDATA[result= (payslip.date_from.day >= 1 and payslip.date_to.day > 1 and (payslip.date_to-payslip.date_from).days <= 31)]]></field>
+    <field name="quantity">1.0</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute"><![CDATA[result = float_round(categories['GROSS']*(float(contract.l10n_ec_ptb_social_security_percentage)* 0.01),2)]]></field>
+  </record>
+
+
+  <record id="rule_palim" model="hr.salary.rule">
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
+    <field name="category_id" ref="hr_payroll.ALW"/>
+    <field name="name">Pensión alimenticia</field>
+    <field name="code">PALIM</field>
+    <field name="sequence">108</field>
+    <field name="active">1</field>
+    <field name="condition_select">python</field>
+    <field name="condition_python"><![CDATA[result = inputs.get('PL_PENSION_ALIM', 0).amount if inputs.get('PL_PENSION_ALIM') else 0]]></field>
+    <field name="quantity">1.0</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute"><![CDATA[result = inputs['PL_PENSION_ALIM'].amount
+result_name = inputs['PL_PENSION_ALIM'].name]]></field>
+  </record>
+
+  <record id="rule_quirografario" model="hr.salary.rule">
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
+    <field name="category_id" ref="hr_payroll.ALW"/>
+    <field name="name">Préstamo Quirografario</field>
+    <field name="code">QUIROGRAFARIO</field>
+    <field name="sequence">109</field>
+    <field name="active">1</field>
+    <field name="condition_select">python</field>
+    <field name="condition_python"><![CDATA[result = inputs.get('PL_QUIROGRAFARIO', 0).amount if inputs.get('PL_QUIROGRAFARIO') else 0]]></field>
+    <field name="quantity">1.0</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute"><![CDATA[result = inputs['PL_QUIROGRAFARIO'].amount
+result_name = inputs['PL_QUIROGRAFARIO'].name]]></field>
+  </record>
+
+  <record id="rule_otring" model="hr.salary.rule">
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
+    <field name="category_id" ref="l10n_ec_rrhh_penta.hr_salary_rule_category_bono"/>
+    <field name="name">Otros ingresos no deducibles</field>
+    <field name="code">OTRING</field>
+    <field name="sequence">109</field>
+    <field name="active">1</field>
+    <field name="condition_select">python</field>
+    <field name="condition_python"><![CDATA[result = inputs.get('PL_OTROS_INGRESOS', 0).amount if inputs.get('PL_OTROS_INGRESOS') else 0]]></field>
+    <field name="quantity">1.0</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute"><![CDATA[result = inputs['PL_OTROS_INGRESOS'].amount
+#result_name = inputs['PL_OTROS_INGRESOS'].name]]></field>
+  </record>
+
+  <record id="rule_hipotecario" model="hr.salary.rule">
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
+    <field name="category_id" ref="hr_payroll.ALW"/>
+    <field name="name">Préstamo Hipotecario</field>
+    <field name="code">HIPOTECARIO</field>
+    <field name="sequence">110</field>
+    <field name="active">1</field>
+    <field name="condition_select">python</field>
+    <field name="condition_python"><![CDATA[result = inputs.get('PL_HIPOTECARIO', 0).amount if inputs.get('PL_HIPOTECARIO') else 0]]></field>
+    <field name="quantity">1.0</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute"><![CDATA[result = inputs['PL_HIPOTECARIO'].amount
+result_name = inputs['PL_HIPOTECARIO'].name]]></field>
+  </record>
+
+  <record id="rule_extcobcony" model="hr.salary.rule">
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
+    <field name="category_id" ref="hr_payroll.ALW"/>
+    <field name="name">Extensión de la cobertura de salud para cónyuges</field>
+    <field name="code">EXTCOBCONY</field>
+    <field name="sequence">111</field>
+    <field name="active">1</field>
+    <field name="condition_select">python</field>
+    <field name="condition_python"><![CDATA[result = contract.l10n_ec_ptb_social_security_partner == '3.41']]></field>
+    <field name="quantity">1.0</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute"><![CDATA[result = categories['GROSS'] * 0.0341]]></field>
+  </record>
+  
+  <record id="rule_imprenta" model="hr.salary.rule">
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
+    <field name="category_id" ref="hr_payroll.ALW"/>
+    <field name="name">Impuesto a la Renta</field>
+    <field name="code">IMPRENTA</field>
+    <field name="sequence">112</field>
+    <field name="active">1</field>
+    <field name="condition_select">python</field>
+    <field name="condition_python"><![CDATA[result = inputs.get('PL_IMPUESTA_RENTA', 0).amount if inputs.get('PL_IMPUESTA_RENTA') else 0]]></field>
+    <field name="quantity">1.0</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute"><![CDATA[result = inputs['PL_IMPUESTA_RENTA'].amount
+result_name = inputs['PL_IMPUESTA_RENTA'].name]]></field>
+  </record>
+
+  <record id="rule_retjud" model="hr.salary.rule">
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
+    <field name="category_id" ref="hr_payroll.ALW"/>
+    <field name="name">Retencion Judicial</field>
+    <field name="code">RETJUD</field>
+    <field name="sequence">113</field>
+    <field name="active">1</field>
+    <field name="condition_select">python</field>
+    <field name="condition_python"><![CDATA[result = inputs.get('PL_RETENCION_JUDICIAL', 0).amount if inputs.get('PL_RETENCION_JUDICIAL') else 0]]></field>
+    <field name="quantity">1.0</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute"><![CDATA[result = inputs['PL_RETENCION_JUDICIAL'].amount
+result_name = inputs['PL_RETENCION_JUDICIAL'].name]]></field>
+  </record>
+
+  <record id="rule_antic" model="hr.salary.rule">
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
+    <field name="category_id" ref="hr_payroll.ALW"/>
+    <field name="name">Anticipo</field>
+    <field name="code">ANTIC</field>
+    <field name="sequence">114</field>
+    <field name="active">1</field>
+    <field name="condition_select">python</field>
+    <field name="condition_python"><![CDATA[result = inputs.get('PL_ANTCIPO', 0).amount if inputs.get('PL_ANTCIPO') else 0]]></field>
+    <field name="quantity">1.0</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute"><![CDATA[result = inputs['PL_ANTCIPO'].amount
+result_name = inputs['PL_ANTCIPO'].name]]></field>
+  </record>
+
+  <record id="rule_prestamos" model="hr.salary.rule">
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
+    <field name="category_id" ref="hr_payroll.ALW"/>
+    <field name="name">Prestamo</field>
+    <field name="code">PRESTAMOS</field>
+    <field name="sequence">115</field>
+    <field name="active">1</field>
+    <field name="condition_select">python</field>
+    <field name="condition_python"><![CDATA[result = inputs.get('PL_PRESTAMOS', 0).amount if inputs.get('PL_PRESTAMOS') else 0]]></field>
+    <field name="quantity">1.0</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute"><![CDATA[result = inputs['PL_PRESTAMOS'].amount
+result_name = inputs['PL_PRESTAMOS'].name]]></field>
+  </record>
+
+  <record id="rule_otros" model="hr.salary.rule">
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
+    <field name="category_id" ref="hr_payroll.ALW"/>
+    <field name="name">Otros descuentos</field>
+    <field name="code">OTROS</field>
+    <field name="sequence">116</field>
+    <field name="active">1</field>
+    <field name="condition_select">python</field>
+    <field name="condition_python"><![CDATA[result = inputs.get('PL_OTROS_DSCTOS', 0).amount if inputs.get('PL_OTROS_DSCTOS') else 0]]></field>
+    <field name="quantity">1.0</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute"><![CDATA[result = inputs['PL_OTROS_DSCTOS'].amount
+result_name = inputs['PL_OTROS_DSCTOS'].name]]></field>
+  </record>
+
+  <record id="rule_atrmult" model="hr.salary.rule">
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
+    <field name="category_id" ref="hr_payroll.ALW"/>
+    <field name="name">Atrasos y multas</field>
+    <field name="code">ATRMULT</field>
+    <field name="sequence">117</field>
+    <field name="active">1</field>
+    <field name="condition_select">python</field>
+    <field name="condition_python"><![CDATA[result = inputs.get('PL_ATRASOS_MULTAS', 0).amount if inputs.get('PL_ATRASOS_MULTAS') else 0]]></field>
+    <field name="quantity">1.0</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute"><![CDATA[result = inputs['PL_ATRASOS_MULTAS'].amount
+result_name = inputs['PL_ATRASOS_MULTAS'].name]]></field>
+  </record>
+  <record id="rule_conalm" model="hr.salary.rule">
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
+    <field name="category_id" ref="hr_payroll.ALW"/>
+    <field name="name">Consumo Almacenes</field>
+    <field name="code">CONALM</field>
+    <field name="sequence">118</field>
+    <field name="active">1</field>
+    <field name="condition_select">python</field>
+    <field name="condition_python"><![CDATA[result = inputs.get('PL_CONSUMO_ALMACEN', 0).amount if inputs.get('PL_CONSUMO_ALMACEN') else 0]]></field>
+    <field name="quantity">1.0</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute"><![CDATA[result = inputs['PL_CONSUMO_ALMACEN'].amount
+result_name = inputs['PL_CONSUMO_ALMACEN'].name]]></field>
+  </record>
+
+  <record id="rule_fact" model="hr.salary.rule">
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
+    <field name="category_id" ref="hr_payroll.ALW"/>
+    <field name="name">Factura</field>
+    <field name="code">FACT</field>
+    <field name="sequence">119</field>
+    <field name="active">1</field>
+    <field name="condition_select">python</field>
+    <field name="condition_python"><![CDATA[result = inputs.get('PL_FACTURA', 0).amount if inputs.get('PL_FACTURA') else 0]]></field>
+    <field name="quantity">1.0</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute"><![CDATA[result = inputs['PL_FACTURA'].amount
+result_name = inputs['PL_FACTURA'].name]]></field>
+  </record>
+
+  <record id="rule_segconf" model="hr.salary.rule">
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
+    <field name="category_id" ref="hr_payroll.ALW"/>
+    <field name="name">Seguro médico privado</field>
+    <field name="code">SEGCONF</field>
+    <field name="sequence">120</field>
+    <field name="active">1</field>
+    <field name="condition_select">python</field>
+    <field name="condition_python"><![CDATA[result = inputs.get('PL_MEDICO_PRIVADO', 0).amount if inputs.get('PL_MEDICO_PRIVADO') else 0]]></field>
+    <field name="quantity">1.0</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute"><![CDATA[result = inputs['PL_MEDICO_PRIVADO'].amount
+result_name = inputs['PL_MEDICO_PRIVADO'].name]]></field>
+  </record>
+  
+  <record id="rule_totegr" model="hr.salary.rule">
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
+    <field name="category_id" ref="l10n_ec_rrhh_penta.cat_total"/>
+    <field name="name">TOTAL DE EGRESOS</field>
+    <field name="code">TOTEGR</field>
+    <field name="sequence">121</field>
+    <field name="active">1</field>
+    <field name="condition_select">none</field>
+    <field name="quantity">1.0</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute"><![CDATA[result = categories['DED']]]></field>
+  </record>
+
+  <record id="rule_net" model="hr.salary.rule">
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
+    <field name="category_id" ref="l10n_ec_rrhh_penta.cat_total"/>
+    <field name="name">SALARIO NETO A RECIBIR</field>
+    <field name="code">NET</field>
+    <field name="sequence">122</field>
+    <field name="active">1</field>
+    <field name="condition_select">none</field>
+    <field name="quantity">1.0</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute"><![CDATA[result = categories['TOTING']-categories['TOTEGR']+categories['EXTRA']-categories['TOTSUBSIDIOS']]]></field>
+  </record>
+
+  <record id="rule_dter" model="hr.salary.rule">
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
+    <field name="category_id" ref="hr_payroll.ALW"/>
+    <field name="name">Décimo Tercero Provisionado</field>
+    <field name="code">DTER</field>
+    <field name="sequence">123</field>
+    <field name="active">1</field>
+    <field name="condition_select">python</field>
+    <field name="condition_python"><![CDATA[result = contract.l10n_ec_ptb_thirteenth_fund_paid == 'accumulated']]></field>
+    <field name="quantity">1.0</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute"><![CDATA[result = categories['GROSS']/12]]></field>
+  </record>
+
+  <record id="rule_dcuar" model="hr.salary.rule">
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
+    <field name="category_id" ref="hr_payroll.ALW"/>
+    <field name="name">Décimo Cuarto Provisionado</field>
+    <field name="code">DCUAR</field>
+    <field name="sequence">124</field>
+    <field name="active">1</field>
+    <field name="condition_select">python</field>
+    <field name="condition_python"><![CDATA[result = contract.l10n_ec_ptb_fourteenth_fund_paid == 'accumulated']]></field>
+    <field name="quantity">1.0</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute"><![CDATA[result = (categories['BASICEC']/360)*worked_days['WORK100'].number_of_days
+         #['WORK100'].number_of_days]]></field>
+  </record>
+  <record id="rule_vacac" model="hr.salary.rule">
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
+    <field name="category_id" ref="hr_payroll.ALW"/>
+    <field name="name">Vacaciones</field>
+    <field name="code">VACAC</field>
+    <field name="sequence">125</field>
+    <field name="active">1</field>
+    <field name="condition_select">none</field>
+    <field name="quantity">1.0</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute"><![CDATA[result = categories['GROSS'] /24]]></field>
+  </record>
+
+  <record id="rule_emc" model="hr.salary.rule">
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
+    <field name="category_id" ref="hr_payroll.ALW"/>
+    <field name="name">IESS Patronal</field>
+    <field name="code">EMC</field>
+    <field name="sequence">126</field>
+    <field name="active">1</field>
+    <field name="condition_select">python</field>
+    <field name="condition_python"><![CDATA[result= (payslip.date_from.day >= 1 and payslip.date_to.day > 1 and (payslip.date_to-payslip.date_from).days <= 31)]]></field>
+    <field name="quantity">1.0</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute"><![CDATA[result = float_round(categories['GROSS']*(float(contract.l10n_ec_ptb_employer_iess)* 0.01),2)]]></field>
+  </record>
+
+  <record id="rule_resv" model="hr.salary.rule">
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
+    <field name="category_id" ref="hr_payroll.ALW"/>
+    <field name="name">Fondos de Reserva Acumulado</field>
+    <field name="code">RESV</field>
+    <field name="sequence">127</field>
+    <field name="active">1</field>
+    <field name="condition_select">python</field>
+    <field name="condition_python"><![CDATA[total_dias_trabajados = 0
+for c in employee.contract_ids:
+    if not c.date_start or c.date_start > payslip.date_to:
+        continue
+    fecha_inicio = c.date_start
+    fecha_fin = c.date_end if c.date_end and c.date_end <= payslip.date_to else payslip.date_to
+    if fecha_inicio <= fecha_fin:
+        total_dias_trabajados += (fecha_fin - fecha_inicio).days + 1
+
+# Activar fondo de reserva mensual si corresponde
+result = contract.l10n_ec_ptb_reserve_fund_periodicity == 'monthly' and total_dias_trabajados >= 366]]></field>
+    <field name="quantity">1.0</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute"><![CDATA[if (payslip.date_to-contract.date_start).days >= 366 and (payslip.date_to-contract.date_start).days <=395 : #del treceavo mes en adelante
+    result =  ((categories['GROSS']/30)* ((30-contract.date_start.day  * 1)+1))  * 0.0833
+elif (payslip.date_to-contract.date_start).days > 395:
+    result =  ((categories['GROSS']/30)* ((30* 1)))  * 0.0833]]></field>
+  </record>
+
+  <record id="rule_totpro" model="hr.salary.rule">
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
+    <field name="category_id" ref="l10n_ec_rrhh_penta.cat_total"/>
+    <field name="name">TOTAL DE PROVISIONES</field>
+    <field name="code">TOTPRO</field>
+    <field name="sequence">128</field>
+    <field name="active">1</field>
+    <field name="condition_select">none</field>
+    <field name="quantity">1.0</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute"><![CDATA[result = categories['PROV']+categories['COMP']]]></field>
+  </record>
+
+  <record id="rule_illnessiess50" model="hr.salary.rule">
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
+    <field name="category_id" ref="hr_payroll.ALW"/>
+    <field name="name">Ausencia por Enfermedad 1 a 3 </field>
+    <field name="code">ILLNESSIESS50</field>
+    <field name="sequence">295</field>
+    <field name="active">1</field>
+    <field name="condition_select">python</field>
+    <field name="condition_python"><![CDATA[result = worked_days.get('ILLNESSIESS50', 0) if worked_days.get('ILLNESSIESS50') else 0]]></field>
+    <field name="quantity">1.0</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute"><![CDATA[result=(contract.wage/30)*worked_days.get('ILLNESSIESS50', 0).number_of_days*0.50]]></field>
+  </record>
+
+  <record id="rule_illnessiess66" model="hr.salary.rule">
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
+    <field name="category_id" ref="hr_payroll.ALW"/>
+    <field name="name">Ausencia por Enfermedad (IESS reconoce el 66%)</field>
+    <field name="code">ILLNESSIESS66</field>
+    <field name="sequence">295</field>
+    <field name="active">1</field>
+    <field name="condition_select">python</field>
+    <field name="condition_python"><![CDATA[result = worked_days.get('ILLNESSIESS66', 0) if worked_days.get('ILLNESSIESS66') else 0]]></field>
+    <field name="quantity">1.0</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute"><![CDATA[result=float_round((contract.wage/30)*worked_days.get('ILLNESSIESS66', 0).number_of_days*0.66,2)]]></field>
+  </record>
+
+  <record id="rule_illnessiess75" model="hr.salary.rule">
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
+    <field name="category_id" ref="hr_payroll.ALW"/>
+    <field name="name">Ausencia por Enfermedad a partir del 4to día (IESS reconoce el 75%)</field>
+    <field name="code">ILLNESSIESS75</field>
+    <field name="sequence">295</field>
+    <field name="active">1</field>
+    <field name="condition_select">python</field>
+    <field name="condition_python"><![CDATA[result = worked_days.get('ILLNESSIESS75', 0) if worked_days.get('ILLNESSIESS75') else 0]]></field>
+    <field name="quantity">1.0</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute"><![CDATA[result=float_round((contract.wage/30)*worked_days.get('ILLNESSIESS75', 0).number_of_days*0.75,2)]]></field>
+  </record>
+
+  <record id="rule_subt_subsidios" model="hr.salary.rule">
+    <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_ec_employee"/>
+    <field name="category_id" ref="l10n_ec_rrhh_penta.cat_total"/>
+    <field name="name">Subtotal: Subsidios</field>
+    <field name="code">SUBT_SUBSIDIOS</field>
+    <field name="sequence">295</field>
+    <field name="active">1</field>
+    <field name="condition_select">python</field>
+    <field name="condition_python"><![CDATA[result = categories.get('SUBSIDIOS', 0) if categories.get('SUBSIDIOS') else 0]]></field>
+    <field name="quantity">1.0</field>
+    <field name="amount_select">code</field>
+    <field name="amount_python_compute"><![CDATA[result = categories['SUBSIDIOS']]]></field>
+  </record>
+
+</odoo>

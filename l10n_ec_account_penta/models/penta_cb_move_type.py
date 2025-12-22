@@ -5,7 +5,6 @@ class PentaCBMoveType(models.Model):
     _name = 'penta.cb.move.type'
     _description = 'Allowed Move Type'
     
-    
     code = fields.Selection([
         ('in_invoice', _('Vendor Bill')),
         ('in_refund', _('Vendor Refund')),
