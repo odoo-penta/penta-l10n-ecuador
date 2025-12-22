@@ -67,7 +67,7 @@ class AccountMove(models.Model):
                 doc_name = re.sub(self.REGEX_PATTERN_DOC_TYPE, "", str(record_account.name))  # solo inicio/fin
                 doc_type_name = re.sub(self.REGEX_PATTERN_DOC_TYPE, "", str(record_account.l10n_latam_document_type_id.display_name))  # solo inicio/fin
                 raise ValidationError(
-                    f"El numero de autorizacion {auth_number} ya existe en el documento {doc_name} con el tipo de documento {doc_type_name}."
+                    f"El número de autorización {auth_number} ya existe en el documento {doc_name} con el tipo de documento {doc_type_name}."
                 )
             
     def action_post(self):
