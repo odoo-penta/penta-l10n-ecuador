@@ -13,6 +13,11 @@
                     </setting>
                 </block>
             </block>
+            <block id="pay_invoice_online_setting_container" position="inside">
+                <setting string="Advanced Payments" company_dependent="1" help="Enables advanced payment management">
+                    <field name="advanced_payments"  class="oe_inline"/>
+                </setting>
+            </block>
         </field>
     </record>
 

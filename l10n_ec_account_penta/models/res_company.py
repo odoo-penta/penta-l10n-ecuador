@@ -8,3 +8,5 @@ class ResCompany(models.Model):
 
     asset_template_id = fields.Many2one('account.asset.template',
         help='We defined the template to be used for the fixed assets report.')
+    advanced_payments = fields.Boolean(string='Advanced Payments',
+        help='If enabled, enables advanced payment management.')

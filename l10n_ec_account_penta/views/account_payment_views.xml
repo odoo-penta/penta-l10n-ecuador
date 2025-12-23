@@ -39,6 +39,28 @@
                 <field name="number_lot" invisible="not show_card"/>
                 <field name="authorization_number" invisible="not show_card"/>
             </xpath>
+
+            <xpath expr="//notebook[@name='payment_notebook']" position="inside">
+                <page string="Advanced Options" id="advance_options" invisible="not advanced_payments">
+                    <group>
+                        <field name="batch_registration" readonly="state != 'draft'"/>
+                        <field name="internal_transfer_cash" readonly="state != 'draft'"/>
+                    </group>
+                </page>
+                <page string="Accounting Accounts" id="accounting_accounts" invisible="not batch_registration">
+                    <field name="expense_line_ids" readonly="state != 'draft'">
+                        <list string="Expense lines" editable="bottom">
+                            <field name="account_id" />
+                            <field name="partner_id" />
+                            <field name="amount_cash" />
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+            
+            <xpath expr="//field[@name='partner_bank_id']" position="after">
+                <field name="destination_journal" readonly="state != 'draft'" invisible="not internal_transfer_cash"/>
+            </xpath>
         </field>
     </record>
 

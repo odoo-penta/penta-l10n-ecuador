@@ -14,6 +14,7 @@ class AccountPayment(models.Model):
     code_movement = fields.Char(string='Code Movement', readonly=True)
     show_cash_session = fields.Boolean()
     allowed_cash_boxes = fields.Many2many('cash.box')
+    is_cashbox_deposit = fields.Boolean()
     
     @api.model
     def default_get(self, fields_list):
@@ -31,14 +32,15 @@ class AccountPayment(models.Model):
     def action_post(self):
         session = self.cash_session_id
         movement = False
-        if session:
+        is_deposit = self.is_cashbox_deposit
+        if session and not is_deposit:
             if session.state == 'closed':
                 raise UserError(_("This sales order is related to an already closed cashier session."))
             if self.env['cash.box.session.movement'].get_sequence(session.id):
                 movement = self.env['cash.box.session']._create_movement(session.id, self.partner_id.id, 'payment', self.id)
                 self.code_movement = movement.name
         res = super().action_post()
-        if self.move_id and session:
+        if self.move_id and session and not is_deposit:
             ref = session.name
             if movement:
                 ref = session.name + ' - ' + movement.name
@@ -48,6 +50,8 @@ class AccountPayment(models.Model):
                 self.move_id.ref = ref
             for move_line in self.move_id.line_ids:
                 move_line.name += ' - ' + ref
+        if is_deposit:
+            session.deposit_move_id = self.move_id.id
         return res
     
     @api.model_create_multi
@@ -63,6 +67,9 @@ class AccountPayment(models.Model):
                     session = cash_box.current_session_id
                     if not session:
                         show_error = True
+                if show_error and payment.is_cashbox_deposit:
+                    # Allow deposits without an open session
+                    continue 
                 if show_error:
                     raise UserError(_("The checkout session enabled for this user to record customer payments is closed. Please open the checkout session to enable customer payment recording."))
                 payment.cash_session_id = session.id

@@ -53,7 +53,7 @@ class AccountMove(models.Model):
         ])
         if not self.cash_session_id and len(cash_boxs) == 1:
             self.cash_session_id = cash_boxs.current_session_id.id
-        if self.cash_session_id:
-            if self.cash_session_id.state == 'closed':
+        if self.cash_session_id and self.cash_session_id.state == 'closed':
+            if not self.origin_payment_id or not self.origin_payment_id.is_cashbox_deposit:
                 raise UserError(_("This invoice is related to an already closed cashier session."))
         return super().action_post()
