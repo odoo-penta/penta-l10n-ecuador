@@ -105,6 +105,7 @@
                                         <field name="gain_account_id" options="{'no_create': True}"/>
                                         <field name="loss_account_id" options="{'no_create': True}"/>
                                         <field name="close_journal_id" options="{'no_create': True}"/>
+                                        <field name="cash_journal_id" options="{'no_create': True}"/>
                                         <field name="l10n_ec_sri_payment_id"/>
                                         <field name="responsible_ids" widget="many2many_tags" readonly="not is_cash_box_admin" options="{'no_open': True, 'no_create': True}"/>
                                         <field name="cashier_ids" widget="many2many_tags" readonly="not is_cash_box_admin" options="{'no_open': True, 'no_create': True}"/>

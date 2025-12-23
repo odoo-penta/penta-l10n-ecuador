@@ -31,6 +31,7 @@ class CashBoxSession(models.Model):
     movement_ids = fields.One2many('cash.box.session.movement', 'session_id', string="Movements", readonly=True)
     close_move_id = fields.Many2one('account.move', readonly=True)
     diff_move_id = fields.Many2one('account.move', readonly=True)
+    deposit_move_id = fields.Many2one('account.move', readonly=True)
     opening_note = fields.Text(readonly=True)
     closing_note = fields.Text(readonly=True)
     
@@ -209,6 +210,18 @@ class CashBoxSession(models.Model):
             'context': {'create': False},
         }
         
+    def open_deposit_view(self):
+        self.ensure_one()
+        return {
+            'name': 'Deposits',
+            'type': 'ir.actions.act_window',
+            'res_model': 'account.move',
+            'view_mode': 'list,form',
+            'domain': [('id', '=', self.deposit_move_id.id)],
+            'target': 'current',
+            'context': {'create': False},
+        }
+        
     def _create_movement(self, session_id, partner_id, type_op, obj_related):
         # creamos un movimiento de 
         values = {
@@ -258,3 +271,38 @@ class CashBoxSession(models.Model):
     def print_summary(self):
         self.ensure_one()
         return self.env.ref('l10n_ec_pos_penta.action_cash_closing_report').report_action(self)
+    
+    def action_deposit(self):
+        self.ensure_one()
+        company = self.cash_id.company_id
+        partner = company.partner_id
+        if not partner:
+            raise UserError(_("The company does not have a partner configured. Please review the company settings."))
+        return {
+            "type": "ir.actions.act_window",
+            "name": "Customer Deposit",
+            "res_model": "account.payment",
+            "view_mode": "form",
+            "views": [(False, "form")],
+            "target": "current",
+            "context": {
+                # Tipo de pago
+                "default_payment_type": "inbound",
+                "default_partner_type": "customer",
+                # Partner fijo (partner de la compañía de la caja)
+                "default_partner_id": partner.id,
+                # Diario (opcional pero recomendado)
+                "default_journal_id": self.cash_id.cash_journal_id.id,
+                # Monto predefinido
+                "default_amount": self.closing_balance,
+                # Referencia / memo
+                "default_memo": _("Deposit generated from %s" % self.name),
+                # Diferencia deposito de caja
+                "default_is_cashbox_deposit": True,
+                # Evita selección manual innecesaria
+                "search_default_customer": 1,
+                # Sesion de caja
+                'default_cash_session_id': self.id,
+            }
+        }
+

@@ -39,6 +39,7 @@ class CashBox(models.Model):
     gain_account_id = fields.Many2one('account.account', required=True, check_company=True, copy=False, ondelete='restrict', tracking=True, string='Gain Account', domain=[('deprecated', '=', False),('account_type', '=', 'income')])
     loss_account_id = fields.Many2one('account.account', required=True, check_company=True, copy=False, ondelete='restrict', tracking=True, string='Loss Account', domain=[('deprecated', '=', False),('account_type', '=', 'expense')])
     close_journal_id = fields.Many2one('account.journal', string="Close Journal", domain=[('type', 'in', ['general'])], tracking=True, required=True)
+    cash_journal_id = fields.Many2one('account.journal', string="Cash Journal", domain=[('type', 'in', ['cash'])], tracking=True, required=True)
     l10n_ec_sri_payment_id = fields.Many2one('l10n_ec.sri.payment', string="SRI Payment Method", required=True)
     analytic_account_id = fields.Many2one('account.analytic.account', required=True, ondelete='restrict', tracking=True, domain="['|', ('company_id', '=', False), ('company_id', '=?', company_id)]")
     

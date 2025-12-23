@@ -11,3 +11,9 @@ class ResConfigSettings(models.TransientModel):
         company_dependent=True,
         string='Assets template report minute', readonly=False,
         help='We configured the default template to be used for asset records.')
+    advanced_payments = fields.Boolean(
+        related='company_id.advanced_payments',
+        config_parameter='l10n_ec_account_penta.advanced_payments',
+        company_dependent=True,
+        string='Advanced Payments', readonly=False,
+        help='If enabled, enables advanced payment management.')
