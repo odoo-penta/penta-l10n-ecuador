@@ -27,6 +27,7 @@
         'report_xlsx',
         'account_followup',
         'account_reports',
+        'account_batch_payment'
         ],
     "data": [
         "security/ir.model.access.csv",
