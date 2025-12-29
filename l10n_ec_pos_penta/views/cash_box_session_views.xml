@@ -26,7 +26,7 @@
             <field name="arch" type="xml">
                 <form string="Cash Box Session" create="false">
                     <header>
-                        <button string="Deposit" invisible="state not in ('closed') or deposit_move_id" name="action_deposit" type="object" class="btn btn-sm btn-primary"/>
+                        <button string="Deposit" invisible="state not in ('closed') or deposit_id" name="action_deposit" type="object" class="btn btn-sm btn-primary"/>
                         <field name="state" widget="statusbar" statusbar_visible="in_progress,closed"/>
                     </header>
                     <sheet>

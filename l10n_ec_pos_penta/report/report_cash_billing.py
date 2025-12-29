@@ -5,9 +5,9 @@
 
 from odoo import api, models
 
-class ReportCashClosing(models.AbstractModel):
-    _name = 'report.l10n_ec_pos_penta.report_cash_closing_template'
-    _description = 'Cash Closing Report'
+class ReportCashBilling(models.AbstractModel):
+    _name = 'report.l10n_ec_pos_penta.report_cash_billing_template'
+    _description = 'Cash Billing Report'
 
     @api.model
     def _get_report_values(self, docids, data=None):
@@ -20,5 +20,4 @@ class ReportCashClosing(models.AbstractModel):
             'journal_payment_summary': session.get_payment_summary_by_journal(),
             'payments': session._get_payments(),
             'invoices': session._get_invoices(),
-            'deposit': session.deposit_id,
         }

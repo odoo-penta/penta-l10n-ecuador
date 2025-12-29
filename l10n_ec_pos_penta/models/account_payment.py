@@ -51,7 +51,7 @@ class AccountPayment(models.Model):
             for move_line in self.move_id.line_ids:
                 move_line.name += ' - ' + ref
         if is_deposit:
-            session.deposit_move_id = self.move_id.id
+            session.deposit_id = self.id
         return res
     
     @api.model_create_multi
