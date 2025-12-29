@@ -1,0 +1,252 @@
+<odoo>
+    <template id="report_cash_collection_template">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <style>
+                    /* Oculta el logo en todas las páginas */
+                    .header .company_logo {
+                        display: none !important;
+                    }
+
+                    /* Muestra el logo solo en la primera página */
+                    @page:first .header .company_logo {
+                        display: block !important;
+                    }
+                </style>
+                <div class="page">
+                    <t t-foreach="docs" t-as="o">
+                        <!-- Titulo -->
+                        <div style="text-align:center; margin-top:100px; margin-bottom:150px;">
+                            <h2 style="color:#7c5c47;">COLLECTION</h2>
+                            <h4>
+                                <t t-out="o.name or ''"/>
+                            </h4>
+                        </div>
+                        <!-- Cabecera -->
+                        <table style="width:100%; margin-bottom:20px;">
+                            <tr>
+                                <td style="width:50%; vertical-align:top;">
+                                    <strong>Cash:</strong> <t t-out="o.cash_id.name or ''"/><br/>
+                                    <strong>Status:</strong> <t t-out="o._fields['state'].convert_to_export(o.state, o)"/>
+                                </td>
+                                <td style="width:50%; vertical-align:top;">
+                                    <strong>Opening Date:</strong>
+                                    <t t-out="context_timestamp(o.opening_date).strftime('%d/%m/%Y %H:%M:%S') if o.opening_date else ''"/><br/>
+                                    <strong>Closing Date:</strong>
+                                    <t t-out="context_timestamp(o.closing_date).strftime('%d/%m/%Y %H:%M:%S') if o.closing_date else 'Pending'"/><br/>
+                                </td>
+                            </tr>
+                        </table>
+                        <!-- Detalle -->
+                        <h4 style="margin-top:20px; margin-bottom:5px;">Detail</h4>
+                        <!-- Inicializar totalizadores -->
+                        <t t-set="total_cash" t-value="0.0"/>
+                        <t t-set="total_bank" t-value="0.0"/>
+                        <t t-set="total_card" t-value="0.0"/>
+                        <!-- Detalle EFECTIVO -->
+                        <h5 style="margin-top:20px; margin-bottom:5px;">Cash</h5>
+                        <table class="table table-sm" style="width:100%; border-collapse:collapse; border:1px solid #000;">
+                            <thead>
+                                <tr style="background:#dde6f1; text-align:center;">
+                                    <th>Number</th>
+                                    <th>Customer</th>
+                                    <th>Journal</th>
+                                    <th>Payment method</th>
+                                    <th>No. document</th>
+                                    <th>Date</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-if="payments">
+                                    <!-- Inicializar totales -->
+                                    <t t-set="total_general" t-value="0.0"/>
+                                    <t t-foreach="payments" t-as="p">
+                                        <!-- SOLO DE TIPO EFECTIVO -->
+                                        <t t-if="p.journal_id.type == 'cash'">
+                                            <!-- Sumar totales -->
+                                            <t t-set="total_general" t-value="total_general + p.amount"/>
+                                            <t t-set="total_cash" t-value="total_cash + p.amount"/>
+                                            <!-- Datos inicio -->
+                                            <tr style="text-align:left;">
+                                                <td><t t-esc="p.name or ''"/></td>
+                                                <td><t t-esc="p.partner_id.name"/></td>
+                                                <td><t t-esc="p.journal_id.name or ''"/></td>
+                                                <td><t t-esc="p.payment_method_line_id.name or ''"/></td>
+                                                <td><t t-esc="p.memo or ''"/></td>
+                                                <td><t t-esc="p.date or ''"/></td>
+                                                <td><t t-esc="p.amount"/></td>
+                                            </tr>
+                                        </t>
+                                    </t>
+                                    <!-- Totalizador -->
+                                    <tr style="background:#e0e0e0; font-weight:bold; text-align:center;">
+                                        <td colspan="6">Total</td>
+                                        <td><t t-out="'%.2f' % total_general"/></td>
+                                    </tr>
+                                </t>
+                                <t t-else="">
+                                    <tr>
+                                        <td colspan="7" style="text-align:center;">No payments found</td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                        <!-- Detalle BANCO -->
+                        <h5 style="margin-top:20px; margin-bottom:5px;">Bank</h5>
+                        <table class="table table-sm" style="width:100%; border-collapse:collapse; border:1px solid #000;">
+                            <thead>
+                                <tr style="background:#dde6f1; text-align:center;">
+                                    <th>Number</th>
+                                    <th>Customer</th>
+                                    <th>Journal</th>
+                                    <th>Payment method</th>
+                                    <th>No. document</th>
+                                    <th>Date</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-if="payments">
+                                    <!-- Inicializar totales -->
+                                    <t t-set="total_general" t-value="0.0"/>
+                                    <t t-foreach="payments" t-as="p">
+                                        <!-- SOLO DE TIPO BANCO Y NO SEAN DE TC -->
+                                        <t t-if="p.journal_id.type == 'bank' and p.journal_id.payment_info_type != 'card'">
+                                            <!-- Sumar totales -->
+                                            <t t-set="total_general" t-value="total_general + p.amount"/>
+                                            <t t-set="total_bank" t-value="total_bank + p.amount"/>
+                                            <!-- Datos inicio -->
+                                            <tr style="text-align:left;">
+                                                <td><t t-esc="p.name or ''"/></td>
+                                                <td><t t-esc="p.partner_id.name"/></td>
+                                                <td><t t-esc="p.journal_id.name or ''"/></td>
+                                                <td><t t-esc="p.payment_method_line_id.name or ''"/></td>
+                                                <td><t t-esc="p.memo or ''"/></td>
+                                                <td><t t-esc="p.date or ''"/></td>
+                                                <td><t t-esc="p.amount"/></td>
+                                            </tr>
+                                        </t>
+                                    </t>
+                                    <!-- Totalizador -->
+                                    <tr style="background:#e0e0e0; font-weight:bold; text-align:center;">
+                                        <td colspan="6">Total</td>
+                                        <td><t t-out="'%.2f' % total_general"/></td>
+                                    </tr>
+                                </t>
+                                <t t-else="">
+                                    <tr>
+                                        <td colspan="7" style="text-align:center;">No payments found</td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                        <!-- Detalle TC -->
+                        <h5 style="margin-top:20px; margin-bottom:5px;">Credit Card</h5>
+                        <table class="table table-sm" style="width:100%; border-collapse:collapse; border:1px solid #000;">
+                            <thead>
+                                <tr style="background:#dde6f1; text-align:center;">
+                                    <th>Number</th>
+                                    <th>Customer</th>
+                                    <th>Journal</th>
+                                    <th>Payment method</th>
+                                    <th>No. document</th>
+                                    <th>Date</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-if="payments">
+                                    <!-- Inicializar totales -->
+                                    <t t-set="total_general" t-value="0.0"/>
+                                    <t t-foreach="payments" t-as="p">
+                                        <!-- SOLO DE TIPO BANCO Y TC -->
+                                        <t t-if="p.journal_id.type == 'bank' and p.journal_id.payment_info_type == 'card'">
+                                            <!-- Sumar totales -->
+                                            <t t-set="total_general" t-value="total_general + p.amount"/>
+                                            <t t-set="total_card" t-value="total_card + p.amount"/>
+                                            <!-- Datos inicio -->
+                                            <tr style="text-align:left;">
+                                                <td><t t-esc="p.name or ''"/></td>
+                                                <td><t t-esc="p.partner_id.name"/></td>
+                                                <td><t t-esc="p.journal_id.name or ''"/></td>
+                                                <td><t t-esc="p.payment_method_line_id.name or ''"/></td>
+                                                <td><t t-esc="p.memo or ''"/></td>
+                                                <td><t t-esc="p.date or ''"/></td>
+                                                <td><t t-esc="p.amount"/></td>
+                                            </tr>
+                                        </t>
+                                    </t>
+                                    <!-- Totalizador -->
+                                    <tr style="background:#e0e0e0; font-weight:bold; text-align:center;">
+                                        <td colspan="6">Total</td>
+                                        <td><t t-out="'%.2f' % total_general"/></td>
+                                    </tr>
+                                </t>
+                                <t t-else="">
+                                    <tr>
+                                        <td colspan="7" style="text-align:center;">No payments found</td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                        <!-- Detalle TOTAL -->
+                        <table class="table table-sm" style="width:100%; border-collapse:collapse; border:1px solid #000;">
+                            <thead>
+                                <tr style="background:#f0f0f0; text-align:center;">
+                                    <th>Payment Type</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Cash</td>
+                                    <td style="text-align:right;">
+                                        <t t-out="'%.2f' % total_cash"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Bank</td>
+                                    <td style="text-align:right;">
+                                        <t t-out="'%.2f' % total_bank"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Credit Card</td>
+                                    <td style="text-align:right;">
+                                        <t t-out="'%.2f' % total_card"/>
+                                    </td>
+                                </tr>
+                                <tr style="background:#e0e0e0; font-weight:bold;">
+                                    <td>Total General</td>
+                                    <td style="text-align:right;">
+                                        <t t-out="'%.2f' % (total_cash + total_bank + total_card)"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <!-- Responsables -->
+                        <h4 style="margin-top:30px; text-align:center;">Responsibles</h4>
+                        <table style="width:100%; margin-top:15px; margin-bottom:50px; text-align:center;">
+                            <tr>
+                                <td style="width:50%;">
+                                    <strong>Responsible (Open):</strong><br/>
+                                    <t t-out="o.responsible_open.name or ''"/><br/><br/>
+                                    ________________________<br/>
+                                    C.I.: __________________
+                                </td>
+                                <td style="width:50%;">
+                                    <strong>Responsible (Close):</strong><br/>
+                                    <t t-out="o.responsible_close.name or ''"/><br/><br/>
+                                    ________________________<br/>
+                                    C.I.: __________________
+                                </td>
+                            </tr>
+                        </table>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

@@ -35,11 +35,15 @@
         'security/cash_box_rules.xml',
         'security/ir.model.access.csv',
         
+        'report/report_cash_collection.xml',
         'report/report_cash_closing.xml',
+        'report/report_cash_billing.xml',
+        'report/report_cash_summary.xml',
         'report/reports.xml',
         
         'wizard/cash_box_wizard_view.xml',
         'wizard/res_config_settings_views.xml',
+        'wizard/cash_box_print_wizard_views.xml',
         
         'views/cash_box_views.xml',
         'views/cash_box_session_views.xml',

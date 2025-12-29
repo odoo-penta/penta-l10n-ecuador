@@ -1,0 +1,98 @@
+<odoo>
+    <template id="report_cash_billing_template">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <style>
+                    /* Oculta el logo en todas las páginas */
+                    .header .company_logo {
+                        display: none !important;
+                    }
+
+                    /* Muestra el logo solo en la primera página */
+                    @page:first .header .company_logo {
+                        display: block !important;
+                    }
+                </style>
+                <div class="page">
+                    <t t-foreach="docs" t-as="o">
+                        <!-- Encabezado -->
+                        <div style="text-align:center; margin-top:100px; margin-bottom:150px;">
+                            <h2 style="color:#7c5c47;">BILLING AND CREDIT NOTE</h2>
+                            <h4>
+                                <t t-out="o.name or ''"/>
+                            </h4>
+                        </div>
+                        <!-- Datos principales -->
+                        <table style="width:100%; margin-bottom:20px;">
+                            <tr>
+                                <td style="width:50%; vertical-align:top;">
+                                    <strong>Cash:</strong> <t t-out="o.cash_id.name or ''"/><br/>
+                                    <strong>Status:</strong> <t t-out="o._fields['state'].convert_to_export(o.state, o)"/>
+                                </td>
+                                <td style="width:50%; vertical-align:top;">
+                                    <strong>Opening Date:</strong>
+                                    <t t-out="context_timestamp(o.opening_date).strftime('%d/%m/%Y %H:%M:%S') if o.opening_date else ''"/><br/>
+                                    <strong>Closing Date:</strong>
+                                    <t t-out="context_timestamp(o.closing_date).strftime('%d/%m/%Y %H:%M:%S') if o.closing_date else 'Pending'"/><br/>
+                                </td>
+                            </tr>
+                        </table>
+                        <!-- Facturas -->
+                        <h4 style="margin-top:20px; margin-bottom:5px;">Invoices</h4>
+                        <table class="table table-sm" style="width:100%; border-collapse:collapse; border:1px solid #000;">
+                            <thead>
+                                <tr style="background:#dde6f1; text-align:center;">
+                                    <th>Number</th>
+                                    <th>Reference</th>
+                                    <th>Customer</th>
+                                    <th>Journal</th>
+                                    <th>Subtotal</th>
+                                    <th>Taxes</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-if="invoices">
+                                    <t t-foreach="invoices" t-as="i">
+                                        <tr style="text-align:left;">
+                                            <td><t t-esc="i.name or ''"/></td>
+                                            <td><t t-esc="i.payment_reference"/></td>
+                                            <td><t t-esc="i.partner_id.name"/></td>
+                                            <td><t t-esc="i.journal_id.name"/></td>
+                                            <td><t t-esc="i.amount_untaxed"/></td>
+                                            <td><t t-esc="i.amount_tax"/></td>
+                                            <td><t t-esc="i.amount_total"/></td>
+                                        </tr>
+                                    </t>
+                                </t>
+                                <t t-else="">
+                                    <tr>
+                                        <td colspan="7" style="text-align:center;">No invoices found</td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                        <!-- Responsables -->
+                        <h4 style="margin-top:30px; text-align:center;">Responsibles</h4>
+                        <table style="width:100%; margin-top:15px; margin-bottom:50px; text-align:center;">
+                            <tr>
+                                <td style="width:50%;">
+                                    <strong>Responsible (Open):</strong><br/>
+                                    <t t-out="o.responsible_open.name or ''"/><br/><br/>
+                                    ________________________<br/>
+                                    C.I.: __________________
+                                </td>
+                                <td style="width:50%;">
+                                    <strong>Responsible (Close):</strong><br/>
+                                    <t t-out="o.responsible_close.name or ''"/><br/><br/>
+                                    ________________________<br/>
+                                    C.I.: __________________
+                                </td>
+                            </tr>
+                        </table>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

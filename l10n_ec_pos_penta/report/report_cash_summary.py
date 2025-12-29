@@ -5,9 +5,9 @@
 
 from odoo import api, models
 
-class ReportCashClosing(models.AbstractModel):
-    _name = 'report.l10n_ec_pos_penta.report_cash_closing_template'
-    _description = 'Cash Closing Report'
+class ReportCashSummary(models.AbstractModel):
+    _name = 'report.l10n_ec_pos_penta.report_cash_summary_template'
+    _description = 'Cash Summary Report'
 
     @api.model
     def _get_report_values(self, docids, data=None):

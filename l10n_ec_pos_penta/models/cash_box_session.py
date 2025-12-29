@@ -31,7 +31,7 @@ class CashBoxSession(models.Model):
     movement_ids = fields.One2many('cash.box.session.movement', 'session_id', string="Movements", readonly=True)
     close_move_id = fields.Many2one('account.move', readonly=True)
     diff_move_id = fields.Many2one('account.move', readonly=True)
-    deposit_move_id = fields.Many2one('account.move', readonly=True)
+    deposit_id = fields.Many2one('account.payment', readonly=True)
     opening_note = fields.Text(readonly=True)
     closing_note = fields.Text(readonly=True)
     
@@ -144,7 +144,7 @@ class CashBoxSession(models.Model):
         
     def _get_payments(self):
         """ Obtiene los pagos realizados con la sesion"""
-        return self.env['account.payment'].search([('cash_session_id', '=', self.id),('state', 'in', ['in_process', 'paid'])])
+        return self.env['account.payment'].search([('cash_session_id', '=', self.id),('state', 'in', ['in_process', 'paid']),('internal_transfer_cash', '=', False)])
     
     def _get_invoices(self):
         """ Obtiene los pagos realizados con la sesion"""
@@ -215,9 +215,9 @@ class CashBoxSession(models.Model):
         return {
             'name': 'Deposits',
             'type': 'ir.actions.act_window',
-            'res_model': 'account.move',
+            'res_model': 'account.payment',
             'view_mode': 'list,form',
-            'domain': [('id', '=', self.deposit_move_id.id)],
+            'domain': [('id', '=', self.deposit_id.id)],
             'target': 'current',
             'context': {'create': False},
         }
@@ -262,15 +262,34 @@ class CashBoxSession(models.Model):
         return payment_summary
     
     def get_payment_summary_by_journal(self):
-        summary = defaultdict(float)
+        summary = defaultdict(lambda: {
+            'collections': 0.0,
+            'advances': 0.0,
+            'total': 0.0,
+        })
         for payment in self._get_payments():
             journal_name = payment.journal_id.name
-            summary[journal_name] += payment.amount
+            amount = payment.amount
+            if payment.move_id and payment.move_id.line_ids.filtered(lambda l: l.move_id.move_type in ('out_invoice', 'in_invoice')):
+                summary[journal_name]['collections'] += amount
+            else:
+                summary[journal_name]['advances'] += amount
+            summary[journal_name]['total'] += amount
         return dict(summary)
     
     def print_summary(self):
         self.ensure_one()
-        return self.env.ref('l10n_ec_pos_penta.action_cash_closing_report').report_action(self)
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Print Cash Box Reports',
+            'res_model': 'cash.box.print.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_cash_box_session_id': self.id,
+            }
+        }
+        
     
     def action_deposit(self):
         self.ensure_one()
