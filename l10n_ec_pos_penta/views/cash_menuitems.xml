@@ -13,6 +13,35 @@
     <menuitem id="cash_box_control" parent="cash_box_root_menu" name="Cash control" sequence="10" groups="l10n_ec_pos_penta.group_cash_box_admin,l10n_ec_pos_penta.group_cash_box_user"/>
     <menuitem id="cash_box_menu" parent="cash_box_control" action="action_cash_box" sequence="1" groups="l10n_ec_pos_penta.group_cash_box_admin,l10n_ec_pos_penta.group_cash_box_user"/>
     <menuitem id="cash_box_session_menu" parent="cash_box_control" action="action_cash_box_session" sequence="2" groups="l10n_ec_pos_penta.group_cash_box_admin,l10n_ec_pos_penta.group_cash_box_user"/>
+    <!-- VENTAS -->
+    <menuitem id="cash_box_sale_order_menu"
+        parent="cash_box_root_menu"
+        name="Orders"
+        sequence="11">
+
+        <menuitem id="menu_cash_box_sale_quotations"
+            action="sale.action_quotations_with_onboarding"
+            groups="l10n_ec_pos_penta.group_cash_box_admin,l10n_ec_pos_penta.group_cash_box_user"
+            sequence="10"/>
+
+        <menuitem id="menu_cash_box_sale_order"
+            name="Orders"
+            action="sale.action_orders"
+            groups="l10n_ec_pos_penta.group_cash_box_admin,l10n_ec_pos_penta.group_cash_box_user"
+            sequence="20"/>
+
+        <menuitem id="report_cash_box_sales_team"
+            name="Sales Teams"
+            action="sales_team.crm_team_action_sales"
+            groups="l10n_ec_pos_penta.group_cash_box_admin,l10n_ec_pos_penta.group_cash_box_user"
+            sequence="30"/>
+
+        <menuitem id="cash_box_res_partner_menu"
+            action="account.res_partner_action_customer"
+            groups="l10n_ec_pos_penta.group_cash_box_admin,l10n_ec_pos_penta.group_cash_box_user"
+            sequence="40"/>
+
+    </menuitem>
     <!-- CONFIGURACION -->
     <menuitem
         id="cash_box_config_menu"
