@@ -30,28 +30,30 @@ class AccountPayment(models.Model):
         return res
         
     def action_post(self):
-        session = self.cash_session_id
-        movement = False
-        is_deposit = self.is_cashbox_deposit
-        if session and not is_deposit:
-            if session.state == 'closed':
-                raise UserError(_("This sales order is related to an already closed cashier session."))
-            if self.env['cash.box.session.movement'].get_sequence(session.id):
-                movement = self.env['cash.box.session']._create_movement(session.id, self.partner_id.id, 'payment', self.id)
-                self.code_movement = movement.name
+        for payment in self:
+            session = payment.cash_session_id
+            movement = False
+            is_deposit = payment.is_cashbox_deposit
+            if session and not is_deposit:
+                if session.state == 'closed':
+                    raise UserError(_("This sales order is related to an already closed cashier session."))
+                if payment.env['cash.box.session.movement'].get_sequence(session.id):
+                    movement = payment.env['cash.box.session']._create_movement(session.id, payment.partner_id.id, 'payment', payment.id)
+                    payment.code_movement = movement.name
         res = super().action_post()
-        if self.move_id and session and not is_deposit:
-            ref = session.name
-            if movement:
-                ref = session.name + ' - ' + movement.name
-            if self.move_id.ref:
-                self.move_id.ref += ' - ' + ref
-            else:
-                self.move_id.ref = ref
-            for move_line in self.move_id.line_ids:
-                move_line.name += ' - ' + ref
-        if is_deposit:
-            session.deposit_id = self.id
+        for payment in self:
+            if payment.move_id and session and not is_deposit:
+                ref = session.name
+                if movement:
+                    ref = session.name + ' - ' + movement.name
+                if payment.move_id.ref:
+                    payment.move_id.ref += ' - ' + ref
+                else:
+                    payment.move_id.ref = ref
+                for move_line in payment.move_id.line_ids:
+                    move_line.name += ' - ' + ref
+            if is_deposit:
+                session.deposit_id = payment.id
         return res
     
     @api.model_create_multi
