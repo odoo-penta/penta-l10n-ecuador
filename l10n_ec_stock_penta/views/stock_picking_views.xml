@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <template id="report_stock_physical_signatures" inherit_id="stock.report_delivery_document">
+
+        <xpath expr="//div[@class='page']" position="inside">
+
+            <div style="margin-top:60px;">
+                <table width="100%" style="text-align:center;">
+                    <tr>
+
+                        <!-- ENTREGADO POR -->
+                        <td width="33%">
+                            <br/><br/><br/>
+                            _______________________________<br/>
+                            <strong>Entregado por</strong><br/>
+
+                            <!-- Entregas -->
+                            <t t-if="o.picking_type_id.code == 'outgoing'">
+                                <span t-esc="o.user_id.name"/>
+                            </t>
+
+                            <!-- Transferencia interna -->
+                            <t t-if="o.picking_type_id.code == 'internal'">
+                                <span t-esc="o.user_id.name"/>
+                            </t>
+
+                            <!-- Recepción -->
+                            <t t-if="o.picking_type_id.code == 'incoming'">
+                                <span>&amp;nbsp;</span>
+                            </t>
+                        </td>
+
+                        <!-- RECIBIDO POR -->
+                        <td width="33%">
+                            <br/><br/><br/>
+                            _______________________________<br/>
+                            <strong>Recibido por</strong><br/>
+
+                            <!-- Recepción -->
+                            <t t-if="o.picking_type_id.code == 'incoming'">
+                                <span t-esc="o.user_id.name"/>
+                            </t>
+
+                            <!-- Transferencia interna -->
+                            <t t-if="o.picking_type_id.code == 'internal'">
+                                <span t-esc="o.user_id.name"/>
+                            </t>
+
+                            <!-- Entrega -->
+                            <t t-if="o.picking_type_id.code == 'outgoing'">
+                                <span>&amp;nbsp;</span>
+                            </t>
+                        </td>
+
+                        <!-- REVISADO POR -->
+                        <td width="33%">
+                            <br/><br/><br/>
+                            _______________________________<br/>
+                            <strong>Revisado por</strong><br/>
+                            <span>&amp;nbsp;</span>
+                        </td>
+
+                    </tr>
+                </table>
+            </div>
+
+        </xpath>
+    </template>
+
+</odoo>
