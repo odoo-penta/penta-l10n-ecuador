@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
 
-    <template id="report_delivery_document_physical_signatures" inherit_id="stock.report_delivery_document">
+    <template id="report_picking_physical_signatures" inherit_id="stock.report_picking">
 
-        <xpath expr="//div[@class='page']" position="inside">
+        <xpath expr="//div[@class='page o_report_stockpicking_operations']" position="inside">
             <!-- CONTENEDOR -->
             <div style="display: table; width: 100%; height: 100%;">
                 <div style="display: table-cell; vertical-align: bottom;">
@@ -18,7 +18,7 @@
                                     _______________________________<br/>
                                     <strong>Entregado por</strong><br/>
 
-                                    <!-- Entregas -->
+                                    <!-- Entrega -->
                                     <t t-if="o.picking_type_id.code == 'outgoing'">
                                         <span t-esc="o.user_id.name"/>
                                     </t>

@@ -26,6 +26,7 @@
     ],
     'data': [
         'views/stock_picking_views.xml',
+        'views/report_stockpicking_operations.xml',
     ],
     'license': 'OPL-1',
 }
