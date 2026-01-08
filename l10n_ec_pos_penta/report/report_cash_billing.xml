@@ -49,6 +49,7 @@
                                     <th>Subtotal</th>
                                     <th>Taxes</th>
                                     <th>Total</th>
+                                    <th>Pago</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -62,12 +63,13 @@
                                             <td><t t-esc="i.amount_untaxed"/></td>
                                             <td><t t-esc="i.amount_tax"/></td>
                                             <td><t t-esc="i.amount_total"/></td>
+                                            <td><t t-esc="i._fields['status_in_payment'].convert_to_export(i.status_in_payment, i)"/></td>
                                         </tr>
                                     </t>
                                 </t>
                                 <t t-else="">
                                     <tr>
-                                        <td colspan="7" style="text-align:center;">No invoices found</td>
+                                        <td colspan="8" style="text-align:center;">No invoices found</td>
                                     </tr>
                                 </t>
                             </tbody>
