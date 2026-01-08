@@ -31,12 +31,7 @@ class CashBoxSession(models.Model):
     movement_ids = fields.One2many('cash.box.session.movement', 'session_id', string="Movements", readonly=True)
     close_move_id = fields.Many2one('account.move', readonly=True)
     diff_move_id = fields.Many2one('account.move', readonly=True)
-    deposit_id = fields.One2many(
-        'account.payment',
-        'cash_session_id',
-        string="Deposits",
-        readonly=True
-    )
+    deposit_id = fields.Many2one('account.payment', string="Deposit", readonly=True)
     opening_note = fields.Text(readonly=True)
     closing_note = fields.Text(readonly=True)
     deposit_state = fields.Selection(
@@ -235,7 +230,7 @@ class CashBoxSession(models.Model):
             'type': 'ir.actions.act_window',
             'res_model': 'account.payment',
             'view_mode': 'list,form',
-            'domain': [('cash_session_id', '=', self.id)],
+            'domain': [('cash_session_id', '=', self.id),('is_cashbox_deposit', '=', True)],
             'target': 'current',
             'context': {'create': False},
         }

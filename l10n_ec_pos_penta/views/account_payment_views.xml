@@ -27,14 +27,6 @@
                     <field name="code_movement" invisible="payment_type != 'inbound'"/>
                 </group>
             </xpath>
-            <!-- <xpath expr="//field[@name='journal_id']" position="attributes">
-                <attribute name="readonly">
-                    [
-                        '|',
-                        ('is_cashbox_deposit','=',True),
-                    ]
-                </attribute>
-            </xpath> -->
             <xpath expr="//field[@name='payment_type']" position="attributes">
                 <attribute name="readonly">
                     [

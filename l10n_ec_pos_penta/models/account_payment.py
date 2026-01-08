@@ -51,6 +51,12 @@ class AccountPayment(models.Model):
                 if payment.env['cash.box.session.movement'].get_sequence(session.id):
                     movement = payment.env['cash.box.session']._create_movement(session.id, payment.partner_id.id, 'payment', payment.id)
                     payment.code_movement = movement.name
+            approval_deposit = self.search([
+                ('cash_session_id', '=', session.id),
+                ('is_cashbox_deposit', '=', True),
+                ('state', 'not in', ('draft', 'canceled', 'rejected'))])
+            if approval_deposit:
+                raise UserError(_("You cannot confirm the deposit because we already have a confirmed deposit for the session: %s" % session.name))
         res = super().action_post()
         for payment in self:
             if payment.move_id and session and not is_deposit:
