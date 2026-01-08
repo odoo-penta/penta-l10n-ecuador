@@ -321,10 +321,8 @@ class CashBoxSession(models.Model):
                 # Tipo de pago
                 "default_payment_type": "inbound",
                 "default_partner_type": "customer",
-                # Partner fijo (partner de la compañía de la caja)
-                "default_partner_id": partner.id,
                 # Diario (opcional pero recomendado)
-                "default_journal_id": self.cash_id.cash_journal_id.id,
+                #"default_journal_id": self.cash_id.cash_journal_id.id,
                 # Monto predefinido
                 "default_amount": self.closing_balance,
                 # Referencia / memo
