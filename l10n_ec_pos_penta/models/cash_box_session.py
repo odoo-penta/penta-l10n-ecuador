@@ -270,7 +270,7 @@ class CashBoxSession(models.Model):
         for payment in self._get_payments():
             journal_name = payment.journal_id.name
             amount = payment.amount
-            if payment.move_id and payment.move_id.line_ids.filtered(lambda l: l.move_id.move_type in ('out_invoice', 'in_invoice')):
+            if payment.invoice_ids and payment.invoice_ids.filtered(lambda l: l.move_type in ('out_invoice', 'in_invoice')):
                 summary[journal_name]['collections'] += amount
             else:
                 summary[journal_name]['advances'] += amount
