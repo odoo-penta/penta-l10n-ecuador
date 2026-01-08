@@ -424,6 +424,11 @@ msgid "Entry Control"
 msgstr "Control asientos"
 
 #. module: l10n_ec_account_penta
+#: model:ir.model.fields.selection,name:l10n_ec_account_penta.selection__account_payment__payment_mode__expense
+msgid "Expense distribution"
+msgstr "Mostrar cuentas contables"
+
+#. module: l10n_ec_account_penta
 #: model_terms:ir.ui.view,arch_db:l10n_ec_account_penta.print_batch_payment_inherit_invoices
 #: model_terms:ir.ui.view,arch_db:l10n_ec_account_penta.view_batch_payment_form_inherit_invoice_links
 msgid "Invoices"
@@ -461,6 +466,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:l10n_ec_account_penta.view_account_asset_form_inherit_penta
 msgid "Información adicional"
 msgstr ""
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields.selection,name:l10n_ec_account_penta.selection__account_payment__payment_mode__internal
+msgid "Internal transfer"
+msgstr "Transferencia Interna"
 
 #. module: l10n_ec_account_penta
 #: model:ir.model.fields,field_description:l10n_ec_account_penta.field_res_partner__is_customer
@@ -572,6 +582,11 @@ msgid "Payment information"
 msgstr "Información de pago"
 
 #. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_payment__payment_mode
+msgid "Payment mode"
+msgstr "Modo de pago"
+
+#. module: l10n_ec_account_penta
 #: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_payment__payment_reference
 msgid "Payment reference"
 msgstr "Referencia de pago"
@@ -673,6 +688,11 @@ msgstr "Mostrar referencia"
 #: model_terms:ir.ui.view,arch_db:l10n_ec_account_penta.view_account_asset_search_inherit_penta
 msgid "Sin Código"
 msgstr ""
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields.selection,name:l10n_ec_account_penta.selection__account_payment__payment_mode__standard
+msgid "Standard payment"
+msgstr "Pago estándar"
 
 #. module: l10n_ec_account_penta
 #: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_payment__used_card_id

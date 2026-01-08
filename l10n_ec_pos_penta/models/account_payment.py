@@ -27,6 +27,17 @@ class AccountPayment(models.Model):
         # Si solo hay una sesión, asignarla automáticamente
         if len(cash_boxs) == 1:
             res['cash_session_id'] = cash_boxs.current_session_id.id
+        
+        if res.get('is_cashbox_deposit') and res.get('cash_session_id'):
+            session = self.env['cash.box.session'].browse(res['cash_session_id'])
+            close_account = session.cash_id.close_account_id
+
+            if close_account:
+                res['payment_mode'] = 'expense'
+                res['expense_line_ids'] = [(0, 0, {
+                    'account_id': close_account.id,
+                    'amount_cash': res.get('amount', 0.0),
+                })]
         return res
         
     def action_post(self):
@@ -58,6 +69,18 @@ class AccountPayment(models.Model):
     
     @api.model_create_multi
     def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get('is_cashbox_deposit') and vals.get('cash_session_id'):
+                session = self.env['cash.box.session'].browse(vals['cash_session_id'])
+                close_account = session.cash_id.close_account_id
+
+                if close_account:
+                    vals['payment_mode'] = 'expense'
+
+                    vals['expense_line_ids'] = [(0, 0, {
+                        'account_id': close_account.id,
+                        'amount_cash': vals.get('amount', 0.0),
+                    })]
         payments  = super().create(vals_list)
         for payment in payments:
             if not payment.cash_session_id and self.env.user.has_group('l10n_ec_pos_penta.group_cash_box_user') and payment.payment_type == 'inbound':
@@ -76,3 +99,16 @@ class AccountPayment(models.Model):
                     raise UserError(_("The checkout session enabled for this user to record customer payments is closed. Please open the checkout session to enable customer payment recording."))
                 payment.cash_session_id = session.id
         return payments
+
+    def write(self, vals):
+        res = super().write(vals)
+
+        for payment in self:
+            if payment.is_cashbox_deposit and payment.cash_session_id:
+                close_account = payment.cash_session_id.cash_id.close_account_id
+                if close_account and not payment.expense_line_ids:
+                    payment.expense_line_ids = [(0, 0, {
+                        'account_id': close_account.id,
+                        'amount_cash': payment.amount,
+                    })]
+        return res

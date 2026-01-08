@@ -49,8 +49,19 @@ class AccountPayment(models.Model):
     show_bank_cc = fields.Boolean(compute="_compute_visibility_flags", store=False)  # bank_id en card o check
     show_card = fields.Boolean(compute="_compute_visibility_flags", store=False)     # resto solo en card
     payment_reference = fields.Char(string="Payment reference", readonly=True)
-    batch_registration = fields.Boolean(string="Activate accounts receivable")
-    internal_transfer_cash = fields.Boolean(string="Internal transfer")
+    # batch_registration = fields.Boolean(string="Activate accounts receivable")
+    # internal_transfer_cash = fields.Boolean(string="Internal transfer")
+    payment_mode = fields.Selection(
+    [
+        ('standard', 'Standard payment'),
+        ('expense', 'Expense distribution'),
+        ('internal', 'Internal transfer'),
+    ],
+        string="Payment mode",
+        default='standard',
+        required=True,
+        store=True
+    )
     expense_line_ids = fields.One2many(
         'account.payment.expense.line',
         'payment_id',
@@ -64,6 +75,11 @@ class AccountPayment(models.Model):
         related='company_id.advanced_payments',
         store=False,
         readonly=True
+    )
+    difference_expense_amount = fields.Monetary(
+        compute="_compute_difference_expense_amount",
+        store=True,
+        currency_field='currency_id',
     )
     
     @api.model_create_multi
@@ -91,16 +107,22 @@ class AccountPayment(models.Model):
                 rec.show_ref = ptype in ('bank', 'check')
                 rec.show_bank_cc = ptype in ('card', 'check')
                 rec.show_card = (ptype == 'card')
-                
-    @api.onchange('batch_registration')
-    def _onchange_batch_registration(self):
-        if self.batch_registration:
-            self.internal_transfer_cash = False
 
-    @api.onchange('internal_transfer_cash')
-    def _onchange_internal_transfer_cash(self):
-        if self.internal_transfer_cash:
-            self.batch_registration = False
+    @api.depends('amount', 'expense_line_ids.amount_cash')
+    def _compute_difference_expense_amount(self):
+        for rec in self:
+            total = sum(rec.expense_line_ids.mapped('amount_cash'))
+            rec.difference_expense_amount = rec.amount - total        
+    
+    # @api.onchange('batch_registration')
+    # def _onchange_batch_registration(self):
+    #     if self.batch_registration:
+    #         self.internal_transfer_cash = False
+
+    # @api.onchange('internal_transfer_cash')
+    # def _onchange_internal_transfer_cash(self):
+    #     if self.internal_transfer_cash:
+    #         self.batch_registration = False
 
     @api.constrains('expense_line_ids', 'amount')
     def _check_expense_lines_total(self):
@@ -127,7 +149,7 @@ class AccountPayment(models.Model):
     def action_post(self):
         """Override para generar el asiento contable específico cuando hay líneas de gastos"""
         for payment in self:
-            if payment.expense_line_ids:
+            if payment.payment_mode == 'expense':
                 total_expenses = sum(payment.expense_line_ids.mapped('amount_cash'))
                 if abs(total_expenses - payment.amount) > 0.01:
                     raise ValidationError(_(
@@ -199,7 +221,7 @@ class AccountPayment(models.Model):
                 payment.move_id = move.id
                 return super(AccountPayment, payment).action_post()
             
-            if payment.internal_transfer_cash:
+            if payment.payment_mode == 'internal':
 
                 if not payment.destination_journal:
                     raise ValidationError(_(
@@ -298,7 +320,6 @@ class AccountPaymentExpenseLine(models.Model):
     partner_id = fields.Many2one(
         'res.partner',
         string="Contact",
-        required=True
     )
 
     amount_cash = fields.Monetary(
@@ -310,6 +331,12 @@ class AccountPaymentExpenseLine(models.Model):
         related="payment_id.currency_id",
         store=True
     )
+
+    @api.onchange('payment_id')
+    def _onchange_payment_id(self):
+        for line in self:
+            if not line.partner_id:
+                line.partner_id = line.payment_id.partner_id
 
     @api.constrains('amount_cash')
     def _check_amount_cash(self):

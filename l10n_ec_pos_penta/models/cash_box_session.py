@@ -31,9 +31,20 @@ class CashBoxSession(models.Model):
     movement_ids = fields.One2many('cash.box.session.movement', 'session_id', string="Movements", readonly=True)
     close_move_id = fields.Many2one('account.move', readonly=True)
     diff_move_id = fields.Many2one('account.move', readonly=True)
-    deposit_id = fields.Many2one('account.payment', readonly=True)
+    deposit_id = fields.One2many(
+        'account.payment',
+        'cash_session_id',
+        string="Deposits",
+        readonly=True
+    )
     opening_note = fields.Text(readonly=True)
     closing_note = fields.Text(readonly=True)
+    deposit_state = fields.Selection(
+        related='deposit_id.state',
+        string="Deposit State",
+        readonly=True
+    )
+    
     
     @api.model_create_multi
     def create(self, vals_list):
@@ -142,10 +153,17 @@ class CashBoxSession(models.Model):
                 return self.env['cash.box'].browse(cash_id).session_seq_id or False
             return False
         
+    # def _get_payments(self):
+    #     """ Obtiene los pagos realizados con la sesion"""
+    #     return self.env['account.payment'].search([('cash_session_id', '=', self.id),('state', 'in', ['in_process', 'paid']),('internal_transfer_cash', '=', False)])
     def _get_payments(self):
-        """ Obtiene los pagos realizados con la sesion"""
-        return self.env['account.payment'].search([('cash_session_id', '=', self.id),('state', 'in', ['in_process', 'paid']),('internal_transfer_cash', '=', False)])
-    
+        """Obtiene los pagos realizados con la sesión (excluye internos)"""
+        payments = self.env['account.payment'].search([
+            ('cash_session_id', '=', self.id),
+            ('state', 'in', ['in_process', 'paid']),
+        ])
+        return payments.filtered(lambda p: p.payment_mode != 'internal')
+
     def _get_invoices(self):
         """ Obtiene los pagos realizados con la sesion"""
         return self.env['account.move'].search([('move_type' ,'in', ['out_invoice', 'in_invoice']),('cash_session_id', '=', self.id),('state', '=', 'posted')])
@@ -217,7 +235,7 @@ class CashBoxSession(models.Model):
             'type': 'ir.actions.act_window',
             'res_model': 'account.payment',
             'view_mode': 'list,form',
-            'domain': [('id', '=', self.deposit_id.id)],
+            'domain': [('cash_session_id', '=', self.id)],
             'target': 'current',
             'context': {'create': False},
         }
