@@ -47,7 +47,7 @@
         <field name="arch" type="xml">
             <list>
                 <field name="name"/>
-                <field name="active"/>
+                <field name="active" widget="boolean_toggle"/>
             </list>
         </field>
     </record>
@@ -60,7 +60,7 @@
                 <group>
                     <field name="name"/>
                     <field name="notes"/>
-                    <field name="active"/>
+                    <field name="active" widget="boolean_toggle"/>
                 </group>
             </form>
         </field>
@@ -73,7 +73,7 @@
         <field name="arch" type="xml">
             <list>
                 <field name="name"/>
-                <field name="active"/>
+                <field name="active" widget="boolean_toggle"/>
             </list>
         </field>
     </record>
@@ -85,7 +85,7 @@
             <form>
                 <group>
                     <field name="name"/>
-                    <field name="active"/>
+                    <field name="active" widget="boolean_toggle"/>
                 </group>
             </form>
         </field>
