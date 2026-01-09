@@ -110,26 +110,26 @@
   </record>
 
   <record id="view_hr_contract_rebuild_vacation_wizard_form" model="ir.ui.view">
-        <field name="name">hr.contract.rebuild.vacation.wizard.form</field>
-        <field name="model">hr.contract.rebuild.vacation.wizard</field>
-        <field name="arch" type="xml">
-            <form string="Confirmar Recalculo de Vacaciones">
-                <group>
-                    <p style="color:red;">
-                        Esta acción eliminará todos los registros actuales de vacaciones 
-                        y los volverá a generar desde cero según la fecha de inicio de contrato.
-                    </p>
-                    <field name="contract_ids" readonly="1"/>
-                </group>
-                <footer>
-                    <button string="Confirmar y Recalcular" type="object" name="action_confirm"
-                            class="btn-primary"/>
-                    <button string="Cancelar" class="btn-secondary" special="cancel"/>
-                </footer>
-            </form>
-        </field>
-    </record>
-
+      <field name="name">hr.contract.rebuild.vacation.wizard.form</field>
+      <field name="model">hr.contract.rebuild.vacation.wizard</field>
+      <field name="arch" type="xml">
+          <form string="Confirmar Recalculo de Vacaciones">
+              <group>
+                  <p style="color:red;">
+                      Esta acción eliminará todos los registros actuales de vacaciones 
+                      y los volverá a generar desde cero según la fecha de inicio de contrato.
+                  </p>
+                  <field name="contract_ids" readonly="1"/>
+              </group>
+              <footer>
+                  <button string="Confirmar y Recalcular" type="object" name="action_confirm"
+                          class="btn-primary"/>
+                  <button string="Cancelar" class="btn-secondary" special="cancel"/>
+              </footer>
+          </form>
+      </field>
+  </record>
+  <!--
   <record id="hr_contract_form_inherit_penta" model="ir.ui.view">
     <field name="name">view.hr.contract.inherit.penta</field>
     <field name="model">hr.contract</field>
@@ -140,5 +140,5 @@
       </xpath>
     </field>
   </record>
-
+  -->
 </odoo>
