@@ -64,6 +64,15 @@ class HrEmployee(models.Model):
         digits=(16, 2),   # 2 decimales; 
         default=0.0,
     )
+    has_subrogation = fields.Boolean(string="Tiene subrogación")
+    # Campos condicionados por is_subrogated del tipo elegido:
+    subrogated_name = fields.Char(string="Nombre de subrogado")
+    subrogated_certificate = fields.Char(string="Certificado de sustituto directo")
+    subrogated_identification_type = fields.Selection([
+        ("cedula", "Cédula"),
+        ("passport", "Pasaporte"),
+    ], string="Tipo de identificación del subrogado")
+    subrogated_identification = fields.Char(string="Identificación del subrogado")
     # Empleado sustituto
     is_substitute = fields.Boolean(string="¿Es substituto?")
     #type_substitute = fields.Many2one('hr.substitute.type', string="Tipo de sustituto")
