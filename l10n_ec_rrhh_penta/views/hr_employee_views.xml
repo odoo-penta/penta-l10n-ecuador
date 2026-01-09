@@ -40,8 +40,9 @@
                 <group string="Discapacidad" name="penta_disability" col="8">
                     <!-- Columna izquierda (50%) -->
                     <group col="2" colspan="4">
-                    <field name="disability_type_id" options="{'no_open': False, 'no_create': False}"/>
-                    <field name="disability_percentage" invisible="not disability_type_id"/>
+                        <field name="disabled"/>
+                        <field name="disability_type_id" invisible="not disabled" options="{'no_open': False, 'no_create': False}"/>
+                        <field name="disability_percentage" invisible="not disability_type_id"/>
                     </group>
 
                     <!-- Columna derecha (50%) -->
@@ -74,7 +75,6 @@
 
         </field>
     </record>
-
     
     <!-- Cargas familiares: botón y contador junto a children -->
     <record id="view_employee_form_inherit_l10n_ec_rrhh_penta_family" model="ir.ui.view">
@@ -89,6 +89,18 @@
                         type="action"
                         class="oe_highlight"
                         context="{'default_employee_id': id}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Ocultar campo discapacidad de pestaña Nomina -->
+    <record id="payroll_hr_employee_view_form_inherit_penta" model="ir.ui.view">
+        <field name="name">hr.payroll.employee.view.form.inherit.penta</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr_payroll.payroll_hr_employee_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='disabled']" position="attributes">
+                <attribute name="invisible">1</attribute>
             </xpath>
         </field>
     </record>
