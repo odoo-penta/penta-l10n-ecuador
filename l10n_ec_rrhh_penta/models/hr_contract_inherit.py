@@ -175,7 +175,7 @@ class HrContract(models.Model):
         default=2,
         help="Cantidad de decimales que se utilizarán para los porcentajes en la distribución analítica."
     )
-    reason_end = fields.Many2one('hr.contract.end', string="Motivo salida legal")
+    #reason_end = fields.Many2one('hr.contract.end', string="Motivo salida legal")
 
     # ====== Cómputos ======
     @api.depends("relation_type")
