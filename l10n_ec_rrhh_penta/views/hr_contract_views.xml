@@ -130,4 +130,15 @@
         </field>
     </record>
 
+  <record id="hr_contract_form_inherit_penta" model="ir.ui.view">
+    <field name="name">view.hr.contract.inherit.penta</field>
+    <field name="model">hr.contract</field>
+    <field name="inherit_id" ref="hr_payroll.hr_contract_form_inherit"/>
+    <field name="arch" type="xml">
+      <xpath expr="//group[@name='contract_details_2']/separator" position="attributes">
+        <attribute name="string">Tiempo parcial</attribute>
+      </xpath>
+    </field>
+  </record>
+
 </odoo>
