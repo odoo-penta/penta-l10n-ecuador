@@ -93,9 +93,6 @@ class L10nEcPtbFamilyDependents(models.Model):
                 ])
                 if clash:
                     raise ValidationError("Ya existe una carga familiar con la misma cédula para este empleado.")
-                emp_exist = self.env['hr.employee'].search([('identification_id', '=', rec.vat)])
-                if emp_exist:
-                    raise ValidationError("El numero de cedula ya existe en el sistema como empleado: %s" % emp_exist.name)
             else:
                 raise ValidationError("Debe ingresar una cédula del dependiente.")
 
