@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-from . import education_level
+
 from . import substitute_type
+from . import education_level
 from . import disability_type
 from . import family_dependent
 from . import hr_employee_inherit

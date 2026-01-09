@@ -66,7 +66,9 @@
                 <group name="substitute">
                     <group string="Sustituto" col="2">
                         <field name="is_substitute"/>
+                        <!--
                         <field name="type_substitute" invisible="not is_substitute"/>
+                        -->
                         <field name="relationship_substitute" invisible="not is_substitute"/>
                     </group>
                 </group>
