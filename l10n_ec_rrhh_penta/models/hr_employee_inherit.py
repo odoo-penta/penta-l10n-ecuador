@@ -279,28 +279,6 @@ class HrEmployee(models.Model):
             emp.num_family_dependent_tax = sum(
                 1 for dep in emp.family_dependent_ids if dep.use_for_income_tax
             )
-
-    # Validaciones de subrogación
-    @api.constrains("has_subrogation", "subrogated_identification_type", "subrogated_identification")
-    def _check_subrogation_fields(self):
-        for emp in self:
-            if emp.has_subrogation:
-                # Deben completarse los campos claves
-                missing = []
-                if not emp.subrogated_name:
-                    missing.append("Nombre de subrogado")
-                if not emp.subrogated_identification_type:
-                    missing.append("Tipo de identificación de subrogado")
-                if not emp.subrogated_identification:
-                    missing.append("Identificación de subrogado")
-                if missing:
-                    raise ValidationError(
-                        _("Debe completar los siguientes campos por subrogación: %s") % ", ".join(missing)
-                    )
-                # Validador de cédula
-                if emp.subrogated_identification_type == "cedula":
-                    if not ec_validate_cedula(emp.subrogated_identification):
-                        raise ValidationError(_("La cédula del subrogado no es válida."))
                     
     @api.constrains("identification_id")
     def _check_identification_unique_and_valid(self):
