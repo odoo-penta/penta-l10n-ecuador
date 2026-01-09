@@ -48,6 +48,18 @@ class HrAccountSection(models.Model):
     _sql_constraints = [
         ("hr_account_section_name_uniq", "unique(name)", "El nombre de la sección debe ser único."),
     ]
+    
+
+class HrContractEnd(models.Model):
+    _name = "hr.contract.end"
+    _description = "Motivos finalización contrato"
+    _order = "name"
+    
+    _sql_constraints = [
+        ("hr_contract_end_name_uniq", "unique(name)", "El nombre del motivo debe ser único."),
+    ]
+    
+    name = fields.Char(string="Nombre", required=True)
 
 
 class HrContract(models.Model):
@@ -163,6 +175,7 @@ class HrContract(models.Model):
         default=2,
         help="Cantidad de decimales que se utilizarán para los porcentajes en la distribución analítica."
     )
+    reason_end = fields.Many2one('hr.contract.end', string="Motivo salida legal")
 
     # ====== Cómputos ======
     @api.depends("relation_type")

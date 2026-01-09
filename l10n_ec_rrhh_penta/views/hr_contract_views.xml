@@ -1,5 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
+  <record id="view_hr_contract_end_lis" model="ir.ui.view">
+        <field name="name">hr.contract.end.list</field>
+        <field name="model">hr.contract.end</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_hr_contract_end_form" model="ir.ui.view">
+        <field name="name">hr.contract.end.form</field>
+        <field name="model">hr.contract.end</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="name"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_hr_contract_end" model="ir.actions.act_window">
+        <field name="name">Motivo de salida</field>
+        <field name="res_model">hr.contract.end</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_hr_contract_end"
+              name="Motivos de salida contratos"
+              parent="hr.menu_config_employee"
+              action="action_hr_contract_end"
+              sequence="50"/>
+
+
   <!-- Página: Detalles del contrato (antes de Salary Information / information) -->
   <record id="view_hr_contract_details" model="ir.ui.view">
     <field name="name">view.hr.contract.details</field>
@@ -22,11 +58,12 @@
           </group>
         </page>
       </xpath>
-      <xpath expr="//field[@name='notes']" position="attributes">
+      <xpath expr="//group[@name='notes_group']" position="attributes">
         <attribute name="invisible">1</attribute>
       </xpath>
       <xpath expr="//field[@name='date_end']" position="after">
-        <field name="notes" string="Motivo interno"/>
+        <field name="reason_end"/>
+        <field name="notes" string="Motivo salida interno"/>
       </xpath>
     </field>
   </record>
