@@ -44,14 +44,6 @@
                         <field name="disability_type_id" invisible="not disabled" options="{'no_open': False, 'no_create': False}"/>
                         <field name="disability_percentage" invisible="not disability_type_id"/>
                     </group>
-                    <!-- Columna derecha (50%) -->
-                    <group string="Datos de subrogación" col="2" colspan="4">
-                        <field name="has_subrogation"/>
-                        <field name="subrogated_name" invisible="not has_subrogation"/>
-                        <field name="subrogated_certificate" invisible="not has_subrogation"/>
-                        <field name="subrogated_identification_type" invisible="not has_subrogation"/>
-                        <field name="subrogated_identification" invisible="not has_subrogation"/>
-                    </group>
                 </group>
 
                 <group name="disability" position="after">
@@ -64,7 +56,7 @@
                 </group>
 
                 <group name="substitute">
-                    <group string="Sustituto" col="2">
+                    <group string="Trabajador Sustituto" col="2">
                         <field name="is_substitute"/>
                         <!--
                         <field name="type_substitute" invisible="not is_substitute"/>
