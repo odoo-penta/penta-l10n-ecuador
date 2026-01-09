@@ -26,9 +26,7 @@
         <attribute name="invisible">1</attribute>
       </xpath>
       <xpath expr="//field[@name='date_end']" position="after">
-        <group name="notes_group" string="Notes">
-          <field name="notes" nolabel="1" placeholder="Type in notes about this contract..."/>
-        </group>
+        <field name="notes" string="Motivo interno"/>
       </xpath>
     </field>
   </record>
