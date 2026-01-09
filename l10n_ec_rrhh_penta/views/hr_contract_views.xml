@@ -22,6 +22,14 @@
           </group>
         </page>
       </xpath>
+      <xpath expr="//field[@name='notes']" position="attributes">
+        <attribute name="invisible">1</attribute>
+      </xpath>
+      <xpath expr="//field[@name='date_end']" position="after">
+        <group name="notes_group" string="Notes">
+          <field name="notes" nolabel="1" placeholder="Type in notes about this contract..."/>
+        </group>
+      </xpath>
     </field>
   </record>
 
@@ -63,7 +71,7 @@
                       options="{'product_field': 'product_id', 'account_field': 'account_id', 'force_applicability': 'optional'}"/>
           </field>
       </field>
-  </record>  
+  </record>
 
   <!-- Página: Otros parámetros (después de Salary Information / information) -->
   <record id="view_hr_contract_other_parameters" model="ir.ui.view">

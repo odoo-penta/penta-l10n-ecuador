@@ -51,7 +51,7 @@ class HrEmployee(models.Model):
     payment_mode_id = fields.Many2one("hr.payment.mode", string="Modo de pago")
     
     children = fields.Integer(
-        string="Número de cargas familiares",
+        string="Cargas familiares para utilidades",
         compute="_compute_children_from_dependents",
         store=True, readonly=True,
     )
