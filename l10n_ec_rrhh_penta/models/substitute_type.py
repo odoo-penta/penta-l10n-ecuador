@@ -13,5 +13,3 @@ class HrSubstituteType(models.Model):
 
     name = fields.Char(string="Descripción de sustituto", required=True, translate=True)
     active = fields.Boolean(default=True)
-
-    
