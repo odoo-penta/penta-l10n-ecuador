@@ -45,8 +45,7 @@
                         <field name="disability_percentage" invisible="not disability_type_id"/>
                     </group>
                 </group>
-
-                <group name="disability" position="after">
+                <group name="disability">
                     <group string="Enfermedad Catastrófica" col="2">
                         <field name="has_catastrophic_disease"/>
                         <field name="catastrophic_certificate_date" invisible="not has_catastrophic_disease"/>
@@ -54,7 +53,6 @@
                         <field name="catastrophic_description" invisible="not has_catastrophic_disease"/>
                     </group>
                 </group>
-
                 <group name="substitute">
                     <group string="Trabajador Sustituto" col="2">
                         <field name="is_substitute"/>
@@ -98,7 +96,7 @@
             <xpath expr="//field[@name='disabled']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
-            <xpath expr="//field[@name='registration_number']" position="after">
+            <xpath expr="//field[@name='legal_name']" position="after">
                 <field name="bank_account_id" context="{'default_partner_id': work_contact_id}" options="{'no_quick_create': True}" readonly="not id"/>
                 <field name="payment_mode_id"/>
             </xpath>
