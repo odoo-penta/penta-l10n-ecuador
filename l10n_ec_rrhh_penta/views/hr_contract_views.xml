@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-  <!--
+
   <record id="view_hr_contract_end_lis" model="ir.ui.view">
       <field name="name">hr.contract.end.list</field>
       <field name="model">hr.contract.end</field>
@@ -34,7 +34,6 @@
             parent="hr.menu_config_employee"
             action="action_hr_contract_end"
             sequence="50"/>
-  -->
 
   <!-- Página: Detalles del contrato (antes de Salary Information / information) -->
   <record id="view_hr_contract_details" model="ir.ui.view">
@@ -62,9 +61,7 @@
         <attribute name="invisible">1</attribute>
       </xpath>
       <xpath expr="//field[@name='date_end']" position="after">
-        <!--
         <field name="reason_end"/>
-        -->
         <field name="notes" string="Motivo salida interno"/>
       </xpath>
     </field>
