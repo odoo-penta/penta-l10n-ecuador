@@ -67,6 +67,7 @@
     </record>
 
     <!-- Tipos de sustituto -->
+    <!-- 
     <record id="view_hr_substitute_type_tree" model="ir.ui.view">
         <field name="name">hr.substitute.type.tree</field>
         <field name="model">hr.substitute.type</field>
@@ -90,7 +91,7 @@
             </form>
         </field>
     </record>
-
+    -->
     <record id="action_hr_disability_type" model="ir.actions.act_window">
         <field name="name">Tipos de discapacidad</field>
         <field name="res_model">hr.disability.type</field>
