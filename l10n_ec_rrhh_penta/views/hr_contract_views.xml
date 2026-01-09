@@ -1,6 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
+  <record id="view_hr_contract_rebuild_vacation_wizard_form" model="ir.ui.view">
+    <field name="name">hr.contract.rebuild.vacation.wizard.form</field>
+    <field name="model">hr.contract.rebuild.vacation.wizard</field>
+    <field name="arch" type="xml">
+        <form string="Confirmar Recalculo de Vacaciones">
+            <group>
+                <p style="color:red;">
+                    Esta acción eliminará todos los registros actuales de vacaciones 
+                    y los volverá a generar desde cero según la fecha de inicio de contrato.
+                </p>
+                <field name="contract_ids" readonly="1"/>
+            </group>
+            <footer>
+                <button string="Confirmar y Recalcular" type="object" name="action_confirm"
+                        class="btn-primary"/>
+                <button string="Cancelar" class="btn-secondary" special="cancel"/>
+            </footer>
+        </form>
+    </field>
+  </record>
+
   <!-- Página: Detalles del contrato (antes de Salary Information / information) -->
   <record id="view_hr_contract_details" model="ir.ui.view">
     <field name="name">view.hr.contract.details</field>
@@ -30,15 +51,6 @@
         <field name="reason_end"/>
         <field name="notes" string="Motivo salida interno"/>
       </xpath>
-    </field>
-  </record>
-
-  <!-- Página: Contratos anteriores (después de Details) -->
-  <record id="view_hr_contract_previous" model="ir.ui.view">
-    <field name="name">view.hr.contract.previous</field>
-    <field name="model">hr.contract</field>
-    <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
-    <field name="arch" type="xml">
       <xpath expr="//page[@name='other']" position="after">
         <page string="Contratos anteriores" name="penta_previous_contracts" invisible="not has_previous_contracts">
           <group>
@@ -57,28 +69,6 @@
           </group>
         </page>
       </xpath>
-    </field>
-  </record>
-
-  <record id="hr_contract_form_view" model="ir.ui.view">
-      <field name="name">hr.contract.form.analytic</field>
-      <field name="model">hr.contract</field>
-      <field name="inherit_id" ref="hr_payroll_account.hr_contract_view_form"/>
-      <field name="arch" type="xml">
-          <field name="analytic_account_id" position="replace">
-                <field name="analytic_distribution" widget="analytic_distribution"
-                      groups="analytic.group_analytic_accounting" optional="hide"
-                      options="{'product_field': 'product_id', 'account_field': 'account_id', 'force_applicability': 'optional'}"/>
-          </field>
-      </field>
-  </record>
-
-  <!-- Página: Otros parámetros (después de Salary Information / information) -->
-  <record id="view_hr_contract_other_parameters" model="ir.ui.view">
-    <field name="name">view.hr.contract.other.parameters.form</field>
-    <field name="model">hr.contract</field>
-    <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
-    <field name="arch" type="xml">
       <xpath expr="//page[@name='information']" position="after">
         <page string="Otros parámetros" name="other_parameters">
           <group>
@@ -109,27 +99,19 @@
     </field>
   </record>
 
-  <record id="view_hr_contract_rebuild_vacation_wizard_form" model="ir.ui.view">
-      <field name="name">hr.contract.rebuild.vacation.wizard.form</field>
-      <field name="model">hr.contract.rebuild.vacation.wizard</field>
+  <record id="hr_contract_form_view" model="ir.ui.view">
+      <field name="name">hr.contract.form.analytic</field>
+      <field name="model">hr.contract</field>
+      <field name="inherit_id" ref="hr_payroll_account.hr_contract_view_form"/>
       <field name="arch" type="xml">
-          <form string="Confirmar Recalculo de Vacaciones">
-              <group>
-                  <p style="color:red;">
-                      Esta acción eliminará todos los registros actuales de vacaciones 
-                      y los volverá a generar desde cero según la fecha de inicio de contrato.
-                  </p>
-                  <field name="contract_ids" readonly="1"/>
-              </group>
-              <footer>
-                  <button string="Confirmar y Recalcular" type="object" name="action_confirm"
-                          class="btn-primary"/>
-                  <button string="Cancelar" class="btn-secondary" special="cancel"/>
-              </footer>
-          </form>
+          <field name="analytic_account_id" position="replace">
+            <field name="analytic_distribution" widget="analytic_distribution"
+                  groups="analytic.group_analytic_accounting" optional="hide"
+                  options="{'product_field': 'product_id', 'account_field': 'account_id', 'force_applicability': 'optional'}"/>
+          </field>
       </field>
   </record>
-  <!--
+
   <record id="hr_contract_form_inherit_penta" model="ir.ui.view">
     <field name="name">view.hr.contract.inherit.penta</field>
     <field name="model">hr.contract</field>
@@ -140,5 +122,5 @@
       </xpath>
     </field>
   </record>
-  -->
+
 </odoo>
