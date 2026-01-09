@@ -36,7 +36,7 @@
                         <field name="relationship" required="1"/>
                         <field name="disability"/>
                         <field name="use_for_income_tax"/>
-                        <field name="is_permanent_charge"/>
+                        <field name="is_permanent_charge" readonly="disability"/>
                         <field name="phone"/>
                         <field name="address"/>
                     </group>

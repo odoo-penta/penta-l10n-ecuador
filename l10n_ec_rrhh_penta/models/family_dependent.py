@@ -28,7 +28,7 @@ class L10nEcPtbFamilyDependents(models.Model):
     _order = "employee_id, relationship, name"
 
     employee_id = fields.Many2one("hr.employee", string="Empleado", required=True, ondelete="cascade")
-    vat = fields.Char(string="Número de identificación", size=13)
+    vat = fields.Char(string="Número de identificación", required=True, size=13)
     name = fields.Char(string="Nombre", required=True)
     birthdate = fields.Date(string="Fecha de nacimiento", required=True)
     gender = fields.Selection([("male", "Masculino"), ("female", "Femenino")], string="Sexo")
@@ -45,8 +45,11 @@ class L10nEcPtbFamilyDependents(models.Model):
     phone = fields.Char(string="Teléfono", size=20)
     address = fields.Char(string="Dirección")
     age_years = fields.Integer(string="Edad (años)", compute="_compute_age", store=False)
-
     
+    @api.onchange('disability')
+    def _onchange_disability(self):
+        if self.disability:
+            self.is_permanent_charge = True
 
     @api.depends("birthdate")
     def _compute_age(self):
@@ -90,6 +93,9 @@ class L10nEcPtbFamilyDependents(models.Model):
                 ])
                 if clash:
                     raise ValidationError("Ya existe una carga familiar con la misma cédula para este empleado.")
+                emp_exist = self.env['hr.employee'].search([('vat', '=', rec.vat)])
+                if emp_exist:
+                    raise ValidationError("El numero de cedula ya existe en el sistema como empleado: %s" % emp_exist.name)
             else:
                 raise ValidationError("Debe ingresar una cédula del dependiente.")
 
