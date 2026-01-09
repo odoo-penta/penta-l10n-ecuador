@@ -40,7 +40,6 @@ class HrEmployee(models.Model):
     disability_type_id = fields.Many2one(
         "hr.disability.type", string="Tipo de discapacidad"
     )
-    has_subrogation = fields.Boolean(string="Tiene subrogación", compute="_compute_has_subrogation", store=False)
     
     blood_type = fields.Selection([
         ("O+", "O+"), ("O-", "O-"),
@@ -65,46 +64,19 @@ class HrEmployee(models.Model):
         digits=(16, 2),   # 2 decimales; 
         default=0.0,
     )
-
-    @api.constrains("disability_percentage")
-    def _check_disability_percentage(self):
-        for rec in self:
-            if rec.disability_percentage is not False:
-                if rec.disability_percentage < 0.0 or rec.disability_percentage > 100.0:
-                    raise ValidationError(
-                        _("El porcentaje de discapacidad debe estar entre 0 y 100.")
-                    )
-    
-    @api.depends(
-        "family_dependent_ids",
-        "family_dependent_ids.relationship",
-        "family_dependent_ids.is_child",
-        "family_dependent_ids.birthdate",
-    )
-    def _compute_children_from_dependents(self):
-        for emp in self:
-            count = 0
-            for dep in emp.family_dependent_ids:
-                # Verificar hijo menor de 18, cónyuge o hijo con discapacidad
-                if dep.relationship == "spouse":
-                    count += 1
-                elif dep.relationship == "children":
-                    if dep.disability or (dep.birthdate and (fields.Date.today() - dep.birthdate).days / 365 < 18):
-                        count += 1
-            emp.children = count
-
-    @api.depends("disability_type_id", "disability_type_id.is_subrogated")
-    def _compute_has_subrogation(self):
-        for rec in self:
-            rec.has_subrogation = bool(rec.disability_type_id and rec.disability_type_id.is_subrogated)
-    # Campos condicionados por is_subrogated del tipo elegido:
+    # Campos condicionados por subrogacion:
+    has_subrogation = fields.Boolean(string="Tiene subrogación")
     subrogated_name = fields.Char(string="Nombre de subrogado")
-    subrogated_certificate = fields.Char(string="Certificado de sustituto directo")
+    subrogated_certificate = fields.Char(string="Certificado de subrogado")
     subrogated_identification_type = fields.Selection([
         ("cedula", "Cédula"),
         ("passport", "Pasaporte"),
     ], string="Tipo de identificación del subrogado")
     subrogated_identification = fields.Char(string="Identificación del subrogado")
+    # Empleado sustituto
+    is_substitute = fields.Boolean(string="¿Es substituto?")
+    type_substitute = fields.Many2one('hr.substitute.type', string="Tipo de sustituto")
+    relationship_substitute = fields.Char(string="Parentesco")
 
     # 3) Estado civil: reordenar y traducir “Unión de hecho”
     marital = fields.Selection(
@@ -153,6 +125,33 @@ class HrEmployee(models.Model):
         help="Ingrese días a restar; al guardar se consumen por FIFO desde el período más antiguo.",
         default=0,
     )
+
+    @api.constrains("disability_percentage")
+    def _check_disability_percentage(self):
+        for rec in self:
+            if rec.disability_percentage is not False:
+                if rec.disability_percentage < 0.0 or rec.disability_percentage > 100.0:
+                    raise ValidationError(
+                        _("El porcentaje de discapacidad debe estar entre 0 y 100.")
+                    )
+    
+    @api.depends(
+        "family_dependent_ids",
+        "family_dependent_ids.relationship",
+        "family_dependent_ids.is_child",
+        "family_dependent_ids.birthdate",
+    )
+    def _compute_children_from_dependents(self):
+        for emp in self:
+            count = 0
+            for dep in emp.family_dependent_ids:
+                # Verificar hijo menor de 18, cónyuge o hijo con discapacidad
+                if dep.relationship == "spouse":
+                    count += 1
+                elif dep.relationship == "children":
+                    if dep.disability or (dep.birthdate and (fields.Date.today() - dep.birthdate).days / 365 < 18):
+                        count += 1
+            emp.children = count
 
     def action_open_contracts(self):
         """Abre los contratos del empleado en una vista de lista/form."""
@@ -291,10 +290,10 @@ class HrEmployee(models.Model):
             )
 
     # Validaciones de subrogación
-    @api.constrains("disability_type_id", "subrogated_identification_type", "subrogated_identification")
+    @api.constrains("has_subrogation", "subrogated_identification_type", "subrogated_identification")
     def _check_subrogation_fields(self):
         for emp in self:
-            if emp.disability_type_id and emp.disability_type_id.is_subrogated:
+            if emp.has_subrogation:
                 # Deben completarse los campos claves
                 missing = []
                 if not emp.subrogated_name:

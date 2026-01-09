@@ -47,7 +47,6 @@
         <field name="arch" type="xml">
             <list>
                 <field name="name"/>
-                <field name="is_subrogated"/>
                 <field name="active"/>
             </list>
         </field>
@@ -60,8 +59,32 @@
             <form>
                 <group>
                     <field name="name"/>
-                    <field name="is_subrogated"/>
                     <field name="notes"/>
+                    <field name="active"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tipos de sustituto -->
+    <record id="view_hr_substitute_type_tree" model="ir.ui.view">
+        <field name="name">hr.substitute.type.tree</field>
+        <field name="model">hr.substitute.type</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_hr_substitute_type_form" model="ir.ui.view">
+        <field name="name">hr.substitute.type.form</field>
+        <field name="model">hr.substitute.type</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="name"/>
                     <field name="active"/>
                 </group>
             </form>
