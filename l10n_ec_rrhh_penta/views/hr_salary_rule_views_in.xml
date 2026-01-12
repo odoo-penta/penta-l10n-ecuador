@@ -34,7 +34,7 @@
     <field name="inherit_id" ref="hr_payroll.hr_salary_rule_list"/>
     <field name="arch" type="xml">
       <xpath expr="//field[@name='name']" position="before">
-        <field name="sequence" column_invisible="True" widget="handle"/>
+        <field name="sequence" widget="handle"/>
       </xpath>
     </field>
   </record>
