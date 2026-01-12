@@ -76,6 +76,7 @@ class HrEmployee(models.Model):
     # Empleado sustituto
     is_substitute = fields.Boolean(string="¿Es substituto?")
     substitute_name = fields.Char(string="Nombre del dependiente")
+    substitute_identification = fields.Char(string="Identificación del sustituto")
     type_substitute = fields.Many2one('hr.substitute.type', string="Tipo de sustituto")
     relationship_substitute = fields.Many2one('hr.substitute.relationship', string="Parentesco")
 

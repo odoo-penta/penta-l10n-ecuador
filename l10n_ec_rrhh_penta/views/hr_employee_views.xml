@@ -57,6 +57,7 @@
                     <group string="Trabajador Sustituto" col="2">
                         <field name="is_substitute"/>
                         <field name="substitute_name" required="is_substitute" invisible="not is_substitute"/>
+                        <field name="substitute_identification" required="is_substitute" invisible="not is_substitute"/>
                         <field name="type_substitute" required="is_substitute" invisible="not is_substitute"/>
                         <field name="relationship_substitute" required="is_substitute" invisible="not is_substitute"/>
                     </group>
