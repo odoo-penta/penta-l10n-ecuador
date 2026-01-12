@@ -6,6 +6,9 @@
     <field name="model">hr.salary.rule</field>
     <field name="inherit_id" ref="hr_payroll.hr_salary_rule_form"/>
     <field name="arch" type="xml">
+      <xpath expr="//field[@name='name']" position="before">
+        <field name="sequence" widget="handle"/>
+      </xpath>
       <xpath expr="//page[@name='accounting']" position="inside">
         <group string="Cuentas por sección contable">
           <field name="account_section_line_ids"
