@@ -6,9 +6,6 @@
     <field name="model">hr.salary.rule</field>
     <field name="inherit_id" ref="hr_payroll.hr_salary_rule_form"/>
     <field name="arch" type="xml">
-      <xpath expr="//field[@name='name']" position="before">
-        <field name="sequence" widget="handle"/>
-      </xpath>
       <xpath expr="//page[@name='accounting']" position="inside">
         <group string="Cuentas por sección contable">
           <field name="account_section_line_ids"
@@ -31,5 +28,15 @@
     </field>
   </record>
 
+  <record id="hr_salary_rule_list_inherit_penta" model="ir.ui.view">
+    <field name="name">hr.salary.rule.list.inherit.penta</field>
+    <field name="model">hr.salary.rule</field>
+    <field name="inherit_id" ref="hr_payroll.hr_salary_rule_list"/>
+    <field name="arch" type="xml">
+      <xpath expr="//field[@name='name']" position="before">
+        <field name="sequence" column_invisible="True" widget="handle"/>
+      </xpath>
+    </field>
+  </record>
 
 </odoo>
