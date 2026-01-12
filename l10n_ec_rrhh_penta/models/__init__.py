@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from . import substitute_type
+from . import substitute_relationship
 from . import education_level
 from . import disability_type
 from . import family_dependent

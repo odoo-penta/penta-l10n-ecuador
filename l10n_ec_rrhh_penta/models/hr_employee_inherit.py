@@ -77,7 +77,7 @@ class HrEmployee(models.Model):
     is_substitute = fields.Boolean(string="¿Es substituto?")
     substitute_name = fields.Char(string="Nombre del dependiente")
     type_substitute = fields.Many2one('hr.substitute.type', string="Tipo de sustituto")
-    relationship_substitute = fields.Char(string="Parentesco")
+    relationship_substitute = fields.Many2one('hr.substitute.relationship', string="Parentesco")
 
     # 3) Estado civil: reordenar y traducir “Unión de hecho”
     marital = fields.Selection(
