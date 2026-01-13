@@ -35,6 +35,9 @@
         <field name="model">hr.employee</field>
         <field name="inherit_id" ref="hr.view_employee_form"/>
         <field name="arch" type="xml">
+            <xpath expr="//field[@name='disabled']" position="attributes">
+                <attribute name="string">¿Tiene discapacidad?</attribute>
+            </xpath>
             <xpath expr="//group[@name='emergency']" position="after">
                 <!-- Parent con 8 columnas para granularidad (pares de 2 col) -->
                 <group string="Discapacidad" name="penta_disability" col="8">
