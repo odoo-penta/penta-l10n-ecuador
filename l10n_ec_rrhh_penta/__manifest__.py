@@ -20,7 +20,7 @@
     'website': 'https://pentalab.tech/',
     "license": "LGPL-3",
     'category': 'Human Resources/Employees',
-    "version": "18.0.6.2.4",
+    "version": "18.0.6.2.5",
     "depends": [
         "hr",
         "hr_holidays",
@@ -53,7 +53,6 @@
         "views/config_views.xml",
         "views/family_dependent_views.xml",
         "views/hr_employee_views.xml",
-        "views/hr_contract_views.xml",
         "views/config_hr_contract_params_views.xml",
         "views/hr_work_location_views.xml",
         "views/hr_leave_type_views.xml",
