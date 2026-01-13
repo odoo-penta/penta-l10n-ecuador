@@ -159,6 +159,7 @@ class HrContract(models.Model):
         help="Cantidad de decimales que se utilizarán para los porcentajes en la distribución analítica."
     )
     reason_end = fields.Many2one('hr.departure.reason', string="Motivo salida legal")
+    code_iess = fiels.Char(string="Código novedad IESS", help="Aviso de entrada")
     
     @api.model
     def default_get(self, fields_list):

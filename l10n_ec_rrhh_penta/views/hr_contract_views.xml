@@ -35,6 +35,7 @@
               <field name="l10n_ec_ptb_years_in_service" readonly="1"/>
               <field name="l10n_ec_ptb_sectoral_code_iess"/>
               <field name="l10n_ec_ptb_code_mrl"/>
+              <field name="code_iess"/>
             </group>
             <group string="Documentos / Valores">
               <field name="l10n_ec_ptb_fortnight"/>
