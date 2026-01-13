@@ -105,11 +105,11 @@
       <field name="model">hr.contract</field>
       <field name="inherit_id" ref="hr_payroll_account.hr_contract_view_form"/>
       <field name="arch" type="xml">
-          <field name="analytic_account_id" position="replace">
+          <xpath name="analytic_account_id" position="replace">
             <field name="analytic_distribution" widget="analytic_distribution"
                   groups="analytic.group_analytic_accounting" optional="hide"
                   options="{'product_field': 'product_id', 'account_field': 'account_id', 'force_applicability': 'optional'}"/>
-          </field>
+          </xpath>
       </field>
   </record>
 
