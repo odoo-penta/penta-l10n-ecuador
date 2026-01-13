@@ -99,29 +99,20 @@
       </xpath>
     </field>
   </record>
-
-  <record id="hr_contract_view_form_inherit_penta" model="ir.ui.view">
-      <field name="name">hr.contract.view.form.inherit.penta</field>
+  <!--
+  <record id="hr_contract_form_view" model="ir.ui.view">
+      <field name="name">hr.contract.form.analytic</field>
       <field name="model">hr.contract</field>
       <field name="inherit_id" ref="hr_payroll_account.hr_contract_view_form"/>
       <field name="arch" type="xml">
-          <xpath expr="//group[@name='contract_details']/group[field[@name='analytic_account_id']]" position="replace">
-            <group>
-              <separator string="Accounting"/>
-              <field name="analytic_distribution"
-                      widget="analytic_distribution"
-                      groups="analytic.group_analytic_accounting"
-                      optional="hide"
-                      options="{
-                          'product_field': 'product_id',
-                          'account_field': 'account_id',
-                          'force_applicability': 'optional'
-                      }"/>
-            </group>
+          <field name="analytic_account_id" position="replace">
+            <field name="analytic_distribution" widget="analytic_distribution"
+                  groups="analytic.group_analytic_accounting" optional="hide"
+                  options="{'product_field': 'product_id', 'account_field': 'account_id', 'force_applicability': 'optional'}"/>
           </xpath>
       </field>
   </record>
-
+  -->
   <record id="hr_contract_form_inherit_penta" model="ir.ui.view">
     <field name="name">view.hr.contract.inherit.penta</field>
     <field name="model">hr.contract</field>
