@@ -118,3 +118,21 @@ class AccountPayment(models.Model):
                         'amount_cash': payment.amount,
                     })]
         return res
+    
+    def _prepare_move_line_default_vals(self, **kwargs):
+        # Detectar si penta_anticipos está instalado
+        module_installed = self.env['ir.module.module'].sudo().search([
+            ('name', '=', 'penta_anticipos'),
+            ('state', '=', 'installed')
+        ], limit=1)
+
+        if module_installed and self.is_cashbox_deposit:
+            _logger.info(
+                "[POS][DEPOSITO] Pago es depósito de caja y penta_anticipos está instalado. Forzando skip de anticipos."
+            )
+            return super(
+                AccountPayment,
+                self.with_context(force_is_invoice_payment=True)
+            )._prepare_move_line_default_vals(**kwargs)
+
+        return super()._prepare_move_line_default_vals(**kwargs)
