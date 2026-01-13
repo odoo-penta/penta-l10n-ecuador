@@ -58,7 +58,7 @@ class AccountPayment(models.Model):
         ('internal', 'Internal transfer'),
     ],
         string="Payment mode",
-        default='standard',
+        default='expense',
         required=True,
         store=True
     )
@@ -137,15 +137,10 @@ class AccountPayment(models.Model):
     @api.onchange('expense_line_ids', 'amount')
     def _onchange_expense_line_amount(self):
         total = sum(self.expense_line_ids.mapped('amount_cash'))
-        if self.amount and total > self.amount:
-            return {
-                'warning': {
-                    'title': "Advertencia",
-                    'message': "La suma de los gastos (%s) supera el valor del pago (%s)." %
-                            (total, self.amount)
-                }
-            }
-            
+        if self.amount != total:
+            for expense_line in self.expense_line_ids:
+                expense_line.amount_cash = self.amount
+                
     def action_post(self):
         """Override para generar el asiento contable específico cuando hay líneas de gastos"""
         for payment in self:
