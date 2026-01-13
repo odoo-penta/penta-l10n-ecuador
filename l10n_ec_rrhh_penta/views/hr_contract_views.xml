@@ -105,7 +105,7 @@
       <field name="model">hr.contract</field>
       <field name="inherit_id" ref="hr_payroll_account.hr_contract_view_form"/>
       <field name="arch" type="xml">
-          <xpath expr="//group[@name='contract_details']/group[separator[@string='Accounting']]" position="replace">
+          <xpath expr="//group[@name='contract_details']/group[field[@name='analytic_account_id']]" position="replace">
             <group>
               <separator string="Accounting"/>
               <field name="analytic_distribution"
