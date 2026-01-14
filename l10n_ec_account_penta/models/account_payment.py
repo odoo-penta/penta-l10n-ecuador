@@ -124,7 +124,7 @@ class AccountPayment(models.Model):
     #     if self.internal_transfer_cash:
     #         self.batch_registration = False
 
-    '''
+    
     @api.constrains('expense_line_ids', 'amount')
     def _check_expense_lines_total(self):
         for payment in self:
@@ -134,10 +134,11 @@ class AccountPayment(models.Model):
                     "The sum of the expense line amounts (%s) cannot be greater than the payment amount (%s)." 
                     % (total_expenses, payment.amount)
                 ))
-    '''
 
     @api.onchange('expense_line_ids', 'amount')
     def _onchange_expense_line_amount(self):
+        if not self.is_cashbox_deposit:
+            return
         total = sum(self.expense_line_ids.mapped('amount_cash'))
         if self.amount != total:
             for expense_line in self.expense_line_ids:
@@ -147,7 +148,7 @@ class AccountPayment(models.Model):
         return super(AccountPayment, self).action_post()
         """Override para generar el asiento contable específico cuando hay líneas de gastos"""
         for payment in self:
-            if payment.payment_mode == 'expense':
+            if payment.payment_mode == 'expense' and payment.advanced_payments:
                 total_expenses = sum(payment.expense_line_ids.mapped('amount_cash'))
                 '''
                 if abs(total_expenses - payment.amount) > 0.01:
@@ -221,7 +222,7 @@ class AccountPayment(models.Model):
                 payment.move_id = move.id
                 return super(AccountPayment, payment).action_post()
             
-            if payment.payment_mode == 'internal':
+            if payment.payment_mode == 'internal' and payment.advanced_payments:
 
                 if not payment.destination_journal:
                     raise ValidationError(_(

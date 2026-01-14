@@ -48,14 +48,17 @@
                         <field name="payment_mode" widget="radio"/>
                     </group>
                     <h3 invisible="payment_mode != 'expense'">Accounting Accounts</h3>
-                    <field name="expense_line_ids" readonly="state != 'draft'" invisible="payment_mode != 'expense'">
-                        <list string="Expense lines" editable="bottom">
-                            <field name="currency_id" column_invisible="1"/>
-                            <field name="account_id" />
-                            <field name="partner_id" />
-                            <field name="amount_cash" />
-                        </list>
-                    </field>
+                    <group invisible="payment_mode != 'expense'">
+                        <field name="expense_line_ids" readonly="state != 'draft'" >
+                            <list string="Expense lines" editable="bottom">
+                                <field name="currency_id" column_invisible="1"/>
+                                <field name="account_id" />
+                                <field name="partner_id" />
+                                <field name="amount_cash" />
+                            </list>
+                        </field>
+                    </group>
+                   
                     <group col="12" invisible="payment_mode != 'expense'">
                         <group colspan="10">
                         </group>
