@@ -48,7 +48,7 @@
                         <field name="payment_mode" widget="radio"/>
                     </group>
                     <h3 invisible="payment_mode != 'expense'">Accounting Accounts</h3>
-                    <group invisible="payment_mode != 'expense'">
+                    <group invisible="payment_mode != 'expense'" name="expense_lines">
                         <field name="expense_line_ids" readonly="state != 'draft'" >
                             <list string="Expense lines" editable="bottom">
                                 <field name="currency_id" column_invisible="1"/>
