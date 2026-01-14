@@ -49,7 +49,7 @@
             <xpath expr="//page[@id='advance_options']/group/field[@name='payment_mode']" position="attributes">
                 <attribute name="readonly">is_cashbox_deposit</attribute>
             </xpath>
-            <xpath expr="//page[@id='advance_options']/group[@name='expense_lines']/field[@name='expense_line_ids']" position="after">
+            <xpath expr="//field[@name='expense_line_ids']" position="after">
                 <field name="expense_line_ids" readonly="1" invisible="payment_mode != 'expense' or not is_cashbox_deposit">
                     <list string="Expense lines">
                         <field name="currency_id" column_invisible="1"/>
@@ -59,7 +59,7 @@
                     </list>
                 </field>
             </xpath>
-            <xpath expr="//page[@id='advance_options']/group[@name='expense_lines']/field[@name='expense_line_ids']" position="attributes">
+            <xpath expr="//field[@name='expense_line_ids']" position="attributes">
                 <attribute name="invisible">is_cashbox_deposit</attribute>
             </xpath>
             <xpath expr="//page[@id='advance_options']//field[@name='difference_expense_amount']" position="attributes">
