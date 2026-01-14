@@ -136,7 +136,7 @@
                                     <tr style="text-align:left;">
                                         <td><t t-esc="deposit.name or ''"/></td>
                                         <td><t t-esc="deposit.partner_id.name"/></td>
-                                        <td><t t-esc="deposit.destination_journal.name or ''"/></td>
+                                        <td><t t-esc="deposit.journal_id.name or ''"/></td>
                                         <td><t t-esc="deposit.payment_method_line_id.name or ''"/></td>
                                         <td><t t-esc="deposit.memo or ''"/></td>
                                         <td><t t-esc="deposit.date or ''"/></td>

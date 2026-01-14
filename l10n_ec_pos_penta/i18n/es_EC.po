@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-29 20:22+0000\n"
-"PO-Revision-Date: 2025-12-29 15:29-0500\n"
+"POT-Creation-Date: 2026-01-14 21:14+0000\n"
+"PO-Revision-Date: 2026-01-14 16:16-0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es_EC\n"
@@ -323,7 +323,7 @@ msgstr "Cajas"
 #: model:ir.actions.report,name:l10n_ec_pos_penta.action_cash_closing_report
 #: model:ir.model,name:l10n_ec_pos_penta.model_report_l10n_ec_pos_penta_report_cash_closing_template
 msgid "Cash Closing Report"
-msgstr "Informe de cierre de caja"
+msgstr "Reporte cierre caja"
 
 #. module: l10n_ec_pos_penta
 #: model:ir.actions.report,name:l10n_ec_pos_penta.action_cash_collection_report
@@ -631,6 +631,11 @@ msgid "Credit Note"
 msgstr "Nota de crédito"
 
 #. module: l10n_ec_pos_penta
+#: model:ir.ui.menu,name:l10n_ec_pos_penta.cash_box_move_out_refund_type_menu
+msgid "Credit Notes"
+msgstr "Notas de crédito"
+
+#. module: l10n_ec_pos_penta
 #: model:ir.model.fields,field_description:l10n_ec_pos_penta.field_cash_box__currency_id
 #: model:ir.model.fields,field_description:l10n_ec_pos_penta.field_cash_box_base_wizard__currency_id
 #: model:ir.model.fields,field_description:l10n_ec_pos_penta.field_cash_box_closed_wizard__currency_id
@@ -656,6 +661,13 @@ msgid "Customer"
 msgstr "Cliente"
 
 #. module: l10n_ec_pos_penta
+#: model:ir.ui.menu,name:l10n_ec_pos_penta.cash_box_account_customer_menu
+#: model:ir.ui.menu,name:l10n_ec_pos_penta.cash_box_finance_receivables_menu
+#: model:ir.ui.menu,name:l10n_ec_pos_penta.cash_box_res_partner_menu
+msgid "Customers"
+msgstr "Clientes"
+
+#. module: l10n_ec_pos_penta
 #: model_terms:ir.ui.view,arch_db:l10n_ec_pos_penta.report_cash_closing_template
 #: model_terms:ir.ui.view,arch_db:l10n_ec_pos_penta.report_cash_collection_template
 #: model_terms:ir.ui.view,arch_db:l10n_ec_pos_penta.report_cash_summary_template
@@ -669,6 +681,11 @@ msgstr "Fecha"
 #: model_terms:ir.ui.view,arch_db:l10n_ec_pos_penta.view_cash_box_session_form
 msgid "Deposit"
 msgstr "Deposito"
+
+#. module: l10n_ec_pos_penta
+#: model:ir.model.fields,field_description:l10n_ec_pos_penta.field_cash_box_session__deposit_state
+msgid "Deposit State"
+msgstr "Estado deposito"
 
 #. module: l10n_ec_pos_penta
 #. odoo-python
@@ -740,6 +757,11 @@ msgstr "Borrador"
 #: model:ir.model.fields,field_description:l10n_ec_pos_penta.field_cash_box_closed_wizard__exceeds_limit
 msgid "Exceeds Limit"
 msgstr "Excede el limite"
+
+#. module: l10n_ec_pos_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos_penta.view_account_payment_custom_form_inherit_point_of_sale
+msgid "Expense lines"
+msgstr "Líneas de gastos"
 
 #. module: l10n_ec_pos_penta
 #: model:ir.model.fields,field_description:l10n_ec_pos_penta.field_cash_box_closed_wizard__final_balance
@@ -860,6 +882,7 @@ msgid "Invoice"
 msgstr "Factura"
 
 #. module: l10n_ec_pos_penta
+#: model:ir.ui.menu,name:l10n_ec_pos_penta.cash_box_move_out_invoice_type_menu
 #: model_terms:ir.ui.view,arch_db:l10n_ec_pos_penta.report_cash_billing_template
 #: model_terms:ir.ui.view,arch_db:l10n_ec_pos_penta.report_cash_summary_template
 msgid "Invoices"
@@ -1127,9 +1150,21 @@ msgid "Order"
 msgstr "Orden"
 
 #. module: l10n_ec_pos_penta
+#: model:ir.ui.menu,name:l10n_ec_pos_penta.cash_box_sale_order_menu
+#: model:ir.ui.menu,name:l10n_ec_pos_penta.menu_cash_box_sale_order
+msgid "Orders"
+msgstr "Órdenes"
+
+#. module: l10n_ec_pos_penta
 #: model:ir.module.category,name:l10n_ec_pos_penta.cash_box_access
 #: model:ir.ui.menu,name:l10n_ec_pos_penta.cash_box_root_menu
 msgid "POS PENTA"
+msgstr ""
+
+#. module: l10n_ec_pos_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos_penta.report_cash_billing_template
+#: model_terms:ir.ui.view,arch_db:l10n_ec_pos_penta.report_cash_summary_template
+msgid "Pago"
 msgstr ""
 
 #. module: l10n_ec_pos_penta
@@ -1157,6 +1192,7 @@ msgstr "Método de pago"
 
 #. module: l10n_ec_pos_penta
 #: model:ir.model,name:l10n_ec_pos_penta.model_account_payment
+#: model:ir.ui.menu,name:l10n_ec_pos_penta.cash_box_account_payments_receivable_menu
 #: model_terms:ir.ui.view,arch_db:l10n_ec_pos_penta.report_cash_summary_template
 msgid "Payments"
 msgstr "Pagos"
@@ -1190,15 +1226,30 @@ msgid "Print Cash Box Report"
 msgstr "Imprimir informe de caja"
 
 #. module: l10n_ec_pos_penta
+#: model:ir.ui.menu,name:l10n_ec_pos_penta.cash_box_product_product_menu_sellable
+msgid "Products"
+msgstr "Productos"
+
+#. module: l10n_ec_pos_penta
 #: model:ir.model.fields,field_description:l10n_ec_pos_penta.field_cash_box_coin_line_wizard__quantity
 msgid "Quantity"
 msgstr "Cantidad"
+
+#. module: l10n_ec_pos_penta
+#: model:ir.ui.menu,name:l10n_ec_pos_penta.menu_cash_box_sale_quotations
+msgid "Quotations"
+msgstr "Cotizaciones"
 
 #. module: l10n_ec_pos_penta
 #: model:ir.model.fields,field_description:l10n_ec_pos_penta.field_cash_box__rating_ids
 #: model:ir.model.fields,field_description:l10n_ec_pos_penta.field_cash_box_session__rating_ids
 msgid "Ratings"
 msgstr "Calificaciones"
+
+#. module: l10n_ec_pos_penta
+#: model:ir.ui.menu,name:l10n_ec_pos_penta.cash_box_move_out_receipt_type_menu
+msgid "Receipts"
+msgstr "Ingresos"
 
 #. module: l10n_ec_pos_penta
 #: model_terms:ir.ui.view,arch_db:l10n_ec_pos_penta.report_cash_billing_template
@@ -1256,6 +1307,11 @@ msgstr "Método de pago (SRI)"
 #: model:ir.model.fields,field_description:l10n_ec_pos_penta.field_cash_box_session_movement__order_id
 msgid "Sale Order"
 msgstr "Orden de Venta"
+
+#. module: l10n_ec_pos_penta
+#: model:ir.ui.menu,name:l10n_ec_pos_penta.report_cash_box_sales_team
+msgid "Sales Teams"
+msgstr "Equipo de ventas"
 
 #. module: l10n_ec_pos_penta
 #. odoo-python
@@ -1326,7 +1382,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:l10n_ec_pos_penta.report_cash_billing_template
 #: model_terms:ir.ui.view,arch_db:l10n_ec_pos_penta.report_cash_summary_template
 msgid "Subtotal"
-msgstr "Subtotal"
+msgstr ""
 
 #. module: l10n_ec_pos_penta
 #: model:ir.model.fields,field_description:l10n_ec_pos_penta.field_cash_box_closed_wizard__suggested_balance
@@ -1474,12 +1530,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:l10n_ec_pos_penta.report_cash_collection_template
 #: model_terms:ir.ui.view,arch_db:l10n_ec_pos_penta.report_cash_summary_template
 msgid "Total"
-msgstr "Total"
+msgstr ""
 
 #. module: l10n_ec_pos_penta
 #: model_terms:ir.ui.view,arch_db:l10n_ec_pos_penta.report_cash_collection_template
 msgid "Total General"
-msgstr "Total General"
+msgstr ""
 
 #. module: l10n_ec_pos_penta
 #: model_terms:ir.ui.view,arch_db:l10n_ec_pos_penta.report_cash_summary_template
@@ -1530,6 +1586,16 @@ msgstr "Historial de comunicación del sitio web"
 #: model:ir.model.fields,field_description:l10n_ec_pos_penta.field_cash_box_coin_line_wizard__wizard_id
 msgid "Wizard"
 msgstr "Asistente"
+
+#. module: l10n_ec_pos_penta
+#. odoo-python
+#: code:addons/l10n_ec_pos_penta/models/account_payment.py:0
+msgid ""
+"You cannot confirm the deposit because we already have a confirmed deposit "
+"for the session: %s"
+msgstr ""
+"No puedes confirmar el depósito porque ya tenemos un depósito confirmado "
+"para la sesión: %s"
 
 #. module: l10n_ec_pos_penta
 #. odoo-python

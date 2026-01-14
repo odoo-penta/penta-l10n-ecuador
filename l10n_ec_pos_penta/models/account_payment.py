@@ -29,6 +29,8 @@ class AccountPayment(models.Model):
             res['cash_session_id'] = cash_boxs.current_session_id.id
         
         if res.get('is_cashbox_deposit') and res.get('cash_session_id'):
+            company = self.env.company
+            res['partner_id'] = company.partner_id.id
             session = self.env['cash.box.session'].browse(res['cash_session_id'])
             close_account = session.cash_id.close_account_id
 

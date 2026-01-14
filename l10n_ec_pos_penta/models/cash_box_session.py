@@ -148,13 +148,20 @@ class CashBoxSession(models.Model):
                 return self.env['cash.box'].browse(cash_id).session_seq_id or False
             return False
         
-    def _get_payments(self):
+    def _get_payments(self, report=True):
         """Obtiene los pagos realizados con la sesión (excluye depositos de caja)"""
-        payments = self.env['account.payment'].search([
-            ('cash_session_id', '=', self.id),
-            ('state', 'in', ['in_process', 'paid']),
-            ('is_cashbox_deposit', '=', False),
-        ])
+        if report:
+            p_domain = [
+                ('cash_session_id', '=', self.id),
+                ('state', 'in', ['in_process', 'paid']),
+                ('is_cashbox_deposit', '=', False),
+            ]
+        else:
+            p_domain = [
+                ('cash_session_id', '=', self.id),
+                ('is_cashbox_deposit', '=', False),
+            ]
+        payments = self.env['account.payment'].search(p_domain)
         return payments.filtered(lambda p: p.payment_mode != 'internal')
 
     def _get_invoices(self):
@@ -181,7 +188,7 @@ class CashBoxSession(models.Model):
     def open_payments_view(self):
         self.ensure_one()
         # Obtener pagos de los movimientos
-        payments = self._get_payments()
+        payments = self._get_payments(report=False)
         list_view_id = self.env.ref('account.view_account_payment_tree').id
         form_view_id = self.env.ref('account.view_account_payment_form').id
         return {
@@ -324,7 +331,7 @@ class CashBoxSession(models.Model):
                 # Monto predefinido
                 "default_amount": self.closing_balance,
                 # Referencia / memo
-                "default_memo": _("Deposit generated from %s" % self.name),
+                "default_memo": _("Deposit generated from %s") % self.name,
                 # Diferencia deposito de caja
                 "default_is_cashbox_deposit": True,
                 # Evita selección manual innecesaria

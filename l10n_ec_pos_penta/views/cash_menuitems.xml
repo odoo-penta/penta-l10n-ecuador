@@ -42,6 +42,46 @@
             sequence="40"/>
 
     </menuitem>
+    <!-- CLIENTES -->
+    <menuitem id="cash_box_finance_receivables_menu"
+        parent="cash_box_root_menu"
+        name="Customers"
+        sequence="12">
+
+        <menuitem id="cash_box_move_out_invoice_type_menu"
+            action="account.action_move_out_invoice"
+            groups="l10n_ec_pos_penta.group_cash_box_admin,l10n_ec_pos_penta.group_cash_box_user"
+            sequence="1"/>
+
+        <menuitem id="cash_box_move_out_refund_type_menu"
+            action="account.action_move_out_refund_type"
+            groups="l10n_ec_pos_penta.group_cash_box_admin,l10n_ec_pos_penta.group_cash_box_user"
+            sequence="2"/>
+
+        <menuitem id="cash_box_move_out_receipt_type_menu"
+            action="account.action_move_out_receipt_type"
+            groups="account.group_sale_receipts"
+            sequence="3"/>
+
+        <menuitem id="cash_box_account_payments_receivable_menu"
+            name="Payments"
+            action="account.action_account_payments"
+            groups="l10n_ec_pos_penta.group_cash_box_admin,l10n_ec_pos_penta.group_cash_box_user"
+            sequence="15"/>
+
+        <menuitem id="cash_box_product_product_menu_sellable"
+            name="Products"
+            action="account.product_product_action_sellable"
+            groups="l10n_ec_pos_penta.group_cash_box_admin,l10n_ec_pos_penta.group_cash_box_user"
+            sequence="100"/>
+
+        <menuitem id="cash_box_account_customer_menu"
+            name="Customers"
+            action="account.res_partner_action_customer"
+            groups="l10n_ec_pos_penta.group_cash_box_admin,l10n_ec_pos_penta.group_cash_box_user"
+            sequence="110"/>
+
+    </menuitem>
     <!-- CONFIGURACION -->
     <menuitem
         id="cash_box_config_menu"
