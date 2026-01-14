@@ -72,12 +72,10 @@ class HrPayslip(models.Model):
     
     def _get_new_worked_days_lines(self):
         lines = super()._get_new_worked_days_lines()
-
         # Detectar faltas no pagadas
         unpaid_lines = lines.filtered(
             lambda l: l.work_entry_type_id.code in ('UNPAID', 'LEAVE90')
         )
-
         # Si NO hay faltas → base 30 completa
         if not unpaid_lines:
             base30 = lines.filtered(lambda l: l.work_entry_type_id.code == 'BASE30')
@@ -97,5 +95,4 @@ class HrPayslip(models.Model):
                     'number_of_hours': 0,
                     'contract_id': self.contract_id.id,
                 })
-
         return lines
