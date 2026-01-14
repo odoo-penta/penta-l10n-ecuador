@@ -69,3 +69,33 @@ class HrPayslip(models.Model):
                             item['account_id'] = credit_acc.id
             return ml
         return super()._get_move_line_for_slip_line(slip_line, amount, partner_id=partner_id)
+    
+    def _get_new_worked_days_lines(self):
+        lines = super()._get_new_worked_days_lines()
+
+        # Detectar faltas no pagadas
+        unpaid_lines = lines.filtered(
+            lambda l: l.work_entry_type_id.code in ('UNPAID', 'LEAVE90')
+        )
+
+        # Si NO hay faltas → base 30 completa
+        if not unpaid_lines:
+            base30 = lines.filtered(lambda l: l.work_entry_type_id.code == 'BASE30')
+
+            if base30:
+                base30.number_of_days = 30
+                base30.number_of_hours = 0
+            else:
+                base30_type = self.env['hr.work.entry.type'].search(
+                    [('code', '=', 'BASE30')], limit=1
+                )
+
+                lines += self.env['hr.payslip.worked_days'].new({
+                    'name': 'Base 30 días',
+                    'work_entry_type_id': base30_type.id,
+                    'number_of_days': 30,
+                    'number_of_hours': 0,
+                    'contract_id': self.contract_id.id,
+                })
+
+        return lines

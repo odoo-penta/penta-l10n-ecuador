@@ -127,9 +127,6 @@ class AccountPayment(models.Model):
         ], limit=1)
 
         if module_installed and self.is_cashbox_deposit:
-            _logger.info(
-                "[POS][DEPOSITO] Pago es depósito de caja y penta_anticipos está instalado. Forzando skip de anticipos."
-            )
             return super(
                 AccountPayment,
                 self.with_context(force_is_invoice_payment=True)

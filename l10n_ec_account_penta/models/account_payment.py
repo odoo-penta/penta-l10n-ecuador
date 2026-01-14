@@ -144,15 +144,18 @@ class AccountPayment(models.Model):
                 expense_line.amount_cash = self.amount
                 
     def action_post(self):
+        return super(AccountPayment, self).action_post()
         """Override para generar el asiento contable específico cuando hay líneas de gastos"""
         for payment in self:
             if payment.payment_mode == 'expense':
                 total_expenses = sum(payment.expense_line_ids.mapped('amount_cash'))
+                '''
                 if abs(total_expenses - payment.amount) > 0.01:
                     raise ValidationError(_(
                         "The sum of the expense line amounts (%s) must be equal "
                         "to the payment amount (%s)." % (total_expenses, payment.amount)
                     ))
+                '''
                 # if payment.partner_type == 'supplier':  # Pago proveedor (saliente)
                 #     method_xml = 'account.account_payment_method_manual_out'
                 #     method_lines = payment.journal_id.outbound_payment_method_line_ids

@@ -148,14 +148,12 @@ class CashBoxSession(models.Model):
                 return self.env['cash.box'].browse(cash_id).session_seq_id or False
             return False
         
-    # def _get_payments(self):
-    #     """ Obtiene los pagos realizados con la sesion"""
-    #     return self.env['account.payment'].search([('cash_session_id', '=', self.id),('state', 'in', ['in_process', 'paid']),('internal_transfer_cash', '=', False)])
     def _get_payments(self):
-        """Obtiene los pagos realizados con la sesión (excluye internos)"""
+        """Obtiene los pagos realizados con la sesión (excluye depositos de caja)"""
         payments = self.env['account.payment'].search([
             ('cash_session_id', '=', self.id),
             ('state', 'in', ['in_process', 'paid']),
+            ('is_cashbox_deposit', '=', False),
         ])
         return payments.filtered(lambda p: p.payment_mode != 'internal')
 
