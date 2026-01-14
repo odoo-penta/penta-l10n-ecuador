@@ -124,6 +124,7 @@ class AccountPayment(models.Model):
     #     if self.internal_transfer_cash:
     #         self.batch_registration = False
 
+    '''
     @api.constrains('expense_line_ids', 'amount')
     def _check_expense_lines_total(self):
         for payment in self:
@@ -133,6 +134,7 @@ class AccountPayment(models.Model):
                     "The sum of the expense line amounts (%s) cannot be greater than the payment amount (%s)." 
                     % (total_expenses, payment.amount)
                 ))
+    '''
 
     @api.onchange('expense_line_ids', 'amount')
     def _onchange_expense_line_amount(self):
