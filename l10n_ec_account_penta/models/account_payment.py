@@ -58,7 +58,7 @@ class AccountPayment(models.Model):
         ('internal', 'Internal transfer'),
     ],
         string="Payment mode",
-        default='expense',
+        default='standard',
         required=True,
         store=True
     )
@@ -81,7 +81,7 @@ class AccountPayment(models.Model):
         store=True,
         currency_field='currency_id',
     )
-    
+
     @api.model_create_multi
     def create(self, vals_list):
         from_wizard = (
@@ -114,17 +114,6 @@ class AccountPayment(models.Model):
             total = sum(rec.expense_line_ids.mapped('amount_cash'))
             rec.difference_expense_amount = rec.amount - total        
     
-    # @api.onchange('batch_registration')
-    # def _onchange_batch_registration(self):
-    #     if self.batch_registration:
-    #         self.internal_transfer_cash = False
-
-    # @api.onchange('internal_transfer_cash')
-    # def _onchange_internal_transfer_cash(self):
-    #     if self.internal_transfer_cash:
-    #         self.batch_registration = False
-
-    
     @api.constrains('expense_line_ids', 'amount')
     def _check_expense_lines_total(self):
         for payment in self:
@@ -145,27 +134,21 @@ class AccountPayment(models.Model):
                 expense_line.amount_cash = self.amount
                 
     def action_post(self):
-        return super(AccountPayment, self).action_post()
         """Override para generar el asiento contable específico cuando hay líneas de gastos"""
         for payment in self:
             if payment.payment_mode == 'expense' and payment.advanced_payments:
+                if not payment.expense_line_ids:
+                    raise ValidationError(_(
+                        "You selected Expense payment mode, but no expense lines were found.\n\n"
+                        "Please add expense lines or change the Payment Mode to 'Standard'."
+                    ))
+
                 total_expenses = sum(payment.expense_line_ids.mapped('amount_cash'))
-                '''
                 if abs(total_expenses - payment.amount) > 0.01:
                     raise ValidationError(_(
                         "The sum of the expense line amounts (%s) must be equal "
                         "to the payment amount (%s)." % (total_expenses, payment.amount)
                     ))
-                '''
-                # if payment.partner_type == 'supplier':  # Pago proveedor (saliente)
-                #     method_xml = 'account.account_payment_method_manual_out'
-                #     method_lines = payment.journal_id.outbound_payment_method_line_ids
-                # else:  # Cobro cliente (entrante)
-                #     method_xml = 'account.account_payment_method_manual_in'
-                #     method_lines = payment.journal_id.inbound_payment_method_line_ids
-                # manual_method = self.env.ref(method_xml, raise_if_not_found=False)
-                # method_line = method_lines.filtered(lambda m: m.payment_method_id == manual_method)
-                # journal_account = method_line.payment_account_id
                 method_xml = 'account.account_payment_method_manual_out'
                 manual_method = self.env.ref(method_xml, raise_if_not_found=False)
                 if not manual_method:
@@ -223,7 +206,7 @@ class AccountPayment(models.Model):
                 return super(AccountPayment, payment).action_post()
             
             if payment.payment_mode == 'internal' and payment.advanced_payments:
-
+                    
                 if not payment.destination_journal:
                     raise ValidationError(_(
                         "You must select a destination journal to perform the internal transfer."

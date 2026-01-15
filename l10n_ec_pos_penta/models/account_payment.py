@@ -35,11 +35,12 @@ class AccountPayment(models.Model):
             close_account = session.cash_id.close_account_id
 
             if close_account:
-                res['payment_mode'] = 'expense'
-                res['expense_line_ids'] = [(0, 0, {
-                    'account_id': close_account.id,
-                    'amount_cash': res.get('amount', 0.0),
-                })]
+                res['destination_account_id'] = close_account.id
+            #     res['payment_mode'] = 'expense'
+            #     res['expense_line_ids'] = [(0, 0, {
+            #         'account_id': close_account.id,
+            #         'amount_cash': res.get('amount', 0.0),
+            #     })]
         return res
         
     def action_post(self):
@@ -77,18 +78,18 @@ class AccountPayment(models.Model):
     
     @api.model_create_multi
     def create(self, vals_list):
-        for vals in vals_list:
-            if vals.get('is_cashbox_deposit') and vals.get('cash_session_id'):
-                session = self.env['cash.box.session'].browse(vals['cash_session_id'])
-                close_account = session.cash_id.close_account_id
+        # for vals in vals_list:
+        #     if vals.get('is_cashbox_deposit') and vals.get('cash_session_id'):
+        #         session = self.env['cash.box.session'].browse(vals['cash_session_id'])
+        #         close_account = session.cash_id.close_account_id
 
-                if close_account:
-                    vals['payment_mode'] = 'expense'
+        #         if close_account:
+        #             vals['payment_mode'] = 'expense'
 
-                    vals['expense_line_ids'] = [(0, 0, {
-                        'account_id': close_account.id,
-                        'amount_cash': vals.get('amount', 0.0),
-                    })]
+        #             vals['expense_line_ids'] = [(0, 0, {
+        #                 'account_id': close_account.id,
+        #                 'amount_cash': vals.get('amount', 0.0),
+        #             })]
         payments  = super().create(vals_list)
         for payment in payments:
             if not payment.cash_session_id and self.env.user.has_group('l10n_ec_pos_penta.group_cash_box_user') and payment.payment_type == 'inbound':

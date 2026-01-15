@@ -819,6 +819,11 @@ msgid "Document Types"
 msgstr "Tipos de Documento"
 
 #. module: l10n_ec_account_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_account_penta.res_config_settings_view_form
+msgid "Enables advanced payment management"
+msgstr "Permite una gestión avanzada de los pagos."
+
+#. module: l10n_ec_account_penta
 #: model:ir.model.fields,field_description:l10n_ec_account_penta.field_penta_cb_move_type__id
 msgid "ID"
 msgstr "ID"
@@ -944,6 +949,14 @@ msgid "Advanced Options"
 msgstr "Opciones avanzadas"
 
 #. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_payment__advanced_payments
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_res_company__advanced_payments
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_res_config_settings__advanced_payments
+#: model_terms:ir.ui.view,arch_db:l10n_ec_account_penta.res_config_settings_view_form
+msgid "Advanced Payments"
+msgstr "Pagos Avanzados"
+
+#. module: l10n_ec_account_penta
 #: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_payment_expense_line__amount_cash
 msgid "Amount"
 msgstr "Importe"
@@ -1036,7 +1049,29 @@ msgstr "El importe debe ser superior a cero."
 #: code:addons/l10n_ec_account_penta/models/account_payment.py:0
 #, python-format
 msgid "You must select a destination journal to perform the internal transfer."
-msgstr "Debe seleccionar un diario de destino para realizar la transferencia interna."
+msgstr "Debe seleccionar un diario de destino para realizar la transferencia interna.\n"
+        "Si no corresponde a una transferencia, seleccione el modo de pago Estándar."
+
+#. module: l10n_ec_account_penta
+#. odoo-python
+#: code:addons/l10n_ec_account_penta/models/account_payment.py:0
+#, python-format
+msgid ""
+"You selected Expense payment mode, but no expense lines were found.\n\n"
+"Please add expense lines or change the Payment Mode to 'Standard'."
+msgstr ""
+"Ha seleccionado el modo de pago Gasto, pero no se han encontrado líneas de gasto.\n\n"
+"Por favor, agregue líneas de gasto o cambie el modo de pago a Estándar."
+
+#. module: l10n_ec_account_penta
+#. odoo-python
+#: code:addons/l10n_ec_account_penta/models/account_payment.py:0
+#, python-format
+msgid ""
+"The sum of the expense line amounts (%s) cannot be greater than the payment amount (%s)."
+msgstr ""
+"La suma de los montos de las líneas de gasto (%s) no puede ser mayor que el monto del pago (%s)."
+
 
 #. module: l10n_ec_account_penta
 #. odoo-python

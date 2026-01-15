@@ -35,7 +35,7 @@
         'data/account_cards_data.xml',
         'data/assets_report_extend.xml',
         'data/penta_cb_move_type_data.xml',
-
+        'security/advanced_payment_groups.xml',
         'security/ir.model.access.csv',
         
         'report/account_asset_acta_report.xml',

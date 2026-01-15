@@ -9,7 +9,20 @@
             <xpath expr="//group[@name='group1']/field[@name='memo']" position="after">
                 <field name="payment_reference"/>
             </xpath>
+            <!-- <xpath expr="//field[@name='destination_account_id']" position="attributes">
+                <attribute name="attrs">
+                    {'readonly': [('user_has_group', '!=', 'l10n_ec_account_penta.group_advanced_payment_admin')]}
+                </attribute>
+            </xpath> -->
+            <xpath expr="//field[@name='partner_bank_id']" position="after">
+                  <field name="destination_account_id"
+                        groups="l10n_ec_account_penta.group_advanced_payment_admin"/>
 
+                    <!-- Readonly para los demás -->
+                    <field name="destination_account_id"
+                        readonly="1"
+                        groups="!l10n_ec_account_penta.group_advanced_payment_admin"/>
+            </xpath>
             <xpath expr="//group[@name='group2']" position="inside">
                 <separator/>
 
@@ -41,7 +54,7 @@
             </xpath>
 
             <xpath expr="//notebook[@name='payment_notebook']" position="inside">
-                <page string="Advanced Options" id="advance_options" invisible="not advanced_payments">
+                <page string="Advanced Options" id="advance_options" invisible="not advanced_payments" groups="l10n_ec_account_penta.group_advanced_payment_admin">
                     <group>
                         <!-- <field name="batch_registration" readonly="state != 'draft'"/>
                         <field name="internal_transfer_cash" readonly="state != 'draft'"/> -->
@@ -72,6 +85,7 @@
             <xpath expr="//field[@name='partner_bank_id']" position="after">
                 <field name="destination_journal" readonly="state != 'draft'" invisible="payment_mode != 'internal'"/>
             </xpath>
+           
         </field>
     </record>
 
