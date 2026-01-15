@@ -20,7 +20,7 @@
     'website': 'https://pentalab.tech/',
     "license": "LGPL-3",
     'category': 'Human Resources/Employees',
-    "version": "18.0.6.2.7",
+    "version": "18.0.6.3.0",
     "depends": [
         'analytic',
         'hr_contract',
@@ -68,6 +68,7 @@
         "views/hr_payslip_run_views_import.xml",
         "views/import_monthly_inputs_views.xml",
         "views/hr_salary_rule_views_in.xml",
+        'views/hr_payslip_views.xml',
         
     ],
     "installable": True,
