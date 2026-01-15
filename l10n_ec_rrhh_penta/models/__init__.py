@@ -11,13 +11,12 @@ from . import hr_work_location_inherit
 from . import hr_contract_inherit
 from . import hr_contract_vacation
 from . import vacation_balance
-from . import vacation_move
+from . import l10n_ec_ptb_vacation_move
 from . import hr_leave_type
 from . import hr_leave
 from . import benefit_config
 from . import hr_payslip_run
 from . import vacation_balance
-from . import l10n_ec_ptb_vacation_move
 from . import hr_job_inherit
 from . import hr_salary_rule
 from . import hr_payslip
