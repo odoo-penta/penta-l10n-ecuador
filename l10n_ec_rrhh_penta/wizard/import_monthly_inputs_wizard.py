@@ -45,7 +45,7 @@ class PentaImportMonthlyInputsWizard(models.TransientModel):
 
         # Recolecta tipos (mismos que en export)
         input_types = self.env["hr.payslip.input.type"].sudo().search([
-            ("struct_id", "in", self.run_id.slip_ids.mapped("struct_id").ids)
+            ("struct_ids", "in", self.run_id.slip_ids.mapped("struct_ids").ids)
         ])
         if not input_types:
             input_types = self.env["hr.payslip.input.type"].sudo().search([])
