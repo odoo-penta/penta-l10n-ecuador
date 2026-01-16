@@ -2,7 +2,6 @@
 from odoo import models
 from odoo.tools import float_is_zero
 
-import traceback
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -19,9 +18,12 @@ class HrPayslip(models.Model):
     def _get_payslip_account_move_lines(self):
         """Sobrescribe la creación de líneas contables para usar las cuentas
         según la sección contable del contrato."""
+        _logger.info("[DEBUG] Entro al metodo: _get_payslip_account_move_lines")
         if hasattr(super(HrPayslip, self), '_get_payslip_account_move_lines'):
             lines = super()._get_payslip_account_move_lines()
             section = self._get_contract_section()
+            employee = self.employee_id
+            partner_employee = employee.related_partner_id or employee.user_partner_id or False
             if not section:
                 return lines
 
@@ -30,7 +32,8 @@ class HrPayslip(models.Model):
             for slip_line in self.line_ids:
                 key = (slip_line.name or '').strip()[:128]
                 rule_by_name[key] = slip_line.salary_rule_id
-
+            _logger.info("[DEBUG] Metodo: _get_payslip_account_move_lines")
+            _logger.info("[DEBUG] Lines: %s" % lines)
             for ml in lines:
                 rule = rule_by_name.get((ml.get('name') or '').strip()[:128])
                 if not rule:
@@ -50,6 +53,8 @@ class HrPayslip(models.Model):
                     ml['account_id'] = debit_acc.id
                 elif ml.get('credit', 0.0) > 0 and credit_acc:
                     ml['account_id'] = credit_acc.id
+                _logger.info("[DEBUG] Agg partner: %s" % partner_employee.name)
+                ml['partner_id'] = partner_employee.id if partner_employee else False
             return lines
 
         return super()._get_payslip_account_move_lines()
@@ -138,21 +143,15 @@ class HrPayslip(models.Model):
     
     def _create_account_move(self, values):
         _logger.info("[DEBUG] Entro a mi metodo")
-        employee_partner = self.employee_id.address_home_id
-
-        if employee_partner and values.get('line_ids'):
-            new_lines = []
-            for command in values['line_ids']:
-                if command[0] == 0 and isinstance(command[2], dict):
-                    line_vals = command[2]
-
-                    # Asignar el partner SOLO si no viene ya definido
-                    line_vals.setdefault('partner_id', employee_partner.id)
-
-                    new_lines.append((0, 0, line_vals))
-                else:
-                    new_lines.append(command)
-
-            values['line_ids'] = new_lines
-
-        return super()._create_account_move(values)
+        _logger.info("[DEBUG] Values: %s" % values)
+        moves = super()._create_account_move(values)
+        _logger.info("[DEBUG] Moves: %s" % moves)
+        for slip, move in zip(self, moves):
+            employee = slip.employee_id
+            partner = employee.related_partner_id or employee.user_partner_id or False
+            if not partner:
+                continue
+            for line in move.line_ids:
+                if not line.partner_id:
+                    line.partner_id = partner
+        return moves
