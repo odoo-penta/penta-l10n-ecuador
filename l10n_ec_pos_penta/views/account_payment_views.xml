@@ -46,7 +46,7 @@
             <!-- <xpath expr="//page[@id='advance_options']" position="attributes">
                 <attribute name="invisible">not advanced_payments and not is_cashbox_deposit</attribute>
             </xpath> -->
-            <xpath expr="//page[@id='advance_options']/group/field[@name='payment_mode']" position="attributes">
+            <xpath expr="//field[@name='payment_mode']" position="attributes">
                 <attribute name="readonly">is_cashbox_deposit</attribute>
             </xpath>
             <!-- <xpath expr="//field[@name='expense_line_ids']" position="after">
