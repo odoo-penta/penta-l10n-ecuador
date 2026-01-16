@@ -38,8 +38,8 @@
         </field>
     </record>
 
-    <record id="view_account_payment_custom_form_inherit_point_of_sale" model="ir.ui.view">
-        <field name="name">account.payment.custom.form.inherit.point.of.sale</field>
+    <record id="view_account_payment_custom_form_inherit_pos_penta" model="ir.ui.view">
+        <field name="name">account.payment.custom.form.inherit.pos.penta</field>
         <field name="model">account.payment</field>
         <field name="inherit_id" ref="l10n_ec_account_penta.view_account_payment_custom_form"/>
         <field name="arch" type="xml">
