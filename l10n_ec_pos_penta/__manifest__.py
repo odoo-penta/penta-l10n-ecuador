@@ -21,7 +21,7 @@
     'website': 'https://pentalab.tech/',
     'license': 'OPL-1',
     'category': 'Sales/Sales',
-    'version': '18.0.4.0.1',
+    'version': '18.0.4.0.2',
     'depends': [
         'sale_stock',
         'l10n_ec_account_penta',
