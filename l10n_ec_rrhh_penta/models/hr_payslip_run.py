@@ -64,23 +64,3 @@ class HrPayslipRun(models.Model):
             "target": "new",
             "context": {"default_run_id": self.id},
         }
-        
-    def _create_account_move(self, values):
-        employee_partner = self.employee_id.address_home_id
-
-        if employee_partner and values.get('line_ids'):
-            new_lines = []
-            for command in values['line_ids']:
-                if command[0] == 0 and isinstance(command[2], dict):
-                    line_vals = command[2]
-
-                    # Asignar el partner SOLO si no viene ya definido
-                    line_vals.setdefault('partner_id', employee_partner.id)
-
-                    new_lines.append((0, 0, line_vals))
-                else:
-                    new_lines.append(command)
-
-            values['line_ids'] = new_lines
-
-        return super()._create_account_move(values)

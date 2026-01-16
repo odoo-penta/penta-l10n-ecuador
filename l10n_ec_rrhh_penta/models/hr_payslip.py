@@ -2,6 +2,11 @@
 from odoo import models
 from odoo.tools import float_is_zero
 
+import traceback
+import logging
+
+_logger = logging.getLogger(__name__)
+
 
 class HrPayslip(models.Model):
     _inherit = 'hr.payslip'
@@ -130,3 +135,24 @@ class HrPayslip(models.Model):
                     credit_line['debit'] += debit
                     credit_line['credit'] += credit
         return new_lines
+    
+    def _create_account_move(self, values):
+        _logger.info("[DEBUG] Entro a mi metodo")
+        employee_partner = self.employee_id.address_home_id
+
+        if employee_partner and values.get('line_ids'):
+            new_lines = []
+            for command in values['line_ids']:
+                if command[0] == 0 and isinstance(command[2], dict):
+                    line_vals = command[2]
+
+                    # Asignar el partner SOLO si no viene ya definido
+                    line_vals.setdefault('partner_id', employee_partner.id)
+
+                    new_lines.append((0, 0, line_vals))
+                else:
+                    new_lines.append(command)
+
+            values['line_ids'] = new_lines
+
+        return super()._create_account_move(values)
