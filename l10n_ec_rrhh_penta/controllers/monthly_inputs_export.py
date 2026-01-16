@@ -2,7 +2,7 @@
 from odoo import http, _
 from odoo.http import request, content_disposition
 import io
-import xlsxwriter
+from odoo.tools.misc import xlsxwriter
 from datetime import datetime
 
 def _collect_structs_and_types(run):
