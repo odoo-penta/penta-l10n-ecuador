@@ -43,22 +43,9 @@
         <field name="model">account.payment</field>
         <field name="inherit_id" ref="l10n_ec_account_penta.view_account_payment_custom_form"/>
         <field name="arch" type="xml">
-            <!-- <xpath expr="//page[@id='advance_options']" position="attributes">
-                <attribute name="invisible">not advanced_payments and not is_cashbox_deposit</attribute>
-            </xpath> -->
             <xpath expr="//field[@name='payment_mode']" position="attributes">
                 <attribute name="readonly">is_cashbox_deposit</attribute>
             </xpath>
-            <!-- <xpath expr="//field[@name='expense_line_ids']" position="after">
-                <field name="expense_line_ids" readonly="1" invisible="payment_mode != 'expense' or not is_cashbox_deposit">
-                    <list string="Expense lines">
-                        <field name="currency_id" column_invisible="1"/>
-                        <field name="account_id" />
-                        <field name="partner_id" />
-                        <field name="amount_cash" />
-                    </list>
-                </field>
-            </xpath> -->
             <xpath expr="//field[@name='expense_line_ids']" position="attributes">
                 <attribute name="invisible">is_cashbox_deposit</attribute>
             </xpath>
