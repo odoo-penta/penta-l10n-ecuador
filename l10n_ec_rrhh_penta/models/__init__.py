@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from . import account_move
 from . import substitute_type
 from . import substitute_relationship
 from . import education_level
