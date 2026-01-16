@@ -62,7 +62,7 @@
             <xpath expr="//field[@name='expense_line_ids']" position="attributes">
                 <attribute name="invisible">is_cashbox_deposit</attribute>
             </xpath>
-            <xpath expr="//page[@id='advance_options']//field[@name='difference_expense_amount']" position="attributes">
+            <xpath expr="//field[@name='difference_expense_amount']" position="attributes">
                 <attribute name="readonly">is_cashbox_deposit</attribute>
             </xpath>
         </field>
