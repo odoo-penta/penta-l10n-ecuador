@@ -11,7 +11,7 @@
 
 {
     "name": "POS",
-    'summary': 'POS in backend',
+    'summary': 'POS in backend.',
     'description': """
         Adds a new POS sales menu that processes everything in real time on the backend
     """,
