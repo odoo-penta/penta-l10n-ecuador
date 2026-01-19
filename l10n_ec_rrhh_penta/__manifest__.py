@@ -20,12 +20,13 @@
     'website': 'https://pentalab.tech/',
     "license": "LGPL-3",
     'category': 'Human Resources/Employees',
-    "version": "18.0.8.1.3",
+    "version": "18.0.8.2.0",
     "depends": [
         'analytic',
         'hr_contract',
         'hr_payroll_account',
         'hr_payroll_holidays',
+        'module_pentalab_payroll',
     ],
     "data": [
         "data/education_level_data.xml",

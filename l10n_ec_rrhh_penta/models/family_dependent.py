@@ -23,49 +23,28 @@ def ec_validate_cedula(ced):
         return ver == int(ced[9])
 
 class L10nEcPtbFamilyDependents(models.Model):
-    _name = "l10n_ec.ptb.family.dependents"
-    _description = "Cargas Familiares"
+    _inherit = "l10n_ec.ptb.family.dependents"
     _order = "employee_id, relationship, name"
 
     employee_id = fields.Many2one("hr.employee", string="Empleado", required=True, ondelete="cascade")
     vat = fields.Char(string="Número de identificación", required=True, size=13)
-    name = fields.Char(string="Nombre", required=True)
-    birthdate = fields.Date(string="Fecha de nacimiento", required=True)
     gender = fields.Selection([("male", "Masculino"), ("female", "Femenino")], string="Sexo")
-    disability = fields.Boolean(string="Discapacidad")
-    relationship = fields.Selection([
-        ("spouse", "Cónyuge"),
-        ("children", "Hijo/a"),
-        ("parents", "Padre/Madre"),
-        ("other", "Otro"),
-    ], string="Parentesco", required=True)
     use_for_income_tax = fields.Boolean(string="Usar impuesto a la renta")
     is_child = fields.Boolean(string="¿Es hijo/a?")
     is_permanent_charge = fields.Boolean(string="Carga permanente")
-    phone = fields.Char(string="Teléfono", size=20)
-    address = fields.Char(string="Dirección")
-    age_years = fields.Integer(string="Edad (años)", compute="_compute_age", store=False)
     
+    @api.model
+    def default_get(self, fields_list):
+        res = super().default_get(fields_list)
+        emp_id = self.env.context.get("default_employee_id")
+        if emp_id:
+            res["employee_id"] = emp_id
+        return res
+
     @api.onchange('disability')
     def _onchange_disability(self):
         if self.disability:
             self.is_permanent_charge = True
-
-    @api.depends("birthdate")
-    def _compute_age(self):
-        today = date.today()
-        for rec in self:
-            if rec.birthdate and rec.birthdate <= today:
-                delta = relativedelta(today, rec.birthdate)
-                rec.age_years = delta.years
-            else:
-                rec.age_years = 0
-
-    @api.constrains("birthdate")
-    def _check_birthdate(self):
-        for rec in self:
-            if rec.birthdate and rec.birthdate > date.today():
-                raise ValidationError("La fecha de nacimiento no puede ser futura.")
 
     @api.constrains("relationship", "employee_id")
     def _check_spouse_unique(self):
@@ -94,12 +73,4 @@ class L10nEcPtbFamilyDependents(models.Model):
                 if clash:
                     raise ValidationError("Ya existe una carga familiar con la misma cédula para este empleado.")
             else:
-                raise ValidationError("Debe ingresar una cédula del dependiente.")
-
-    @api.model
-    def default_get(self, fields_list):
-        res = super().default_get(fields_list)
-        emp_id = self.env.context.get("default_employee_id")
-        if emp_id:
-            res["employee_id"] = emp_id
-        return res
+                raise ValidationError("Debe ingresar una cédula del dependiente.")    
