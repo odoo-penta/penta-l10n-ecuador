@@ -149,6 +149,8 @@ class PentaImportMonthlyInputsWizard(models.TransientModel):
                 else:
                     # no duplicar: creamos sólo si hay algo distinto de 0, o crea 0 por consistencia
                     self.env["hr.payslip.input"].create(values)
+            # Recalcular slip
+            slip.compute_sheet()
 
         return {
             "type": "ir.actions.client",
