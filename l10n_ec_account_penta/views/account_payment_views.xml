@@ -14,7 +14,7 @@
                     {'readonly': [('user_has_group', '!=', 'l10n_ec_account_penta.group_advanced_payment_admin')]}
                 </attribute>
             </xpath> -->
-            <xpath expr="//field[@name='partner_bank_id']" position="after">
+            <xpath expr="//field[@name='partner_bank_id']" position="before">
                   <field name="destination_account_id"
                         groups="l10n_ec_account_penta.group_advanced_payment_admin"/>
 

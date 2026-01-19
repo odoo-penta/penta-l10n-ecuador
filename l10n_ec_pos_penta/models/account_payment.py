@@ -124,7 +124,7 @@ class AccountPayment(models.Model):
     
     def _prepare_move_line_default_vals(self, **kwargs):
         # Detectar si penta_anticipos está instalado
-        module_installed = self.env['ir.module.module'].sudo().search([
+        module_installed  = self.env['ir.module.module'].sudo().search([
             ('name', '=', 'penta_anticipos'),
             ('state', '=', 'installed')
         ], limit=1)
@@ -136,3 +136,13 @@ class AccountPayment(models.Model):
             )._prepare_move_line_default_vals(**kwargs)
 
         return super()._prepare_move_line_default_vals(**kwargs)
+
+    @api.depends('is_cashbox_deposit', 'partner_id', 'payment_type', 'cash_session_id')
+    def _compute_destination_account_id(self):
+        super()._compute_destination_account_id()
+        for rec in self:
+            if rec.is_cashbox_deposit and rec.cash_session_id:
+                close_account = rec.cash_session_id.cash_id.close_account_id
+                if close_account:
+                    rec.destination_account_id = close_account
+
