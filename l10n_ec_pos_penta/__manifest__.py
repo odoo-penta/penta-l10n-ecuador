@@ -23,6 +23,8 @@
     'category': 'Sales/Sales',
     'version': '18.0.4.0.5',
     'depends': [
+        'accountant',
+        'account',
         'sale_stock',
         'l10n_ec_account_penta',
     ],
