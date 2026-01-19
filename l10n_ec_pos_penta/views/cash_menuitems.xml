@@ -49,7 +49,7 @@
         sequence="12">
 
         <menuitem id="cash_box_move_out_invoice_type_menu"
-            action="account.action_move_out_invoice"
+            action="account.action_move_out_invoice_type"
             groups="l10n_ec_pos_penta.group_cash_box_admin,l10n_ec_pos_penta.group_cash_box_user"
             sequence="1"/>
 
