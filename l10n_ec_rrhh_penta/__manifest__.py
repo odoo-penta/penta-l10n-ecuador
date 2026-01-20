@@ -45,6 +45,8 @@
         
         "security/ir.model.access.csv",
         
+        'report/report_light_payslip_templates.xml',
+        
         "views/config_views.xml",
         "views/family_dependent_views.xml",
         "views/hr_employee_views.xml",
