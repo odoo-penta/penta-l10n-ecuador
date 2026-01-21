@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data noupdate="1">
+
+    <!-- ========================= -->
+    <!-- CALENDARIO -->
+    <!-- ========================= -->
+
+    <record id="resource_calendar_standard_40" model="resource.calendar">
+      <field name="name">Estandar 40 horas/semana</field>
+      <field name="active">True</field>
+      <field name="company_id" ref="base.main_company"/>
+      <field name="tz">America/Guayaquil</field>
+      <field name="hours_per_day">8</field>
+      <field name="full_time_required_hours">40</field>
+      <field name="two_weeks_calendar">False</field>
+      <field name="flexible_hours">False</field>
+    </record>
+
+    <!-- ========================= -->
+    <!-- LUNES -->
+    <!-- ========================= -->
+
+    <record id="att_mon_morning" model="resource.calendar.attendance">
+      <field name="name">Lunes Mañana</field>
+      <field name="calendar_id" ref="resource_calendar_standard_40"/>
+      <field name="dayofweek">0</field>
+      <field name="day_period">morning</field>
+      <field name="hour_from">8</field>
+      <field name="hour_to">12</field>
+      <field name="duration_days">0.5</field>
+      <field name="sequence">10</field>
+    </record>
+
+    <record id="att_mon_lunch" model="resource.calendar.attendance">
+      <field name="name">Lunes Almuerzo</field>
+      <field name="calendar_id" ref="resource_calendar_standard_40"/>
+      <field name="dayofweek">0</field>
+      <field name="day_period">lunch</field>
+      <field name="hour_from">12</field>
+      <field name="hour_to">13</field>
+      <field name="duration_days">0</field>
+      <field name="sequence">20</field>
+    </record>
+
+    <record id="att_mon_afternoon" model="resource.calendar.attendance">
+      <field name="name">Lunes Tarde</field>
+      <field name="calendar_id" ref="resource_calendar_standard_40"/>
+      <field name="dayofweek">0</field>
+      <field name="day_period">afternoon</field>
+      <field name="hour_from">13</field>
+      <field name="hour_to">17</field>
+      <field name="duration_days">0.5</field>
+      <field name="sequence">30</field>
+    </record>
+
+    <!-- ========================= -->
+    <!-- MARTES -->
+    <!-- ========================= -->
+
+    <record id="att_tue_morning" model="resource.calendar.attendance">
+      <field name="name">Martes Mañana</field>
+      <field name="calendar_id" ref="resource_calendar_standard_40"/>
+      <field name="dayofweek">1</field>
+      <field name="day_period">morning</field>
+      <field name="hour_from">8</field>
+      <field name="hour_to">12</field>
+      <field name="duration_days">0.5</field>
+      <field name="sequence">10</field>
+    </record>
+
+    <record id="att_tue_lunch" model="resource.calendar.attendance">
+      <field name="name">Martes Almuerzo</field>
+      <field name="calendar_id" ref="resource_calendar_standard_40"/>
+      <field name="dayofweek">1</field>
+      <field name="day_period">lunch</field>
+      <field name="hour_from">12</field>
+      <field name="hour_to">13</field>
+      <field name="duration_days">0</field>
+      <field name="sequence">20</field>
+    </record>
+
+    <record id="att_tue_afternoon" model="resource.calendar.attendance">
+      <field name="name">Martes Tarde</field>
+      <field name="calendar_id" ref="resource_calendar_standard_40"/>
+      <field name="dayofweek">1</field>
+      <field name="day_period">afternoon</field>
+      <field name="hour_from">13</field>
+      <field name="hour_to">17</field>
+      <field name="duration_days">0.5</field>
+      <field name="sequence">30</field>
+    </record>
+
+    <!-- ========================= -->
+    <!-- MIÉRCOLES -->
+    <!-- ========================= -->
+
+    <record id="att_wed_morning" model="resource.calendar.attendance">
+      <field name="name">Miércoles Mañana</field>
+      <field name="calendar_id" ref="resource_calendar_standard_40"/>
+      <field name="dayofweek">2</field>
+      <field name="day_period">morning</field>
+      <field name="hour_from">8</field>
+      <field name="hour_to">12</field>
+      <field name="duration_days">0.5</field>
+      <field name="sequence">10</field>
+    </record>
+
+    <record id="att_wed_lunch" model="resource.calendar.attendance">
+      <field name="name">Miércoles Almuerzo</field>
+      <field name="calendar_id" ref="resource_calendar_standard_40"/>
+      <field name="dayofweek">2</field>
+      <field name="day_period">lunch</field>
+      <field name="hour_from">12</field>
+      <field name="hour_to">13</field>
+      <field name="duration_days">0</field>
+      <field name="sequence">20</field>
+    </record>
+
+    <record id="att_wed_afternoon" model="resource.calendar.attendance">
+      <field name="name">Miércoles Tarde</field>
+      <field name="calendar_id" ref="resource_calendar_standard_40"/>
+      <field name="dayofweek">2</field>
+      <field name="day_period">afternoon</field>
+      <field name="hour_from">13</field>
+      <field name="hour_to">17</field>
+      <field name="duration_days">0.5</field>
+      <field name="sequence">30</field>
+    </record>
+
+    <!-- ========================= -->
+    <!-- JUEVES -->
+    <!-- ========================= -->
+
+    <record id="att_thu_morning" model="resource.calendar.attendance">
+      <field name="name">Jueves Mañana</field>
+      <field name="calendar_id" ref="resource_calendar_standard_40"/>
+      <field name="dayofweek">3</field>
+      <field name="day_period">morning</field>
+      <field name="hour_from">8</field>
+      <field name="hour_to">12</field>
+      <field name="duration_days">0.5</field>
+      <field name="sequence">10</field>
+    </record>
+
+    <record id="att_thu_lunch" model="resource.calendar.attendance">
+      <field name="name">Jueves Almuerzo</field>
+      <field name="calendar_id" ref="resource_calendar_standard_40"/>
+      <field name="dayofweek">3</field>
+      <field name="day_period">lunch</field>
+      <field name="hour_from">12</field>
+      <field name="hour_to">13</field>
+      <field name="duration_days">0</field>
+      <field name="sequence">20</field>
+    </record>
+
+    <record id="att_thu_afternoon" model="resource.calendar.attendance">
+      <field name="name">Jueves Tarde</field>
+      <field name="calendar_id" ref="resource_calendar_standard_40"/>
+      <field name="dayofweek">3</field>
+      <field name="day_period">afternoon</field>
+      <field name="hour_from">13</field>
+      <field name="hour_to">17</field>
+      <field name="duration_days">0.5</field>
+      <field name="sequence">30</field>
+    </record>
+
+    <!-- ========================= -->
+    <!-- VIERNES -->
+    <!-- ========================= -->
+
+    <record id="att_fri_morning" model="resource.calendar.attendance">
+      <field name="name">Viernes Mañana</field>
+      <field name="calendar_id" ref="resource_calendar_standard_40"/>
+      <field name="dayofweek">4</field>
+      <field name="day_period">morning</field>
+      <field name="hour_from">8</field>
+      <field name="hour_to">12</field>
+      <field name="duration_days">0.5</field>
+      <field name="sequence">10</field>
+    </record>
+
+    <record id="att_fri_lunch" model="resource.calendar.attendance">
+      <field name="name">Viernes Almuerzo</field>
+      <field name="calendar_id" ref="resource_calendar_standard_40"/>
+      <field name="dayofweek">4</field>
+      <field name="day_period">lunch</field>
+      <field name="hour_from">12</field>
+      <field name="hour_to">13</field>
+      <field name="duration_days">0</field>
+      <field name="sequence">20</field>
+    </record>
+
+    <record id="att_fri_afternoon" model="resource.calendar.attendance">
+      <field name="name">Viernes Tarde</field>
+      <field name="calendar_id" ref="resource_calendar_standard_40"/>
+      <field name="dayofweek">4</field>
+      <field name="day_period">afternoon</field>
+      <field name="hour_from">13</field>
+      <field name="hour_to">17</field>
+      <field name="duration_days">0.5</field>
+      <field name="sequence">30</field>
+    </record>
+
+    <!-- ========================= -->
+    <!-- SÁBADO -->
+    <!-- ========================= -->
+
+    <record id="att_sat_morning" model="resource.calendar.attendance">
+      <field name="name">Sábado Mañana</field>
+      <field name="calendar_id" ref="resource_calendar_standard_40"/>
+      <field name="dayofweek">5</field>
+      <field name="day_period">morning</field>
+      <field name="hour_from">8</field>
+      <field name="hour_to">12</field>
+      <field name="duration_days">0.5</field>
+      <field name="sequence">10</field>
+    </record>
+
+    <record id="att_sat_lunch" model="resource.calendar.attendance">
+      <field name="name">Sábado Almuerzo</field>
+      <field name="calendar_id" ref="resource_calendar_standard_40"/>
+      <field name="dayofweek">5</field>
+      <field name="day_period">lunch</field>
+      <field name="hour_from">12</field>
+      <field name="hour_to">13</field>
+      <field name="duration_days">0</field>
+      <field name="sequence">20</field>
+    </record>
+
+    <record id="att_sat_afternoon" model="resource.calendar.attendance">
+      <field name="name">Sábado Tarde</field>
+      <field name="calendar_id" ref="resource_calendar_standard_40"/>
+      <field name="dayofweek">5</field>
+      <field name="day_period">afternoon</field>
+      <field name="hour_from">13</field>
+      <field name="hour_to">17</field>
+      <field name="duration_days">0.5</field>
+      <field name="sequence">30</field>
+    </record>
+
+    <!-- ========================= -->
+    <!-- DOMINGO -->
+    <!-- ========================= -->
+
+    <record id="att_sun_morning" model="resource.calendar.attendance">
+      <field name="name">Domingo Mañana</field>
+      <field name="calendar_id" ref="resource_calendar_standard_40"/>
+      <field name="dayofweek">6</field>
+      <field name="day_period">morning</field>
+      <field name="hour_from">8</field>
+      <field name="hour_to">12</field>
+      <field name="duration_days">0.5</field>
+      <field name="sequence">10</field>
+    </record>
+
+    <record id="att_sun_lunch" model="resource.calendar.attendance">
+      <field name="name">Domingo Almuerzo</field>
+      <field name="calendar_id" ref="resource_calendar_standard_40"/>
+      <field name="dayofweek">6</field>
+      <field name="day_period">lunch</field>
+      <field name="hour_from">12</field>
+      <field name="hour_to">13</field>
+      <field name="duration_days">0</field>
+      <field name="sequence">20</field>
+    </record>
+
+    <record id="att_sun_afternoon" model="resource.calendar.attendance">
+      <field name="name">Domingo Tarde</field>
+      <field name="calendar_id" ref="resource_calendar_standard_40"/>
+      <field name="dayofweek">6</field>
+      <field name="day_period">afternoon</field>
+      <field name="hour_from">13</field>
+      <field name="hour_to">17</field>
+      <field name="duration_days">0.5</field>
+      <field name="sequence">30</field>
+    </record>
+
+  </data>
+</odoo>

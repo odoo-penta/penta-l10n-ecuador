@@ -1,10 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<odoo noupdate="1">
-  <!-- Tipos de estructura de nómina (mínimo: nombre) -->
-  <record id="hr_payroll_structure_type_ec" model="hr.payroll.structure.type">
-    <field name="name">Ecuador - Mensual</field>
-  </record>
-  <record id="hr_payroll_structure_type_ec_employee" model="hr.payroll.structure.type">
-    <field name="name">Empleados</field>
-  </record>
+<odoo>
+  <data noupdate="1">
+
+    <!-- ================================= -->
+    <!-- TIPO DE ESTRUCTURA SALARIAL -->
+    <!-- ================================= -->
+
+    <record id="structure_type_ec_employees" model="hr.payroll.structure.type">
+      <field name="name">Empleados</field>
+      <!-- País -->
+      <field name="country_id" ref="base.ec"/>
+      <!-- Tipo de salario -->
+      <field name="wage_type">monthly</field>
+      <!-- Calendario por defecto -->
+      <field name="default_resource_calendar_id" ref="l10n_ec_rrhh_penta.resource_calendar_standard_40"/>
+      <!-- Tipo de entrada de trabajo por defecto -->
+      <field name="default_work_entry_type_id" ref="hr_work_entry.work_entry_type_attendance"/>
+      <!-- Periodicidad de pago -->
+      <field name="default_schedule_pay">monthly</field>
+    </record>
+
+  </data>
 </odoo>
