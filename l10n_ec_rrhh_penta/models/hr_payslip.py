@@ -148,10 +148,12 @@ class HrPayslip(models.Model):
         _logger.info("[DEBUG] Moves: %s" % moves)
         for slip, move in zip(self, moves):
             employee = slip.employee_id
+            """
             partner = employee.related_partner_id or employee.user_partner_id or False
             if not partner:
                 continue
             for line in move.line_ids:
                 if not line.partner_id:
                     line.partner_id = partner
+            """
         return moves

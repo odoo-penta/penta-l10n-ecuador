@@ -31,33 +31,28 @@ def ec_validate_cedula(ced):
 class HrEmployee(models.Model):
     _inherit = "hr.employee"
 
+    identification_id = fields.Char(string='Identification No', required=True, groups="hr.group_hr_user", tracking=True)
     # 1) Nivel de educación configurable (ocultamos certificate nativo en la vista)
     education_level_id = fields.Many2one(
         "hr.education.level", string="Nivel de Educación"
     )
-
     # 2) Discapacidad
     disability_type_id = fields.Many2one(
         "hr.disability.type", string="Tipo de discapacidad"
     )
-    
     blood_type = fields.Selection([
         ("O+", "O+"), ("O-", "O-"),
         ("A+", "A+"), ("A-", "A-"),
         ("B+", "B+"), ("B-", "B-"),
         ("AB+", "AB+"), ("AB-", "AB-"),
     ], string="Tipo de sangre")
-
     payment_mode_id = fields.Many2one("hr.payment.mode", string="Modo de pago")
-    
     children = fields.Integer(
         string="Cargas familiares para utilidades",
         compute="_compute_children_from_dependents",
         store=True, readonly=True,
     )
-
     cupo = fields.Float(string="Cupo", digits=(16, 2), help="Cupo asignado al empleado.")
-
     disability_percentage = fields.Float(
         string="Porcentaje de discapacidad (%)",
         help="Ingrese un valor entre 0 y 100.",
@@ -79,7 +74,6 @@ class HrEmployee(models.Model):
     substitute_identification = fields.Char(string="Identificación del sustituto")
     type_substitute = fields.Many2one('hr.substitute.type', string="Tipo de sustituto")
     relationship_substitute = fields.Many2one('hr.substitute.relationship', string="Parentesco")
-
     # 3) Estado civil: reordenar y traducir “Unión de hecho”
     marital = fields.Selection(
         selection="_get_marital_status_selection",
@@ -89,7 +83,6 @@ class HrEmployee(models.Model):
         required=True,
         tracking=True,
     )
-
     has_catastrophic_disease = fields.Boolean(
         string="El empleado tiene alguna enfermedad catastrófica",
         help="Marque si el empleado posee una enfermedad catastrófica."
@@ -104,12 +97,10 @@ class HrEmployee(models.Model):
     catastrophic_description = fields.Text(
         string="Descripción de la enfermedad catastrófica"
     )
-
     # Contrato "actual" usado para el cálculo/ajuste
     current_contract_id = fields.Many2one(
         "hr.contract", compute="_compute_current_contract", store=False, string="Contrato actual"
     )
-
     # Totales agregados (solo lectura)
     vac_total_entitled = fields.Float(
         string="Acreditadas", compute="_compute_vacation_totals", store=False
@@ -120,7 +111,6 @@ class HrEmployee(models.Model):
     vac_total_available = fields.Float(
         string="Disponibles", compute="_compute_vacation_totals", store=False
     )
-
     # Campo editable en lista para RESTAR días; al guardar, consume por FIFO .
     vac_consume_adjust = fields.Integer(
         string="Restar (ajuste)",

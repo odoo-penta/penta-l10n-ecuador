@@ -6,9 +6,9 @@
     <!-- ESTRUCTURA SALARIAL -->
     <!-- ================================= -->
 
-    <record id="structure_ec_employee" model="hr.payroll.structure">
+    <record id="structure_employee_ec" model="hr.payroll.structure">
       <!-- Nombre -->
-      <field name="name">Rol de pagos</field>
+      <field name="name">Rol de pagos EC</field>
       <!-- Tipo de estructura -->
       <field name="type_id" ref="l10n_ec_rrhh_penta.structure_type_ec_employees"/>
       <!-- País -->

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
     <!-- Ocultar certificate nativo y mostrar nuestro M2O de educación -->
     <record id="view_employee_form_inherit_l10n_ec_rrhh_penta_education" model="ir.ui.view">
         <field name="name">hr.employee.form.penta.education</field>
@@ -16,7 +17,6 @@
             <xpath expr="//field[@name='private_car_plate']" position="after">
                 <field name="cupo"/>
             </xpath>
-            
             <xpath expr="//field[@name='study_school']" position="attributes">
                 <attribute name="string">Institución educativa</attribute>
             </xpath>
@@ -26,15 +26,7 @@
             <xpath expr="//field[@name='spouse_birthdate']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
-        </field>
-    </record>
-
-    <!-- Insertar grupo Discapacidad DESPUÉS del grupo Emergency -->
-    <record id="view_employee_form_inherit_l10n_ec_rrhh_penta_disability" model="ir.ui.view">
-        <field name="name">hr.employee.form.penta.disability</field>
-        <field name="model">hr.employee</field>
-        <field name="inherit_id" ref="hr.view_employee_form"/>
-        <field name="arch" type="xml">
+            <!-- Insertar grupo Discapacidad DESPUÉS del grupo Emergency -->
             <xpath expr="//group[@name='emergency']" position="after">
                 <!-- Parent con 8 columnas para granularidad (pares de 2 col) -->
                 <group string="Discapacidad" name="penta_disability" col="8">
@@ -69,15 +61,7 @@
             <xpath expr="//field[@name='private_phone']" position="after">
                 <field name="blood_type"/>
             </xpath>
-        </field>
-    </record>
-    
-    <!-- Cargas familiares: botón y contador junto a children -->
-    <record id="view_employee_form_inherit_l10n_ec_rrhh_penta_family" model="ir.ui.view">
-        <field name="name">hr.employee.form.penta.family</field>
-        <field name="model">hr.employee</field>
-        <field name="inherit_id" ref="hr.view_employee_form"/>
-        <field name="arch" type="xml">
+            <!-- Cargas familiares: botón y contador junto a children -->
             <xpath expr="//field[@name='children']" position="attributes">
                 <attribute name="string">Cargas familiares para utilidades</attribute>
             </xpath>
@@ -107,4 +91,5 @@
             </xpath>
         </field>
     </record>
+
 </odoo>

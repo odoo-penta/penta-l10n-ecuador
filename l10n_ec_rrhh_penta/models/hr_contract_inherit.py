@@ -96,18 +96,15 @@ class HrContract(models.Model):
         ("accumulated", "Acumulado"),
         ("undefined", "No definido"),
     ], string="Pago del décimo tercer sueldo")
-
     l10n_ec_ptb_fourteenth_fund_paid = fields.Selection([
         ("monthly", "Mensual"),
         ("accumulated", "Acumulado"),
         ("undefined", "No definido"),
     ], string="Pago del décimo cuarto sueldo")
-
     l10n_ec_ptb_fourteenth_regime = fields.Selection([
         ("sierra_fourteenth_salary", "Región Sierra"),
         ("costa_fourteenth_salary", "Región Costa"),
     ], string="Periodo de Pago")
-
     # Utilidades por relación con la empresa
     relation_type = fields.Selection([
         ("empleado", "Empleado (recibe)"),
@@ -119,7 +116,6 @@ class HrContract(models.Model):
         string="Cobra utilidades",
         compute="_compute_payment_profits", store=True
     )
-
     # CRUD: IESS parametrizado
     iess_patronal_id = fields.Many2one(
         "hr.iess.option", string="IESS Patronal",
@@ -133,12 +129,10 @@ class HrContract(models.Model):
         "hr.iess.option", string="Extensión conyugal",
         domain="[('option_type', '=', 'conyugal'), ('active','=',True)]"
     )
-
     # Sección contable
     account_section_id = fields.Many2one(
-        "hr.account.section", string="Sección contable"
+        "hr.account.section", required=True, string="Sección contable"
     )
-
     # Pestaña "Contratos anteriores"
     has_previous_contracts = fields.Boolean(
         compute="_compute_has_previous_contracts", store=False
@@ -147,10 +141,10 @@ class HrContract(models.Model):
         "hr.contract", compute="_compute_previous_contracts", store=False,
         string="Contratos anteriores"
     )
-
+    # Distribucion analitica
     analytic_distribution = fields.Json(
         string="Distribución Analítica",
-        default={},
+        required=True,
         help="Define la distribución de costos en diferentes cuentas analíticas."
     ) 
     analytic_precision = fields.Integer(
@@ -174,6 +168,8 @@ class HrContract(models.Model):
             res['department_id'] = employee.department_id.id
         if not res.get('job_id') and employee.job_id:
             res['job_id'] = employee.job_id.id
+        if not res.get('name'):
+            res['name'] = f"CONTRATO DE {employee.name}"
         return res
 
     # ====== Cómputos ======

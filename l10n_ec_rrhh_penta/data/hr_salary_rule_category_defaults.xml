@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<odoo noupdate="1">
-  <record id="cat_ingresos" model="hr.salary.rule.category">
-    <field name="name">Ingresos</field>
-    <field name="code">ING</field>
-  </record>
+<odoo>
+  <data noupdate="1">
+
+    <record id="cat_ingresos" model="hr.salary.rule.category">
+      <field name="name">Ingresos</field>
+      <field name="code">ING</field>
+    </record>
+
+  </data>
 </odoo>
