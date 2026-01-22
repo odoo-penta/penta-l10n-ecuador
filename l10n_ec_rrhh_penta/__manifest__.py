@@ -20,7 +20,7 @@
     'website': 'https://pentalab.tech/',
     "license": "LGPL-3",
     'category': 'Human Resources/Employees',
-    "version": "18.0.8.3.1",
+    "version": "18.0.8.3.2",
     "depends": [
         'analytic',
         'hr_contract',
@@ -39,7 +39,6 @@
         'data/resource_calendar_data.xml',
         "data/hr_payroll_structure_types_data.xml",
         "data/hr_payroll_structures_data.xml",
-        #'data/hr_salary_rule_category_defaults.xml',
         "data/hr_salary_rule_category_data.xml",
         "data/hr_payslip_input_type_data.xml",
         "data/hr_salary_rule_data.xml",
