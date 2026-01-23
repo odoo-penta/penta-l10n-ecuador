@@ -46,6 +46,7 @@ def post_init_create_calendar_40(cr, registry):
             "day_period": "morning",
             "hour_from": 8,
             "hour_to": 12,
+            "work_entry_type_id": False,
             "name": f"{day_name} Mañana",
         })
         # Almuerzo
@@ -55,6 +56,7 @@ def post_init_create_calendar_40(cr, registry):
             "day_period": "lunch",
             "hour_from": 12,
             "hour_to": 13,
+            "work_entry_type_id": False,
             "name": f"{day_name} Almuerzo",
         })
         # Tarde
@@ -64,5 +66,6 @@ def post_init_create_calendar_40(cr, registry):
             "day_period": "afternoon",
             "hour_from": 13,
             "hour_to": 17,
+            "work_entry_type_id": False,
             "name": f"{day_name} Tarde",
         })

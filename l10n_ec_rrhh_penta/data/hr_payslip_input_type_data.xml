@@ -5,103 +5,109 @@
     <record id="input_type_hora_nocturna" model="hr.payslip.input.type">
       <field name="name">Número Horas Nocturnas 25%</field>
       <field name="code">PL_HORA_EXTRA_NOCTURNA</field>
-      <field name="struct_ids" eval="[(4, ref('l10n_ec_rrhh_penta.structure_ec_employee'))]"/>
+      <field name="struct_ids" eval="[(4, ref('l10n_ec_rrhh_penta.structure_employee_ec'))]"/>
     </record>
     
     <record id="input_type_hora_suplementaria" model="hr.payslip.input.type">
       <field name="name">Número Horas Suplementarias 50%</field>
       <field name="code">PL_HORA_EXTRA_SUPLEMENTARIA</field>
-      <field name="struct_ids" eval="[(4, ref('l10n_ec_rrhh_penta.structure_ec_employee'))]"/>
+      <field name="struct_ids" eval="[(4, ref('l10n_ec_rrhh_penta.structure_employee_ec'))]"/>
     </record>
     
     <record id="input_type_hora_extraordinaria" model="hr.payslip.input.type">
       <field name="name">Número Horas Extras Extraordinarias 100%</field>
       <field name="code">PL_HORA_EXTRA_EXTRAORDINARIA</field>
-      <field name="struct_ids" eval="[(4, ref('l10n_ec_rrhh_penta.structure_ec_employee'))]"/>
+      <field name="struct_ids" eval="[(4, ref('l10n_ec_rrhh_penta.structure_employee_ec'))]"/>
     </record>
 
     <record id="input_type_comisiones" model="hr.payslip.input.type">
       <field name="name">Comisiones</field>
       <field name="code">PL_COMISION</field>
-      <field name="struct_ids" eval="[(4, ref('l10n_ec_rrhh_penta.structure_ec_employee'))]"/>
+      <field name="struct_ids" eval="[(4, ref('l10n_ec_rrhh_penta.structure_employee_ec'))]"/>
     </record>
     
     <record id="input_type_prestamo_quirografario" model="hr.payslip.input.type">
       <field name="name">Préstamo quirografario</field>
       <field name="code">PL_QUIROGRAFARIO</field>
-      <field name="struct_ids" eval="[(4, ref('l10n_ec_rrhh_penta.structure_ec_employee'))]"/>
+      <field name="struct_ids" eval="[(4, ref('l10n_ec_rrhh_penta.structure_employee_ec'))]"/>
     </record>
     
     <record id="input_type_seguro_medico_privado" model="hr.payslip.input.type">
       <field name="name">Seguro médico privado</field>
       <field name="code">PL_MEDICO_PRIVADO</field>
-      <field name="struct_ids" eval="[(4, ref('l10n_ec_rrhh_penta.structure_ec_employee'))]"/>
+      <field name="struct_ids" eval="[(4, ref('l10n_ec_rrhh_penta.structure_employee_ec'))]"/>
     </record>
     
     <record id="input_type_prestamo_hipotecario" model="hr.payslip.input.type">
       <field name="name">Préstamo hipotecario</field>
       <field name="code">PL_HIPOTECARIO</field>
-      <field name="struct_ids" eval="[(4, ref('l10n_ec_rrhh_penta.structure_ec_employee'))]"/>
+      <field name="struct_ids" eval="[(4, ref('l10n_ec_rrhh_penta.structure_employee_ec'))]"/>
     </record>
     
     <record id="input_type_consumo_almacenes" model="hr.payslip.input.type">
       <field name="name">Consumo Almacenes</field>
       <field name="code">PL_CONSUMO_ALMACEN</field>
-      <field name="struct_ids" eval="[(4, ref('l10n_ec_rrhh_penta.structure_ec_employee'))]"/>
+      <field name="struct_ids" eval="[(4, ref('l10n_ec_rrhh_penta.structure_employee_ec'))]"/>
     </record>
     
     <record id="input_type_impuesto_renta" model="hr.payslip.input.type">
       <field name="name">Impuesto a la Renta</field>
       <field name="code">PL_IMPUESTA_RENTA</field>
-      <field name="struct_ids" eval="[(4, ref('l10n_ec_rrhh_penta.structure_ec_employee'))]"/>
+      <field name="struct_ids" eval="[(4, ref('l10n_ec_rrhh_penta.structure_employee_ec'))]"/>
     </record>
     
     <record id="input_type_pension_alimenticia" model="hr.payslip.input.type">
       <field name="name">Pensión alimenticia</field>
       <field name="code">PL_PENSION_ALIM</field>
-      <field name="struct_ids" eval="[(4, ref('l10n_ec_rrhh_penta.structure_ec_employee'))]"/>
+      <field name="struct_ids" eval="[(4, ref('l10n_ec_rrhh_penta.structure_employee_ec'))]"/>
     </record>
     
     <record id="input_type_retencion_judicial" model="hr.payslip.input.type">
       <field name="name">Retencion Judicial</field>
       <field name="code">PL_RETENCION_JUDICIAL</field>
-      <field name="struct_ids" eval="[(4, ref('l10n_ec_rrhh_penta.structure_ec_employee'))]"/>
+      <field name="struct_ids" eval="[(4, ref('l10n_ec_rrhh_penta.structure_employee_ec'))]"/>
     </record>
     
     <record id="input_type_anticipo" model="hr.payslip.input.type">
       <field name="name">Anticipio</field>
       <field name="code">PL_ANTCIPO</field>
-      <field name="struct_ids" eval="[(4, ref('l10n_ec_rrhh_penta.structure_ec_employee'))]"/>
+      <field name="struct_ids" eval="[(4, ref('l10n_ec_rrhh_penta.structure_employee_ec'))]"/>
     </record>
     
     <record id="input_type_prestamos" model="hr.payslip.input.type">
       <field name="name">Prestamos</field>
       <field name="code">PL_PRESTAMOS</field>
-      <field name="struct_ids" eval="[(4, ref('l10n_ec_rrhh_penta.structure_ec_employee'))]"/>
+      <field name="struct_ids" eval="[(4, ref('l10n_ec_rrhh_penta.structure_employee_ec'))]"/>
     </record>
     
     <record id="input_type_otros_descuentos" model="hr.payslip.input.type">
       <field name="name">Otros descuentos</field>
       <field name="code">PL_OTROS_DSCTOS</field>
-      <field name="struct_ids" eval="[(4, ref('l10n_ec_rrhh_penta.structure_ec_employee'))]"/>
+      <field name="struct_ids" eval="[(4, ref('l10n_ec_rrhh_penta.structure_employee_ec'))]"/>
     </record>
     
     <record id="input_type_factura" model="hr.payslip.input.type">
       <field name="name">Factura</field>
       <field name="code">PL_FACTURA</field>
-      <field name="struct_ids" eval="[(4, ref('l10n_ec_rrhh_penta.structure_ec_employee'))]"/>
+      <field name="struct_ids" eval="[(4, ref('l10n_ec_rrhh_penta.structure_employee_ec'))]"/>
     </record>
     
     <record id="input_type_atrasos_multas" model="hr.payslip.input.type">
       <field name="name">Atrasos y multas</field>
       <field name="code">PL_ATRASOS_MULTAS</field>
-      <field name="struct_ids" eval="[(4, ref('l10n_ec_rrhh_penta.structure_ec_employee'))]"/>
+      <field name="struct_ids" eval="[(4, ref('l10n_ec_rrhh_penta.structure_employee_ec'))]"/>
     </record>
     
     <record id="input_type_otros_ingresos" model="hr.payslip.input.type">
       <field name="name">Otros ingresos</field>
       <field name="code">PL_OTROS_INGRESOS</field>
-      <field name="struct_ids" eval="[(4, ref('l10n_ec_rrhh_penta.structure_ec_employee'))]"/>
+      <field name="struct_ids" eval="[(4, ref('l10n_ec_rrhh_penta.structure_employee_ec'))]"/>
+    </record>
+
+    <record id="input_type_vacaciones" model="hr.payslip.input.type">
+      <field name="name">Vacaciones</field>
+      <field name="code">PL_VACACIONES</field>
+      <field name="struct_ids" eval="[(4, ref('l10n_ec_rrhh_penta.structure_employee_ec'))]"/>
     </record>
 
   </data>

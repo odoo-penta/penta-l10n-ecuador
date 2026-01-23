@@ -26,6 +26,11 @@ class HrContract(models.Model):
     vac_total_available = fields.Float(
         compute="_compute_vacation_totals", string="Vacaciones disponibles (total)", store=False
     )
+    # Vacaciones de arranque
+    startup_vacation_days = fields.Float(
+        string="Días de vacaciones de arranque",
+        help="Días de vacaciones iniciales ya consumidos al empleado al crearse el contrato.",
+    )
 
     @api.depends("vacation_balance_ids.days_entitled", "vacation_balance_ids.days_taken")
     def _compute_vacation_totals(self):
@@ -87,14 +92,3 @@ class HrContract(models.Model):
             # Volver a generar
             contract._ensure_vacation_balances()
         return {"type": "ir.actions.act_window_close"}
-
-    def action_rebuild_vacation_balances(self):
-        """Abre ventana de confirmación"""
-        return {
-            "name": _("Recalcular Vacaciones"),
-            "type": "ir.actions.act_window",
-            "res_model": "hr.contract.rebuild.vacation.wizard",
-            "view_mode": "form",
-            "target": "new",
-            "context": {"default_contract_ids": self.ids},
-        }

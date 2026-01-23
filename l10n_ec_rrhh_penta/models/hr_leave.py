@@ -12,7 +12,6 @@ class HrLeave(models.Model):
         compute="_compute_is_vacation_selected",
         store=False
     )
-    
     # Indicadores visibles en el form (solo lectura)
     vacation_available = fields.Float(string="Vacaciones disponibles", compute="_compute_vacation_counters", store=False)
     vacation_taken = fields.Float(string="Vacaciones tomadas", compute="_compute_vacation_counters", store=False)
@@ -20,68 +19,61 @@ class HrLeave(models.Model):
 
     @api.depends('holiday_status_id')
     def _compute_is_vacation_selected(self):
-        for r in self:
-            r.is_vacation_selected = bool(r.holiday_status_id and getattr(r.holiday_status_id, 'is_vacation', False))
+        for leave in self:
+            # TRUE Si tiene tipo de permiso y el tipo de permiso es de vacaciones
+            leave.is_vacation_selected = bool(leave.holiday_status_id and getattr(leave.holiday_status_id, 'is_vacation', False))
 
     @api.depends('employee_id', 'holiday_status_id', 'date_from', 'date_to')
     def _compute_vacation_counters(self):
-        APPROVED_STATES = ('validate', 'validate1')
+        # Dia actual
         today = date.today()
-        HrContract = self.env['hr.contract']
-        HrLeave = self.env['hr.leave']
-
-        VacationPeriodModel = self.env.get('vacation.period')
-
-        for r in self:
-            r.vacation_available = r.vacation_taken = r.vacation_remaining = 0.0
-
-            if not r.employee_id or not r.is_vacation_selected:
+        for leave in self:
+            # Setear valores en cero
+            leave.vacation_available = leave.vacation_taken = leave.vacation_remaining = 0.0
+            # Pasar logica si no tiene empleado o no es vacaciones
+            if not leave.employee_id or not leave.is_vacation_selected:
                 continue
-
-            # contrato activo
-            contract = HrContract.search([
-                ('employee_id', '=', r.employee_id.id),
+            # Obtener contrato activo
+            contract = self.env['hr.contract'].search([
+                ('employee_id', '=', leave.employee_id.id),
                 ('active', '=', True),
                 ('date_start', '<=', today),
                 '|', ('date_end', '=', False), ('date_end', '>=', today),
             ], order='date_start desc', limit=1)
+            # Pasar si no tiene contrato
             if not contract:
                 continue
-
-            total_disponibles = 0.0
-            if VacationPeriodModel:
-                periods = VacationPeriodModel.search([('contract_id', '=', contract.id)])
-                total_disponibles = sum(periods.mapped('days')) if periods else 0.0
-            else:
-                total_disponibles = float(getattr(contract, 'l10n_ec_ptb_total_credited_vacations', 0.0))
-
-            # leaves aprobadas de tipo vacaciones en el rango del contrato
+            # Obtener dias de vacaciones disponibles en el contrato
+            total_disponibles = float(getattr(contract, 'vac_total_available', 0.0))
+            # Tiempo aprobado de tipo vacaciones en el rango del contrato
             dom_leaves = [
-                ('employee_id', '=', r.employee_id.id),
-                ('state', 'in', APPROVED_STATES),
+                ('employee_id', '=', leave.employee_id.id),
+                ('state', 'in', ('validate', 'validate1')),
                 ('holiday_status_id.is_vacation', '=', True),
             ]
             if contract.date_start:
                 dom_leaves.append(('request_date_from', '>=', contract.date_start))
             if contract.date_end:
                 dom_leaves.append(('request_date_to', '<=', contract.date_end))
-            leaves_taken = HrLeave.search(dom_leaves)
+            # Obtener vacaciones tomadas
+            leaves_taken = self.env['hr.leave'].search(dom_leaves)
             total_tomadas = sum(leaves_taken.mapped('number_of_days')) if leaves_taken else 0.0
-
+            # Obtener vacaciones restantes
             restantes = max(total_disponibles - total_tomadas, 0.0)
-            r.vacation_available = total_disponibles
-            r.vacation_taken = total_tomadas
-            r.vacation_remaining = restantes
-            
+            # Asignar valores
+            leave.vacation_available = total_disponibles
+            leave.vacation_taken = total_tomadas
+            leave.vacation_remaining = restantes
+
     @api.onchange('holiday_status_id', 'date_from', 'date_to', 'number_of_days', 'employee_id')
     def _onchange_block_exceeding_vacation(self):
         """Evita que soliciten más días de los restantes (solo cuando es Vacaciones)."""
-        for r in self:
-            if not r.is_vacation_selected:
+        for leave in self:
+            if not leave.is_vacation_selected:
                 continue
-            r._compute_vacation_counters()
+            leave._compute_vacation_counters()
             # number_of_days puede ser float; 
-            if r.number_of_days and r.vacation_remaining and (r.number_of_days > r.vacation_remaining):
+            if leave.number_of_days and leave.vacation_remaining and (leave.number_of_days > leave.vacation_remaining):
                 # Mensaje, no rompe UI 
                 return {
                     'warning': {
@@ -96,16 +88,16 @@ class HrLeave(models.Model):
     @api.constrains('state', 'holiday_status_id', 'number_of_days', 'employee_id')
     def _check_vacation_not_exceeding_on_approve(self):
         """Bloquea en validación (seguridad del lado servidor) pedir > restantes."""
-        for r in self:
-            if r.is_vacation_selected and r.state in ('validate', 'validate1'):
-                r._compute_vacation_counters()
-                if r.number_of_days > (r.vacation_remaining + r.number_of_days_taken_by_this_request()):
+        for leave in self:
+            if leave.is_vacation_selected and leave.state in ('validate', 'validate1'):
+                leave._compute_vacation_counters()
+                if leave.number_of_days > (leave.vacation_remaining + leave.number_of_days_taken_by_this_request()):
                     # nota: number_of_days_taken_by_this_request() es opcional 
                     # descontar en “tomadas”;
-                    if r.number_of_days > r.vacation_remaining:
+                    if leave.number_of_days > leave.vacation_remaining:
                         raise ValidationError(
-                            f"No puedes aprobar {r.number_of_days:.2f} días. "
-                            f"El empleado tiene {r.vacation_remaining:.2f} días restantes."
+                            f"No puedes aprobar {leave.number_of_days:.2f} días. "
+                            f"El empleado tiene {leave.vacation_remaining:.2f} días restantes."
                         )
 
     def _get_requested_days(self):

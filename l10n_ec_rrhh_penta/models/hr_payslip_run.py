@@ -27,6 +27,16 @@ class HrPayslipRun(models.Model):
                 vals["penta_benefit_key"] = key
         return vals
     
+    def action_publish_payslips(self):
+        for payslip_run in self:
+            for slip in payslip_run.slip_ids:
+                if slip.move_id.state != 'posted':
+                    if not slip.move_id:
+                        raise UserError(_("Existen recibos de nómina sin asiento contable generado. Por favor, genere los asientos antes de publicar los recibos: %s") % slip.name)
+                    if not slip.move_id.line_ids:
+                        raise UserError(_("El asiento contable del recibo de nómina %s no tiene líneas contables.") % slip.name)
+                    slip.move_id.action_post()
+    
     def action_export_payroll_xlsx(self):
         self.ensure_one()
         if not self.slip_ids:

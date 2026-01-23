@@ -111,7 +111,7 @@ result_name = inputs['PL_COMISION'].name
 
     <!-- VACACIONES TOMADAS -->
     <record id="rule_vacaciones_tomadas" model="hr.salary.rule">
-      <field name="name">Vacaciones Tomadas</field>
+      <field name="name">Liquidación de Vacaciones</field>
       <field name="code">VACACT</field>
       <field name="sequence">7</field>
       <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_employee_ec"/>
