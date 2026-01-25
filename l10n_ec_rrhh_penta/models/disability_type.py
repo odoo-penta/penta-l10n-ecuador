@@ -6,7 +6,6 @@ class HrDisabilityType(models.Model):
     _description = "Tipo de discapacidad"
 
     name = fields.Char(string="Descripción de discapacidad", required=True, translate=True)
-    is_subrogated = fields.Boolean(string="¿Es subrogado?")
     notes = fields.Text(string="Notas")
     active = fields.Boolean(default=True)
 

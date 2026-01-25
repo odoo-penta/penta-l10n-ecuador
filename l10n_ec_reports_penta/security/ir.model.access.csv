@@ -6,9 +6,6 @@ access_stock_quant_aggregated,stock.quant.aggregated,model_stock_quant_aggregate
 access_export_inventory_month_wizard,export.inventory.month.wizard,model_export_inventory_month_wizard,base.group_user,1,1,1,1
 access_pentalab_invoice_report_line,pentalab_invoice_report_line,model_pentalab_invoice_report_line,base.group_user,1,0,0,0
 access_pentalab_invoice_report_wizard,pentalab_invoice_report_wizard,model_pentalab_invoice_report_wizard,base.group_user,1,1,1,0
-access_stock_picking_report,access.stock.picking.report,model_stock_picking_report,base.group_user,1,1,1,1
-access_stock_picking_report_manager,access.stock.picking.report.manager,model_stock_picking_report,base.group_user,1,1,1,1
-access_dispatch_report_user,access.dispatch.report.user,model_dispatch_report,base.group_user,1,1,1,1
 access_pentalab_report_antiguedad_wizard,pentalab_report_antiguedad_wizard,model_pentalab_report_antiguedad_wizard,base.group_user,1,1,1,1
 access_report_purchase_retentions_wizard,report.purchase.retentions.wizard,model_report_purchase_retentions_wizard,base.group_user,1,1,1,1
 access_report_sales_a1_wizard,report.sales.a1.wizard,model_report_sales_a1_wizard,base.group_user,1,1,1,1

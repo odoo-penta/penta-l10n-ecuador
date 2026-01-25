@@ -1,11 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <record id="dt_physical" model="hr.disability.type">
-        <field name="name">Física</field>
-        <field name="is_subrogated">False</field>
-    </record>
-    <record id="dt_intellectual" model="hr.disability.type">
-        <field name="name">Intelectual</field>
-        <field name="is_subrogated">True</field>
-    </record>
+    <data noupdate="1">
+
+        <record id="dt_physical" model="hr.disability.type">
+            <field name="name">Física</field>
+        </record>
+        <record id="dt_intellectual" model="hr.disability.type">
+            <field name="name">Intelectual</field>
+        </record>
+
+    </data>
 </odoo>

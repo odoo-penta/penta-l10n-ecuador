@@ -2,7 +2,7 @@
 from odoo import http, _
 from odoo.http import request, content_disposition
 import io
-import xlsxwriter
+from odoo.tools.misc import xlsxwriter
 from datetime import datetime
 
 def _collect_structs_and_types(run):
@@ -13,7 +13,7 @@ def _collect_structs_and_types(run):
         if getattr(run, "struct_id", False):
             structs = run.struct_id
     # tipos de entrada de esas estructuras
-    input_types = request.env["hr.payslip.input.type"].search([("struct_id", "in", structs.ids)])
+    input_types = request.env["hr.payslip.input.type"].search([("struct_ids", "in", structs.ids)])
     # si no encuentran struct_id en tipos, exporta todos como plan B
     if not input_types:
         input_types = request.env["hr.payslip.input.type"].search([])
@@ -59,11 +59,11 @@ class MonthlyInputsExport(http.Controller):
 
         # columnas fijas
         headers = [
-            _("Cédula"),
-            _("Empleado"),
-            _("Departamento"),
-            _("Cargo"),
-            _("Días trabajados"),
+            "Cédula",
+            "Empleado",
+            "Departamento",
+            "Cargo",
+            "Días trabajados",
         ]
         # columnas dinámicas por input.type
         dynamic_cols = []
@@ -102,7 +102,7 @@ class MonthlyInputsExport(http.Controller):
                     current_map[inp.input_type_id.id] = float(inp.amount or 0.0)
 
             # escribe cada columna dinámica
-            for j, (type_id, _) in enumerate(dynamic_cols):
+            for j, (type_id, label) in enumerate(dynamic_cols):
                 ws.write_number(row, base_cols + j, float(current_map.get(type_id, 0.0)), fmt_num)
             row += 1
 

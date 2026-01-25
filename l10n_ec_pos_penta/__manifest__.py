@@ -11,7 +11,7 @@
 
 {
     "name": "POS",
-    'summary': 'POS in backend',
+    'summary': 'POS in backend.',
     'description': """
         Adds a new POS sales menu that processes everything in real time on the backend
     """,
@@ -21,8 +21,10 @@
     'website': 'https://pentalab.tech/',
     'license': 'OPL-1',
     'category': 'Sales/Sales',
-    'version': '18.0.1.0',
+    'version': '18.0.4.0.6',
     'depends': [
+        'accountant',
+        'account',
         'sale_stock',
         'l10n_ec_account_penta',
     ],
@@ -35,18 +37,22 @@
         'security/cash_box_rules.xml',
         'security/ir.model.access.csv',
         
+        'report/report_cash_collection.xml',
         'report/report_cash_closing.xml',
+        'report/report_cash_billing.xml',
+        'report/report_cash_summary.xml',
         'report/reports.xml',
         
         'wizard/cash_box_wizard_view.xml',
         'wizard/res_config_settings_views.xml',
+        'wizard/cash_box_print_wizard_views.xml',
         
         'views/cash_box_views.xml',
         'views/cash_box_session_views.xml',
         'views/cash_box_session_movement_views.xml',
         'views/coin_views.xml',
         #'views/sale_order_views.xml',
-        'views/account_payment_views.xml',
+        #'views/account_payment_views.xml',
         'views/account_move_views.xml',
         'views/cash_menuitems.xml',
     ],

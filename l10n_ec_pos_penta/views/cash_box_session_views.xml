@@ -26,6 +26,12 @@
             <field name="arch" type="xml">
                 <form string="Cash Box Session" create="false">
                     <header>
+                        <button string="Deposit"
+                                name="action_deposit"
+                                type="object"
+                                class="btn btn-sm btn-primary"
+                                context="{'is_cashbox_deposit': True}"
+                                invisible="state != 'closed' or (deposit_id and deposit_state not in ('draft','canceled','rejected'))"/>
                         <field name="state" widget="statusbar" statusbar_visible="in_progress,closed"/>
                     </header>
                     <sheet>
@@ -62,6 +68,15 @@
                                 invisible="state != 'closed'">
                                 <div class="o_stat_info">
                                     <span class="o_stat_text">Journal Items</span>
+                                </div>
+                            </button>
+                            <button name="open_deposit_view"
+                                class="oe_stat_button"
+                                icon="fa-bars"
+                                type="object"
+                                invisible="state != 'closed'">
+                                <div class="o_stat_info">
+                                    <span class="o_stat_text">Deposits</span>
                                 </div>
                             </button>
                         </div>

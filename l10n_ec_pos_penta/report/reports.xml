@@ -1,11 +1,38 @@
 <odoo>
 
+    <record id="action_cash_collection_report" model="ir.actions.report">
+        <field name="name">Cash Collection Report</field>
+        <field name="model">cash.box.session</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">l10n_ec_pos_penta.report_cash_collection_template</field>
+        <field name="print_report_name">'CashCollection-%s' % (object.name or '')</field>
+        <field name="paperformat_id" ref="paperformat_cash_summary"/>
+    </record>
+
     <record id="action_cash_closing_report" model="ir.actions.report">
         <field name="name">Cash Closing Report</field>
         <field name="model">cash.box.session</field>
         <field name="report_type">qweb-pdf</field>
         <field name="report_name">l10n_ec_pos_penta.report_cash_closing_template</field>
         <field name="print_report_name">'CashClosing-%s' % (object.name or '')</field>
+        <field name="paperformat_id" ref="paperformat_cash_summary"/>
+    </record>
+
+    <record id="action_cash_billing_report" model="ir.actions.report">
+        <field name="name">Cash Billing Report</field>
+        <field name="model">cash.box.session</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">l10n_ec_pos_penta.report_cash_billing_template</field>
+        <field name="print_report_name">'CashBilling-%s' % (object.name or '')</field>
+        <field name="paperformat_id" ref="paperformat_cash_summary"/>
+    </record>
+
+    <record id="action_cash_summary_report" model="ir.actions.report">
+        <field name="name">Cash Summary Report</field>
+        <field name="model">cash.box.session</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">l10n_ec_pos_penta.report_cash_summary_template</field>
+        <field name="print_report_name">'CashSummary-%s' % (object.name or '')</field>
         <field name="paperformat_id" ref="paperformat_cash_summary"/>
     </record>
 

@@ -7,8 +7,8 @@ class TestDisabilitySubrogation(TransactionCase):
     def setUp(self):
         super().setUp()
         self.emp = self.env["hr.employee"].create({"name": "Empleado Subr"})
-        self.dt_sub = self.env["hr.disability.type"].create({"name": "Intelectual", "is_subrogated": True})
-        self.dt_nosub = self.env["hr.disability.type"].create({"name": "Física", "is_subrogated": False})
+        self.dt_sub = self.env["hr.disability.type"].create({"name": "Intelectual",})
+        self.dt_nosub = self.env["hr.disability.type"].create({"name": "Física"})
 
     def test_requires_subrogation_fields(self):
         self.emp.disability_type_id = self.dt_sub

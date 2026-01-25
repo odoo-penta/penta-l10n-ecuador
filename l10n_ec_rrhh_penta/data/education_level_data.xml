@@ -1,23 +1,27 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <record id="edu_primary" model="hr.education.level">
-        <field name="name">Primaria</field>
-        <field name="code">PRIM</field>
-    </record>
-    <record id="edu_secondary" model="hr.education.level">
-        <field name="name">Secundaria</field>
-        <field name="code">SEC</field>
-    </record>
-    <record id="edu_technical" model="hr.education.level">
-        <field name="name">Técnico/tecnólogo</field>
-        <field name="code">TEC</field>
-    </record>
-    <record id="edu_university" model="hr.education.level">
-        <field name="name">Universitario</field>
-        <field name="code">UNI</field>
-    </record>
-    <record id="edu_postgraduate" model="hr.education.level">
-        <field name="name">Postgrado</field>
-        <field name="code">POS</field>
-    </record>
+    <data noupdate="1">
+
+        <record id="edu_primary" model="hr.education.level">
+            <field name="name">Primaria</field>
+            <field name="code">PRIM</field>
+        </record>
+        <record id="edu_secondary" model="hr.education.level">
+            <field name="name">Secundaria</field>
+            <field name="code">SEC</field>
+        </record>
+        <record id="edu_technical" model="hr.education.level">
+            <field name="name">Técnico/tecnólogo</field>
+            <field name="code">TEC</field>
+        </record>
+        <record id="edu_university" model="hr.education.level">
+            <field name="name">Universitario</field>
+            <field name="code">UNI</field>
+        </record>
+        <record id="edu_postgraduate" model="hr.education.level">
+            <field name="name">Postgrado</field>
+            <field name="code">POS</field>
+        </record>
+
+    </data>
 </odoo>

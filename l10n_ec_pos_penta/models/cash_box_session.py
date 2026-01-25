@@ -31,8 +31,15 @@ class CashBoxSession(models.Model):
     movement_ids = fields.One2many('cash.box.session.movement', 'session_id', string="Movements", readonly=True)
     close_move_id = fields.Many2one('account.move', readonly=True)
     diff_move_id = fields.Many2one('account.move', readonly=True)
+    deposit_id = fields.Many2one('account.payment', string="Deposit", readonly=True)
     opening_note = fields.Text(readonly=True)
     closing_note = fields.Text(readonly=True)
+    deposit_state = fields.Selection(
+        related='deposit_id.state',
+        string="Deposit State",
+        readonly=True
+    )
+    
     
     @api.model_create_multi
     def create(self, vals_list):
@@ -141,10 +148,22 @@ class CashBoxSession(models.Model):
                 return self.env['cash.box'].browse(cash_id).session_seq_id or False
             return False
         
-    def _get_payments(self):
-        """ Obtiene los pagos realizados con la sesion"""
-        return self.env['account.payment'].search([('cash_session_id', '=', self.id),('state', 'in', ['in_process', 'paid'])])
-    
+    def _get_payments(self, report=True):
+        """Obtiene los pagos realizados con la sesión (excluye depositos de caja)"""
+        if report:
+            p_domain = [
+                ('cash_session_id', '=', self.id),
+                ('state', 'in', ['in_process', 'paid']),
+                ('is_cashbox_deposit', '=', False),
+            ]
+        else:
+            p_domain = [
+                ('cash_session_id', '=', self.id),
+                ('is_cashbox_deposit', '=', False),
+            ]
+        payments = self.env['account.payment'].search(p_domain)
+        return payments.filtered(lambda p: p.payment_mode != 'internal')
+
     def _get_invoices(self):
         """ Obtiene los pagos realizados con la sesion"""
         return self.env['account.move'].search([('move_type' ,'in', ['out_invoice', 'in_invoice']),('cash_session_id', '=', self.id),('state', '=', 'posted')])
@@ -169,7 +188,7 @@ class CashBoxSession(models.Model):
     def open_payments_view(self):
         self.ensure_one()
         # Obtener pagos de los movimientos
-        payments = self._get_payments()
+        payments = self._get_payments(report=False)
         list_view_id = self.env.ref('account.view_account_payment_tree').id
         form_view_id = self.env.ref('account.view_account_payment_form').id
         return {
@@ -205,6 +224,18 @@ class CashBoxSession(models.Model):
             'res_model': 'account.move.line',
             'view_mode': 'list,form',
             'domain': [('id', 'in', move_lines.ids)],
+            'target': 'current',
+            'context': {'create': False},
+        }
+        
+    def open_deposit_view(self):
+        self.ensure_one()
+        return {
+            'name': 'Deposits',
+            'type': 'ir.actions.act_window',
+            'res_model': 'account.payment',
+            'view_mode': 'list,form',
+            'domain': [('cash_session_id', '=', self.id),('is_cashbox_deposit', '=', True)],
             'target': 'current',
             'context': {'create': False},
         }
@@ -249,12 +280,64 @@ class CashBoxSession(models.Model):
         return payment_summary
     
     def get_payment_summary_by_journal(self):
-        summary = defaultdict(float)
+        summary = defaultdict(lambda: {
+            'collections': 0.0,
+            'advances': 0.0,
+            'total': 0.0,
+        })
         for payment in self._get_payments():
             journal_name = payment.journal_id.name
-            summary[journal_name] += payment.amount
+            amount = payment.amount
+            if payment.invoice_ids and payment.invoice_ids.filtered(lambda l: l.move_type in ('out_invoice', 'in_invoice')):
+                summary[journal_name]['collections'] += amount
+            else:
+                summary[journal_name]['advances'] += amount
+            summary[journal_name]['total'] += amount
         return dict(summary)
     
     def print_summary(self):
         self.ensure_one()
-        return self.env.ref('l10n_ec_pos_penta.action_cash_closing_report').report_action(self)
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Print Cash Box Reports',
+            'res_model': 'cash.box.print.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_cash_box_session_id': self.id,
+            }
+        }
+        
+    
+    def action_deposit(self):
+        self.ensure_one()
+        company = self.cash_id.company_id
+        partner = company.partner_id
+        if not partner:
+            raise UserError(_("The company does not have a partner configured. Please review the company settings."))
+        return {
+            "type": "ir.actions.act_window",
+            "name": "Customer Deposit",
+            "res_model": "account.payment",
+            "view_mode": "form",
+            "views": [(False, "form")],
+            "target": "current",
+            "context": {
+                # Tipo de pago
+                "default_payment_type": "inbound",
+                "default_partner_type": "customer",
+                # Diario (opcional pero recomendado)
+                #"default_journal_id": self.cash_id.cash_journal_id.id,
+                # Monto predefinido
+                "default_amount": self.closing_balance,
+                # Referencia / memo
+                "default_memo": _("Deposit generated from %s") % self.name,
+                # Diferencia deposito de caja
+                "default_is_cashbox_deposit": True,
+                # Evita selección manual innecesaria
+                "search_default_customer": 1,
+                # Sesion de caja
+                'default_cash_session_id': self.id,
+            }
+        }
+

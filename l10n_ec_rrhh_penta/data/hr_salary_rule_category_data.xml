@@ -1,109 +1,137 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-  <!-- Categorías de reglas salariales (Odoo 18: válidos name, code, note, parent_id) -->
+  <data noupdate="1">
 
-  <record id="hr_payroll.BASIC" model="hr.salary.rule.category">
-      <field name="name">Básico</field>
-      <field name="code">BAS</field>
-      <field name="note">Sueldo base mensual</field>
-  </record>
+    <!-- ========================= -->
+    <!-- INGRESOS -->
+    <!-- ========================= -->
 
-  <record id="hr_payroll.ALW" model="hr.salary.rule.category">
-    <field name="name">Subsidio</field>
-    <field name="code">ALW</field>
-  </record>
+    <record id="cat_basic" model="hr.salary.rule.category">
+      <field name="name">INGRESOS (GENERA BENEFICIOS SOCIALES)</field>
+      <field name="code">BASIC</field>
+      <field name="note">Ingresos base que generan beneficios sociales</field>
+    </record>
 
-  <record id="cat_descuentos" model="hr.salary.rule.category">
-    <field name="name">Descuentos</field>
-    <field name="code">DES</field>
-    <field name="note">Deducciones por aportes, préstamos o multas</field>
-  </record>
+    <record id="cat_basicec" model="hr.salary.rule.category">
+      <field name="name">BÁSICO EC</field>
+      <field name="code">BASICEC</field>
+      <field name="note">Sueldo básico ecuatoriano</field>
+    </record>
 
-  <record id="cat_impuestos" model="hr.salary.rule.category">
-    <field name="name">Impuestos</field>
-    <field name="code">IMP</field>
-    <field name="note">Retenciones o impuestos aplicables</field>
-    <field name="parent_id" ref="l10n_ec_rrhh_penta.cat_descuentos"/>
-  </record>
+    <record id="cat_horexs" model="hr.salary.rule.category">
+      <field name="name">HORAS EXTRAS</field>
+      <field name="code">HOREXS</field>
+      <field name="note">Horas suplementarias, nocturnas y extraordinarias</field>
+    </record>
 
-  <record id="cat_total" model="hr.salary.rule.category">
-    <field name="name">Total</field>
-    <field name="code">TOT</field>
-    <field name="note">Total neto a pagar</field>
-  </record>
+    <record id="cat_vact" model="hr.salary.rule.category">
+      <field name="name">VACACIONES TOMADAS</field>
+      <field name="code">VACT</field>
+    </record>
 
-  <record id="hr_salary_rule_category_provisiones" model="hr.salary.rule.category">
-    <field name="name">PROVISIONES</field>
-    <field name="code">PROV</field>
-  </record>
+    <record id="cat_bono" model="hr.salary.rule.category">
+      <field name="name">BONIFICACIONES</field>
+      <field name="code">BONO</field>
+    </record>
 
-  <record id="hr_salary_rule_category_basico_ec" model="hr.salary.rule.category">
-    <field name="name">BASICO EC</field>
-    <field name="code">BASICEC</field>
-  </record>
+    <record id="cat_comsd" model="hr.salary.rule.category">
+      <field name="name">INGRESOS NO DEDUCIBLES</field>
+      <field name="code">COMSD</field>
+    </record>
 
-  
-  <record id="hr_salary_rule_category_total_ingresos" model="hr.salary.rule.category">
-    <field name="name">TOTAL DE INGRESOS</field>
-    <field name="code">TOTING</field>
-  </record>
+    <!-- ========================= -->
+    <!-- BASE IMPONIBLE -->
+    <!-- ========================= -->
 
-  <record id="hr_salary_rule_category_total_egresos" model="hr.salary.rule.category">
-    <field name="name">TOTAL DE EGRESOS</field>
-    <field name="code">TOTEGR</field>
-  </record>
+    <record id="cat_gross" model="hr.salary.rule.category">
+      <field name="name">SUELDO IMPONIBLE</field>
+      <field name="code">GROSS</field>
+    </record>
 
-  
-  <record id="hr_salary_rule_category_total_otros_ingresos" model="hr.salary.rule.category">
-    <field name="name">TOTAL OTROS INGRESOS</field>
-    <field name="code">TOTINGOTR</field>
-  </record>
+    <!-- ========================= -->
+    <!-- BENEFICIOS SOCIALES -->
+    <!-- ========================= -->
 
-  <record id="hr_salary_rule_category_total_provisiones" model="hr.salary.rule.category">
-    <field name="name">TOTAL DE PROVISIONES</field>
-    <field name="code">TOTPRO</field>
-  </record>
+    <record id="cat_benfso" model="hr.salary.rule.category">
+      <field name="name">BENEFICIOS SOCIALES</field>
+      <field name="code">BENFSO</field>
+    </record>
 
-  <record id="hr_salary_rule_category_salario_neto_a_recibir" model="hr.salary.rule.category">
-    <field name="name">Salario Neto a Recibir</field>
-    <field name="code">NETRECI</field>
-  </record>
+    <!-- ========================= -->
+    <!-- SUBSIDIOS IESS -->
+    <!-- ========================= -->
 
-  
-  <record id="hr_salary_rule_category_beneficios_sociales" model="hr.salary.rule.category">
-    <field name="name">BENEFICIOS SOCIALES</field>
-    <field name="code">BENEFICIOS</field>
-  </record>
+    <record id="cat_subsidios" model="hr.salary.rule.category">
+      <field name="name">SUBSIDIOS IESS</field>
+      <field name="code">SUBSIDIOS</field>
+    </record>
 
-  <record id="hr_salary_rule_category_extraordinario" model="hr.salary.rule.category">
-    <field name="name">Extraordinario</field>
-    <field name="code">EXTRA</field>
-  </record>
+    <record id="cat_subt_subsidios" model="hr.salary.rule.category">
+      <field name="name">TOTAL SUBSIDIOS</field>
+      <field name="code">SUBT_SUBSIDIOS</field>
+    </record>
 
-  <record id="hr_salary_rule_category_subsidios" model="hr.salary.rule.category">
-    <field name="name">SUBSIDIOS</field>
-    <field name="code">SUBSIDIOS</field>
-  </record>
+    <!-- ========================= -->
+    <!-- DEDUCCIONES -->
+    <!-- ========================= -->
 
-  <record id="hr_salary_rule_category_total_subsidios" model="hr.salary.rule.category">
-    <field name="name">TOTAL DE SUBSIDIOS</field>
-    <field name="code">TOTSUBSIDIOS</field>
-  </record>
+    <record id="cat_dedud" model="hr.salary.rule.category">
+      <field name="name">DEDUCCIONES</field>
+      <field name="code">DEDUD</field>
+      <field name="note">Aportes, préstamos, impuestos y retenciones</field>
+    </record>
 
-  <record id="hr_salary_rule_category_bono" model="hr.salary.rule.category">
-    <field name="name">BONO</field>
-    <field name="code">BONO</field>
-  </record>
-  
-  <record id="hr_salary_rule_category_ingresos" model="hr.salary.rule.category">
-    <field name="name">INGRESOS (GENERA BENEFICIOS SOCIALES)</field>
-    <field name="code">INGRESOS</field>
-  </record>
+    <!-- ========================= -->
+    <!-- CONSUMOS DEL EMPLEADO -->
+    <!-- ========================= -->
 
-  
-  <record id="hr_salary_rule_category_egresos" model="hr.salary.rule.category">
-    <field name="name">Egresos</field>
-    <field name="code">EGRESOS</field>
-  </record> 
+    <record id="cat_conalm" model="hr.salary.rule.category">
+      <field name="name">CONSUMOS DEL EMPLEADO</field>
+      <field name="code">CONALM</field>
+    </record>
 
+    <!-- ========================= -->
+    <!-- TOTALES -->
+    <!-- ========================= -->
+
+    <record id="cat_totingotros" model="hr.salary.rule.category">
+      <field name="name">TOTAL OTROS INGRESOS</field>
+      <field name="code">TOTINGOTROS</field>
+    </record>
+
+    <record id="cat_toting" model="hr.salary.rule.category">
+      <field name="name">TOTAL DE INGRESOS</field>
+      <field name="code">TOTING</field>
+    </record>
+
+    <record id="cat_totegr" model="hr.salary.rule.category">
+      <field name="name">TOTAL DE EGRESOS</field>
+      <field name="code">TOTEGR</field>
+    </record>
+
+    <record id="cat_net" model="hr.salary.rule.category">
+      <field name="name">SALARIO NETO A RECIBIR</field>
+      <field name="code">NET</field>
+    </record>
+
+    <!-- ========================= -->
+    <!-- PROVISIONES PATRONALES -->
+    <!-- ========================= -->
+
+    <record id="cat_emc" model="hr.salary.rule.category">
+      <field name="name">APORTES PATRONALES</field>
+      <field name="code">EMC</field>
+    </record>
+
+    <record id="cat_dter" model="hr.salary.rule.category">
+      <field name="name">PROVISIONES PATRONALES</field>
+      <field name="code">DTER</field>
+    </record>
+
+    <record id="cat_totpro" model="hr.salary.rule.category">
+      <field name="name">TOTAL PROVISIONES</field>
+      <field name="code">TOTPRO</field>
+    </record>
+
+  </data>
 </odoo>

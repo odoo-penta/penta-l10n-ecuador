@@ -7,8 +7,6 @@ from . import invoice_report
 from . import pagos_por_compras
 from . import pentalab_report_wizard
 from . import product_product
-from . import report_dispatch_consolidated
-from . import report_dispatch_order
 from . import res_company
 from . import res_config_settings
 from . import stock_quant_aggregated

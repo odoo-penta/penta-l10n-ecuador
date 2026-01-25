@@ -1,12 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<odoo noupdate="1">
-  <record id="structure_ec_admin" model="hr.payroll.structure">
-    <field name="name">Estructura Ecuador - Administrativo</field>
-    <field name="type_id" ref="l10n_ec_rrhh_penta.hr_payroll_structure_type_ec"/>
-  </record>
+<odoo>
+  <data noupdate="1">
+
+    <!-- ================================= -->
+    <!-- ESTRUCTURA SALARIAL -->
+    <!-- ================================= -->
+
+    <record id="structure_employee_ec" model="hr.payroll.structure">
+      <!-- Nombre -->
+      <field name="name">Rol de pagos EC</field>
+      <!-- Tipo de estructura -->
+      <field name="type_id" ref="l10n_ec_rrhh_penta.structure_type_ec_employees"/>
+      <!-- País -->
+      <field name="country_id" ref="base.ec"/>
+      <!-- Activa -->
+      <field name="active">True</field>
+      <!-- Periodicidad -->
+      <field name="schedule_pay">monthly</field>
+      <!-- Usar líneas de días trabajados -->
+      <field name="use_worked_day_lines">True</field>
+      <!-- Cálculo acumulado anual -->
+      <field name="ytd_computation">False</field>
+    </record>
   
-  <record id="structure_ec_employee" model="hr.payroll.structure">
-    <field name="name">Rol de pagos</field>
-    <field name="type_id" ref="l10n_ec_rrhh_penta.hr_payroll_structure_type_ec_employee"/>
-  </record>
+  </data>
 </odoo>

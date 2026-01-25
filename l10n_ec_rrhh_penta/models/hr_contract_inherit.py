@@ -63,7 +63,6 @@ class HrContract(models.Model):
         string="Código MDT",
         help="Código asignado en el Ministerio de Trabajo."
     )
-
     # Tiempo de servicio TOTAL (todos los contratos del empleado, sin solapes)
     l10n_ec_ptb_years_in_service = fields.Char(
         compute="_compute_total_time_in_service",
@@ -71,7 +70,6 @@ class HrContract(models.Model):
         readonly=True,
         help="Tiempo total de servicio sumando todos los contratos del empleado (sin solapes)."
     )
-
     # Blobs y quincena
     l10n_ec_ptb_input_iess = fields.Binary(
         string="Documentos de entrada IESS",
@@ -82,37 +80,31 @@ class HrContract(models.Model):
         help="Adjunte documentos de salida del IESS (comprimir si son varios)."
     )
     l10n_ec_ptb_fortnight = fields.Monetary(string="Quincena")
-
     # Fondo de reserva: solo Mensual / Acumulado (sin 'Sin Fondo')
     l10n_ec_ptb_reserve_fund_periodicity = fields.Selection([
         ("monthly", "Mensual"),
         ("accumulated", "Acumulado"),
     ], default="monthly", required=True, string="Pago Fondo Reserva")
-
     # Cálculo: automático luego de 1 año (en acumulado) o forzar
     l10n_ec_ptb_reserve_fund_computation = fields.Selection([
         ("automatic", "Automático (luego de 1 año)"),
         ("always_force", "Forzar Pago"),
     ], default="automatic", required=True, string="Pago de fondos de reserva")
-
     # Décimos: Mensual / Acumulado / No definido
     l10n_ec_ptb_thirteenth_fund_paid = fields.Selection([
         ("monthly", "Mensual"),
         ("accumulated", "Acumulado"),
         ("undefined", "No definido"),
     ], string="Pago del décimo tercer sueldo")
-
     l10n_ec_ptb_fourteenth_fund_paid = fields.Selection([
         ("monthly", "Mensual"),
         ("accumulated", "Acumulado"),
         ("undefined", "No definido"),
     ], string="Pago del décimo cuarto sueldo")
-
     l10n_ec_ptb_fourteenth_regime = fields.Selection([
         ("sierra_fourteenth_salary", "Región Sierra"),
         ("costa_fourteenth_salary", "Región Costa"),
     ], string="Periodo de Pago")
-
     # Utilidades por relación con la empresa
     relation_type = fields.Selection([
         ("empleado", "Empleado (recibe)"),
@@ -124,7 +116,6 @@ class HrContract(models.Model):
         string="Cobra utilidades",
         compute="_compute_payment_profits", store=True
     )
-
     # CRUD: IESS parametrizado
     iess_patronal_id = fields.Many2one(
         "hr.iess.option", string="IESS Patronal",
@@ -138,12 +129,10 @@ class HrContract(models.Model):
         "hr.iess.option", string="Extensión conyugal",
         domain="[('option_type', '=', 'conyugal'), ('active','=',True)]"
     )
-
     # Sección contable
     account_section_id = fields.Many2one(
-        "hr.account.section", string="Sección contable"
+        "hr.account.section", required=True, string="Sección contable"
     )
-
     # Pestaña "Contratos anteriores"
     has_previous_contracts = fields.Boolean(
         compute="_compute_has_previous_contracts", store=False
@@ -152,10 +141,10 @@ class HrContract(models.Model):
         "hr.contract", compute="_compute_previous_contracts", store=False,
         string="Contratos anteriores"
     )
-
+    # Distribucion analitica
     analytic_distribution = fields.Json(
         string="Distribución Analítica",
-        default={},
+        required=True,
         help="Define la distribución de costos en diferentes cuentas analíticas."
     ) 
     analytic_precision = fields.Integer(
@@ -163,6 +152,25 @@ class HrContract(models.Model):
         default=2,
         help="Cantidad de decimales que se utilizarán para los porcentajes en la distribución analítica."
     )
+    reason_end = fields.Many2one('hr.departure.reason', string="Motivo salida legal")
+    code_iess = fields.Char(string="Código novedad IESS", help="Aviso de entrada")
+    
+    @api.model
+    def default_get(self, fields_list):
+        res = super().default_get(fields_list)
+        employee_id = self.env.context.get('default_employee_id', False)
+        if not employee_id:
+            return res
+        employee = self.env['hr.employee'].browse(employee_id)
+        if not employee.exists():
+            return res
+        if not res.get('department_id') and employee.department_id:
+            res['department_id'] = employee.department_id.id
+        if not res.get('job_id') and employee.job_id:
+            res['job_id'] = employee.job_id.id
+        if not res.get('name'):
+            res['name'] = f"CONTRATO DE {employee.name}"
+        return res
 
     # ====== Cómputos ======
     @api.depends("relation_type")

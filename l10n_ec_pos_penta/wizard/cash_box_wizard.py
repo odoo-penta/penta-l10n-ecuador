@@ -304,7 +304,7 @@ class CashBoxClosedWizard(models.TransientModel):
                 return 'cash'
         
         payment_summary = {}
-        payments = self.env['account.payment'].search([('cash_session_id', '=', session.id)])
+        payments = self.env['account.payment'].search([('cash_session_id', '=', session.id), ('state', 'in', ('paid', 'in_process'))])
         for payment in payments:
             summary = {'cash': 0.00, 'transfer': 0.00, 'card': 0.00, 'credit': 0.00}
             key = categorize_payment(payment)

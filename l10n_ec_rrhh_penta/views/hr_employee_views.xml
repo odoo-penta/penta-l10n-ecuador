@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
     <!-- Ocultar certificate nativo y mostrar nuestro M2O de educación -->
     <record id="view_employee_form_inherit_l10n_ec_rrhh_penta_education" model="ir.ui.view">
         <field name="name">hr.employee.form.penta.education</field>
@@ -16,7 +17,6 @@
             <xpath expr="//field[@name='private_car_plate']" position="after">
                 <field name="cupo"/>
             </xpath>
-            
             <xpath expr="//field[@name='study_school']" position="attributes">
                 <attribute name="string">Institución educativa</attribute>
             </xpath>
@@ -26,62 +26,45 @@
             <xpath expr="//field[@name='spouse_birthdate']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
-        </field>
-    </record>
-
-    <!-- Insertar grupo Discapacidad DESPUÉS del grupo Emergency -->
-    <record id="view_employee_form_inherit_l10n_ec_rrhh_penta_disability" model="ir.ui.view">
-        <field name="name">hr.employee.form.penta.disability</field>
-        <field name="model">hr.employee</field>
-        <field name="inherit_id" ref="hr.view_employee_form"/>
-        <field name="arch" type="xml">
+            <!-- Insertar grupo Discapacidad DESPUÉS del grupo Emergency -->
             <xpath expr="//group[@name='emergency']" position="after">
                 <!-- Parent con 8 columnas para granularidad (pares de 2 col) -->
                 <group string="Discapacidad" name="penta_disability" col="8">
                     <!-- Columna izquierda (50%) -->
                     <group col="2" colspan="4">
-                    <field name="disability_type_id" options="{'no_open': False, 'no_create': False}"/>
-                    <field name="disability_percentage" invisible="not disability_type_id"/>
-                    </group>
-
-                    <!-- Columna derecha (50%) -->
-                    <group string="Datos de subrogación" col="2" colspan="4" invisible="not has_subrogation">
-                    <field name="subrogated_name"/>
-                    <field name="subrogated_certificate"/>
-                    <field name="subrogated_identification_type"/>
-                    <field name="subrogated_identification"/>
+                        <field name="disabled" string="¿Tiene discapacidad?"/>
+                        <field name="disability_type_id" invisible="not disabled" options="{'no_open': False, 'no_create': False}"/>
+                        <field name="disability_percentage" invisible="not disability_type_id"/>
                     </group>
                 </group>
-
-                <group name="disability" position="after">
+                <group name="disability">
                     <group string="Enfermedad Catastrófica" col="2">
-                    <field name="has_catastrophic_disease"/>
-                    <field name="catastrophic_certificate_date" invisible="not has_catastrophic_disease"/>
-                    <field name="catastrophic_certificate_number" invisible="not has_catastrophic_disease"/>
-                    <field name="catastrophic_description" invisible="not has_catastrophic_disease"/>
+                        <field name="has_catastrophic_disease"/>
+                        <field name="catastrophic_certificate_date" invisible="not has_catastrophic_disease"/>
+                        <field name="catastrophic_certificate_number" invisible="not has_catastrophic_disease"/>
+                        <field name="catastrophic_description" invisible="not has_catastrophic_disease"/>
+                    </group>
+                </group>
+                <group name="substitute">
+                    <group string="Trabajador Sustituto" col="2">
+                        <field name="is_substitute"/>
+                        <field name="substitute_name" required="is_substitute" invisible="not is_substitute"/>
+                        <field name="substitute_identification" required="is_substitute" invisible="not is_substitute"/>
+                        <field name="type_substitute" required="is_substitute" invisible="not is_substitute"/>
+                        <field name="relationship_substitute" required="is_substitute" invisible="not is_substitute"/>
                     </group>
                 </group>
             </xpath>
-            <xpath expr="//field[@name='bank_account_id']" position="after">
-                <field name="payment_mode_id"/> 
-                <field name="blood_type"/> 
-            </xpath>
-            <!--
-            <xpath expr="//field[@name='disabled']" position="attributes">
+            <xpath expr="//field[@name='bank_account_id']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
-            -->
-
-        </field>
-    </record>
-
-    
-    <!-- Cargas familiares: botón y contador junto a children -->
-    <record id="view_employee_form_inherit_l10n_ec_rrhh_penta_family" model="ir.ui.view">
-        <field name="name">hr.employee.form.penta.family</field>
-        <field name="model">hr.employee</field>
-        <field name="inherit_id" ref="hr.view_employee_form"/>
-        <field name="arch" type="xml">
+            <xpath expr="//field[@name='private_phone']" position="after">
+                <field name="blood_type"/>
+            </xpath>
+            <!-- Cargas familiares: botón y contador junto a children -->
+            <xpath expr="//field[@name='children']" position="attributes">
+                <attribute name="string">Cargas familiares para utilidades</attribute>
+            </xpath>
             <xpath expr="//field[@name='children']" position="after">
                 <field name="num_family_dependent_tax" readonly="1" invisible="children == 0"/>
                 <button name="%(action_l10_ec_ptb_family_dependents)d"
@@ -92,4 +75,21 @@
             </xpath>
         </field>
     </record>
+
+    <!-- Ocultar campo discapacidad de pestaña Nomina -->
+    <record id="payroll_hr_employee_view_form_inherit_penta" model="ir.ui.view">
+        <field name="name">hr.payroll.employee.view.form.inherit.penta</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr_payroll.payroll_hr_employee_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='disabled']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='legal_name']" position="after">
+                <field name="bank_account_id" context="{'default_partner_id': work_contact_id}" options="{'no_quick_create': True}" readonly="not id"/>
+                <field name="payment_mode_id"/>
+            </xpath>
+        </field>
+    </record>
+
 </odoo>

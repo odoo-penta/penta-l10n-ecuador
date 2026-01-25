@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data noupdate="1">
+
+    <!-- ========================= -->
+    <!-- CALENDARIO -->
+    <!-- ========================= -->
+
+    <record id="resource_calendar_standard_40" model="resource.calendar">
+      <field name="name">Estandar 40 horas/semana</field>
+      <field name="active">True</field>
+      <field name="company_id" ref="base.main_company"/>
+      <field name="tz">America/Guayaquil</field>
+      <field name="flexible_hours">False</field>
+    </record>
+
+  </data>
+</odoo>

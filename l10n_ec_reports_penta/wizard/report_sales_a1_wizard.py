@@ -30,6 +30,7 @@ class ReportSalesA1Wizard(models.TransientModel):
             ('invoice_date', '>=', self.date_start),
             ('invoice_date', '<=', self.date_end),
             ('journal_id.type', '=', 'sale'),
+            ('journal_id.l10n_latam_use_documents','=', True),
         ]
         if self.document_type != '0':
             inv_domain.append(('l10n_latam_document_type_id', '=', int(self.document_type)))

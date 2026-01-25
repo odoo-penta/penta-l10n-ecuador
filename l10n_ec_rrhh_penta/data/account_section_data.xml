@@ -1,31 +1,35 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-  <record id="acc_section_taller" model="hr.account.section">
-    <field name="name">Costo - Servicio de taller</field>
-    <field name="code">CST</field>
-  </record>
-  <record id="acc_section_mod" model="hr.account.section">
-    <field name="name">Costo - Mano de obra directa</field>
-    <field name="code">MOD</field>
-  </record>
-  <record id="acc_section_moi" model="hr.account.section">
-    <field name="name">Costo - Mano de obra indirecta</field>
-    <field name="code">MOI</field>
-  </record>
-  <record id="acc_section_admin" model="hr.account.section">
-    <field name="name">Gasto - Administrativo</field>
-    <field name="code">GADM</field>
-  </record>
-  <record id="acc_section_ventas" model="hr.account.section">
-    <field name="name">Gasto - Ventas</field>
-    <field name="code">GVEN</field>
-  </record>
-  <record id="acc_section_publicidad" model="hr.account.section">
-    <field name="name">Gasto - Publicidad</field>
-    <field name="code">GPUB</field>
-  </record>
-  <record id="acc_section_logistica" model="hr.account.section">
-    <field name="name">Gasto - Logística</field>
-    <field name="code">GLOG</field>
-  </record>
+  <data noupdate="1">
+
+    <record id="acc_section_taller" model="hr.account.section">
+      <field name="name">Costo - Servicio de taller</field>
+      <field name="code">CST</field>
+    </record>
+    <record id="acc_section_mod" model="hr.account.section">
+      <field name="name">Costo - Mano de obra directa</field>
+      <field name="code">MOD</field>
+    </record>
+    <record id="acc_section_moi" model="hr.account.section">
+      <field name="name">Costo - Mano de obra indirecta</field>
+      <field name="code">MOI</field>
+    </record>
+    <record id="acc_section_admin" model="hr.account.section">
+      <field name="name">Gasto - Administrativo</field>
+      <field name="code">GADM</field>
+    </record>
+    <record id="acc_section_ventas" model="hr.account.section">
+      <field name="name">Gasto - Ventas</field>
+      <field name="code">GVEN</field>
+    </record>
+    <record id="acc_section_publicidad" model="hr.account.section">
+      <field name="name">Gasto - Publicidad</field>
+      <field name="code">GPUB</field>
+    </record>
+    <record id="acc_section_logistica" model="hr.account.section">
+      <field name="name">Gasto - Logística</field>
+      <field name="code">GLOG</field>
+    </record>
+
+    </data>
 </odoo>

@@ -1,405 +1,407 @@
-<?xml version="1.0" encoding="utf-8"?>
-<odoo noupdate="1">
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data noupdate="1">
 
-  <record id="job_iess_0101011112039" model="hr.job">
-    <field name="name">SUPERVISOR DE LA PLANTACION</field>
-    <field name="l10n_ec_iess_code">0101011112039</field>
-  </record>
-  <record id="job_iess_0101011112042" model="hr.job">
-    <field name="name">SUPERVISOR DE MANTENIMIENTO</field>
-    <field name="l10n_ec_iess_code">0101011112042</field>
-  </record>
-  <record id="job_iess_0101011112052" model="hr.job">
-    <field name="name">TRABAJADOR DEL AGRO: CORTE Y RECOLECCIÓN DE RA</field>
-    <field name="l10n_ec_iess_code">0101011112052</field>
-  </record>
-  <record id="job_iess_0101011113140" model="hr.job">
-    <field name="name">EMPACADOR</field>
-    <field name="l10n_ec_iess_code">0101011113140</field>
-  </record>
-  <record id="job_iess_0101011113141" model="hr.job">
-    <field name="name">TUCSERO</field>
-    <field name="l10n_ec_iess_code">0101011113141</field>
-  </record>
-  <record id="job_iess_0101011113142" model="hr.job">
-    <field name="name">MAQUINISTA</field>
-    <field name="l10n_ec_iess_code">0101011113142</field>
-  </record>
-  <record id="job_iess_0101011113143" model="hr.job">
-    <field name="name">SUNQUERO</field>
-    <field name="l10n_ec_iess_code">0101011113143</field>
-  </record>
-  <record id="job_iess_0101011113144" model="hr.job">
-    <field name="name">TALLERO</field>
-    <field name="l10n_ec_iess_code">0101011113144</field>
-  </record>
-  <record id="job_iess_0101011113145" model="hr.job">
-    <field name="name">ACARREADOR DE FIBRA (BURRERO)</field>
-    <field name="l10n_ec_iess_code">0101011113145</field>
-  </record>
-  <record id="job_iess_0101011113146" model="hr.job">
-    <field name="name">TENDALERO</field>
-    <field name="l10n_ec_iess_code">0101011113146</field>
-  </record>
-  <record id="job_iess_0101011113147" model="hr.job">
-    <field name="name">TRABAJADOR DEL AGRO: DESMONTAJE, PREPARACION</field>
-    <field name="l10n_ec_iess_code">0101011113147</field>
-  </record>
-  <record id="job_iess_0101011210065" model="hr.job">
-    <field name="name">SUPERVISOR DE RIEGO</field>
-    <field name="l10n_ec_iess_code">0101011210065</field>
-  </record>
-  <record id="job_iess_0101011210067" model="hr.job">
-    <field name="name">JEFE DE POSTCOSECHA</field>
-    <field name="l10n_ec_iess_code">0101011210067</field>
-  </record>
-  <record id="job_iess_0101011210070" model="hr.job">
-    <field name="name">OPERADOR DE RIEGO</field>
-    <field name="l10n_ec_iess_code">0101011210070</field>
-  </record>
-  <record id="job_iess_0101011210073" model="hr.job">
-    <field name="name">SUPERVISOR DE POSTCOSECHA</field>
-    <field name="l10n_ec_iess_code">0101011210073</field>
-  </record>
-  <record id="job_iess_0101011210074" model="hr.job">
-    <field name="name">SUPERVISOR DE CULTIVO</field>
-    <field name="l10n_ec_iess_code">0101011210074</field>
-  </record>
-  <record id="job_iess_0101011210075" model="hr.job">
-    <field name="name">SUPERVISOR DE MANTENIMIENTO</field>
-    <field name="l10n_ec_iess_code">0101011210075</field>
-  </record>
-  <record id="job_iess_0101011210081" model="hr.job">
-    <field name="name">TRABAJADOR DEL AGRO: CLASIFICADOR, CORTADOR DE</field>
-    <field name="l10n_ec_iess_code">0101011210081</field>
-  </record>
-  <record id="job_iess_0101011301114" model="hr.job">
-    <field name="name">TRABAJADORES AGRICOLAS QUE LABORAN EN LAS PLA</field>
-    <field name="l10n_ec_iess_code">0101011301114</field>
-  </record>
-  <record id="job_iess_0101011301115" model="hr.job">
-    <field name="name">PEGADOR  DE CARTON</field>
-    <field name="l10n_ec_iess_code">0101011301115</field>
-  </record>
-  <record id="job_iess_0101011301116" model="hr.job">
-    <field name="name">CORTE DE RACIMOS</field>
-    <field name="l10n_ec_iess_code">0101011301116</field>
-  </record>
-  <record id="job_iess_0101011301117" model="hr.job">
-    <field name="name">TRANSPORTE DE RACIMO MEDIANTE MOTOR EN COMBU</field>
-    <field name="l10n_ec_iess_code">0101011301117</field>
-  </record>
-  <record id="job_iess_0101011301118" model="hr.job">
-    <field name="name">ENFUNDE Y DESFLORE</field>
-    <field name="l10n_ec_iess_code">0101011301118</field>
-  </record>
-  <record id="job_iess_0101011301119" model="hr.job">
-    <field name="name">LIMPIADOR SE ENCARGA DE ELIMINAR TODOS LOS HIJES</field>
-    <field name="l10n_ec_iess_code">0101011301119</field>
-  </record>
-  <record id="job_iess_0101011301120" model="hr.job">
-    <field name="name">SELECTOR SE DEDICA A ESCOGER EL HIJE</field>
-    <field name="l10n_ec_iess_code">0101011301120</field>
-  </record>
-  <record id="job_iess_0101011301121" model="hr.job">
-    <field name="name">ENSUNCHE, REENSUNCHE Y APUNTALAMIENTO</field>
-    <field name="l10n_ec_iess_code">0101011301121</field>
-  </record>
-  <record id="job_iess_0101011301122" model="hr.job">
-    <field name="name">DESHOJE</field>
-    <field name="l10n_ec_iess_code">0101011301122</field>
-  </record>
-  <record id="job_iess_0101011301123" model="hr.job">
-    <field name="name">TRABAJADORES QUE LABORAN EN ACTIVIDADES DE MA</field>
-    <field name="l10n_ec_iess_code">0101011301123</field>
-  </record>
-  <record id="job_iess_0101011301124" model="hr.job">
-    <field name="name">LIMPIEZA EMPACADORA</field>
-    <field name="l10n_ec_iess_code">0101011301124</field>
-  </record>
-  <record id="job_iess_0101011301125" model="hr.job">
-    <field name="name">SUBFOLIAR</field>
-    <field name="l10n_ec_iess_code">0101011301125</field>
-  </record>
-  <record id="job_iess_0101011301126" model="hr.job">
-    <field name="name">ROZA BANANERA</field>
-    <field name="l10n_ec_iess_code">0101011301126</field>
-  </record>
-  <record id="job_iess_0101011301127" model="hr.job">
-    <field name="name">CONTROL FITOSANITARIO Y CONTROL HERBICIDA</field>
-    <field name="l10n_ec_iess_code">0101011301127</field>
-  </record>
-  <record id="job_iess_0101011301128" model="hr.job">
-    <field name="name">FERTILIZACION</field>
-    <field name="l10n_ec_iess_code">0101011301128</field>
-  </record>
-  <record id="job_iess_0101011301129" model="hr.job">
-    <field name="name">ASPERSION PORTATIL</field>
-    <field name="l10n_ec_iess_code">0101011301129</field>
-  </record>
-  <record id="job_iess_0101011301130" model="hr.job">
-    <field name="name">FERTIRIEGO</field>
-    <field name="l10n_ec_iess_code">0101011301130</field>
-  </record>
-  <record id="job_iess_0101011301131" model="hr.job">
-    <field name="name">LIMPIEZA Y MANTENIMIENTO</field>
-    <field name="l10n_ec_iess_code">0101011301131</field>
-  </record>
-  <record id="job_iess_0101011301132" model="hr.job">
-    <field name="name">DRENAJE: EMBANQUE DE CANAL DE DRENAJE; EROSIÓN</field>
-    <field name="l10n_ec_iess_code">0101011301132</field>
-  </record>
-  <record id="job_iess_0101011301133" model="hr.job">
-    <field name="name">ASPERSION: INCLUYE PORTATIL</field>
-    <field name="l10n_ec_iess_code">0101011301133</field>
-  </record>
-  <record id="job_iess_0101011301134" model="hr.job">
-    <field name="name">CANALES</field>
-    <field name="l10n_ec_iess_code">0101011301134</field>
-  </record>
-  <record id="job_iess_0101011301135" model="hr.job">
-    <field name="name">CAJA DE 22/U - P-CKRAFF/E</field>
-    <field name="l10n_ec_iess_code">0101011301135</field>
-  </record>
-  <record id="job_iess_0101011301136" model="hr.job">
-    <field name="name">CAJA DE 22/U, PALETIZADO BAG</field>
-    <field name="l10n_ec_iess_code">0101011301136</field>
-  </record>
-  <record id="job_iess_0101011301137" model="hr.job">
-    <field name="name">CAJA DE 22/U DE 19 KILOS GRANDE</field>
-    <field name="l10n_ec_iess_code">0101011301137</field>
-  </record>
-  <record id="job_iess_0101011301138" model="hr.job">
-    <field name="name">CAJA 115K DE 17 KILOS MEDIANA CUALQUIER EMPAQUE</field>
-    <field name="l10n_ec_iess_code">0101011301138</field>
-  </record>
-  <record id="job_iess_0101011301139" model="hr.job">
-    <field name="name">CAJA NUM 208 Y NUM 2527, DE 13 KILOS, CHICA, CUALQU</field>
-    <field name="l10n_ec_iess_code">0101011301139</field>
-  </record>
-  <record id="job_iess_0101011310029" model="hr.job">
-    <field name="name">TRABAJADOR DEL AGRO: TUMBA DE CACAO, UNTADA DE</field>
-    <field name="l10n_ec_iess_code">0101011310029</field>
-  </record>
-  <record id="job_iess_0101011311001" model="hr.job">
-    <field name="name">MAQUINISTAS, CLASIFICADORES, VIBRADORA, SECADOR</field>
-    <field name="l10n_ec_iess_code">0101011311001</field>
-  </record>
-  <record id="job_iess_0101011311002" model="hr.job">
-    <field name="name">MAYORDOMO</field>
-    <field name="l10n_ec_iess_code">0101011311002</field>
-  </record>
-  <record id="job_iess_0101011311031" model="hr.job">
-    <field name="name">TRABAJADOR FITOSANITARIO</field>
-    <field name="l10n_ec_iess_code">0101011311031</field>
-  </record>
-  <record id="job_iess_0101011311032" model="hr.job">
-    <field name="name">TRABAJADOR DEL AGRO: SEMILLERO, SEMBRADOR, COS</field>
-    <field name="l10n_ec_iess_code">0101011311032</field>
-  </record>
-  <record id="job_iess_0101020010006" model="hr.job">
-    <field name="name">JEFE FORESTAL</field>
-    <field name="l10n_ec_iess_code">0101020010006</field>
-  </record>
-  <record id="job_iess_0101020010008" model="hr.job">
-    <field name="name">JEFE DE OPERACIÓN</field>
-    <field name="l10n_ec_iess_code">0101020010008</field>
-  </record>
-  <record id="job_iess_0101020010011" model="hr.job">
-    <field name="name">JEFE MANTENIMIENTO</field>
-    <field name="l10n_ec_iess_code">0101020010011</field>
-  </record>
-  <record id="job_iess_0101020010012" model="hr.job">
-    <field name="name">OPERADOR DE MÁQUINA</field>
-    <field name="l10n_ec_iess_code">0101020010012</field>
-  </record>
-  <record id="job_iess_0101020010013" model="hr.job">
-    <field name="name">JEFE DE CAMPO</field>
-    <field name="l10n_ec_iess_code">0101020010013</field>
-  </record>
-  <record id="job_iess_0101020010015" model="hr.job">
-    <field name="name">VIVERISTA AGROFORESTAL</field>
-    <field name="l10n_ec_iess_code">0101020010015</field>
-  </record>
-  <record id="job_iess_0101020010016" model="hr.job">
-    <field name="name">OPERADOR DE MOTOSIERRA</field>
-    <field name="l10n_ec_iess_code">0101020010016</field>
-  </record>
-  <record id="job_iess_0101020010023" model="hr.job">
-    <field name="name">JEFE DE CAMPAMENTO</field>
-    <field name="l10n_ec_iess_code">0101020010023</field>
-  </record>
-  <record id="job_iess_0101020010024" model="hr.job">
-    <field name="name">AUXILIAR DE MANTENIMIENTO</field>
-    <field name="l10n_ec_iess_code">0101020010024</field>
-  </record>
-  <record id="job_iess_0101020010025" model="hr.job">
-    <field name="name">TRABAJADOR DEL AGRO</field>
-    <field name="l10n_ec_iess_code">0101020010025</field>
-  </record>
-  <record id="job_iess_0101020010026" model="hr.job">
-    <field name="name">MATERO</field>
-    <field name="l10n_ec_iess_code">0101020010026</field>
-  </record>
-  <record id="job_iess_0101020010027" model="hr.job">
-    <field name="name">AUXILIAR DE OPERADOR</field>
-    <field name="l10n_ec_iess_code">0101020010027</field>
-  </record>
-  <record id="job_iess_0109630100001" model="hr.job">
-    <field name="name">TRAIDA O PASADA DE UNA OFICINA A OTRA</field>
-    <field name="l10n_ec_iess_code">0109630100001</field>
-  </record>
-  <record id="job_iess_0109630100002" model="hr.job">
-    <field name="name">PARADA</field>
-    <field name="l10n_ec_iess_code">0109630100002</field>
-  </record>
-  <record id="job_iess_0109630100003" model="hr.job">
-    <field name="name">CERNIDA</field>
-    <field name="l10n_ec_iess_code">0109630100003</field>
-  </record>
-  <record id="job_iess_0109630100004" model="hr.job">
-    <field name="name">COLOCACION DE UN SACO VACIO A OTRO LLENO</field>
-    <field name="l10n_ec_iess_code">0109630100004</field>
-  </record>
-  <record id="job_iess_0109630100005" model="hr.job">
-    <field name="name">LINGADA A BORDO</field>
-    <field name="l10n_ec_iess_code">0109630100005</field>
-  </record>
-  <record id="job_iess_0109630100006" model="hr.job">
-    <field name="name">SACADA Y GUARDADA A LA MANTA PARA ASOLEO O REV</field>
-    <field name="l10n_ec_iess_code">0109630100006</field>
-  </record>
-  <record id="job_iess_0109630100007" model="hr.job">
-    <field name="name">PESADA O VACIADA EN UNA BODEGA O PATIO  EN EL MIS</field>
-    <field name="l10n_ec_iess_code">0109630100007</field>
-  </record>
-  <record id="job_iess_0109630100008" model="hr.job">
-    <field name="name">PASADA DE UNA BODEGA A OTRA AL GRANEL</field>
-    <field name="l10n_ec_iess_code">0109630100008</field>
-  </record>
-  <record id="job_iess_0109630100009" model="hr.job">
-    <field name="name">LLENADA PARA INVENTARIO, ASOLEO O PARADA</field>
-    <field name="l10n_ec_iess_code">0109630100009</field>
-  </record>
-  <record id="job_iess_0109630100010" model="hr.job">
-    <field name="name">VACIADA DE UN SACO A OTRO</field>
-    <field name="l10n_ec_iess_code">0109630100010</field>
-  </record>
-  <record id="job_iess_0109630100011" model="hr.job">
-    <field name="name">PALEADA ABIERTA</field>
-    <field name="l10n_ec_iess_code">0109630100011</field>
-  </record>
-  <record id="job_iess_0109630100012" model="hr.job">
-    <field name="name">PALEADA CERRADA</field>
-    <field name="l10n_ec_iess_code">0109630100012</field>
-  </record>
-  <record id="job_iess_0109630100013" model="hr.job">
-    <field name="name">TRAIDA O PASADA DE UNA OFICINA A OTRA</field>
-    <field name="l10n_ec_iess_code">0109630100013</field>
-  </record>
-  <record id="job_iess_0109630100014" model="hr.job">
-    <field name="name">PESADA Y VACIADA EN BODEGA A PATIO EN EL MISMO D</field>
-    <field name="l10n_ec_iess_code">0109630100014</field>
-  </record>
-  <record id="job_iess_0109630100015" model="hr.job">
-    <field name="name">CONDUCCION A LA DESMONTADORA Y VACIADA</field>
-    <field name="lnón_ec_iess_code">0109630100015</field>
-  </record>
-  <record id="job_iess_0109630100016" model="hr.job">
-    <field name="name">LLENADA PARA INVENTARIOS, ASOLEO O PARADA</field>
-    <field name="lnón_ec_iess_code">0109630100016</field>
-  </record>
-  <record id="job_iess_0109630100017" model="hr.job">
-    <field name="name">CATADA DE GRANZAS</field>
-    <field name="lnón_ec_iess_code">0109630100017</field>
-  </record>
-  <record id="job_iess_0109630100018" model="hr.job">
-    <field name="name">CATADA DE TIERRA DE CACAO NEGRO</field>
-    <field name="lnón_ec_iess_code">0109630100018</field>
-  </record>
-  <record id="job_iess_0109630100019" model="hr.job">
-    <field name="name">MAQUINADA DE GRANZAS</field>
-    <field name="lnón_ec_iess_code">0109630100019</field>
-  </record>
-  <record id="job_iess_0109630100020" model="hr.job">
-    <field name="name">CATADA DE CACAO BUENO (CLASIFICACION DE GRANOS</field>
-    <field name="lnón_ec_iess_code">0109630100020</field>
-  </record>
-  <record id="job_iess_0109630100021" model="hr.job">
-    <field name="name">REMAQUINADA DE CACAO</field>
-    <field name="lnón_ec_iess_code">0109630100021</field>
-  </record>
-  <record id="job_iess_0109630100022" model="hr.job">
-    <field name="name">MAQUINADA DE CACAO CADA QUINTAL</field>
-    <field name="lnón_ec_iess_code">0109630100022</field>
-  </record>
-  <record id="job_iess_0109630100023" model="hr.job">
-    <field name="name">CATADA DE CACAO NEGRO (CLASIFICACION DE GRANOS</field>
-    <field name="lnón_ec_iess_code">0109630100023</field>
-  </record>
-  <record id="job_iess_0109630100024" model="hr.job">
-    <field name="name">MAQUINADA DE CACAO BUENO NEGRO</field>
-    <field name="lnón_ec_iess_code">0109630100024</field>
-  </record>
-  <record id="job_iess_0109630100025" model="hr.job">
-    <field name="name">MAQUINADA DE PELOTAS</field>
-    <field name="lnón_ec_iess_code">0109630100025</field>
-  </record>
-  <record id="job_iess_0109630100026" model="hr.job">
-    <field name="name">MAQUINADA DE TIERRA DE ASOLEO</field>
-    <field name="lnón_ec_iess_code">0109630100026</field>
-  </record>
-  <record id="job_iess_0109630100027" model="hr.job">
-    <field name="name">GUARDADA DE ASOLEO (DOS DÍAS)</field>
-    <field name="lnón_ec_iess_code">0109630100027</field>
-  </record>
-  <record id="job_iess_0109630100028" model="hr.job">
-    <field name="name">LAVADA (UN DÍA)</field>
-    <field name="lnón_ec_iess_code">0109630100028</field>
-  </record>
-  <record id="job_iess_0109630100030" model="hr.job">
-    <field name="name">ENCHAROLADA SOLA</field>
-    <field name="lnón_ec_iess_code">0109630100030</field>
-  </record>
-  <record id="job_iess_0109630100031" model="hr.job">
-    <field name="name">SARANDEO DE CACAO NEGRO</field>
-    <field name="lnón_ec_iess_code">0109630100031</field>
-  </record>
-  <record id="job_iess_0109630100032" model="hr.job">
-    <field name="name">DESPELOTADA DE CACAO NEGRO O DESPICADO (DESMA</field>
-    <field name="lnón_ec_iess_code">0109630100032</field>
-  </record>
-  <record id="job_iess_0109630100033" model="hr.job">
-    <field name="name">ASOLEO EN TERRAZAS A FUERZA DE SANGRE QUE COM</field>
-    <field name="lnón_ec_iess_code">0109630100033</field>
-  </record>
-  <record id="job_iess_0109630100034" model="hr.job">
-    <field name="name">ESCOGIDA DE CACAO (TRABAJO DE MUJERES), CADA LIB</field>
-    <field name="lnón_ec_iess_code">0109630100034</field>
-  </record>
-  <record id="job_iess_0109630100035" model="hr.job">
-    <field name="name">VACIADA A LA TOLVA POR MAQUINISTA</field>
-    <field name="lnón_ec_iess_code">0109630100035</field>
-  </record>
-  <record id="job_iess_0109630100036" model="hr.job">
-    <field name="name">SARANDEO DE CACAO BUENO</field>
-    <field name="lnón_ec_iess_code">0109630100036</field>
-  </record>
-  <record id="job_iess_0109630100037" model="hr.job">
-    <field name="name">VACIADA A LA TOLVA POR LA CUADRILLA</field>
-    <field name="lnón_ec_iess_code">0109630100037</field>
-  </record>
-  <record id="job_iess_0109630100038" model="hr.job">
-    <field name="name">TRAIDA O PASADA DE UNA OFICINA A OTRA</field>
-    <field name="lnón_ec_iess_code">0109630100038</field>
-  </record>
-  <record id="job_iess_0109630100039" model="hr.job">
-    <field name="name">ASOLEO EN TERRAZA QUE COMPRENDE SUBIDA  MECAN</field>
-    <field name="lnón_ec_iess_code">0109630100039</field>
-  </record>
-  <record id="job_iess_0109630100040" model="hr.job">
-    <field name="name">DESPICADO DE PELOTAS CON CACAO BUENO; INCLUYE</field>
-    <field name="lnón_ec_iess_code">0109630100040</field>
-  </record>
+    <record id="job_iess_0101011112039" model="hr.job">
+      <field name="name">SUPERVISOR DE LA PLANTACION</field>
+      <field name="l10n_ec_iess_code">0101011112039</field>
+    </record>
+    <record id="job_iess_0101011112042" model="hr.job">
+      <field name="name">SUPERVISOR DE MANTENIMIENTO</field>
+      <field name="l10n_ec_iess_code">0101011112042</field>
+    </record>
+    <record id="job_iess_0101011112052" model="hr.job">
+      <field name="name">TRABAJADOR DEL AGRO: CORTE Y RECOLECCIÓN DE RA</field>
+      <field name="l10n_ec_iess_code">0101011112052</field>
+    </record>
+    <record id="job_iess_0101011113140" model="hr.job">
+      <field name="name">EMPACADOR</field>
+      <field name="l10n_ec_iess_code">0101011113140</field>
+    </record>
+    <record id="job_iess_0101011113141" model="hr.job">
+      <field name="name">TUCSERO</field>
+      <field name="l10n_ec_iess_code">0101011113141</field>
+    </record>
+    <record id="job_iess_0101011113142" model="hr.job">
+      <field name="name">MAQUINISTA</field>
+      <field name="l10n_ec_iess_code">0101011113142</field>
+    </record>
+    <record id="job_iess_0101011113143" model="hr.job">
+      <field name="name">SUNQUERO</field>
+      <field name="l10n_ec_iess_code">0101011113143</field>
+    </record>
+    <record id="job_iess_0101011113144" model="hr.job">
+      <field name="name">TALLERO</field>
+      <field name="l10n_ec_iess_code">0101011113144</field>
+    </record>
+    <record id="job_iess_0101011113145" model="hr.job">
+      <field name="name">ACARREADOR DE FIBRA (BURRERO)</field>
+      <field name="l10n_ec_iess_code">0101011113145</field>
+    </record>
+    <record id="job_iess_0101011113146" model="hr.job">
+      <field name="name">TENDALERO</field>
+      <field name="l10n_ec_iess_code">0101011113146</field>
+    </record>
+    <record id="job_iess_0101011113147" model="hr.job">
+      <field name="name">TRABAJADOR DEL AGRO: DESMONTAJE, PREPARACION</field>
+      <field name="l10n_ec_iess_code">0101011113147</field>
+    </record>
+    <record id="job_iess_0101011210065" model="hr.job">
+      <field name="name">SUPERVISOR DE RIEGO</field>
+      <field name="l10n_ec_iess_code">0101011210065</field>
+    </record>
+    <record id="job_iess_0101011210067" model="hr.job">
+      <field name="name">JEFE DE POSTCOSECHA</field>
+      <field name="l10n_ec_iess_code">0101011210067</field>
+    </record>
+    <record id="job_iess_0101011210070" model="hr.job">
+      <field name="name">OPERADOR DE RIEGO</field>
+      <field name="l10n_ec_iess_code">0101011210070</field>
+    </record>
+    <record id="job_iess_0101011210073" model="hr.job">
+      <field name="name">SUPERVISOR DE POSTCOSECHA</field>
+      <field name="l10n_ec_iess_code">0101011210073</field>
+    </record>
+    <record id="job_iess_0101011210074" model="hr.job">
+      <field name="name">SUPERVISOR DE CULTIVO</field>
+      <field name="l10n_ec_iess_code">0101011210074</field>
+    </record>
+    <record id="job_iess_0101011210075" model="hr.job">
+      <field name="name">SUPERVISOR DE MANTENIMIENTO</field>
+      <field name="l10n_ec_iess_code">0101011210075</field>
+    </record>
+    <record id="job_iess_0101011210081" model="hr.job">
+      <field name="name">TRABAJADOR DEL AGRO: CLASIFICADOR, CORTADOR DE</field>
+      <field name="l10n_ec_iess_code">0101011210081</field>
+    </record>
+    <record id="job_iess_0101011301114" model="hr.job">
+      <field name="name">TRABAJADORES AGRICOLAS QUE LABORAN EN LAS PLA</field>
+      <field name="l10n_ec_iess_code">0101011301114</field>
+    </record>
+    <record id="job_iess_0101011301115" model="hr.job">
+      <field name="name">PEGADOR  DE CARTON</field>
+      <field name="l10n_ec_iess_code">0101011301115</field>
+    </record>
+    <record id="job_iess_0101011301116" model="hr.job">
+      <field name="name">CORTE DE RACIMOS</field>
+      <field name="l10n_ec_iess_code">0101011301116</field>
+    </record>
+    <record id="job_iess_0101011301117" model="hr.job">
+      <field name="name">TRANSPORTE DE RACIMO MEDIANTE MOTOR EN COMBU</field>
+      <field name="l10n_ec_iess_code">0101011301117</field>
+    </record>
+    <record id="job_iess_0101011301118" model="hr.job">
+      <field name="name">ENFUNDE Y DESFLORE</field>
+      <field name="l10n_ec_iess_code">0101011301118</field>
+    </record>
+    <record id="job_iess_0101011301119" model="hr.job">
+      <field name="name">LIMPIADOR SE ENCARGA DE ELIMINAR TODOS LOS HIJES</field>
+      <field name="l10n_ec_iess_code">0101011301119</field>
+    </record>
+    <record id="job_iess_0101011301120" model="hr.job">
+      <field name="name">SELECTOR SE DEDICA A ESCOGER EL HIJE</field>
+      <field name="l10n_ec_iess_code">0101011301120</field>
+    </record>
+    <record id="job_iess_0101011301121" model="hr.job">
+      <field name="name">ENSUNCHE, REENSUNCHE Y APUNTALAMIENTO</field>
+      <field name="l10n_ec_iess_code">0101011301121</field>
+    </record>
+    <record id="job_iess_0101011301122" model="hr.job">
+      <field name="name">DESHOJE</field>
+      <field name="l10n_ec_iess_code">0101011301122</field>
+    </record>
+    <record id="job_iess_0101011301123" model="hr.job">
+      <field name="name">TRABAJADORES QUE LABORAN EN ACTIVIDADES DE MA</field>
+      <field name="l10n_ec_iess_code">0101011301123</field>
+    </record>
+    <record id="job_iess_0101011301124" model="hr.job">
+      <field name="name">LIMPIEZA EMPACADORA</field>
+      <field name="l10n_ec_iess_code">0101011301124</field>
+    </record>
+    <record id="job_iess_0101011301125" model="hr.job">
+      <field name="name">SUBFOLIAR</field>
+      <field name="l10n_ec_iess_code">0101011301125</field>
+    </record>
+    <record id="job_iess_0101011301126" model="hr.job">
+      <field name="name">ROZA BANANERA</field>
+      <field name="l10n_ec_iess_code">0101011301126</field>
+    </record>
+    <record id="job_iess_0101011301127" model="hr.job">
+      <field name="name">CONTROL FITOSANITARIO Y CONTROL HERBICIDA</field>
+      <field name="l10n_ec_iess_code">0101011301127</field>
+    </record>
+    <record id="job_iess_0101011301128" model="hr.job">
+      <field name="name">FERTILIZACION</field>
+      <field name="l10n_ec_iess_code">0101011301128</field>
+    </record>
+    <record id="job_iess_0101011301129" model="hr.job">
+      <field name="name">ASPERSION PORTATIL</field>
+      <field name="l10n_ec_iess_code">0101011301129</field>
+    </record>
+    <record id="job_iess_0101011301130" model="hr.job">
+      <field name="name">FERTIRIEGO</field>
+      <field name="l10n_ec_iess_code">0101011301130</field>
+    </record>
+    <record id="job_iess_0101011301131" model="hr.job">
+      <field name="name">LIMPIEZA Y MANTENIMIENTO</field>
+      <field name="l10n_ec_iess_code">0101011301131</field>
+    </record>
+    <record id="job_iess_0101011301132" model="hr.job">
+      <field name="name">DRENAJE: EMBANQUE DE CANAL DE DRENAJE; EROSIÓN</field>
+      <field name="l10n_ec_iess_code">0101011301132</field>
+    </record>
+    <record id="job_iess_0101011301133" model="hr.job">
+      <field name="name">ASPERSION: INCLUYE PORTATIL</field>
+      <field name="l10n_ec_iess_code">0101011301133</field>
+    </record>
+    <record id="job_iess_0101011301134" model="hr.job">
+      <field name="name">CANALES</field>
+      <field name="l10n_ec_iess_code">0101011301134</field>
+    </record>
+    <record id="job_iess_0101011301135" model="hr.job">
+      <field name="name">CAJA DE 22/U - P-CKRAFF/E</field>
+      <field name="l10n_ec_iess_code">0101011301135</field>
+    </record>
+    <record id="job_iess_0101011301136" model="hr.job">
+      <field name="name">CAJA DE 22/U, PALETIZADO BAG</field>
+      <field name="l10n_ec_iess_code">0101011301136</field>
+    </record>
+    <record id="job_iess_0101011301137" model="hr.job">
+      <field name="name">CAJA DE 22/U DE 19 KILOS GRANDE</field>
+      <field name="l10n_ec_iess_code">0101011301137</field>
+    </record>
+    <record id="job_iess_0101011301138" model="hr.job">
+      <field name="name">CAJA 115K DE 17 KILOS MEDIANA CUALQUIER EMPAQUE</field>
+      <field name="l10n_ec_iess_code">0101011301138</field>
+    </record>
+    <record id="job_iess_0101011301139" model="hr.job">
+      <field name="name">CAJA NUM 208 Y NUM 2527, DE 13 KILOS, CHICA, CUALQU</field>
+      <field name="l10n_ec_iess_code">0101011301139</field>
+    </record>
+    <record id="job_iess_0101011310029" model="hr.job">
+      <field name="name">TRABAJADOR DEL AGRO: TUMBA DE CACAO, UNTADA DE</field>
+      <field name="l10n_ec_iess_code">0101011310029</field>
+    </record>
+    <record id="job_iess_0101011311001" model="hr.job">
+      <field name="name">MAQUINISTAS, CLASIFICADORES, VIBRADORA, SECADOR</field>
+      <field name="l10n_ec_iess_code">0101011311001</field>
+    </record>
+    <record id="job_iess_0101011311002" model="hr.job">
+      <field name="name">MAYORDOMO</field>
+      <field name="l10n_ec_iess_code">0101011311002</field>
+    </record>
+    <record id="job_iess_0101011311031" model="hr.job">
+      <field name="name">TRABAJADOR FITOSANITARIO</field>
+      <field name="l10n_ec_iess_code">0101011311031</field>
+    </record>
+    <record id="job_iess_0101011311032" model="hr.job">
+      <field name="name">TRABAJADOR DEL AGRO: SEMILLERO, SEMBRADOR, COS</field>
+      <field name="l10n_ec_iess_code">0101011311032</field>
+    </record>
+    <record id="job_iess_0101020010006" model="hr.job">
+      <field name="name">JEFE FORESTAL</field>
+      <field name="l10n_ec_iess_code">0101020010006</field>
+    </record>
+    <record id="job_iess_0101020010008" model="hr.job">
+      <field name="name">JEFE DE OPERACIÓN</field>
+      <field name="l10n_ec_iess_code">0101020010008</field>
+    </record>
+    <record id="job_iess_0101020010011" model="hr.job">
+      <field name="name">JEFE MANTENIMIENTO</field>
+      <field name="l10n_ec_iess_code">0101020010011</field>
+    </record>
+    <record id="job_iess_0101020010012" model="hr.job">
+      <field name="name">OPERADOR DE MÁQUINA</field>
+      <field name="l10n_ec_iess_code">0101020010012</field>
+    </record>
+    <record id="job_iess_0101020010013" model="hr.job">
+      <field name="name">JEFE DE CAMPO</field>
+      <field name="l10n_ec_iess_code">0101020010013</field>
+    </record>
+    <record id="job_iess_0101020010015" model="hr.job">
+      <field name="name">VIVERISTA AGROFORESTAL</field>
+      <field name="l10n_ec_iess_code">0101020010015</field>
+    </record>
+    <record id="job_iess_0101020010016" model="hr.job">
+      <field name="name">OPERADOR DE MOTOSIERRA</field>
+      <field name="l10n_ec_iess_code">0101020010016</field>
+    </record>
+    <record id="job_iess_0101020010023" model="hr.job">
+      <field name="name">JEFE DE CAMPAMENTO</field>
+      <field name="l10n_ec_iess_code">0101020010023</field>
+    </record>
+    <record id="job_iess_0101020010024" model="hr.job">
+      <field name="name">AUXILIAR DE MANTENIMIENTO</field>
+      <field name="l10n_ec_iess_code">0101020010024</field>
+    </record>
+    <record id="job_iess_0101020010025" model="hr.job">
+      <field name="name">TRABAJADOR DEL AGRO</field>
+      <field name="l10n_ec_iess_code">0101020010025</field>
+    </record>
+    <record id="job_iess_0101020010026" model="hr.job">
+      <field name="name">MATERO</field>
+      <field name="l10n_ec_iess_code">0101020010026</field>
+    </record>
+    <record id="job_iess_0101020010027" model="hr.job">
+      <field name="name">AUXILIAR DE OPERADOR</field>
+      <field name="l10n_ec_iess_code">0101020010027</field>
+    </record>
+    <record id="job_iess_0109630100001" model="hr.job">
+      <field name="name">TRAIDA O PASADA DE UNA OFICINA A OTRA</field>
+      <field name="l10n_ec_iess_code">0109630100001</field>
+    </record>
+    <record id="job_iess_0109630100002" model="hr.job">
+      <field name="name">PARADA</field>
+      <field name="l10n_ec_iess_code">0109630100002</field>
+    </record>
+    <record id="job_iess_0109630100003" model="hr.job">
+      <field name="name">CERNIDA</field>
+      <field name="l10n_ec_iess_code">0109630100003</field>
+    </record>
+    <record id="job_iess_0109630100004" model="hr.job">
+      <field name="name">COLOCACION DE UN SACO VACIO A OTRO LLENO</field>
+      <field name="l10n_ec_iess_code">0109630100004</field>
+    </record>
+    <record id="job_iess_0109630100005" model="hr.job">
+      <field name="name">LINGADA A BORDO</field>
+      <field name="l10n_ec_iess_code">0109630100005</field>
+    </record>
+    <record id="job_iess_0109630100006" model="hr.job">
+      <field name="name">SACADA Y GUARDADA A LA MANTA PARA ASOLEO O REV</field>
+      <field name="l10n_ec_iess_code">0109630100006</field>
+    </record>
+    <record id="job_iess_0109630100007" model="hr.job">
+      <field name="name">PESADA O VACIADA EN UNA BODEGA O PATIO  EN EL MIS</field>
+      <field name="l10n_ec_iess_code">0109630100007</field>
+    </record>
+    <record id="job_iess_0109630100008" model="hr.job">
+      <field name="name">PASADA DE UNA BODEGA A OTRA AL GRANEL</field>
+      <field name="l10n_ec_iess_code">0109630100008</field>
+    </record>
+    <record id="job_iess_0109630100009" model="hr.job">
+      <field name="name">LLENADA PARA INVENTARIO, ASOLEO O PARADA</field>
+      <field name="l10n_ec_iess_code">0109630100009</field>
+    </record>
+    <record id="job_iess_0109630100010" model="hr.job">
+      <field name="name">VACIADA DE UN SACO A OTRO</field>
+      <field name="l10n_ec_iess_code">0109630100010</field>
+    </record>
+    <record id="job_iess_0109630100011" model="hr.job">
+      <field name="name">PALEADA ABIERTA</field>
+      <field name="l10n_ec_iess_code">0109630100011</field>
+    </record>
+    <record id="job_iess_0109630100012" model="hr.job">
+      <field name="name">PALEADA CERRADA</field>
+      <field name="l10n_ec_iess_code">0109630100012</field>
+    </record>
+    <record id="job_iess_0109630100013" model="hr.job">
+      <field name="name">TRAIDA O PASADA DE UNA OFICINA A OTRA</field>
+      <field name="l10n_ec_iess_code">0109630100013</field>
+    </record>
+    <record id="job_iess_0109630100014" model="hr.job">
+      <field name="name">PESADA Y VACIADA EN BODEGA A PATIO EN EL MISMO D</field>
+      <field name="l10n_ec_iess_code">0109630100014</field>
+    </record>
+    <record id="job_iess_0109630100015" model="hr.job">
+      <field name="name">CONDUCCION A LA DESMONTADORA Y VACIADA</field>
+      <field name="lnón_ec_iess_code">0109630100015</field>
+    </record>
+    <record id="job_iess_0109630100016" model="hr.job">
+      <field name="name">LLENADA PARA INVENTARIOS, ASOLEO O PARADA</field>
+      <field name="lnón_ec_iess_code">0109630100016</field>
+    </record>
+    <record id="job_iess_0109630100017" model="hr.job">
+      <field name="name">CATADA DE GRANZAS</field>
+      <field name="lnón_ec_iess_code">0109630100017</field>
+    </record>
+    <record id="job_iess_0109630100018" model="hr.job">
+      <field name="name">CATADA DE TIERRA DE CACAO NEGRO</field>
+      <field name="lnón_ec_iess_code">0109630100018</field>
+    </record>
+    <record id="job_iess_0109630100019" model="hr.job">
+      <field name="name">MAQUINADA DE GRANZAS</field>
+      <field name="lnón_ec_iess_code">0109630100019</field>
+    </record>
+    <record id="job_iess_0109630100020" model="hr.job">
+      <field name="name">CATADA DE CACAO BUENO (CLASIFICACION DE GRANOS</field>
+      <field name="lnón_ec_iess_code">0109630100020</field>
+    </record>
+    <record id="job_iess_0109630100021" model="hr.job">
+      <field name="name">REMAQUINADA DE CACAO</field>
+      <field name="lnón_ec_iess_code">0109630100021</field>
+    </record>
+    <record id="job_iess_0109630100022" model="hr.job">
+      <field name="name">MAQUINADA DE CACAO CADA QUINTAL</field>
+      <field name="lnón_ec_iess_code">0109630100022</field>
+    </record>
+    <record id="job_iess_0109630100023" model="hr.job">
+      <field name="name">CATADA DE CACAO NEGRO (CLASIFICACION DE GRANOS</field>
+      <field name="lnón_ec_iess_code">0109630100023</field>
+    </record>
+    <record id="job_iess_0109630100024" model="hr.job">
+      <field name="name">MAQUINADA DE CACAO BUENO NEGRO</field>
+      <field name="lnón_ec_iess_code">0109630100024</field>
+    </record>
+    <record id="job_iess_0109630100025" model="hr.job">
+      <field name="name">MAQUINADA DE PELOTAS</field>
+      <field name="lnón_ec_iess_code">0109630100025</field>
+    </record>
+    <record id="job_iess_0109630100026" model="hr.job">
+      <field name="name">MAQUINADA DE TIERRA DE ASOLEO</field>
+      <field name="lnón_ec_iess_code">0109630100026</field>
+    </record>
+    <record id="job_iess_0109630100027" model="hr.job">
+      <field name="name">GUARDADA DE ASOLEO (DOS DÍAS)</field>
+      <field name="lnón_ec_iess_code">0109630100027</field>
+    </record>
+    <record id="job_iess_0109630100028" model="hr.job">
+      <field name="name">LAVADA (UN DÍA)</field>
+      <field name="lnón_ec_iess_code">0109630100028</field>
+    </record>
+    <record id="job_iess_0109630100030" model="hr.job">
+      <field name="name">ENCHAROLADA SOLA</field>
+      <field name="lnón_ec_iess_code">0109630100030</field>
+    </record>
+    <record id="job_iess_0109630100031" model="hr.job">
+      <field name="name">SARANDEO DE CACAO NEGRO</field>
+      <field name="lnón_ec_iess_code">0109630100031</field>
+    </record>
+    <record id="job_iess_0109630100032" model="hr.job">
+      <field name="name">DESPELOTADA DE CACAO NEGRO O DESPICADO (DESMA</field>
+      <field name="lnón_ec_iess_code">0109630100032</field>
+    </record>
+    <record id="job_iess_0109630100033" model="hr.job">
+      <field name="name">ASOLEO EN TERRAZAS A FUERZA DE SANGRE QUE COM</field>
+      <field name="lnón_ec_iess_code">0109630100033</field>
+    </record>
+    <record id="job_iess_0109630100034" model="hr.job">
+      <field name="name">ESCOGIDA DE CACAO (TRABAJO DE MUJERES), CADA LIB</field>
+      <field name="lnón_ec_iess_code">0109630100034</field>
+    </record>
+    <record id="job_iess_0109630100035" model="hr.job">
+      <field name="name">VACIADA A LA TOLVA POR MAQUINISTA</field>
+      <field name="lnón_ec_iess_code">0109630100035</field>
+    </record>
+    <record id="job_iess_0109630100036" model="hr.job">
+      <field name="name">SARANDEO DE CACAO BUENO</field>
+      <field name="lnón_ec_iess_code">0109630100036</field>
+    </record>
+    <record id="job_iess_0109630100037" model="hr.job">
+      <field name="name">VACIADA A LA TOLVA POR LA CUADRILLA</field>
+      <field name="lnón_ec_iess_code">0109630100037</field>
+    </record>
+    <record id="job_iess_0109630100038" model="hr.job">
+      <field name="name">TRAIDA O PASADA DE UNA OFICINA A OTRA</field>
+      <field name="lnón_ec_iess_code">0109630100038</field>
+    </record>
+    <record id="job_iess_0109630100039" model="hr.job">
+      <field name="name">ASOLEO EN TERRAZA QUE COMPRENDE SUBIDA  MECAN</field>
+      <field name="lnón_ec_iess_code">0109630100039</field>
+    </record>
+    <record id="job_iess_0109630100040" model="hr.job">
+      <field name="name">DESPICADO DE PELOTAS CON CACAO BUENO; INCLUYE</field>
+      <field name="lnón_ec_iess_code">0109630100040</field>
+    </record>
 
+  </data>
 </odoo>

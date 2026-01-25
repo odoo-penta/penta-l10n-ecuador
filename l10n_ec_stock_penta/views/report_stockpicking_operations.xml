@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <template id="report_picking_physical_signatures" inherit_id="stock.report_picking">
+
+        <xpath expr="//div[@class='page o_report_stockpicking_operations']" position="inside">
+            <!-- CONTENEDOR -->
+            <div style="display: table; width: 100%; height: 100%;">
+                <div style="display: table-cell; vertical-align: bottom;">
+                    <!-- Firmas -->
+                    <div style="margin-top:60px; page-break-inside: avoid;">
+                        <table width="100%" style="text-align:center;">
+                            <tr>
+
+                                <t t-if="o.picking_type_code == 'incoming'">
+
+                                    <!-- REVISADO POR -->
+                                    <td width="33%">
+                                        <br/><br/><br/>
+                                        _______________________________<br/>
+                                        <strong>Revisado por</strong><br/>
+                                        <span>&amp;nbsp;</span>
+                                    </td>
+
+                                </t>
+
+                                <t t-if="o.picking_type_code in ('outgoing','internal')">
+
+                                    <!-- ENTREGADO POR -->
+                                    <td width="33%">
+                                        <br/><br/><br/>
+                                        _______________________________<br/>
+                                        <strong>Entregado por</strong><br/>
+
+                                        <!-- Entrega -->
+                                        <t t-if="o.picking_type_code == 'outgoing'">
+                                            <span t-esc="o.user_id.name"/>
+                                        </t>
+
+                                        <!-- Transferencia interna -->
+                                        <t t-if="o.picking_type_code == 'internal'">
+                                            <span t-esc="o.user_id.name"/>
+                                        </t>
+
+                                        <!-- Recepción -->
+                                        <t t-if="o.picking_type_code == 'incoming'">
+                                            <span>&amp;nbsp;</span>
+                                        </t>
+                                    </td>
+
+                                </t>
+
+                                <!-- RECIBIDO POR -->
+                                <td width="33%">
+                                    <br/><br/><br/>
+                                    _______________________________<br/>
+                                    <strong>Recibido por</strong><br/>
+
+                                    <!-- Recepción -->
+                                    <t t-if="o.picking_type_code == 'incoming'">
+                                        <span t-esc="o.user_id.name"/>
+                                    </t>
+
+                                    <!-- Transferencia interna -->
+                                    <t t-if="o.picking_type_code == 'internal'">
+                                        <span t-esc="o.user_id.name"/>
+                                    </t>
+
+                                    <!-- Entrega -->
+                                    <t t-if="o.picking_type_code == 'outgoing'">
+                                        <span>&amp;nbsp;</span>
+                                    </t>
+                                </td>
+
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+
+    </template>
+
+</odoo>

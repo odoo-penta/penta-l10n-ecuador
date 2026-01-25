@@ -44,6 +44,8 @@ class AccountMove(models.Model):
                 self.cash_session_id = cash_boxs.current_session_id.id
     
     def action_post(self):
+        ctx = self.env.context
+        is_ctx_deposit = ctx.get('is_cashbox_deposit', False)
         cash_boxs = self.env['cash.box'].search([
             ('state', '=', 'open'),
             ('journal_ids', 'in', self.journal_id.id),
@@ -53,7 +55,9 @@ class AccountMove(models.Model):
         ])
         if not self.cash_session_id and len(cash_boxs) == 1:
             self.cash_session_id = cash_boxs.current_session_id.id
-        if self.cash_session_id:
-            if self.cash_session_id.state == 'closed':
+        if self.cash_session_id and self.cash_session_id.state == 'closed' and not is_ctx_deposit:
+            if not self.origin_payment_id or not self.origin_payment_id.is_cashbox_deposit:
                 raise UserError(_("This invoice is related to an already closed cashier session."))
+        if self.cash_session_id:
+            self.ref = self.cash_session_id.name
         return super().action_post()

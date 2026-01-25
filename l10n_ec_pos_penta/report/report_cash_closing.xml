@@ -15,14 +15,14 @@
                 </style>
                 <div class="page">
                     <t t-foreach="docs" t-as="o">
-                        <!-- Encabezado -->
-                        <div style="text-align:center; margin-top:100px; margin-bottom:100px;">
-                            <h2 style="color:#7c5c47;">SALES SUMMARY</h2>
+                        <!-- Titulo -->
+                        <div style="text-align:center; margin-top:100px; margin-bottom:150px;">
+                            <h2 style="color:#7c5c47;">COLLECTION AND CLOSING</h2>
                             <h4>
                                 <t t-out="o.name or ''"/>
                             </h4>
                         </div>
-                        <!-- Datos principales -->
+                        <!-- Cabecera -->
                         <table style="width:100%; margin-bottom:20px;">
                             <tr>
                                 <td style="width:50%; vertical-align:top;">
@@ -37,7 +37,119 @@
                                 </td>
                             </tr>
                         </table>
-                        <!-- Saldos -->
+                        <!-- Detalle -->
+                        <h4 style="margin-top:20px; margin-bottom:5px;">Detail</h4>
+                        <table class="table table-sm" style="width:100%; border-collapse:collapse; border:1px solid #000;">
+                            <thead>
+                                <tr style="background:#dde6f1; text-align:center;">
+                                    <th>Number</th>
+                                    <th>Customer</th>
+                                    <th>Journal</th>
+                                    <th>Payment method</th>
+                                    <th>No. document</th>
+                                    <th>Date</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-if="payments">
+                                    <!-- Inicializar totales -->
+                                    <t t-set="total_general" t-value="0.0"/>
+                                    <t t-foreach="payments" t-as="p">
+                                        <!-- Sumar totales -->
+                                        <t t-set="total_general" t-value="total_general + p.amount"/>
+                                        <!-- Datos inicio -->
+                                        <tr style="text-align:left;">
+                                            <td><t t-esc="p.name or ''"/></td>
+                                            <td><t t-esc="p.partner_id.name"/></td>
+                                            <td><t t-esc="p.journal_id.name or ''"/></td>
+                                            <td><t t-esc="p.payment_method_line_id.name or ''"/></td>
+                                            <td><t t-esc="p.memo or ''"/></td>
+                                            <td><t t-esc="p.date or ''"/></td>
+                                            <td><t t-esc="p.amount"/></td>
+                                        </tr>
+                                    </t>
+                                    <!-- Totalizador -->
+                                    <tr style="background:#e0e0e0; font-weight:bold; text-align:center;">
+                                        <td colspan="6">Total</td>
+                                        <td><t t-out="'%.2f' % total_general"/></td>
+                                    </tr>
+                                </t>
+                                <t t-else="">
+                                    <tr>
+                                        <td colspan="7" style="text-align:center;">No payments found</td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                        <!-- Resumen por diario -->
+                        <h4 style="margin-top:20px; margin-bottom:5px;">Journals Summary</h4>
+                        <table style="width:100%; border-collapse:collapse; border:1px solid #000;">
+                            <thead>
+                                <tr style="background:#f0f0f0; text-align:center;">
+                                    <th>Journal</th>
+                                    <th>Collections</th>
+                                    <th>Advances</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Inicializar totales -->
+                                <t t-set="total_collections" t-value="0.0"/>
+                                <t t-set="total_advances" t-value="0.0"/>
+                                <t t-set="grand_total" t-value="0.0"/>
+                                <!-- Aquí asumimos que tienes un diccionario con totales por diario -->
+                                <t t-foreach="journal_payment_summary.items()" t-as="journal_data">
+                                    <tr style="text-align:center;">
+                                        <td><t t-esc="journal_data[0]"/></td> <!-- Nombre del diario -->
+                                        <td><t t-out="'%.2f' % journal_data[1]['collections']"/><t t-set="total_collections" t-value="total_collections + journal_data[1]['collections']"/></td> <!-- Total del diario -->
+                                        <td><t t-out="'%.2f' % journal_data[1]['advances']"/><t t-set="total_advances" t-value="total_advances + journal_data[1]['advances']"/></td> <!-- Total del diario -->
+                                        <td><t t-out="'%.2f' % journal_data[1]['total']"/><t t-set="grand_total" t-value="grand_total + journal_data[1]['total']"/></td> <!-- Total del diario -->
+                                    </tr>
+                                </t>
+                                <!-- Totalizador -->
+                                <tr style="background:#e0e0e0; font-weight:bold; text-align:center;">
+                                    <td>Total</td>
+                                    <td><t t-out="'%.2f' % total_collections"/></td>
+                                    <td><t t-out="'%.2f' % total_advances"/></td>
+                                    <td><t t-out="'%.2f' % grand_total"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!-- Deposito -->
+                        <h4 style="margin-top:20px; margin-bottom:5px;">Deposit</h4>
+                        <table class="table table-sm" style="width:100%; border-collapse:collapse; border:1px solid #000;">
+                            <thead>
+                                <tr style="background:#dde6f1; text-align:center;">
+                                    <th>Number</th>
+                                    <th>Customer</th>
+                                    <th>Journal</th>
+                                    <th>Payment method</th>
+                                    <th>No. document</th>
+                                    <th>Date</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-if="deposit">
+                                    <!-- Datos inicio -->
+                                    <tr style="text-align:left;">
+                                        <td><t t-esc="deposit.name or ''"/></td>
+                                        <td><t t-esc="deposit.partner_id.name"/></td>
+                                        <td><t t-esc="deposit.journal_id.name or ''"/></td>
+                                        <td><t t-esc="deposit.payment_method_line_id.name or ''"/></td>
+                                        <td><t t-esc="deposit.memo or ''"/></td>
+                                        <td><t t-esc="deposit.date or ''"/></td>
+                                        <td><t t-esc="deposit.amount"/></td>
+                                    </tr>
+                                </t>
+                                <t t-else="">
+                                    <tr>
+                                        <td colspan="7" style="text-align:center;">No deposit found</td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
                         <h4 style="margin-top:20px; margin-bottom:5px;">Balances</h4>
                         <table style="width:100%; border-collapse:collapse; margin-bottom:20px; border:1px solid #000;">
                             <thead>
@@ -60,129 +172,6 @@
                                     </td>
                                     <td><t t-esc="o.final_balance"/></td>
                                 </tr>
-                            </tbody>
-                        </table>
-                        <!-- Pagos -->
-                        <h4 style="margin-top:20px; margin-bottom:5px;">Payments</h4>
-                        <table class="table table-sm" style="width:100%; border-collapse:collapse; border:1px solid #000;">
-                            <thead>
-                                <tr style="background:#dde6f1; text-align:center;">
-                                    <th>Journal</th>
-                                    <th>Number</th>
-                                    <th>Reference</th>
-                                    <th>Customer</th>
-                                    <th>Cash</th>
-                                    <th>Transfer/Deposit</th>
-                                    <th>Card</th>
-                                    <th>Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <t t-if="payments">
-                                    <!-- Inicializar totales -->
-                                    <t t-set="total_cash" t-value="0.0"/>
-                                    <t t-set="total_transfer" t-value="0.0"/>
-                                    <t t-set="total_card" t-value="0.0"/>
-                                    <t t-set="total_general" t-value="0.0"/>
-                                    <t t-foreach="payments" t-as="p">
-                                        <!-- Sumar totales -->
-                                        <t t-set="pay" t-value="payment_summary.get(p.id, {})"/>
-                                        <t t-set="total_cash" t-value="total_cash + pay.get('cash', 0.0)"/>
-                                        <t t-set="total_transfer" t-value="total_transfer + pay.get('transfer', 0.0)"/>
-                                        <t t-set="total_card" t-value="total_card + pay.get('card', 0.0)"/>
-                                        <t t-set="total_general" t-value="total_general + p.amount"/>
-                                        <!-- Datos inicio -->
-                                        <tr style="text-align:left;">
-                                            <td><t t-esc="p.journal_id.name or ''"/></td>
-                                            <td><t t-esc="p.name or ''"/></td>
-                                            <td><t t-esc="p.code_movement"/></td>
-                                            <td><t t-esc="p.partner_id.name"/></td>
-                                            <!-- PAGOS -->
-                                            <td class="text-center">
-                                                <t t-out="'%.2f' % pay.get('cash', 0.00)"/>
-                                            </td>
-                                            <td class="text-center">
-                                                <t t-out="'%.2f' % pay.get('transfer', 0.00)"/>
-                                            </td>
-                                            <td class="text-center">
-                                                <t t-out="'%.2f' % pay.get('card', 0.00)"/>
-                                            </td>
-                                            <td><t t-esc="p.amount"/></td>
-                                        </tr>
-                                    </t>
-                                    <!-- Totalizador -->
-                                    <tr style="background:#e0e0e0; font-weight:bold; text-align:center;">
-                                        <td colspan="4">Total</td>
-                                        <td><t t-out="'%.2f' % total_cash"/></td>
-                                        <td><t t-out="'%.2f' % total_transfer"/></td>
-                                        <td><t t-out="'%.2f' % total_card"/></td>
-                                        <td><t t-out="'%.2f' % total_general"/></td>
-                                    </tr>
-                                </t>
-                                <t t-else="">
-                                    <tr>
-                                        <td colspan="7" style="text-align:center;">No payments found</td>
-                                    </tr>
-                                </t>
-                            </tbody>
-                        </table>
-                        <!-- Resumen por diario -->
-                        <h4 style="margin-top:20px; margin-bottom:5px;">Journals Summary</h4>
-                        <table style="width:100%; border-collapse:collapse; border:1px solid #000;">
-                            <thead>
-                                <tr style="background:#f0f0f0; text-align:center;">
-                                    <th>Journal</th>
-                                    <th>Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- Aquí asumimos que tienes un diccionario con totales por diario -->
-                                <t t-foreach="journal_payment_summary.items()" t-as="journal_data">
-                                    <tr style="text-align:center;">
-                                        <td><t t-esc="journal_data[0]"/></td> <!-- Nombre del diario -->
-                                        <td><t t-out="'%.2f' % journal_data[1]"/></td> <!-- Total del diario -->
-                                    </tr>
-                                </t>
-                                <!-- Totalizador -->
-                                <tr style="background:#e0e0e0; font-weight:bold; text-align:center;">
-                                    <td>Total</td>
-                                    <td><t t-out="'%.2f' % sum(journal_payment_summary.values())"/></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <!-- Facturas -->
-                        <h4 style="margin-top:20px; margin-bottom:5px;">Invoices</h4>
-                        <table class="table table-sm" style="width:100%; border-collapse:collapse; border:1px solid #000;">
-                            <thead>
-                                <tr style="background:#dde6f1; text-align:center;">
-                                    <th>Number</th>
-                                    <th>Reference</th>
-                                    <th>Customer</th>
-                                    <th>Journal</th>
-                                    <th>Subtotal</th>
-                                    <th>Taxes</th>
-                                    <th>Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <t t-if="invoices">
-                                    <t t-foreach="invoices" t-as="i">
-                                        <tr style="text-align:left;">
-                                            <td><t t-esc="i.name or ''"/></td>
-                                            <td><t t-esc="i.payment_reference"/></td>
-                                            <td><t t-esc="i.partner_id.name"/></td>
-                                            <td><t t-esc="i.journal_id.name"/></td>
-                                            <td><t t-esc="i.amount_untaxed"/></td>
-                                            <td><t t-esc="i.amount_tax"/></td>
-                                            <td><t t-esc="i.amount_total"/></td>
-                                        </tr>
-                                    </t>
-                                </t>
-                                <t t-else="">
-                                    <tr>
-                                        <td colspan="7" style="text-align:center;">No invoices found</td>
-                                    </tr>
-                                </t>
                             </tbody>
                         </table>
                         <!-- Responsables -->

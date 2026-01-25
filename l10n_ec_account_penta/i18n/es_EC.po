@@ -424,6 +424,11 @@ msgid "Entry Control"
 msgstr "Control asientos"
 
 #. module: l10n_ec_account_penta
+#: model:ir.model.fields.selection,name:l10n_ec_account_penta.selection__account_payment__payment_mode__expense
+msgid "Expense distribution"
+msgstr "Mostrar cuentas contables"
+
+#. module: l10n_ec_account_penta
 #: model_terms:ir.ui.view,arch_db:l10n_ec_account_penta.print_batch_payment_inherit_invoices
 #: model_terms:ir.ui.view,arch_db:l10n_ec_account_penta.view_batch_payment_form_inherit_invoice_links
 msgid "Invoices"
@@ -461,6 +466,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:l10n_ec_account_penta.view_account_asset_form_inherit_penta
 msgid "Información adicional"
 msgstr ""
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields.selection,name:l10n_ec_account_penta.selection__account_payment__payment_mode__internal
+msgid "Internal transfer"
+msgstr "Transferencia Interna"
 
 #. module: l10n_ec_account_penta
 #: model:ir.model.fields,field_description:l10n_ec_account_penta.field_res_partner__is_customer
@@ -572,6 +582,11 @@ msgid "Payment information"
 msgstr "Información de pago"
 
 #. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_payment__payment_mode
+msgid "Payment mode"
+msgstr "Modo de pago"
+
+#. module: l10n_ec_account_penta
 #: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_payment__payment_reference
 msgid "Payment reference"
 msgstr "Referencia de pago"
@@ -673,6 +688,11 @@ msgstr "Mostrar referencia"
 #: model_terms:ir.ui.view,arch_db:l10n_ec_account_penta.view_account_asset_search_inherit_penta
 msgid "Sin Código"
 msgstr ""
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields.selection,name:l10n_ec_account_penta.selection__account_payment__payment_mode__standard
+msgid "Standard payment"
+msgstr "Pago estándar"
 
 #. module: l10n_ec_account_penta
 #: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_payment__used_card_id
@@ -799,6 +819,11 @@ msgid "Document Types"
 msgstr "Tipos de Documento"
 
 #. module: l10n_ec_account_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_account_penta.res_config_settings_view_form
+msgid "Enables advanced payment management"
+msgstr "Permite una gestión avanzada de los pagos."
+
+#. module: l10n_ec_account_penta
 #: model:ir.model.fields,field_description:l10n_ec_account_penta.field_penta_cb_move_type__id
 msgid "ID"
 msgstr "ID"
@@ -902,4 +927,163 @@ msgstr "Reembolso a Proveedor"
 #: model:ir.ui.menu,name:l10n_ec_account_penta.menu_check_l10n_latam_document_type
 msgid "Verificaciones por tipo de documento"
 msgstr ""
+
+#. module: l10n_ec_account_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_account_penta.view_account_payment_custom_form
+msgid "Accounting Accounts"
+msgstr "Cuenta contables"
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_payment_expense_line__account_id
+msgid "Accounting account"
+msgstr "Cuenta contable"
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_payment__batch_registration
+msgid "Activate accounts receivable"
+msgstr "Activar cuentas por cobrar"
+
+#. module: l10n_ec_account_penta
+#: model_terms:ir.ui.view,arch_db:l10n_ec_account_penta.view_account_payment_custom_form
+msgid "Advanced Options"
+msgstr "Opciones avanzadas"
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_payment__advanced_payments
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_res_company__advanced_payments
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_res_config_settings__advanced_payments
+#: model_terms:ir.ui.view,arch_db:l10n_ec_account_penta.res_config_settings_view_form
+msgid "Advanced Payments"
+msgstr "Pagos Avanzados"
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_payment_expense_line__amount_cash
+msgid "Amount"
+msgstr "Importe"
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_payment_expense_line__partner_id
+msgid "Contact"
+msgstr "Contacto"
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_payment_expense_line__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_payment_expense_line__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_payment_expense_line__currency_id
+msgid "Currency"
+msgstr ""
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_payment__destination_journal
+msgid "Destination diary"
+msgstr "Diario de destino"
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_payment_expense_line__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_payment__expense_line_ids
+#: model_terms:ir.ui.view,arch_db:l10n_ec_account_penta.view_account_payment_custom_form
+msgid "Expense lines"
+msgstr "Líneas de gastos"
+
+#. module: l10n_ec_account_penta
+#: model:ir.model,name:l10n_ec_account_penta.model_account_payment_expense_line
+msgid "Expense lines in payments"
+msgstr "Líneas de gastos en pagos"
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_payment_expense_line__id
+msgid "ID"
+msgstr ""
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_payment__internal_transfer_cash
+msgid "Internal transfer"
+msgstr "Transferencia interna"
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_payment_expense_line__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_payment_expense_line__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_payment_expense_line__payment_id
+msgid "Payment"
+msgstr "Pago"
+
+#. module: l10n_ec_account_penta
+#: model:ir.model,name:l10n_ec_account_penta.model_account_payment
+msgid "Payments"
+msgstr "Pagos"
+
+#. module: l10n_ec_account_penta
+#: model:ir.model.fields,help:l10n_ec_account_penta.field_account_payment_expense_line__currency_id
+msgid "The payment's currency."
+msgstr "La moneda del pago."
+
+#. module: l10n_ec_account_penta
+#. odoo-python
+#: code:addons/l10n_ec_account_penta/models/account_payment.py:0
+#, python-format
+msgid "The amount must be greater than zero."
+msgstr "El importe debe ser superior a cero."
+
+#. module: l10n_ec_account_penta
+#. odoo-python
+#: code:addons/l10n_ec_account_penta/models/account_payment.py:0
+#, python-format
+msgid "You must select a destination journal to perform the internal transfer."
+msgstr "Debe seleccionar un diario de destino para realizar la transferencia interna.\n"
+        "Si no corresponde a una transferencia, seleccione el modo de pago Estándar."
+
+#. module: l10n_ec_account_penta
+#. odoo-python
+#: code:addons/l10n_ec_account_penta/models/account_payment.py:0
+#, python-format
+msgid ""
+"You selected Expense payment mode, but no expense lines were found.\n\n"
+"Please add expense lines or change the Payment Mode to 'Standard'."
+msgstr ""
+"Ha seleccionado el modo de pago Gasto, pero no se han encontrado líneas de gasto.\n\n"
+"Por favor, agregue líneas de gasto o cambie el modo de pago a Estándar."
+
+#. module: l10n_ec_account_penta
+#. odoo-python
+#: code:addons/l10n_ec_account_penta/models/account_payment.py:0
+#, python-format
+msgid ""
+"The sum of the expense line amounts (%s) cannot be greater than the payment amount (%s)."
+msgstr ""
+"La suma de los montos de las líneas de gasto (%s) no puede ser mayor que el monto del pago (%s)."
+
+
+#. module: l10n_ec_account_penta
+#. odoo-python
+#: code:addons/l10n_ec_account_penta/models/account_payment.py:0
+#, python-format
+msgid "The journal '%s' does not have a default account configured."
+msgstr "El diario '%s' no tiene una cuenta predeterminada configurada."
+
+#. module: l10n_ec_account_penta
+#. odoo-python
+#: code:addons/l10n_ec_account_penta/models/account_payment.py:0
+#, python-format
+msgid "There is no manual payment method (OUT) in the system."
+msgstr "No hay ningún método de pago manual (OUT) en el sistema."
 

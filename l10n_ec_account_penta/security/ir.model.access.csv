@@ -4,3 +4,5 @@ access_penta_account_asset_extend,penta.account.asset.extend,account_asset.model
 access_penta_account_asset_extend_manager,penta.account.asset.extend.manager,account_asset.model_account_asset,account.group_account_manager,1,1,1,1
 access_penta_account_asset_template_manager,penta.account.asset.template.manager,model_account_asset_template,account.group_account_manager,1,1,1,1
 access_penta_cb_move_type_user,penta.cb.move.type user,model_penta_cb_move_type,base.group_user,1,1,1,1
+access_penta_account_payment_expense_line_manager,penta.account.payment.expense.line.manager,model_account_payment_expense_line,account.group_account_manager,1,1,1,1
+access_penta_account_payment_expense_line_user,penta.account.payment.expense.line.user,model_account_payment_expense_line,account.group_account_user,1,1,1,1

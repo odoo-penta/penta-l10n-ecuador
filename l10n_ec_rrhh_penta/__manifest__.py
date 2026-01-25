@@ -10,14 +10,24 @@
 #################################################################################
 {
     "name": "Penta Localización RRHH",
-    "version": "18.0.1.0.0",
-    "author": "PentaLab",
-    "website": "",
-    "license": "LGPL-3",
     "summary": "Adaptaciones RRHH: Educación parametrizable, Discapacidad con subrogación, Cargas familiares.",
-    "depends": ["hr","hr_payroll","hr_holidays","hr_work_entry_contract_enterprise",'hr_contract','analytic','account','hr_payroll','hr_payroll_account', 'hr_payroll_holidays'],
+    "description": """
+        Adaptaciones RRHH: Educación parametrizable, Discapacidad con subrogación, Cargas familiares.
+    """,
+    'author': 'PentaLab',
+    'maintainer': 'PentaLab',
+    'contributors': ['AntonyPineda <vini16.av@gmail.com>'],
+    'website': 'https://pentalab.tech/',
+    "license": "LGPL-3",
+    'category': 'Human Resources/Employees',
+    "version": "18.0.8.3.4",
+    "depends": [
+        'analytic',
+        'hr_contract',
+        'hr_payroll_account',
+        'hr_payroll_holidays',
+    ],
     "data": [
-        "security/ir.model.access.csv",
         "data/education_level_data.xml",
         "data/disability_type_data.xml",
         "data/contract_type_data.xml",
@@ -26,10 +36,20 @@
         "data/payment_mode_data.xml",
         "data/hr_leave_type_data.xml",
         "data/benefit_config_data.xml",
+        'data/resource_calendar_data.xml',
+        "data/hr_payroll_structure_types_data.xml",
+        "data/hr_payroll_structures_data.xml",
+        "data/hr_salary_rule_category_data.xml",
+        "data/hr_payslip_input_type_data.xml",
+        "data/hr_salary_rule_data.xml",
+        
+        "security/ir.model.access.csv",
+        
+        'report/report_payslip_templates.xml',
+        
         "views/config_views.xml",
         "views/family_dependent_views.xml",
         "views/hr_employee_views.xml",
-        "views/hr_contract_views.xml",
         "views/config_hr_contract_params_views.xml",
         "views/hr_work_location_views.xml",
         "views/hr_leave_type_views.xml",
@@ -50,16 +70,11 @@
         "views/hr_payslip_run_views_import.xml",
         "views/import_monthly_inputs_views.xml",
         "views/hr_salary_rule_views_in.xml",
-        "data/hr_payroll_structure_types_data.xml",
-        "data/hr_payroll_structures_data.xml",
-        'data/hr_salary_rule_category_defaults.xml',
-        "data/hr_salary_rule_category_data.xml",
-        "data/hr_payslip_input_type_data.xml",
-        "data/hr_salary_rule_data.xml",
+        'views/hr_payslip_views.xml',
+        
     ],
     "installable": True,
     "application": False,
     "images": ["static/description/icon.svg", "static/description/banner.svg"],
-    "demo": [],
-    "test": [],
+    "post_init_hook": "post_init_create_calendar_40",
 }

@@ -12,3 +12,4 @@ from . import res_company
 from . import res_config_settings
 from . import l10n_latam_document_type
 from . import penta_cb_move_type
+from . import account_payment_register

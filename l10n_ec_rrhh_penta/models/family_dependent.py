@@ -28,10 +28,15 @@ class L10nEcPtbFamilyDependents(models.Model):
     _order = "employee_id, relationship, name"
 
     employee_id = fields.Many2one("hr.employee", string="Empleado", required=True, ondelete="cascade")
-    vat = fields.Char(string="Número de identificación", size=13)
+    vat = fields.Char(string="Número de identificación", required=True, size=13)
+    gender = fields.Selection([("male", "Masculino"), ("female", "Femenino")], string="Sexo")
+    use_for_income_tax = fields.Boolean(string="Usar impuesto a la renta")
+    is_child = fields.Boolean(string="¿Es hijo/a?")
+    is_permanent_charge = fields.Boolean(string="Carga permanente")
     name = fields.Char(string="Nombre", required=True)
     birthdate = fields.Date(string="Fecha de nacimiento", required=True)
-    gender = fields.Selection([("male", "Masculino"), ("female", "Femenino")], string="Sexo")
+    phone = fields.Char(string="Teléfono", size=20)
+    address = fields.Char(string="Dirección")
     disability = fields.Boolean(string="Discapacidad")
     relationship = fields.Selection([
         ("spouse", "Cónyuge"),
@@ -39,30 +44,21 @@ class L10nEcPtbFamilyDependents(models.Model):
         ("parents", "Padre/Madre"),
         ("other", "Otro"),
     ], string="Parentesco", required=True)
-    use_for_income_tax = fields.Boolean(string="Usar impuesto a la renta")
-    is_child = fields.Boolean(string="¿Es hijo/a?")
-    is_permanent_charge = fields.Boolean(string="Carga permanente")
-    phone = fields.Char(string="Teléfono", size=20)
-    address = fields.Char(string="Dirección")
     age_years = fields.Integer(string="Edad (años)", compute="_compute_age", store=False)
-
+    employee_id = fields.Many2one('hr.employee', string="Empleado")
     
+    @api.model
+    def default_get(self, fields_list):
+        res = super().default_get(fields_list)
+        emp_id = self.env.context.get("default_employee_id")
+        if emp_id:
+            res["employee_id"] = emp_id
+        return res
 
-    @api.depends("birthdate")
-    def _compute_age(self):
-        today = date.today()
-        for rec in self:
-            if rec.birthdate and rec.birthdate <= today:
-                delta = relativedelta(today, rec.birthdate)
-                rec.age_years = delta.years
-            else:
-                rec.age_years = 0
-
-    @api.constrains("birthdate")
-    def _check_birthdate(self):
-        for rec in self:
-            if rec.birthdate and rec.birthdate > date.today():
-                raise ValidationError("La fecha de nacimiento no puede ser futura.")
+    @api.onchange('disability')
+    def _onchange_disability(self):
+        if self.disability:
+            self.is_permanent_charge = True
 
     @api.constrains("relationship", "employee_id")
     def _check_spouse_unique(self):
@@ -91,12 +87,45 @@ class L10nEcPtbFamilyDependents(models.Model):
                 if clash:
                     raise ValidationError("Ya existe una carga familiar con la misma cédula para este empleado.")
             else:
-                raise ValidationError("Debe ingresar una cédula del dependiente.")
+                raise ValidationError("Debe ingresar una cédula del dependiente.")    
+            
+    @api.depends("birthdate")
+    def _compute_age(self):
+        today = date.today()
+        for rec in self:
+            if rec.birthdate and rec.birthdate <= today:
+                delta = relativedelta(today, rec.birthdate)
+                rec.age_years = delta.years
+            else:
+                rec.age_years = 0
 
-    @api.model
-    def default_get(self, fields_list):
-        res = super().default_get(fields_list)
-        emp_id = self.env.context.get("default_employee_id")
-        if emp_id:
-            res["employee_id"] = emp_id
-        return res
+    @api.constrains('birthdate')
+    def _check_birthdate(self):
+        for record in self:
+            if record.birthdate and record.birthdate > date.today():
+                raise ValidationError("La fecha de nacimiento no puede ser mayor a la fecha actual.")
+            
+
+    @api.constrains('relationship', 'employee_id')
+    def _check_family_dependents_limit(self):
+        for record in self:
+            employee = record.employee_id
+
+            # Verificar número de cónyuges
+            spouse_count = len(employee.family_dependent_ids.filtered(lambda x: x.relationship == 'spouse'))
+            if spouse_count > 1:
+                raise ValidationError("No puede haber más de un cónyuge en las cargas familiares.")
+
+            # Verificar estado civil
+            if (employee.marital != 'married' and employee.marital != 'cohabitant') and spouse_count:
+                employee.marital = 'married'
+                employee.spouse_complete_name = record.name
+                employee.spouse_birthdate = record.birthdate
+                employee.vat = record.vat
+            
+            # Verificar si el cónyuge fue eliminado
+            if spouse_count == 0:
+                employee.marital = 'single'  # Cambia el estado civil
+                employee.spouse_complete_name = False  # Limpiar el nombre del cónyuge
+                employee.spouse_birthdate = False  # Limpiar la fecha de nacimiento
+                employee.vat = False  # Limpiar el número de identificación

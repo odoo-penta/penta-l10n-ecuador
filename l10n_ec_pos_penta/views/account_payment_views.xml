@@ -22,9 +22,35 @@
                 <group name="pos">
                     <field name="show_cash_session" invisible="1"/>
                     <field name="allowed_cash_boxes" invisible="1"/>
+                    <field name="is_cashbox_deposit" invisible="1"/>
                     <field name="cash_session_id" domain="[('state','=','in_progress'), ('cash_id','in', allowed_cash_boxes)]" options="{'no_create': True, 'no_open': True}" required="show_cash_session" readonly="not show_cash_session or state != 'draft'"/>
                     <field name="code_movement" invisible="payment_type != 'inbound'"/>
                 </group>
+            </xpath>
+            <xpath expr="//field[@name='payment_type']" position="attributes">
+                <attribute name="readonly">
+                    [
+                        '|',
+                        ('is_cashbox_deposit','=',True),
+                    ]
+                </attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_account_payment_custom_form_inherit_pos_penta" model="ir.ui.view">
+        <field name="name">account.payment.custom.form.inherit.pos.penta</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="l10n_ec_account_penta.view_account_payment_custom_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='payment_mode']" position="attributes">
+                <attribute name="readonly">is_cashbox_deposit</attribute>
+            </xpath>
+            <xpath expr="//field[@name='expense_line_ids']" position="attributes">
+                <attribute name="invisible">is_cashbox_deposit</attribute>
+            </xpath>
+            <xpath expr="//field[@name='difference_expense_amount']" position="attributes">
+                <attribute name="readonly">is_cashbox_deposit</attribute>
             </xpath>
         </field>
     </record>

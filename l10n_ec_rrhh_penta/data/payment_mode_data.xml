@@ -1,11 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <record id="hr_payment_mode_transfer" model="hr.payment.mode">
-        <field name="name">Transferencia</field>
-        <field name="sequence">10</field>
-    </record>
-    <record id="hr_payment_mode_check" model="hr.payment.mode">
-        <field name="name">Cheque</field>
-        <field name="sequence">20</field>
-    </record>
+    <data noupdate="1">
+
+        <record id="hr_payment_mode_transfer" model="hr.payment.mode">
+            <field name="name">Transferencia</field>
+            <field name="sequence">10</field>
+        </record>
+        <record id="hr_payment_mode_check" model="hr.payment.mode">
+            <field name="name">Cheque</field>
+            <field name="sequence">20</field>
+        </record>
+        
+    </data>
 </odoo>

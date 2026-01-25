@@ -21,7 +21,7 @@
     ],
     'website': "https://pentalab.tech/",
     'category': 'Accounting',
-    'version': '18.0.1.0.0',
+    'version': '18.0.2.1.1',
     'depends': [
         'account_accountant',
         'account_asset',
@@ -35,7 +35,7 @@
         'data/account_cards_data.xml',
         'data/assets_report_extend.xml',
         'data/penta_cb_move_type_data.xml',
-
+        'security/advanced_payment_groups.xml',
         'security/ir.model.access.csv',
         
         'report/account_asset_acta_report.xml',
