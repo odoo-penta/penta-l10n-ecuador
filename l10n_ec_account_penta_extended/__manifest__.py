@@ -20,7 +20,7 @@
     ],
     'website': "https://pentalab.tech/",
     'category': 'Accounting',
-    'version': '18.0.2.1.0',
+    'version': '18.0.2.1.1',
     'depends': [
         'l10n_ec_account_penta',
     ],
