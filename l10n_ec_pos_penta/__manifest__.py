@@ -21,7 +21,7 @@
     'website': 'https://pentalab.tech/',
     'license': 'OPL-1',
     'category': 'Sales/Sales',
-    'version': '18.0.4.0.7',
+    'version': '18.0.4.0.8',
     'depends': [
         'accountant',
         'account',
