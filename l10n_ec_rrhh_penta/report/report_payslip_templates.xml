@@ -11,23 +11,27 @@
     </template>
 
     <template id="external_layout_standard_only_logo" inherit_id="web.external_layout_standard">
-    
-        <!-- HEADER: dejar SOLO el logo -->
-        <xpath expr="//div[contains(@t-attf-class, 'header')]" position="replace">
-            <div t-attf-class="header o_company_#{company.id}_layout">
-                <div class="d-flex justify-content-center align-items-center mb-2">
-                    <img t-if="company.logo"
-                        class="o_company_logo_small"
-                        t-att-src="image_data_uri(company.logo)"
-                        alt="Logo"
-                        style="max-height:80px;"/>
-                </div>
+
+        <!-- HEADER -->
+        <xpath expr="/t/div[1]" position="replace">
+            <div class="header o_company_#{company.id}_layout text-center">
+                <img t-if="company.logo"
+                    class="o_company_logo_small"
+                    t-att-src="image_data_uri(company.logo)"
+                    alt="Logo"
+                    style="max-height:80px;"/>
             </div>
         </xpath>
 
-        <!-- FOOTER: eliminar completamente -->
-        <xpath expr="//div[contains(@t-attf-class, 'footer')]" position="replace">
-            <div t-attf-class="footer o_company_#{company.id}_layout"/>
+        <!-- Quitar dirección -->
+        <xpath expr="//t[@t-call='web.address_layout']" position="replace"/>
+
+        <!-- Quitar título -->
+        <xpath expr="//h2[@t-out='layout_document_title']" position="replace"/>
+
+        <!-- FOOTER -->
+        <xpath expr="/t/div[last()]" position="replace">
+            <div class="footer o_company_#{company.id}_layout"/>
         </xpath>
 
     </template>
@@ -48,8 +52,7 @@
             </t>
         </t>
 
-        <t t-if="company.external_report_layout_id" t-call="{{company.external_report_layout_id.sudo().key}}"><t t-out="0"/></t>
-        <t t-else="else" t-call="l10n_ec_rrhh_penta.external_layout_standard_only_logo"><t t-out="0"/></t>
+        <t t-call="l10n_ec_rrhh_penta.external_layout_standard_only_logo"><t t-out="0"/></t>
 
     </template>
 
