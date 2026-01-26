@@ -82,7 +82,7 @@
                             <td><strong>Nombre:</strong></td>
                             <td t-esc="slip.employee_id.name"/>
                             <td><strong>Salario contrato:</strong></td>
-                            <td t-esc="slip.contract_id.wage"/>
+                            <td t-esc="slip.contract_id.wage" t-options="{'widget': 'monetary', 'display_currency': company.currency_id}"/>
                         </tr>
                         <tr>
                             <td><strong>Cédula:</strong></td>
@@ -190,20 +190,18 @@
                         </tr>
                     </table>
 
-                    <br/><br/>
-
                     <!-- ================= FIRMAS ================= -->
-                    <table width="100%" style="font-size:12px;">
+                    <table width="100%" style="font-size:12px;border:none; border-collapse:collapse;">
                         <tr>
                             <td width="45%" class="text-center">
-                                <br/><br/><br/>
+                                <br/><br/>
                                 ___________________________<br/>
                                 <strong>RECIBÍ CONFORME</strong><br/>
                                 <span t-esc="slip.employee_id.name"/>
                             </td>
                             <td width="10%"></td>
                             <td width="45%" class="text-center">
-                                <br/><br/><br/>
+                                <br/><br/>
                                 ___________________________<br/>
                                 <strong>ELABORADO POR</strong><br/>
                                 <span t-esc="user.name"/>
