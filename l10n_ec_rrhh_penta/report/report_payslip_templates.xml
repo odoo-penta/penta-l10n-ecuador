@@ -15,7 +15,7 @@
             <div class="header o_company_#{company.id}_layout"
                 style="
                     position: absolute;
-                    top: 12mm;
+                    top: 14mm;
                     left: 10mm;
                     width: auto;
                     height: auto;
@@ -72,7 +72,7 @@
                 <t t-call="l10n_ec_rrhh_penta.external_layout_only_logo">
 
                     <!-- ================= TITULO ================= -->
-                    <h2 class="text-center" style="margin-top:4px;">ROL DE PAGOS</h2>
+                    <h2 class="text-center" style="margin-top:-6mm; margin-bottom:4mm;">ROL DE PAGOS</h2>
 
                     <!-- ================= INFO EMPLEADO ================= -->
                     <table class="table table-sm">
