@@ -15,7 +15,7 @@
             <div class="header o_company_#{company.id}_layout"
                 style="
                     position: absolute;
-                    top: 8mm;
+                    top: 12mm;
                     left: 10mm;
                     width: auto;
                     height: auto;
