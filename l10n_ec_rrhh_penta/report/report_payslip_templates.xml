@@ -35,11 +35,13 @@
 
         <!-- Reducir espacio superior del contenido -->
         <xpath expr="/t/div[2]" position="attributes">
-            <attribute name="style">padding-top:28mm;</attribute>
+            <attribute name="style">padding-top:24mm;</attribute>
         </xpath>
 
         <!-- FOOTER -->
-        <xpath expr="/t/div[last()]" position="replace"/>
+        <xpath expr="//div[contains(@t-attf-class, 'footer')]" position="replace">
+            <div/>
+        </xpath>
 
     </template>
 
@@ -72,7 +74,7 @@
                 <t t-call="l10n_ec_rrhh_penta.external_layout_only_logo">
 
                     <!-- ================= TITULO ================= -->
-                    <h2 class="text-center" style="margin-top:-6mm; margin-bottom:4mm;">ROL DE PAGOS</h2>
+                    <h2 class="text-center" style="margin-top:0mm; margin-bottom:4mm;">ROL DE PAGOS</h2>
 
                     <!-- ================= INFO EMPLEADO ================= -->
                     <table class="table table-sm">

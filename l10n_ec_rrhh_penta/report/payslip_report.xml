@@ -13,7 +13,6 @@
         <field name="margin_right">10</field>
     </record>
 
-
     <record id="action_report_payslip_penta" model="ir.actions.report">
         <field name="name">Recibo de nomina</field>
         <field name="model">hr.payslip</field>
