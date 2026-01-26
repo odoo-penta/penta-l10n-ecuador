@@ -1,11 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    
     <template
         id="report_payslip_inherit_rrhh_penta"
         inherit_id="hr_payroll.report_payslip">
 
         <!-- Ocultar Job Position -->
         <xpath expr="//div[@id='employee_job_title']" position="replace"/>
+
+    </template>
+
+    <template id="external_layout_standard_only_logo" inherit_id="web.external_layout_standard">
+    
+        <!-- HEADER: dejar SOLO el logo -->
+        <xpath expr="//div[contains(@t-attf-class, 'header')]" position="replace">
+            <div t-attf-class="header o_company_#{company.id}_layout">
+                <div class="d-flex justify-content-center align-items-center mb-2">
+                    <img t-if="company.logo"
+                        class="o_company_logo_small"
+                        t-att-src="image_data_uri(company.logo)"
+                        alt="Logo"
+                        style="max-height:80px;"/>
+                </div>
+            </div>
+        </xpath>
+
+        <!-- FOOTER: eliminar completamente -->
+        <xpath expr="//div[contains(@t-attf-class, 'footer')]" position="replace">
+            <div t-attf-class="footer o_company_#{company.id}_layout"/>
+        </xpath>
+
+    </template>
+
+    <template id="external_layout_only_logo">
+        <t t-if="not o" t-set="o" t-value="doc"/>
+
+        <t t-if="not company">
+            <!-- Multicompany -->
+            <t t-if="company_id">
+                <t t-set="company" t-value="company_id"/>
+            </t>
+            <t t-elif="o and 'company_id' in o and o.company_id.sudo()">
+                <t t-set="company" t-value="o.company_id.sudo()"/>
+            </t>
+            <t t-else="else">
+                <t t-set="company" t-value="res_company"/>
+            </t>
+        </t>
+
+        <t t-if="company.external_report_layout_id" t-call="{{company.external_report_layout_id.sudo().key}}"><t t-out="0"/></t>
+        <t t-else="else" t-call="l10n_ec_rrhh_penta.external_layout_standard_only_logo"><t t-out="0"/></t>
 
     </template>
 
@@ -16,13 +60,13 @@
             <t t-set="header_spacing" t-value="5"/>
             
             <t t-foreach="docs" t-as="slip">
-                <t t-call="web.external_layout">
+                <t t-call="l10n_ec_rrhh_penta.external_layout_only_logo">
 
                     <div class="page">
-                        <br/><br/><br/><br/><br/>
+                        <br/><br/><br/>
 
                         <!-- ================= TITULO ================= -->
-                        <h2 class="text-center">ROL DE PAGOS</h2>
+                        <h2 class="text-center text-black">ROL DE PAGOS</h2>
 
                         <!-- ================= INFO EMPLEADO ================= -->
                         <table class="table table-sm">
@@ -62,8 +106,8 @@
                                 <table class="table table-sm">
                                     <thead>
                                         <tr>
-                                            <th>INGRESOS</th>
-                                            <th class="text-right">VALOR</th>
+                                            <th class="text-center">INGRESOS</th>
+                                            <th class="text-center">VALOR</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -73,7 +117,7 @@
                                         <t t-foreach="ingresos" t-as="line">
                                             <tr>
                                                 <td t-esc="line.name"/>
-                                                <td class="text-right">
+                                                <td class="text-center">
                                                     <span t-esc="line.total" t-options="{'widget': 'monetary', 'display_currency': company.currency_id}"/>
                                                 </td>
                                             </tr>
@@ -81,7 +125,7 @@
                                         <!-- TOTAL -->
                                         <tr>
                                             <td><strong>TOTAL DE INGRESOS</strong></td>
-                                            <td class="text-right">
+                                            <td class="text-center">
                                                 <span t-esc="sum(ingresos.mapped('total'))" t-options="{'widget': 'monetary', 'display_currency': company.currency_id}"/>
                                             </td>
                                         </tr>
@@ -94,8 +138,8 @@
                                 <table class="table table-sm">
                                     <thead>
                                         <tr>
-                                            <th>EGRESOS</th>
-                                            <th class="text-right">VALOR</th>
+                                            <th class="text-center">EGRESOS</th>
+                                            <th class="text-center">VALOR</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -105,7 +149,7 @@
                                         <t t-foreach="egresos" t-as="line">
                                             <tr>
                                                 <td t-esc="line.name"/>
-                                                <td class="text-right">
+                                                <td class="text-center">
                                                     <span t-esc="line.total" t-options="{'widget': 'monetary', 'display_currency': company.currency_id}"/>
                                                 </td>
                                             </tr>
@@ -113,7 +157,7 @@
                                         <!-- TOTAL -->
                                         <tr>
                                             <td><strong>TOTAL DE EGRESOS</strong></td>
-                                            <td class="text-right">
+                                            <td class="text-center">
                                                 <span t-esc="sum(egresos.mapped('total'))" t-options="{'widget': 'monetary', 'display_currency': company.currency_id}"/>
                                             </td>
                                         </tr>
@@ -162,8 +206,9 @@
                     </div>
                     
                 </t>
-                <div class="oe_structure"></div>
             </t>
+
         </t>
     </template>
+
 </odoo>
