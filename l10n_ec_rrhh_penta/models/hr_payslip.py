@@ -141,19 +141,10 @@ class HrPayslip(models.Model):
                     credit_line['credit'] += credit
         return new_lines
     
-    def _create_account_move(self, values):
-        _logger.info("[DEBUG] Entro a mi metodo")
-        _logger.info("[DEBUG] Values: %s" % values)
-        moves = super()._create_account_move(values)
-        _logger.info("[DEBUG] Moves: %s" % moves)
-        for slip, move in zip(self, moves):
-            employee = slip.employee_id
-            """
-            partner = employee.related_partner_id or employee.user_partner_id or False
-            if not partner:
-                continue
-            for line in move.line_ids:
-                if not line.partner_id:
-                    line.partner_id = partner
-            """
-        return moves
+    def action_print_payslip(self):
+        import pdb;pdb.set_trace()
+        return {
+            'name': 'Payslip',
+            'type': 'ir.actions.act_url',
+            'url': '/print/payslips?list_ids=%(list_ids)s' % {'list_ids': ','.join(str(x) for x in self.ids)},
+        }

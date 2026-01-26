@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 from odoo.tools import float_compare
 
@@ -59,7 +59,7 @@ class HrPayslipRun(models.Model):
         # descarga directa vía controlador
         return {
             "type": "ir.actions.act_url",
-            "name": _("Exportar novedades mensuales"),
+            "name": "Exportar novedades mensuales",
             "url": f"/pentalab/payslip_run/{self.id}/export_monthly_inputs_xlsx",
             "target": "self",
         }
@@ -86,7 +86,7 @@ class HrPayslipRun(models.Model):
                 raise UserError("El recibo de nómina %s no está en estado 'En espera'. No se puede validar el lote." % payslip.name)
         
         # 2. Marcar recibos como hechos
-        payslips.write({'state': 'verify'})
+        payslips.write({'state': 'done'})
         
         # 3. Validaciones contables
         if any(not slip.struct_id for slip in payslips):
