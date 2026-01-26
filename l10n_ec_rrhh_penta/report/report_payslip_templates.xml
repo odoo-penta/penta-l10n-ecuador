@@ -13,9 +13,14 @@
         <!-- HEADER -->
         <xpath expr="/t/div[1]" position="replace">
             <div class="header o_company_#{company.id}_layout"
-                 style="padding-top:18px; padding-bottom:4px; margin:0;">
+                style="
+                    position: absolute;
+                    top: 2px;
+                    left: 5px;
+                    width: 100%;
+                    height: 5px;
+                ">
                 <img t-if="company.logo"
-                    class="o_company_logo_small"
                     t-att-src="image_data_uri(company.logo)"
                     alt="Logo"
                     style="max-height:70px;"/>
