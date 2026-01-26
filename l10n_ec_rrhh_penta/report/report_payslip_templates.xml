@@ -39,9 +39,7 @@
         </xpath>
 
         <!-- FOOTER -->
-        <xpath expr="/t/div[last()]" position="replace">
-            <div class="footer o_company_#{company.id}_layout"/>
-        </xpath>
+        <xpath expr="/t/div[last()]" position="replace"/>
 
     </template>
 
