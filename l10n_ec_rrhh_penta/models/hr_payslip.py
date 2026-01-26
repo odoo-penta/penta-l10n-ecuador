@@ -142,9 +142,6 @@ class HrPayslip(models.Model):
         return new_lines
     
     def action_print_payslip(self):
-        import pdb;pdb.set_trace()
-        return {
-            'name': 'Payslip',
-            'type': 'ir.actions.act_url',
-            'url': '/print/payslips?list_ids=%(list_ids)s' % {'list_ids': ','.join(str(x) for x in self.ids)},
-        }
+        return self.env.ref(
+            'l10n_ec_rrhh_penta.action_report_payslip_penta'
+        ).report_action(self)
