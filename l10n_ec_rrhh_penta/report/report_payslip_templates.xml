@@ -19,7 +19,7 @@
                 <t t-call="web.external_layout">
 
                     <div class="page">
-                        <br/><br/><br/><br/><br/><br/><br/><br/>
+                        <br/><br/><br/><br/><br/>
 
                         <!-- ================= TITULO ================= -->
                         <h2 class="text-center">ROL DE PAGOS</h2>
@@ -61,7 +61,7 @@
                             <div class="col-6">
                                 <table class="table table-sm">
                                     <thead>
-                                        <tr class="bg-primary text-white">
+                                        <tr>
                                             <th>INGRESOS</th>
                                             <th class="text-right">VALOR</th>
                                         </tr>
@@ -93,7 +93,7 @@
                             <div class="col-6">
                                 <table class="table table-sm">
                                     <thead>
-                                        <tr class="bg-primary text-white">
+                                        <tr>
                                             <th>EGRESOS</th>
                                             <th class="text-right">VALOR</th>
                                         </tr>
@@ -130,7 +130,7 @@
                         <br/>
 
                         <table class="table table-sm" style="width:50%;">
-                            <tr class="bg-primary text-white">
+                            <tr>
                                 <td><strong>SALARIO NETO</strong></td>
                                 <td class="text-right">
                                     <span t-esc="salario_neto" t-options="{'widget': 'monetary', 'display_currency': company.currency_id}"/>
