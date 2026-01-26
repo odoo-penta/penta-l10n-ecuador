@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     
-    <template
-        id="report_payslip_inherit_rrhh_penta"
-        inherit_id="hr_payroll.report_payslip">
+    <template id="report_payslip_inherit_rrhh_penta" inherit_id="hr_payroll.report_payslip">
 
         <!-- Ocultar Job Position -->
         <xpath expr="//div[@id='employee_job_title']" position="replace"/>
@@ -15,12 +13,12 @@
         <!-- HEADER -->
         <xpath expr="/t/div[1]" position="replace">
             <div class="header o_company_#{company.id}_layout"
-                 style="padding:0; margin:0 0 8px 0;">
+                 style="padding-top:18px; padding-bottom:4px; margin:0;">
                 <img t-if="company.logo"
                     class="o_company_logo_small"
                     t-att-src="image_data_uri(company.logo)"
                     alt="Logo"
-                    style="max-height:80px;"/>
+                    style="max-height:70px;"/>
             </div>
         </xpath>
 
@@ -29,6 +27,11 @@
 
         <!-- Quitar título -->
         <xpath expr="//h2[@t-out='layout_document_title']" position="replace"/>
+
+        <!-- Reducir espacio superior del contenido -->
+        <xpath expr="/t/div[2]" position="attributes">
+            <attribute name="style">padding-top:4px;</attribute>
+        </xpath>
 
         <!-- FOOTER -->
         <xpath expr="/t/div[last()]" position="replace">
@@ -65,147 +68,143 @@
             <t t-foreach="docs" t-as="slip">
                 <t t-call="l10n_ec_rrhh_penta.external_layout_only_logo">
 
-                    <div class="page">
+                    <!-- ================= TITULO ================= -->
+                    <h2 class="text-center" style="margin-top:4px;">ROL DE PAGOS</h2>
 
-                        <!-- ================= TITULO ================= -->
-                        <h2 class="text-center text-black">ROL DE PAGOS</h2>
+                    <!-- ================= INFO EMPLEADO ================= -->
+                    <table class="table table-sm">
+                        <tr>
+                            <td><strong>Nombre:</strong></td>
+                            <td t-esc="slip.employee_id.name"/>
+                            <td><strong>Salario contrato:</strong></td>
+                            <td t-esc="slip.contract_id.wage"/>
+                        </tr>
+                        <tr>
+                            <td><strong>Cédula:</strong></td>
+                            <td t-esc="slip.employee_id.identification_id"/>
+                            <td><strong>Desde:</strong></td>
+                            <td t-esc="slip.date_from"/>
+                        </tr>
+                        <tr>
+                            <td><strong>Departamento:</strong></td>
+                            <td t-esc="slip.employee_id.department_id.name"/>
+                            <td><strong>Hasta:</strong></td>
+                            <td t-esc="slip.date_to"/>
+                        </tr>
+                        <tr>
+                            <td><strong>Cargo:</strong></td>
+                            <td t-esc="slip.employee_id.job_id.name"/>
+                            <td><strong>Días trabajados:</strong></td>
+                            <td>
+                                <span t-esc="min(30, sum(slip.worked_days_line_ids.mapped('number_of_days')))"/>
+                            </td>
+                        </tr>
+                    </table>
 
-                        <!-- ================= INFO EMPLEADO ================= -->
-                        <table class="table table-sm">
-                            <tr>
-                                <td><strong>Nombre:</strong></td>
-                                <td t-esc="slip.employee_id.name"/>
-                                <td><strong>Salario contrato:</strong></td>
-                                <td t-esc="slip.contract_id.wage"/>
-                            </tr>
-                            <tr>
-                                <td><strong>Cédula:</strong></td>
-                                <td t-esc="slip.employee_id.identification_id"/>
-                                <td><strong>Desde:</strong></td>
-                                <td t-esc="slip.date_from"/>
-                            </tr>
-                            <tr>
-                                <td><strong>Departamento:</strong></td>
-                                <td t-esc="slip.employee_id.department_id.name"/>
-                                <td><strong>Hasta:</strong></td>
-                                <td t-esc="slip.date_to"/>
-                            </tr>
-                            <tr>
-                                <td><strong>Cargo:</strong></td>
-                                <td t-esc="slip.employee_id.job_id.name"/>
-                                <td><strong>Días trabajados:</strong></td>
-                                <td>
-                                    <span t-esc="min(30, sum(slip.worked_days_line_ids.mapped('number_of_days')))"/>
-                                </td>
-                            </tr>
-                        </table>
+                    <!-- ================= INGRESOS / EGRESOS ================= -->
+                    <div class="row">
 
-                        <!-- ================= INGRESOS / EGRESOS ================= -->
-                        <div class="row">
+                        <!-- INGRESOS -->
+                        <div class="col-6">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">INGRESOS</th>
+                                        <th class="text-center">VALOR</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-set="ingresos"
+                                        t-value="slip.line_ids.filtered(lambda l: l.category_id and l.category_id.code in ('BASIC','VACT','HOREXS','BONO','BENFSO','COMSD'))"/>
 
-                            <!-- INGRESOS -->
-                            <div class="col-6">
-                                <table class="table table-sm">
-                                    <thead>
+                                    <t t-foreach="ingresos" t-as="line">
                                         <tr>
-                                            <th class="text-center">INGRESOS</th>
-                                            <th class="text-center">VALOR</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <t t-set="ingresos"
-                                           t-value="slip.line_ids.filtered(lambda l: l.category_id and l.category_id.code in ('BASIC','VACT','HOREXS','BONO','BENFSO','COMSD'))"/>
-
-                                        <t t-foreach="ingresos" t-as="line">
-                                            <tr>
-                                                <td t-esc="line.name"/>
-                                                <td class="text-center">
-                                                    <span t-esc="line.total" t-options="{'widget': 'monetary', 'display_currency': company.currency_id}"/>
-                                                </td>
-                                            </tr>
-                                        </t>
-                                        <!-- TOTAL -->
-                                        <tr>
-                                            <td><strong>TOTAL DE INGRESOS</strong></td>
+                                            <td t-esc="line.name"/>
                                             <td class="text-center">
-                                                <span t-esc="sum(ingresos.mapped('total'))" t-options="{'widget': 'monetary', 'display_currency': company.currency_id}"/>
+                                                <span t-esc="line.total" t-options="{'widget': 'monetary', 'display_currency': company.currency_id}"/>
                                             </td>
                                         </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <!-- EGRESOS -->
-                            <div class="col-6">
-                                <table class="table table-sm">
-                                    <thead>
-                                        <tr>
-                                            <th class="text-center">EGRESOS</th>
-                                            <th class="text-center">VALOR</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <t t-set="egresos"
-                                           t-value="slip.line_ids.filtered(lambda l: l.category_id and l.category_id.code in ('DEDUD'))"/>
-
-                                        <t t-foreach="egresos" t-as="line">
-                                            <tr>
-                                                <td t-esc="line.name"/>
-                                                <td class="text-center">
-                                                    <span t-esc="line.total" t-options="{'widget': 'monetary', 'display_currency': company.currency_id}"/>
-                                                </td>
-                                            </tr>
-                                        </t>
-                                        <!-- TOTAL -->
-                                        <tr>
-                                            <td><strong>TOTAL DE EGRESOS</strong></td>
-                                            <td class="text-center">
-                                                <span t-esc="sum(egresos.mapped('total'))" t-options="{'widget': 'monetary', 'display_currency': company.currency_id}"/>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-
+                                    </t>
+                                    <!-- TOTAL -->
+                                    <tr>
+                                        <td><strong>TOTAL DE INGRESOS</strong></td>
+                                        <td class="text-center">
+                                            <span t-esc="sum(ingresos.mapped('total'))" t-options="{'widget': 'monetary', 'display_currency': company.currency_id}"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
 
-                        <!-- ================= SALARIO NETO ================= -->
-                        <t t-set="salario_neto"
-                           t-value="sum(ingresos.mapped('total')) - sum(egresos.mapped('total'))"/>
+                        <!-- EGRESOS -->
+                        <div class="col-6">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">EGRESOS</th>
+                                        <th class="text-center">VALOR</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-set="egresos"
+                                        t-value="slip.line_ids.filtered(lambda l: l.category_id and l.category_id.code in ('DEDUD'))"/>
 
-                        <br/>
-
-                        <table class="table table-sm" style="width:50%;">
-                            <tr>
-                                <td><strong>SALARIO NETO</strong></td>
-                                <td class="text-right">
-                                    <span t-esc="salario_neto" t-options="{'widget': 'monetary', 'display_currency': company.currency_id}"/>
-                                </td>
-                            </tr>
-                        </table>
-
-                        <br/><br/>
-
-                        <!-- ================= FIRMAS ================= -->
-                        <table width="100%" style="font-size:12px;">
-                            <tr>
-                                <td width="45%" class="text-center">
-                                    <br/><br/><br/>
-                                    ___________________________<br/>
-                                    <strong>RECIBÍ CONFORME</strong><br/>
-                                    <span t-esc="slip.employee_id.name"/>
-                                </td>
-                                <td width="10%"></td>
-                                <td width="45%" class="text-center">
-                                    <br/><br/><br/>
-                                    ___________________________<br/>
-                                    <strong>ELABORADO POR</strong><br/>
-                                    <span t-esc="user.name"/>
-                                </td>
-                            </tr>
-                        </table>
+                                    <t t-foreach="egresos" t-as="line">
+                                        <tr>
+                                            <td t-esc="line.name"/>
+                                            <td class="text-center">
+                                                <span t-esc="line.total" t-options="{'widget': 'monetary', 'display_currency': company.currency_id}"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                    <!-- TOTAL -->
+                                    <tr>
+                                        <td><strong>TOTAL DE EGRESOS</strong></td>
+                                        <td class="text-center">
+                                            <span t-esc="sum(egresos.mapped('total'))" t-options="{'widget': 'monetary', 'display_currency': company.currency_id}"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
 
                     </div>
+
+                    <!-- ================= SALARIO NETO ================= -->
+                    <t t-set="salario_neto"
+                        t-value="sum(ingresos.mapped('total')) - sum(egresos.mapped('total'))"/>
+
+                    <br/>
+
+                    <table class="table table-sm" style="width:50%;">
+                        <tr>
+                            <td><strong>SALARIO NETO</strong></td>
+                            <td class="text-right">
+                                <span t-esc="salario_neto" t-options="{'widget': 'monetary', 'display_currency': company.currency_id}"/>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <br/><br/>
+
+                    <!-- ================= FIRMAS ================= -->
+                    <table width="100%" style="font-size:12px;">
+                        <tr>
+                            <td width="45%" class="text-center">
+                                <br/><br/><br/>
+                                ___________________________<br/>
+                                <strong>RECIBÍ CONFORME</strong><br/>
+                                <span t-esc="slip.employee_id.name"/>
+                            </td>
+                            <td width="10%"></td>
+                            <td width="45%" class="text-center">
+                                <br/><br/><br/>
+                                ___________________________<br/>
+                                <strong>ELABORADO POR</strong><br/>
+                                <span t-esc="user.name"/>
+                            </td>
+                        </tr>
+                    </table>
                     
                 </t>
             </t>
