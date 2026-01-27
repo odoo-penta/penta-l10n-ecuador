@@ -30,6 +30,7 @@
                 <field name="period_start"/>
                 <field name="period_end"/>
                 <field name="days_entitled"/>
+                <field name="days_pending"/>
                 <field name="days_taken"/>
                 <field name="days_available"/>
               </list>

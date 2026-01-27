@@ -14,8 +14,9 @@ class VacationBalance(models.Model):
     year_index = fields.Integer(string="Index",required=True, help="1 = primer año laboral desde date_start")
     period_start = fields.Date(string="Inicio",required=True)
     period_end = fields.Date(string="Fin",required=True)
-    days_entitled = fields.Float(string="Acreditadas", required=True)
     move_ids = fields.One2many("l10n_ec.ptb.vacation.move", "balance_id", string="Movimientos")
+    days_entitled = fields.Float(string="Acreditadas", required=True)
+    days_pending = fields.Float(string="Por acreditar", required=True)
     days_taken = fields.Float(string="Tomadas")
     days_available = fields.Float(compute="_compute_days_available", store=False, string="Disponibles")
 
