@@ -45,6 +45,8 @@ class HrContract(models.Model):
     # Recalcular saldos (ya existente)
     # -------------------------------------------------------------------------
     def _ensure_vacation_balances(self):
+        today = date.today()
+        
         for contract in self:
             # Saltar si no hay contrato o fecha de inicio en contrato
             if not contract.id or not contract.date_start:
@@ -72,6 +74,21 @@ class HrContract(models.Model):
                     break
                 # Obtener días acreditados para el período
                 entitled = _entitlement_for_year_index(idx)
+                # Verificar si es el último período
+                is_last_period = (
+                    idx == total_periods or
+                    (contract.date_end and end_i >= contract.date_end)
+                )
+                if is_last_period:
+                    accrual_end = min(today, end_i)
+
+                    if accrual_end >= start_i:
+                        total_days_period = (end_i - start_i).days + 1
+                        elapsed_days = (accrual_end - start_i).days + 1
+                        days_per_day = entitled / total_days_period
+                        entitled = round(elapsed_days * days_per_day, 2)
+                    else:
+                        entitled = 0.0
                 balance_line = self.env["l10n_ec.ptb.vacation.balance"].create({
                     'contract_id': contract.id,
                     'year_index': idx,
@@ -113,3 +130,11 @@ class HrContract(models.Model):
             # Volver a generar
             contract._ensure_vacation_balances()
         return {"type": "ir.actions.act_window_close"}
+
+    def _cron_recalculate_vacation_balances(self):
+        contracts = self.search([
+            ('state', '=', 'open'),
+            ('date_start', '<=', date.today()),
+        ])
+        for contract in contracts:
+            contract.action_confirm_rebuild_vacation_balances()
