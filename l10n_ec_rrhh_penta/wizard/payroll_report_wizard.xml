@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="view_popup_wizard_form" model="ir.ui.view">
+        <field name="name">popup.wizard.form</field>
+        <field name="model">popup.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Reporte">
+                <group string="Filtro">
+                    <group>
+                        <field name="company_id" string="Compañía " readonly="True"/>
+                        <field name="lote" string="Lotes de Recibos"/>
+                    </group>
+                    <group>
+                        <field name="date_from" string="Fecha inicio"/>
+                        <field name="date_to" string="Fecha fin"/>
+                    </group>
+                </group>
+                <footer>
+                    <button string="Confirm" type="object" name="action_confirm" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_popup_wizard" model="ir.actions.act_window">
+        <field name="name">Reporte de Nómina</field>
+        <field name="res_model">popup.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- New menu items under Reporting -->
+    <menuitem id="menu_reports" name="Informes Pentalab" parent="hr_payroll.menu_hr_payroll_report" sequence="30"/>
+
+    <!-- Menu item Report -->
+    <menuitem id="menu_reports_hr_payroll" name="Reporte Nómina" parent="menu_reports" sequence="1" action="l10n_ec_rrhh_penta.action_popup_wizard"/>
+
+</odoo>

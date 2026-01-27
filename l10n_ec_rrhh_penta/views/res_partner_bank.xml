@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_res_partner_bank_form_custom" model="ir.ui.view">
+        <field name="name">res_partner_bank_form_custom</field>
+        <field name="model">res.partner.bank</field>
+        <field name="inherit_id" ref="account.view_partner_bank_form_inherit_account"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_has_group_validate_bank_account']" position="after">
+                <field name="type_account" string="Tipo de Cuenta"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
