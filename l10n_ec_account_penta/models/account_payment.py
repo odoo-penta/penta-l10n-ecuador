@@ -126,8 +126,6 @@ class AccountPayment(models.Model):
 
     @api.onchange('expense_line_ids', 'amount')
     def _onchange_expense_line_amount(self):
-        if not self.is_cashbox_deposit:
-            return
         total = sum(self.expense_line_ids.mapped('amount_cash'))
         if self.amount != total:
             for expense_line in self.expense_line_ids:
