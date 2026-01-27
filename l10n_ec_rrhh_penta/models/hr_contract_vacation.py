@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from datetime import date
 from dateutil.relativedelta import relativedelta
+from calendar import monthrange
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 
@@ -73,36 +74,80 @@ class HrContract(models.Model):
                 if contract.date_end and start_i > contract.date_end:
                     break
                 # Obtener días acreditados para el período
-                entitled = _entitlement_for_year_index(idx)
+                total_entitlement = _entitlement_for_year_index(idx)
+                monthly_rate = round(total_entitlement / 12, 4)
+                days_entitled = 0.0
+                days_pending = 0.0
                 # Verificar si es el último período
                 is_last_period = (
                     idx == total_periods or
                     (contract.date_end and end_i >= contract.date_end)
                 )
                 if is_last_period:
-                    accrual_end = min(today, end_i)
-
-                    if accrual_end >= start_i:
-                        total_days_period = (end_i - start_i).days + 1
-                        elapsed_days = (accrual_end - start_i).days + 1
-                        days_per_day = entitled / total_days_period
-                        entitled = round(elapsed_days * days_per_day, 2)
+                    # ----- MESES CERRADOS -----
+                    # Último mes cerrado
+                    if today.month == 1:
+                        last_closed = date(today.year - 1, 12, 31)
                     else:
-                        entitled = 0.0
+                        last_closed = date(
+                            today.year,
+                            today.month - 1,
+                            monthrange(today.year, today.month - 1)[1]
+                        )
+                    # Acreditar meses completos
+                    current = start_i
+                    while current <= min(last_closed, end_i):
+                        first_day_month = date(current.year, current.month, 1)
+                        month_start = max(current, date(current.year, current.month, 1))
+                        month_end = date(
+                            current.year,
+                            current.month,
+                            monthrange(current.year, current.month)[1]
+                        )
+                        if month_start < start_i or month_start.day != 1:
+                            # mes parcial de inicio
+                            days_in_month = (month_end - first_day_month).days + 1
+                            worked_days = (month_end - start_i).days + 1
+                            credited = monthly_rate * worked_days / days_in_month
+                        else:
+                            credited = monthly_rate
+                        days_entitled += credited
+                        current = month_end + relativedelta(days=1)
+                    # ----- MES ACTUAL (POR ACREDITAR) ----
+                    if today <= end_i:
+                        month_start = max(start_i, date(today.year, today.month, 1))
+                        month_end = date(
+                            today.year,
+                            today.month,
+                            monthrange(today.year, today.month)[1]
+                        )
+
+                        days_in_month = (month_end - month_start).days + 1
+                        worked_days = (today - month_start).days + 1
+
+                        days_pending = round(
+                            monthly_rate * worked_days / days_in_month, 2
+                        )
+                else:
+                    # Períodos cerrados
+                    days_entitled = total_entitlement
+                    days_pending = 0.0
+                
                 balance_line = self.env["l10n_ec.ptb.vacation.balance"].create({
                     'contract_id': contract.id,
                     'year_index': idx,
                     'period_start': start_i,
                     'period_end': end_i,
-                    'days_entitled': float(entitled),
+                    'days_entitled': float(days_entitled),
+                    'days_pending': float(days_pending),
                 })
                 # Aplicar días de arranque si quedan
                 if startup_days > 0:
                     # Si los dias son mayores a los acreditados, consumir todo el periodo
-                    if startup_days > entitled:
-                        balance_line.days_taken = entitled
+                    if startup_days > days_entitled:
+                        balance_line.days_taken = days_entitled
                         # Restar los días consumidos de arranque
-                        startup_days -= entitled
+                        startup_days -= days_entitled
                     else:
                         balance_line.days_taken = startup_days
                         startup_days = 0.0
