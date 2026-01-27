@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    
+    <!-- CRON PARA calculo vacaciones dia a dia -->
+    <record id="ir_cron_recalculate_vacation_balances" model="ir.cron">
+        <field name="name">Recalcular vacaciones (diario)</field>
+        <field name="model_id" ref="model_hr_contract"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_recalculate_vacation_balances()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+    </record>
+
+</odoo>
