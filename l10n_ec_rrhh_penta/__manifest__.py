@@ -73,6 +73,9 @@
         "views/import_monthly_inputs_views.xml",
         "views/hr_salary_rule_views_in.xml",
         'views/hr_payslip_views.xml',
+        "views/res_partner_bank.xml",
+        
+        "wizard/payroll_report_wizard.xml",
         
     ],
     "installable": True,
