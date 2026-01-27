@@ -12,10 +12,15 @@ class HrLeave(models.Model):
         compute="_compute_is_vacation_selected",
         store=False
     )
+    contract_id = fields.Many2one(
+        "hr.contract",
+        string="Contrato",
+        related="employee_id.contract_id",
+    )
     # Indicadores visibles en el form (solo lectura)
-    vacation_available = fields.Float(string="Vacaciones disponibles", compute="_compute_vacation_counters", store=False)
-    vacation_taken = fields.Float(string="Vacaciones tomadas", compute="_compute_vacation_counters", store=False)
-    vacation_remaining = fields.Float(string="Vacaciones restantes", compute="_compute_vacation_counters", store=False)
+    vacation_available = fields.Float(string="Vacaciones acreditadas", compute="_compute_vacation_counters", store=True)
+    vacation_taken = fields.Float(string="Vacaciones tomadas", compute="_compute_vacation_counters", store=True)
+    vacation_remaining = fields.Float(string="Vacaciones disponibles", compute="_compute_vacation_counters", store=True)
 
     @api.depends('holiday_status_id')
     def _compute_is_vacation_selected(self):
@@ -43,27 +48,10 @@ class HrLeave(models.Model):
             # Pasar si no tiene contrato
             if not contract:
                 continue
-            # Obtener dias de vacaciones disponibles en el contrato
-            total_disponibles = float(getattr(contract, 'vac_total_available', 0.0))
-            # Tiempo aprobado de tipo vacaciones en el rango del contrato
-            dom_leaves = [
-                ('employee_id', '=', leave.employee_id.id),
-                ('state', 'in', ('validate', 'validate1')),
-                ('holiday_status_id.is_vacation', '=', True),
-            ]
-            if contract.date_start:
-                dom_leaves.append(('request_date_from', '>=', contract.date_start))
-            if contract.date_end:
-                dom_leaves.append(('request_date_to', '<=', contract.date_end))
-            # Obtener vacaciones tomadas
-            leaves_taken = self.env['hr.leave'].search(dom_leaves)
-            total_tomadas = sum(leaves_taken.mapped('number_of_days')) if leaves_taken else 0.0
-            # Obtener vacaciones restantes
-            restantes = max(total_disponibles - total_tomadas, 0.0)
-            # Asignar valores
-            leave.vacation_available = total_disponibles
-            leave.vacation_taken = total_tomadas
-            leave.vacation_remaining = restantes
+
+            leave.vacation_available = contract.vac_total_available
+            leave.vacation_taken = leave.number_of_days
+            leave.vacation_remaining = contract.vac_total_available - leave.number_of_days
 
     @api.onchange('holiday_status_id', 'date_from', 'date_to', 'number_of_days', 'employee_id')
     def _onchange_block_exceeding_vacation(self):
@@ -91,9 +79,7 @@ class HrLeave(models.Model):
         for leave in self:
             if leave.is_vacation_selected and leave.state in ('validate', 'validate1'):
                 leave._compute_vacation_counters()
-                if leave.number_of_days > (leave.vacation_remaining + leave.number_of_days_taken_by_this_request()):
-                    # nota: number_of_days_taken_by_this_request() es opcional 
-                    # descontar en “tomadas”;
+                if leave.number_of_days > leave.vacation_remaining:
                     if leave.number_of_days > leave.vacation_remaining:
                         raise ValidationError(
                             f"No puedes aprobar {leave.number_of_days:.2f} días. "
@@ -114,8 +100,6 @@ class HrLeave(models.Model):
             contract = rec.employee_id.contract_id
             if not contract:
                 continue
-            # asegurar saldos al día
-            contract._ensure_vacation_balances()
             requested = rec._get_requested_days()
             available_total = contract.vac_total_available
             if requested > (available_total + 1e-6):
@@ -124,42 +108,27 @@ class HrLeave(models.Model):
     # --- APLICACIÓN AL APROBAR ---
     def action_approve(self):
         res = super().action_approve()
+        # Filtramos solo los tiempos de vacaciones
         for rec in self.filtered(lambda l: l.holiday_status_id.is_vacation and l.state == "validate"):
+            # Obtenemos el contrato
             contract = rec.employee_id.contract_id
             if not contract:
                 continue
-            contract._ensure_vacation_balances()
-            remaining = rec._get_requested_days()
-            # consumir desde el período más antiguo con saldo
-            balances = contract.vacation_balance_ids.sorted("year_index")
-            Move = self.env["l10n_ec.ptb.vacation.move"]
-            for bal in balances:
-                if remaining <= 0:
-                    break
-                take = min(bal.days_available, remaining)
-                if take > 0:
-                    Move.create({
-                        "balance_id": bal.id,
-                        "leave_id": rec.id,
-                        "days": take,
-                        "state": "done",
-                    })
-                    remaining -= take
-            if remaining > 1e-6:
-                raise ValidationError(_("No se pudo consumir todo el periodo de vacaciones. Faltan %s día(s).") % remaining)
+            contract.action_confirm_rebuild_vacation_balances()
         return res
 
     # --- REVERSIONES si se rechaza o se cancela ---
     def action_refuse(self):
         res = super().action_refuse()
         self._revert_vacation_moves()
+        self.employee_id.contract_id.action_confirm_rebuild_vacation_balances()
         return res
 
     def unlink(self):
         self._revert_vacation_moves()
+        self.employee_id.contract_id.action_confirm_rebuild_vacation_balances()
         return super().unlink()
 
     def _revert_vacation_moves(self):
-        moves = self.env["l10n_ec.ptb.vacation.move"].search([("leave_id", "in", self.ids), ("state", "=", "done")])
-        for m in moves:
-            m.write({"state": "cancel"})
+        moves = self.env["l10n_ec.ptb.vacation.move"].search([("leave_id", "in", self.ids)])
+        moves.unlink()

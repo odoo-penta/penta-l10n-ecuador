@@ -229,14 +229,14 @@ class CashBoxClosedWizard(models.TransientModel):
             move_vals['line_ids'] = [
                 (0, 0, {
                     'account_id': account_cash.id,
-                    'debit': 0.0,
-                    'credit': diff,
+                    'debit': diff,
+                    'credit': 0.0,
                     'name': _('Cash surplus'),
                 }),
                 (0, 0, {
                     'account_id': gain_account.id,
-                    'debit': diff,
-                    'credit': 0.0,
+                    'debit': 0.0,
+                    'credit': diff,
                     'name': _('Cash surplus'),
                 }),
             ]
@@ -247,14 +247,14 @@ class CashBoxClosedWizard(models.TransientModel):
             move_vals['line_ids'] = [
                 (0, 0, {
                     'account_id': account_cash.id,
-                    'debit': abs_diff,
-                    'credit': 0.0,
+                    'debit': 0.0,
+                    'credit': abs_diff,
                     'name': _('Cash shortage'),
                 }),
                 (0, 0, {
                     'account_id': loss_account.id,
-                    'debit': 0.0,
-                    'credit': abs_diff,
+                    'debit': abs_diff,
+                    'credit': 0.0,
                     'name': _('Cash shortage'),
                 }),
             ]

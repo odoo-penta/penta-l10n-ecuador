@@ -118,11 +118,11 @@ result_name = inputs['PL_COMISION'].name
       <field name="category_id" ref="l10n_ec_rrhh_penta.cat_vact"/>
       <field name="condition_select">python</field>
       <field name="condition_python"><![CDATA[
-result = inputs.get('VACACIONES', 0).amount if inputs.get('VACACIONES') else 0
+result = inputs.get('PL_VACACIONES', 0).amount if inputs.get('PL_VACACIONES') else 0
     ]]></field>
       <field name="amount_select">code</field>
       <field name="amount_python_compute"><![CDATA[
-result = inputs['VACACIONES'].amount
+result = inputs['PL_VACACIONES'].amount
     ]]></field>
     </record>
 
@@ -167,6 +167,8 @@ for c in employee.contract_ids:
   fecha_fin = c.date_end if c.date_end and c.date_end <= payslip.date_to else payslip.date_to
   if fecha_inicio <= fecha_fin:
     total_dias_trabajados += (fecha_fin - fecha_inicio).days + 1
+# Activar fondo de reserva mensual si corresponde
+result = contract.l10n_ec_ptb_reserve_fund_periodicity == 'monthly' and total_dias_trabajados >= 366
     ]]></field>
       <field name="amount_select">code</field>
       <field name="amount_python_compute"><![CDATA[

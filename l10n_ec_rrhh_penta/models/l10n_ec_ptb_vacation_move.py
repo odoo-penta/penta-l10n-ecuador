@@ -16,8 +16,3 @@ class VacationMove(models.Model):
         ("leave", "Tiempo personal (vacaciones)"),
         ("adjust", "Ajuste manual"),
     ], default="adjust", required=True)
-    state = fields.Selection([
-        ("draft", "Borrador"),
-        ("done", "Confirmado"),
-        ("cancel", "Revertido"),
-    ], default="done", required=True)

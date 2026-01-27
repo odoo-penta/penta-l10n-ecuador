@@ -141,19 +141,7 @@ class HrPayslip(models.Model):
                     credit_line['credit'] += credit
         return new_lines
     
-    def _create_account_move(self, values):
-        _logger.info("[DEBUG] Entro a mi metodo")
-        _logger.info("[DEBUG] Values: %s" % values)
-        moves = super()._create_account_move(values)
-        _logger.info("[DEBUG] Moves: %s" % moves)
-        for slip, move in zip(self, moves):
-            employee = slip.employee_id
-            """
-            partner = employee.related_partner_id or employee.user_partner_id or False
-            if not partner:
-                continue
-            for line in move.line_ids:
-                if not line.partner_id:
-                    line.partner_id = partner
-            """
-        return moves
+    def action_print_payslip(self):
+        return self.env.ref(
+            'l10n_ec_rrhh_penta.action_report_payslip_penta'
+        ).report_action(self)
