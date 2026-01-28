@@ -17,7 +17,7 @@
                     </group>
                 </group>
                 <footer>
-                    <button string="Confirm" type="object" name="action_confirm" class="btn-primary"/>
+                    <button string="Imprimir" type="object" name="action_confirm" class="btn-primary"/>
                     <button string="Cancel" class="btn-secondary" special="cancel"/>
                 </footer>
             </form>
