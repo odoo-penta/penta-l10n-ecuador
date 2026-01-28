@@ -23,5 +23,4 @@ from . import hr_payslip
 from . import vacation_report_line
 from . import hr_payslip_input_type
 from . import hr_salary_rule_account_section_line
-from . import report_hr_payroll
 from . import res_partner_bank
