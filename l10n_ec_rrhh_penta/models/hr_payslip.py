@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo import models
+from odoo import models, fields, api
 from odoo.tools import float_is_zero
 
 import logging
@@ -9,6 +9,49 @@ _logger = logging.getLogger(__name__)
 
 class HrPayslip(models.Model):
     _inherit = 'hr.payslip'
+    
+    payslip_days_ec = fields.Float(string='Días Rol', readonly=True, compute='_compute_days_ec')
+    worked_days_ec = fields.Float(string='Días Laborados', readonly=True, compute='_compute_days_ec')
+    days_of_month_ec = fields.Float(string='Días del Mes', readonly=True, compute='_compute_days_ec')
+
+    def _compute_days_ec(self):
+        """Calcula los días laborados para el payslip."""
+        for payslip in self:
+            contract = payslip.contract_id
+            if not contract:
+                payslip.worked_days_ec = 0.0
+                continue
+
+            # --- Fechas reales ---
+            start_date = max(payslip.date_from, contract.date_start)
+
+            end_contract = contract.date_end or payslip.date_to
+            end_date = min(payslip.date_to, end_contract)
+
+            if start_date > end_date:
+                payslip.worked_days_ec = 0.0
+                continue
+            
+            # --- Días calendario ---
+            days_calendar = (end_date - start_date).days + 1
+
+            # --- Días del periodo del recibo ---
+            days_period = (payslip.date_to - payslip.date_from).days + 1
+
+            # --- Base 30 proporcional ---
+            base_days = 30.0
+            worked_days = (days_calendar * base_days) / days_period
+            worked_days = min(worked_days, 30.0)
+            
+            payslip_days = worked_days
+            # --- Restar ausencias ---
+            for line in payslip.worked_days_line_ids:
+                if line.code in ['LEAVE110', 'VACT', 'ILLNESSIESS50', 'ILLNESSIESS66', 'ILLNESSIESS75']:
+                    payslip_days -= line.number_of_days
+            
+            payslip.payslip_days_ec = payslip_days
+            payslip.worked_days_ec = worked_days
+            payslip.days_of_month_ec = days_period
 
     def _get_contract_section(self):
         """Obtiene la sección contable desde el contrato asociado al payslip."""

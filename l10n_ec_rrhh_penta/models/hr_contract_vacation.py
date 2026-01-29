@@ -32,7 +32,12 @@ class HrContract(models.Model):
         string="Días de vacaciones gozadas",
         help="Días de vacaciones iniciales ya consumidos al empleado al crearse el contrato.",
     )
-
+    
+    def write(self, vals):
+        if vals.get('startup_vacation_days'):
+            self.action_confirm_rebuild_vacation_balances()
+        return super().write(vals)
+    
     @api.depends("vacation_balance_ids.days_entitled", "vacation_balance_ids.days_taken")
     def _compute_vacation_totals(self):
         for rec in self:

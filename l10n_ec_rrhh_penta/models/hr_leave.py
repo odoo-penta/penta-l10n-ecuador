@@ -106,8 +106,8 @@ class HrLeave(models.Model):
                 raise ValidationError(_("No puede solicitar %s día(s). Disponibles en contrato: %s") % (requested, available_total))
 
     # --- APLICACIÓN AL APROBAR ---
-    def action_approve(self):
-        res = super().action_approve()
+    def action_approve(self, *args, **kwargs):
+        res = super().action_approve(*args, **kwargs)
         # Filtramos solo los tiempos de vacaciones
         for rec in self.filtered(lambda l: l.holiday_status_id.is_vacation and l.state == "validate"):
             # Obtenemos el contrato
