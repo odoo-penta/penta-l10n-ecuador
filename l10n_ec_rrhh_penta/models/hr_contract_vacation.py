@@ -34,9 +34,10 @@ class HrContract(models.Model):
     )
     
     def write(self, vals):
+        res = super().write(vals)
         if vals.get('startup_vacation_days'):
             self.action_confirm_rebuild_vacation_balances()
-        return super().write(vals)
+        return res
     
     @api.depends("vacation_balance_ids.days_entitled", "vacation_balance_ids.days_taken")
     def _compute_vacation_totals(self):
