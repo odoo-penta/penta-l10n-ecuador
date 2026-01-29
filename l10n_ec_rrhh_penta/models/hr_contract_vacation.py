@@ -33,9 +33,16 @@ class HrContract(models.Model):
         help="Días de vacaciones iniciales ya consumidos al empleado al crearse el contrato.",
     )
     
+    @api.model_create_multi
+    def create(self, vals_list):
+        res = super().create(vals_list)
+        if vals_list.get('startup_vacation_days') or vals_list.get('date_start'):
+            res.action_confirm_rebuild_vacation_balances()
+        return res
+        
     def write(self, vals):
         res = super().write(vals)
-        if vals.get('startup_vacation_days'):
+        if vals.get('startup_vacation_days') or vals.get('date_start'):
             self.action_confirm_rebuild_vacation_balances()
         return res
     
