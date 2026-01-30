@@ -76,26 +76,7 @@ class ReportPayrollXlsx(models.AbstractModel):
                 sheet.write(row, column, header, bold)
                 sheet.set_column(column, column, _calc_col_width(header))
                 column += 1
-            """
-            sheet.write(row, column, 'Período/mes')
-            column += 1
-            sheet.write(row, column, 'Ref Rol')
-            column += 1
-            sheet.write(row, column, 'Nombre')
-            column += 1
-            sheet.write(row, column, 'Identificación')
-            column += 1
-            sheet.write(row, column, 'Fecha de ingreso')
-            column += 1
-            sheet.write(row, column, 'Cargo')
-            column += 1
-            sheet.write(row, column, 'Departamento')
-            column += 1
-            sheet.write(row, column, 'Sección Contable')
-            column += 1
-            sheet.write(row, column, 'Nro días trabajados')
-            column += 1
-            """
+            # Obtener reglas salariales a visualizar en el reporte
             salary_rules = self.env['hr.salary.rule'].search([('appears_on_payroll_report', '=', True)], order='sequence asc')
             # Mapear dinamicamente cabeceras de reglas
             for rule in salary_rules:
