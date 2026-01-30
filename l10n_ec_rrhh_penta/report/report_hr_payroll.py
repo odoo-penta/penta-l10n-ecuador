@@ -21,12 +21,13 @@ class ReportPayrollXlsx(models.AbstractModel):
             # Crear la hoja de Excel
             sheet = workbook.add_worksheet('Reporte de Nomina')
             # Formatos
+            header_base = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter', 'border': 1, 'font_color': '#FFFFFF', 'bg_color': '#101430', 'text_wrap': True})
             base = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter', 'border': 1, 'font_color': '#FFFFFF', 'bg_color': '#101430'})
-            bold = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter', 'border': 1, 'font_color': '#FFFFFF', 'bg_color': '#e8c3e7'})
+            header_bold = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter', 'border': 1, 'font_color': '#FFFFFF', 'bg_color': '#e8c3e7', 'text_wrap': True})
             # Formato titulos ingresos/gastos
-            fmt_income = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter', 'border': 1, 'font_color': '#FFFFFF', 'bg_color': '#98a0d4'})
-            fmt_expense = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter', 'border': 1, 'font_color': '#FFFFFF', 'bg_color': '#bdbdbd'})
-            fmt_provision = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter', 'border': 1, 'font_color': '#FFFFFF', 'bg_color': '#aed4a5'})
+            header_fmt_income = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter', 'border': 1, 'font_color': '#FFFFFF', 'bg_color': '#98a0d4', 'text_wrap': True})
+            header_fmt_expense = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter', 'border': 1, 'font_color': '#FFFFFF', 'bg_color': '#bdbdbd', 'text_wrap': True})
+            header_fmt_provision = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter', 'border': 1, 'font_color': '#FFFFFF', 'bg_color': '#aed4a5', 'text_wrap': True})
             # Codigos categorias ingresos/gastos
             c_incomes = ['BASICEC', 'BASIC', 'HOREXS', 'VACT', 'GROSS', 'BENFSO', 'BONO', 'COMSD', 'SUBSIDIOS', 'SUBT_SUBSIDIOS', 'TOTINGOTROS']
             c_expenses = ['DEDUD', 'CONALM']
@@ -76,7 +77,7 @@ class ReportPayrollXlsx(models.AbstractModel):
                 'Nro días trabajados',
             ]
             for header in headers:
-                sheet.write(row, column, header, base)
+                sheet.write(row, column, header, header_base)
                 sheet.set_column(column, column, _calc_col_width(header))
                 column += 1
             # Obtener reglas salariales a visualizar en el reporte
@@ -85,16 +86,16 @@ class ReportPayrollXlsx(models.AbstractModel):
             for rule in salary_rules:
                 # Fondo ingresos
                 if rule.category_id.code in c_incomes:
-                    sheet.write(row, column, rule.name, fmt_income)
+                    sheet.write(row, column, rule.name, header_fmt_income)
                 # Fondo egresos
                 elif rule.category_id.code in c_expenses:
-                    sheet.write(row, column, rule.name, fmt_expense)
+                    sheet.write(row, column, rule.name, header_fmt_expense)
                 # Fondo provisiones
                 elif rule.category_id.code in c_provision:
-                    sheet.write(row, column, rule.name, fmt_provision)
+                    sheet.write(row, column, rule.name, header_fmt_provision)
                 # Otros
                 else:
-                    sheet.write(row, column, rule.name, bold)
+                    sheet.write(row, column, rule.name, header_bold)
                 sheet.set_column(row, column, _calc_col_width(rule.name))
                 column += 1
             # Mapear titulos horas extras
