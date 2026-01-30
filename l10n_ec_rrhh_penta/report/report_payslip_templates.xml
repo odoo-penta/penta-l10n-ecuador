@@ -98,9 +98,9 @@
                     <!-- ================= INFO EMPLEADO ================= -->
                     <table class="table table-sm" style="font-size: 9px">
                         <tr>
-                            <td><strong>Nombre:</strong></td>
+                            <td width="5%"><strong>Nombre:</strong></td>
                             <td t-esc="slip.employee_id.name"/>
-                            <td><strong>Salario contrato:</strong></td>
+                            <td width="12%"><strong>Salario contrato:</strong></td>
                             <td t-esc="slip.contract_id.wage" t-options="{'widget': 'monetary', 'display_currency': company.currency_id}"/>
                         </tr>
                         <tr>
@@ -133,10 +133,10 @@
                     <table class="table table-sm">
                         <thead>
                             <tr>
-                                <td class="text-center bb">INGRESOS</td>
-                                <td class="text-center bb">VALOR</td>
-                                <td class="text-center bb">EGRESOS</td>
-                                <td class="text-center bb">VALOR</td>
+                                <td class="text-center bb"><strong>INGRESOS</strong></td>
+                                <td class="text-center bb"><strong>VALOR</strong></td>
+                                <td class="text-center bb"><strong>EGRESOS</strong></td>
+                                <td class="text-center bb"><strong>VALOR</strong></td>
                             </tr>
                         </thead>
                         <tbody>
