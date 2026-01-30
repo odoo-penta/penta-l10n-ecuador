@@ -88,6 +88,7 @@
 
                         /* ===== UNICA LINEA PERMITIDA ===== */
                         td.bb {
+                            border-top: 1px solid #000 !important;
                             border-bottom: 1px solid #000 !important;
                         }
                     </style>
