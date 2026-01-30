@@ -74,40 +74,29 @@
                 <t t-call="l10n_ec_rrhh_penta.external_layout_only_logo">
 
                     <style>
+                        
+
                         /* ===== RESET ABSOLUTO PARA wkhtmltopdf ===== */
-                        table.no-table,
-                        table.no-table tr,
-                        table.no-table td,
-                        table.no-table th {
-                            border: none !important;
-                            outline: none !important;
+                        table,
+                        table *,
+                        .table,
+                        .table * {
+                            border: 0 !important;
+                            outline: 0 !important;
                             box-shadow: none !important;
                         }
 
-                        table.no-table {
-                            width: 100%;
-                            border-collapse: collapse !important;
-                            border-spacing: 0 !important;
-                            font-size: 12px;
-                        }
-
-                        table.no-table td,
-                        table.no-table th {
-                            padding: 4px 6px;
-                            vertical-align: middle;
-                        }
-
                         /* ===== UNICA LINEA PERMITIDA ===== */
-                        th.bb {
+                        td.bb {
                             border-bottom: 1px solid #000 !important;
                         }
                     </style>
 
                     <!-- ================= TITULO ================= -->
-                    <h2 class="text-center" style="margin-top:0mm; margin-bottom:4mm;">ROL DE PAGOS</h2>
+                    <h3 class="text-center" style="margin-top:0mm; margin-bottom:4mm;">ROL DE PAGOS</h3>
 
                     <!-- ================= INFO EMPLEADO ================= -->
-                    <table class="no-table">
+                    <table class="table table-sm" style="font-size: 9px">
                         <tr>
                             <td><strong>Nombre:</strong></td>
                             <td t-esc="slip.employee_id.name"/>
@@ -136,82 +125,91 @@
                         </tr>
                     </table>
 
-                    <!-- ================= INGRESOS / EGRESOS ================= -->
-                    <div class="row">
-
-                        <!-- INGRESOS -->
-                        <div class="col-6">
-                            <table class="no-table">
-                                <thead>
-                                    <tr>
-                                        <th class="text-center bb">INGRESOS</th>
-                                        <th class="text-center bb">VALOR</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <t t-set="ingresos"
-                                        t-value="slip.line_ids.filtered(lambda l: l.category_id and l.category_id.code in ('BASIC','VACT','HOREXS','BONO','BENFSO','COMSD'))"/>
-
-                                    <t t-foreach="ingresos" t-as="line">
-                                        <tr>
-                                            <td t-esc="line.name"/>
-                                            <td class="text-center">
-                                                <span t-esc="line.total" t-options="{'widget': 'monetary', 'display_currency': company.currency_id}"/>
-                                            </td>
-                                        </tr>
-                                    </t>
-                                    <!-- TOTAL -->
-                                    <tr>
-                                        <td><strong>TOTAL DE INGRESOS</strong></td>
-                                        <td class="text-center">
-                                            <span t-esc="sum(ingresos.mapped('total'))" t-options="{'widget': 'monetary', 'display_currency': company.currency_id}"/>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <!-- EGRESOS -->
-                        <div class="col-6">
-                            <table class="no-table">
-                                <thead>
-                                    <tr>
-                                        <th class="text-center bb">EGRESOS</th>
-                                        <th class="text-center bb">VALOR</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <t t-set="egresos"
-                                        t-value="slip.line_ids.filtered(lambda l: l.category_id and l.category_id.code in ('DEDUD'))"/>
-
-                                    <t t-foreach="egresos" t-as="line">
-                                        <tr>
-                                            <td t-esc="line.name"/>
-                                            <td class="text-center">
-                                                <span t-esc="line.total" t-options="{'widget': 'monetary', 'display_currency': company.currency_id}"/>
-                                            </td>
-                                        </tr>
-                                    </t>
-                                    <!-- TOTAL -->
-                                    <tr>
-                                        <td><strong>TOTAL DE EGRESOS</strong></td>
-                                        <td class="text-center">
-                                            <span t-esc="sum(egresos.mapped('total'))" t-options="{'widget': 'monetary', 'display_currency': company.currency_id}"/>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                    </div>
-
-                    <!-- ================= SALARIO NETO ================= -->
-                    <t t-set="salario_neto"
-                        t-value="sum(ingresos.mapped('total')) - sum(egresos.mapped('total'))"/>
-
                     <br/>
 
-                    <table  style="width:50%;">
+                    <!-- ================= INGRESOS / EGRESOS ================= -->
+
+                    <!-- IGRESOS -->
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <td class="text-center bb">INGRESOS</td>
+                                <td class="text-center bb">VALOR</td>
+                                <td class="text-center bb">EGRESOS</td>
+                                <td class="text-center bb">VALOR</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-set="ingresos"
+                                t-value="slip.line_ids.filtered(lambda l: l.category_id and l.category_id.code in ('BASIC','VACT','HOREXS','BONO','BENFSO','COMSD'))"/>
+
+                            <t t-set="egresos"
+                                t-value="slip.line_ids.filtered(lambda l: l.category_id and l.category_id.code in ('DEDUD'))"/>
+
+                            <t t-set="max_lines"
+                                t-value="max(len(ingresos), len(egresos))"/>
+
+                            <t t-foreach="range(max_lines)" t-as="i">
+                                <tr>
+                                    <!-- INGRESOS -->
+                                    <td>
+                                        <t t-if="i &lt; len(ingresos)">
+                                            <span t-esc="ingresos[i].name"/>
+                                        </t>
+                                    </td>
+                                    <td class="text-center">
+                                        <t t-if="i &lt; len(ingresos)">
+                                            <span t-esc="ingresos[i].total"
+                                                t-options="{'widget': 'monetary', 'display_currency': company.currency_id}"/>
+                                        </t>
+                                    </td>
+
+                                    <!-- EGRESOS -->
+                                    <td>
+                                        <t t-if="i &lt; len(egresos)">
+                                            <span t-esc="egresos[i].name"/>
+                                        </t>
+                                    </td>
+                                    <td class="text-center">
+                                        <t t-if="i &lt; len(egresos)">
+                                            <span t-esc="egresos[i].total"
+                                                t-options="{'widget': 'monetary', 'display_currency': company.currency_id}"/>
+                                        </t>
+                                    </td>
+
+                                </tr>
+                            </t>
+                            <!-- Espacios para luego mostrar totales -->
+                            <tr>
+                                <td colspan="4"/>
+                            </tr>
+                            <tr>
+                                <td colspan="4"/>
+                            </tr>
+                            <tr>
+                                <td colspan="4"/>
+                            </tr>
+                            <tr>
+                                <td class="text-center bb"><strong>TOTAL DE INGRESOS</strong></td>
+                                <td class="text-center bb">
+                                    <span t-esc="sum(ingresos.mapped('total'))" t-options="{'widget': 'monetary', 'display_currency': company.currency_id}"/>
+                                </td>
+                                <td class="text-center bb"><strong>TOTAL DE EGRESOS</strong></td>
+                                <td class="text-center bb">
+                                    <span t-esc="sum(egresos.mapped('total'))" t-options="{'widget': 'monetary', 'display_currency': company.currency_id}"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- ================= SALARIO NETO ================= -->
+                    
+                    <br/>
+
+                    <table class="table table-sm" style="width:50%;">
+                        <t t-set="salario_neto"
+                            t-value="sum(ingresos.mapped('total')) - sum(egresos.mapped('total'))"/>
+
                         <tr>
                             <td><strong>SALARIO NETO</strong></td>
                             <td class="text-right">
@@ -221,7 +219,7 @@
                     </table>
 
                     <!-- ================= FIRMAS ================= -->
-                    <table width="100%" style="font-size:12px;border:none; border-collapse:collapse;">
+                    <table class="table table-sm" width="100%">
                         <tr>
                             <td width="45%" class="text-center">
                                 <br/><br/>
