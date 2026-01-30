@@ -4,8 +4,8 @@ import io
 import xlsxwriter
 
 from datetime import datetime, timedelta
-from odoo.addons.penta_base.reports.xlsx_formats import get_xlsx_formats
 from dateutil.relativedelta import relativedelta
+from odoo.addons.penta_base.reports.xlsx_formats import _calc_col_width
 
 # Formato de fecha deseado
 date_format = "%d-%m-%Y"
@@ -16,13 +16,18 @@ class ReportPayrollXlsx(models.AbstractModel):
     _inherit = 'report.report_xlsx.abstract'
 
     def generate_xlsx_report(self, workbook, data, wizards):
-        # Formatos
-        formats = get_xlsx_formats(workbook)
      
         for wizard in wizards:
             # Crear la hoja de Excel
             sheet = workbook.add_worksheet('Reporte de Nomina')
-            bold = workbook.add_format({'bold': True})
+            # Formatos
+            bold = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter', 'border': 1})
+            # Formato titulos ingresos/gastos
+            fmt_income = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter', 'border': 1, 'font_color': '#FFFFFF', 'bg_color': '#4472C4'})
+            fmt_expense = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter', 'border': 1, 'font_color': '#FFFFFF', 'bg_color': '#878787'})
+            # Codigos categorias ingresos/gastos
+            c_incomes = ['BASICEC', 'BASIC', 'HOREXS', 'VACT', 'GROSS', 'BENFSO', 'BONO', 'COMSD', 'SUBSIDIOS', 'SUBT_SUBSIDIOS', 'TOTINGOTROS', 'NET']
+            c_expenses = ['DEDUD', 'CONALM', 'EMC']
             # Domain base de los payslips
             domain = [
                 ('company_id','=',wizard.company_id.id),
@@ -56,28 +61,51 @@ class ReportPayrollXlsx(models.AbstractModel):
             # Datos de la tabla
             row = 10
             column = 0
-            sheet.write(row, column, 'Período/mes', formats['header_bg'])
+            headers = [
+                'Período/mes',
+                'Ref Rol',
+                'Nombre',
+                'Identificación',
+                'Fecha de ingreso',
+                'Cargo',
+                'Departamento',
+                'Sección Contable',
+                'Nro días trabajados',
+            ]
+            for header in headers:
+                sheet.write(row, column, header, bold)
+                sheet.set_column(column, column, _calc_col_width(header))
+                column += 1
+            """
+            sheet.write(row, column, 'Período/mes')
             column += 1
-            sheet.write(row, column, 'Ref Rol', formats['header_bg'])
+            sheet.write(row, column, 'Ref Rol')
             column += 1
-            sheet.write(row, column, 'Nombre', formats['header_bg'])
+            sheet.write(row, column, 'Nombre')
             column += 1
-            sheet.write(row, column, 'Identificación', formats['header_bg'])
+            sheet.write(row, column, 'Identificación')
             column += 1
-            sheet.write(row, column, 'Fecha de ingreso', formats['header_bg'])
+            sheet.write(row, column, 'Fecha de ingreso')
             column += 1
-            sheet.write(row, column, 'Cargo', formats['header_bg'])
+            sheet.write(row, column, 'Cargo')
             column += 1
-            sheet.write(row, column, 'Departamento', formats['header_bg'])
+            sheet.write(row, column, 'Departamento')
             column += 1
-            sheet.write(row, column, 'Sección Contable', formats['header_bg'])
+            sheet.write(row, column, 'Sección Contable')
             column += 1
-            sheet.write(row, column, 'Nro días trabajados', formats['header_bg'])
+            sheet.write(row, column, 'Nro días trabajados')
             column += 1
+            """
             salary_rules = self.env['hr.salary.rule'].search([('appears_on_payroll_report', '=', True)], order='sequence asc')
             # Mapear dinamicamente cabeceras de reglas
             for rule in salary_rules:
-                sheet.write(row, column, rule.name, bold)
+                if rule.category_id.code in c_incomes:
+                    sheet.write(row, column, rule.name, fmt_income)
+                elif rule.category_id.code in c_expenses:
+                    sheet.write(row, column, rule.name, fmt_expense)
+                else:
+                    sheet.write(row, column, rule.name, bold)
+                sheet.set_column(row, column, _calc_col_width(rule.name))
                 column += 1
             row += 1
             # Recorrer los payslips y escribir los datos
