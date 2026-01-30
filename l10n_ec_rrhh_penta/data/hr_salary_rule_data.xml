@@ -29,12 +29,7 @@
       <field name="condition_select">none</field>
       <field name="amount_select">code</field>
       <field name="amount_python_compute"><![CDATA[
-if 'WORK100' in worked_days:
-    dias_trabajados = worked_days['WORK100'].number_of_days
-    dias_trabajados = min(dias_trabajados, 30)
-else:
-    dias_trabajados = 0  # Valor predeterminado si no se encuentran días trabajados
-result = (contract.wage * dias_trabajados) / 30
+result = (contract.wage * payslip.worked_days_ec) / 30
     ]]></field>
     </record>
 
@@ -238,7 +233,7 @@ result = contract.l10n_ec_ptb_fourteenth_fund_paid == 'monthly'
     ]]></field>
       <field name="amount_select">code</field>
       <field name="amount_python_compute"><![CDATA[
-result = (categories['BASICEC']/360)*worked_days['WORK100'].number_of_days
+result = (categories['BASICEC']/360)*payslip.worked_days_ec
     ]]></field>
     </record>
 
@@ -705,7 +700,7 @@ result = contract.l10n_ec_ptb_fourteenth_fund_paid == 'accumulated'
       <field name="amount_select">code</field>
       <field name="amount_python_compute"><![CDATA[
 dias_vac = worked_days['VAC'].number_of_days if worked_days.get('VAC') else 0
-dias = min(worked_days['WORK100'].number_of_days + dias_vac, 30)
+dias = min(payslip.worked_days_ec + dias_vac, 30)
 result = (categories['BASICEC']/360)*dias
       ]]></field>
     </record>
@@ -784,6 +779,22 @@ elif (payslip.date_to-contract.date_start).days > 395:
       <field name="amount_python_compute"><![CDATA[
 currency = payslip.company_id.currency_id
 total = currency.round(categories['EMC']) + currency.round(categories['DTER'])
+result = currency.round(total)
+    ]]></field>
+    </record>
+
+    <!-- TOTAL COSTO EMPLEADO -->
+    <record id="rule_totcostemployee" model="hr.salary.rule">
+      <field name="name">TOTAL COSTO EMPLEADO</field>
+      <field name="code">TOTCOSTEMP</field>
+      <field name="sequence">41</field>
+      <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_employee_ec"/>
+      <field name="category_id" ref="l10n_ec_rrhh_penta.cat_totpro"/>
+      <field name="condition_select">none</field>
+      <field name="amount_select">code</field>
+      <field name="amount_python_compute"><![CDATA[
+currency = payslip.company_id.currency_id
+total = currency.round(categories['TOTING'] + categories['TOTPRO'])
 result = currency.round(total)
     ]]></field>
     </record>
