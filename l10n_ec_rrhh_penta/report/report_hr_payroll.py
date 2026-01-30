@@ -4,6 +4,7 @@ import io
 import xlsxwriter
 
 from datetime import datetime, timedelta
+from odoo.addons.penta_base.reports.xlsx_formats import get_xlsx_formats
 from dateutil.relativedelta import relativedelta
 
 # Formato de fecha deseado
@@ -15,6 +16,8 @@ class ReportPayrollXlsx(models.AbstractModel):
     _inherit = 'report.report_xlsx.abstract'
 
     def generate_xlsx_report(self, workbook, data, wizards):
+        # Formatos
+        formats = get_xlsx_formats(workbook)
      
         for wizard in wizards:
             # Crear la hoja de Excel
@@ -53,23 +56,23 @@ class ReportPayrollXlsx(models.AbstractModel):
             # Datos de la tabla
             row = 10
             column = 0
-            sheet.write(row, column, 'Período/mes', bold)
+            sheet.write(row, column, 'Período/mes', formats['header_bg'])
             column += 1
-            sheet.write(row, column, 'Ref Rol', bold)
+            sheet.write(row, column, 'Ref Rol', formats['header_bg'])
             column += 1
-            sheet.write(row, column, 'Nombre', bold)
+            sheet.write(row, column, 'Nombre', formats['header_bg'])
             column += 1
-            sheet.write(row, column, 'Identificación', bold)
+            sheet.write(row, column, 'Identificación', formats['header_bg'])
             column += 1
-            sheet.write(row, column, 'Fecha de ingreso', bold)
+            sheet.write(row, column, 'Fecha de ingreso', formats['header_bg'])
             column += 1
-            sheet.write(row, column, 'Cargo', bold)
+            sheet.write(row, column, 'Cargo', formats['header_bg'])
             column += 1
-            sheet.write(row, column, 'Departamento', bold)
+            sheet.write(row, column, 'Departamento', formats['header_bg'])
             column += 1
-            sheet.write(row, column, 'Sección Contable', bold)
+            sheet.write(row, column, 'Sección Contable', formats['header_bg'])
             column += 1
-            sheet.write(row, column, 'Nro días trabajados', bold)
+            sheet.write(row, column, 'Nro días trabajados', formats['header_bg'])
             column += 1
             salary_rules = self.env['hr.salary.rule'].search([('appears_on_payroll_report', '=', True)], order='sequence asc')
             # Mapear dinamicamente cabeceras de reglas
