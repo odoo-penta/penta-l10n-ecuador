@@ -4,6 +4,7 @@ import io
 import xlsxwriter
 
 from datetime import datetime, timedelta
+from odoo.addons.penta_base.reports.xlsx_formats import get_xlsx_formats
 from dateutil.relativedelta import relativedelta
 from odoo.addons.penta_base.reports.xlsx_formats import get_xlsx_formats, _calc_col_width
 
