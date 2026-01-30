@@ -44,19 +44,19 @@ class ReportPayrollXlsx(models.AbstractModel):
             hr_payslips = self.env['hr.payslip'].search(domain, order='name asc')
             # <======== REPORTE DE NOMINA EN EXCEL ========>
             # Cabecera
-            sheet.merge_range('A1:C1', wizard.company_id.name ,bold)
-            sheet.merge_range('A2:C2', 'Nómina de Colaboradores',bold)
-            sheet.write('A4', 'Desde',bold)
-            sheet.write('B4', hr_payslips[0].payslip_run_id.date_start.strftime(date_format) or '',bold)
-            sheet.write('A5', 'Hasta',bold)
-            sheet.write('B5', hr_payslips[0].payslip_run_id.date_end.strftime(date_format) or '',bold)
-            sheet.write('A6', 'Estructura',bold)
-            sheet.write('B6', 'Rol de Pagos')
-            sheet.write('A7', 'Departamento',bold)
-            sheet.write('B7', 'Todos los Departamentos')
-            sheet.write('A8', 'Empleados',bold)
-            sheet.write('B8', 'Todos los Empleados')
-            sheet.write('A9', 'Generado',bold)
+            sheet.merge_range('A1:C1', wizard.company_id.name, bold)
+            sheet.merge_range('A2:C2', 'Nómina de Colaboradores', bold)
+            sheet.write('A4', 'Desde', bold)
+            sheet.write('B4', hr_payslips[0].payslip_run_id.date_start.strftime(date_format) or '', bold)
+            sheet.write('A5', 'Hasta', bold)
+            sheet.write('B5', hr_payslips[0].payslip_run_id.date_end.strftime(date_format) or '', bold)
+            sheet.write('A6', 'Estructura', bold)
+            sheet.write('B6', 'Rol de Pagos', bold)
+            sheet.write('A7', 'Departamento', bold)
+            sheet.write('B7', 'Todos los Departamentos', bold)
+            sheet.write('A8', 'Empleados', bold)
+            sheet.write('B8', 'Todos los Empleados', bold)
+            sheet.write('A9', 'Generado', bold)
             sheet.write('B9', fields.Date.today().strftime(date_format))
             # Datos de la tabla
             row = 10
@@ -87,6 +87,16 @@ class ReportPayrollXlsx(models.AbstractModel):
                 else:
                     sheet.write(row, column, rule.name, bold)
                 sheet.set_column(row, column, _calc_col_width(rule.name))
+                column += 1
+            # Mapear titulos horas extras
+            headers_hours = [
+                'NRO H25',
+                'NRO H50',
+                'NRO H10',
+            ]
+            for header_hour in headers_hours:
+                sheet.write(row, column, header_hour, bold)
+                sheet.set_column(column, column, _calc_col_width(header_hour))
                 column += 1
             row += 1
             # Recorrer los payslips y escribir los datos
@@ -120,5 +130,19 @@ class ReportPayrollXlsx(models.AbstractModel):
                 for rule in salary_rules:
                     sheet.write(row, column, hr_payslip.line_ids.filtered(lambda line, rule=rule: line.salary_rule_id.id == rule.id).amount or 0)
                     column += 1
+                # Mapear horas
+                h25 = h50 = h100 = 0
+                for input_line in hr_payslip.input_line_ids:
+                    if input_line.code == 'HORA_EXTRA_NOCTURNA':
+                        h25 += input_line.amount
+                    if input_line.code == 'HORA_EXTRA_REGULAR':
+                        h50 += input_line.amount
+                    if input_line.code == 'HORA_EXTRA_EXTRAORDINARIA':
+                        h100 += input_line.amount
+                sheet.write(row, column, h25)
+                column += 1
+                sheet.write(row, column, h50)
+                column += 1
+                sheet.write(row, column, h100)
                 row += 1
             
