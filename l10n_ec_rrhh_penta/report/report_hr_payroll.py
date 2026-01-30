@@ -21,13 +21,16 @@ class ReportPayrollXlsx(models.AbstractModel):
             # Crear la hoja de Excel
             sheet = workbook.add_worksheet('Reporte de Nomina')
             # Formatos
-            bold = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter', 'border': 1})
+            base = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter', 'border': 1, 'font_color': '#FFFFFF', 'bg_color': '#101430'})
+            bold = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter', 'border': 1, 'font_color': '#FFFFFF', 'bg_color': '#e8c3e7'})
             # Formato titulos ingresos/gastos
-            fmt_income = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter', 'border': 1, 'font_color': '#FFFFFF', 'bg_color': '#4472C4'})
-            fmt_expense = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter', 'border': 1, 'font_color': '#FFFFFF', 'bg_color': '#878787'})
+            fmt_income = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter', 'border': 1, 'font_color': '#FFFFFF', 'bg_color': '#98a0d4'})
+            fmt_expense = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter', 'border': 1, 'font_color': '#FFFFFF', 'bg_color': '#bdbdbd'})
+            fmt_provision = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter', 'border': 1, 'font_color': '#FFFFFF', 'bg_color': '#aed4a5'})
             # Codigos categorias ingresos/gastos
-            c_incomes = ['BASICEC', 'BASIC', 'HOREXS', 'VACT', 'GROSS', 'BENFSO', 'BONO', 'COMSD', 'SUBSIDIOS', 'SUBT_SUBSIDIOS', 'TOTINGOTROS', 'NET']
-            c_expenses = ['DEDUD', 'CONALM', 'EMC']
+            c_incomes = ['BASICEC', 'BASIC', 'HOREXS', 'VACT', 'GROSS', 'BENFSO', 'BONO', 'COMSD', 'SUBSIDIOS', 'SUBT_SUBSIDIOS', 'TOTINGOTROS']
+            c_expenses = ['DEDUD', 'CONALM']
+            c_provision = ['EMC', 'DTER']
             # Domain base de los payslips
             domain = [
                 ('company_id','=',wizard.company_id.id),
@@ -44,19 +47,19 @@ class ReportPayrollXlsx(models.AbstractModel):
             hr_payslips = self.env['hr.payslip'].search(domain, order='name asc')
             # <======== REPORTE DE NOMINA EN EXCEL ========>
             # Cabecera
-            sheet.merge_range('A1:C1', wizard.company_id.name, bold)
-            sheet.merge_range('A2:C2', 'Nómina de Colaboradores', bold)
-            sheet.write('A4', 'Desde', bold)
-            sheet.write('B4', hr_payslips[0].payslip_run_id.date_start.strftime(date_format) or '', bold)
-            sheet.write('A5', 'Hasta', bold)
-            sheet.write('B5', hr_payslips[0].payslip_run_id.date_end.strftime(date_format) or '', bold)
-            sheet.write('A6', 'Estructura', bold)
-            sheet.write('B6', 'Rol de Pagos', bold)
-            sheet.write('A7', 'Departamento', bold)
-            sheet.write('B7', 'Todos los Departamentos', bold)
-            sheet.write('A8', 'Empleados', bold)
-            sheet.write('B8', 'Todos los Empleados', bold)
-            sheet.write('A9', 'Generado', bold)
+            sheet.merge_range('A1:C1', wizard.company_id.name)
+            sheet.merge_range('A2:C2', 'Nómina de Colaboradores')
+            sheet.write('A4', 'Desde')
+            sheet.write('B4', hr_payslips[0].payslip_run_id.date_start.strftime(date_format) or '')
+            sheet.write('A5', 'Hasta')
+            sheet.write('B5', hr_payslips[0].payslip_run_id.date_end.strftime(date_format) or '')
+            sheet.write('A6', 'Estructura')
+            sheet.write('B6', 'Rol de Pagos')
+            sheet.write('A7', 'Departamento')
+            sheet.write('B7', 'Todos los Departamentos')
+            sheet.write('A8', 'Empleados')
+            sheet.write('B8', 'Todos los Empleados')
+            sheet.write('A9', 'Generado')
             sheet.write('B9', fields.Date.today().strftime(date_format))
             # Datos de la tabla
             row = 10
@@ -73,17 +76,23 @@ class ReportPayrollXlsx(models.AbstractModel):
                 'Nro días trabajados',
             ]
             for header in headers:
-                sheet.write(row, column, header, bold)
+                sheet.write(row, column, header, base)
                 sheet.set_column(column, column, _calc_col_width(header))
                 column += 1
             # Obtener reglas salariales a visualizar en el reporte
             salary_rules = self.env['hr.salary.rule'].search([('appears_on_payroll_report', '=', True)], order='sequence asc')
             # Mapear dinamicamente cabeceras de reglas
             for rule in salary_rules:
+                # Fondo ingresos
                 if rule.category_id.code in c_incomes:
                     sheet.write(row, column, rule.name, fmt_income)
+                # Fondo egresos
                 elif rule.category_id.code in c_expenses:
                     sheet.write(row, column, rule.name, fmt_expense)
+                # Fondo provisiones
+                elif rule.category_id.code in c_provision:
+                    sheet.write(row, column, rule.name, fmt_provision)
+                # Otros
                 else:
                     sheet.write(row, column, rule.name, bold)
                 sheet.set_column(row, column, _calc_col_width(rule.name))
@@ -95,7 +104,7 @@ class ReportPayrollXlsx(models.AbstractModel):
                 'NRO H10',
             ]
             for header_hour in headers_hours:
-                sheet.write(row, column, header_hour, bold)
+                sheet.write(row, column, header_hour, base)
                 sheet.set_column(column, column, _calc_col_width(header_hour))
                 column += 1
             row += 1
