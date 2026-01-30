@@ -73,11 +73,41 @@
             <t t-foreach="docs" t-as="slip">
                 <t t-call="l10n_ec_rrhh_penta.external_layout_only_logo">
 
+                    <style>
+                        /* ===== RESET ABSOLUTO PARA wkhtmltopdf ===== */
+                        table.no-table,
+                        table.no-table tr,
+                        table.no-table td,
+                        table.no-table th {
+                            border: none !important;
+                            outline: none !important;
+                            box-shadow: none !important;
+                        }
+
+                        table.no-table {
+                            width: 100%;
+                            border-collapse: collapse !important;
+                            border-spacing: 0 !important;
+                            font-size: 12px;
+                        }
+
+                        table.no-table td,
+                        table.no-table th {
+                            padding: 4px 6px;
+                            vertical-align: middle;
+                        }
+
+                        /* ===== UNICA LINEA PERMITIDA ===== */
+                        th.bb {
+                            border-bottom: 1px solid #000 !important;
+                        }
+                    </style>
+
                     <!-- ================= TITULO ================= -->
                     <h2 class="text-center" style="margin-top:0mm; margin-bottom:4mm;">ROL DE PAGOS</h2>
 
                     <!-- ================= INFO EMPLEADO ================= -->
-                    <table class="table table-sm">
+                    <table class="no-table">
                         <tr>
                             <td><strong>Nombre:</strong></td>
                             <td t-esc="slip.employee_id.name"/>
@@ -111,11 +141,11 @@
 
                         <!-- INGRESOS -->
                         <div class="col-6">
-                            <table class="table table-sm">
+                            <table class="no-table">
                                 <thead>
                                     <tr>
-                                        <th class="text-center">INGRESOS</th>
-                                        <th class="text-center">VALOR</th>
+                                        <th class="text-center bb">INGRESOS</th>
+                                        <th class="text-center bb">VALOR</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -143,11 +173,11 @@
 
                         <!-- EGRESOS -->
                         <div class="col-6">
-                            <table class="table table-sm">
+                            <table class="no-table">
                                 <thead>
                                     <tr>
-                                        <th class="text-center">EGRESOS</th>
-                                        <th class="text-center">VALOR</th>
+                                        <th class="text-center bb">EGRESOS</th>
+                                        <th class="text-center bb">VALOR</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -181,7 +211,7 @@
 
                     <br/>
 
-                    <table class="table table-sm" style="width:50%;">
+                    <table  style="width:50%;">
                         <tr>
                             <td><strong>SALARIO NETO</strong></td>
                             <td class="text-right">
