@@ -96,7 +96,7 @@
                     <h3 class="text-center" style="margin-top:0mm; margin-bottom:4mm;">ROL DE PAGOS</h3>
 
                     <!-- ================= INFO EMPLEADO ================= -->
-                    <table class="table table-sm" style="font-size: 9px">
+                    <table class="table table-sm" style="font-size: 11px">
                         <tr>
                             <td width="5%"><strong>Nombre:</strong></td>
                             <td t-esc="slip.employee_id.name"/>
