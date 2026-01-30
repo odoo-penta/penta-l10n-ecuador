@@ -136,7 +136,6 @@ class HrPayslipRun(models.Model):
         }
 
         move = self.env['account.move'].create(move_vals)
-        move.action_post()
         
         # 7. Enlazar asiento
         payslips.write({
