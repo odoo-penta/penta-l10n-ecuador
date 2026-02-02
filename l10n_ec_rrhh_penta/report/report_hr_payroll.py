@@ -18,14 +18,14 @@ class ReportPayrollXlsx(models.AbstractModel):
     def generate_xlsx_report(self, workbook, data, wizards):
         # Formatos
         formats = get_xlsx_formats(workbook)
-        header_base = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter', 'border': 1, 'font_color': '#FFFFFF', 'bg_color': '#101430', 'text_wrap': True})
-        base = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter', 'border': 1, 'font_color': '#FFFFFF', 'bg_color': '#101430'})
+        header_base = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter', 'border': 1, 'font_color': '#FFFFFF', 'bg_color': '#242d6e', 'text_wrap': True})
+        base = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter', 'border': 1})
         header_bold = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter', 'border': 1, 'font_color': '#FFFFFF', 'bg_color': '#e8c3e7', 'text_wrap': True})
         bold = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter', 'border': 1})
         # Formato titulos ingresos/gastos
-        header_fmt_income = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter', 'border': 1, 'font_color': '#FFFFFF', 'bg_color': '#98a0d4', 'text_wrap': True})
-        header_fmt_expense = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter', 'border': 1, 'font_color': '#FFFFFF', 'bg_color': '#bdbdbd', 'text_wrap': True})
-        header_fmt_provision = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter', 'border': 1, 'font_color': '#FFFFFF', 'bg_color': '#aed4a5', 'text_wrap': True})
+        header_fmt_income = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter', 'border': 1, 'bg_color': '#98a0d4', 'text_wrap': True})
+        header_fmt_expense = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter', 'border': 1, 'bg_color': '#bdbdbd', 'text_wrap': True})
+        header_fmt_provision = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter', 'border': 1, 'bg_color': '#aed4a5', 'text_wrap': True})
         # Codigos categorias ingresos/gastos
         c_incomes = ['BASICEC', 'BASIC', 'HOREXS', 'VACT', 'GROSS', 'BENFSO', 'BONO', 'COMSD', 'SUBSIDIOS', 'SUBT_SUBSIDIOS', 'TOTINGOTROS']
         c_expenses = ['DEDUD', 'CONALM']
@@ -80,7 +80,7 @@ class ReportPayrollXlsx(models.AbstractModel):
             ]
             for header in headers:
                 sheet.write(row, column, header, header_base)
-                if header in ('Período/mes', 'Ref Rol', 'Nombre', 'Cargo', 'Departamento', 'Sección Contable'):
+                if header in ('Nombre', 'Cargo', 'Departamento', 'Sección Contable'):
                     width_col = _calc_col_width(header, min_width=50)
                 else:
                     width_col = _calc_col_width(header)
