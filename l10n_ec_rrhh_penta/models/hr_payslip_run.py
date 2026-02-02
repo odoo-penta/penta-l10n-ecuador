@@ -42,15 +42,11 @@ class HrPayslipRun(models.Model):
         self.ensure_one()
         if not self.slip_ids:
             raise UserError(_("No hay nóminas (hr.payslip) en este lote para exportar."))
-
-        # Abrimos en nueva pestaña para descargar
-        url = f"/pentalab/payroll_run/{self.id}/export_xlsx"
-        return {
-            "type": "ir.actions.act_url",
-            "name": _("Generar reporte de nómina"),
-            "url": url,
-            "target": "self",
-        }
+        wizard = self.env['popup.wizard'].create({
+            'lote': self.id,
+            'company_id': self.env.user.company_id.id
+        })
+        return wizard.action_confirm()
         
     def action_export_monthly_inputs_xlsx(self):
         self.ensure_one()
