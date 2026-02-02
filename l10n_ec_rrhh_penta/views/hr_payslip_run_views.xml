@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
   <data>
+
     <record id="view_hr_payslip_run_form_export_xlsx" model="ir.ui.view">
       <field name="name">hr.payslip.run.form.export.xlsx</field>
       <field name="model">hr.payslip.run</field>
@@ -22,5 +23,10 @@
         </xpath>
       </field>
     </record>
+
+    <record id="action_hr_payslip_run_tree" model="ir.actions.act_window">
+      <field name="domain">[('penta_benefit_key', '=', False)]</field>
+    </record>
+
   </data>
 </odoo>
