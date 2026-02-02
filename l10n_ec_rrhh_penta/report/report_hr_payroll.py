@@ -81,6 +81,8 @@ class ReportPayrollXlsx(models.AbstractModel):
                 sheet.write(row, column, header, header_base)
                 if header in ('Nombre', 'Cargo', 'Departamento', 'Sección Contable'):
                     width_col = _calc_col_width(header, min_width=50)
+                elif header in ('Nro días trabajados'):
+                    width_col = _calc_col_width(header, max_width=10)
                 else:
                     width_col = _calc_col_width(header)
                 sheet.set_column(column, column, width_col)
@@ -139,7 +141,7 @@ class ReportPayrollXlsx(models.AbstractModel):
                 for wline in worked_day_lines:
                     if(wline.code in ('WORK100','WORK110','WORK120','LEAVE110','LEAVE120','ILLNESSIESS50','ILLNESSIESS66','ILLNESSIESS75')):
                         worked_days += wline.number_of_days
-                sheet.write(row, column, min(worked_days, 30)) # Nro dias trabajados
+                sheet.write(row, column, min(worked_days, 30), formats['center']) # Nro dias trabajados
                 column += 1
                 # Mapear dinamicamente valores de reglas
                 for rule in salary_rules:
