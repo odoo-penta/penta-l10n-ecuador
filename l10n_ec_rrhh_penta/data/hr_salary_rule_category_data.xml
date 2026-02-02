@@ -114,6 +114,11 @@
       <field name="code">NET</field>
     </record>
 
+    <record id="cat_cost_employee" model="hr.salary.rule.category">
+      <field name="name">TOTAL COSTO EMPLEADO</field>
+      <field name="code">TOTCOSTOEMP</field>
+    </record>
+
     <!-- ========================= -->
     <!-- PROVISIONES PATRONALES -->
     <!-- ========================= -->
