@@ -148,11 +148,11 @@ class ReportPayrollXlsx(models.AbstractModel):
                 # Mapear horas
                 h25 = h50 = h100 = 0
                 for input_line in hr_payslip.input_line_ids:
-                    if input_line.code == 'HORA_EXTRA_NOCTURNA':
+                    if input_line.code == 'PL_HORA_EXTRA_NOCTURNA':
                         h25 += input_line.amount
-                    if input_line.code == 'HORA_EXTRA_REGULAR':
+                    if input_line.code == 'PL_HORA_EXTRA_REGULAR':
                         h50 += input_line.amount
-                    if input_line.code == 'HORA_EXTRA_EXTRAORDINARIA':
+                    if input_line.code == 'PL_HORA_EXTRA_EXTRAORDINARIA':
                         h100 += input_line.amount
                 sheet.write(row, column, h25, bold)
                 column += 1
