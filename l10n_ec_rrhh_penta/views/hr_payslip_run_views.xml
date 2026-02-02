@@ -24,7 +24,7 @@
       </field>
     </record>
 
-    <record id="action_hr_payslip_run_tree" model="ir.actions.act_window">
+    <record id="hr_payroll.action_hr_payslip_run_tree" model="ir.actions.act_window">
       <field name="domain">[('penta_benefit_key', '=', False)]</field>
     </record>
 
