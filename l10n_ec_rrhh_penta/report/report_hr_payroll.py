@@ -5,7 +5,7 @@ import xlsxwriter
 
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
-from odoo.addons.penta_base.reports.xlsx_formats import _calc_col_width
+from odoo.addons.penta_base.reports.xlsx_formats import get_xlsx_formats, _calc_col_width
 
 # Formato de fecha deseado
 date_format = "%d-%m-%Y"
@@ -16,22 +16,24 @@ class ReportPayrollXlsx(models.AbstractModel):
     _inherit = 'report.report_xlsx.abstract'
 
     def generate_xlsx_report(self, workbook, data, wizards):
+        # Formatos
+        formats = get_xlsx_formats(workbook)
+        header_base = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter', 'border': 1, 'font_color': '#FFFFFF', 'bg_color': '#101430', 'text_wrap': True})
+        base = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter', 'border': 1, 'font_color': '#FFFFFF', 'bg_color': '#101430'})
+        header_bold = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter', 'border': 1, 'font_color': '#FFFFFF', 'bg_color': '#e8c3e7', 'text_wrap': True})
+        bold = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter', 'border': 1})
+        # Formato titulos ingresos/gastos
+        header_fmt_income = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter', 'border': 1, 'font_color': '#FFFFFF', 'bg_color': '#98a0d4', 'text_wrap': True})
+        header_fmt_expense = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter', 'border': 1, 'font_color': '#FFFFFF', 'bg_color': '#bdbdbd', 'text_wrap': True})
+        header_fmt_provision = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter', 'border': 1, 'font_color': '#FFFFFF', 'bg_color': '#aed4a5', 'text_wrap': True})
+        # Codigos categorias ingresos/gastos
+        c_incomes = ['BASICEC', 'BASIC', 'HOREXS', 'VACT', 'GROSS', 'BENFSO', 'BONO', 'COMSD', 'SUBSIDIOS', 'SUBT_SUBSIDIOS', 'TOTINGOTROS']
+        c_expenses = ['DEDUD', 'CONALM']
+        c_provision = ['EMC', 'DTER']
      
         for wizard in wizards:
             # Crear la hoja de Excel
             sheet = workbook.add_worksheet('Reporte de Nomina')
-            # Formatos
-            header_base = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter', 'border': 1, 'font_color': '#FFFFFF', 'bg_color': '#101430', 'text_wrap': True})
-            base = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter', 'border': 1, 'font_color': '#FFFFFF', 'bg_color': '#101430'})
-            header_bold = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter', 'border': 1, 'font_color': '#FFFFFF', 'bg_color': '#e8c3e7', 'text_wrap': True})
-            # Formato titulos ingresos/gastos
-            header_fmt_income = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter', 'border': 1, 'font_color': '#FFFFFF', 'bg_color': '#98a0d4', 'text_wrap': True})
-            header_fmt_expense = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter', 'border': 1, 'font_color': '#FFFFFF', 'bg_color': '#bdbdbd', 'text_wrap': True})
-            header_fmt_provision = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter', 'border': 1, 'font_color': '#FFFFFF', 'bg_color': '#aed4a5', 'text_wrap': True})
-            # Codigos categorias ingresos/gastos
-            c_incomes = ['BASICEC', 'BASIC', 'HOREXS', 'VACT', 'GROSS', 'BENFSO', 'BONO', 'COMSD', 'SUBSIDIOS', 'SUBT_SUBSIDIOS', 'TOTINGOTROS']
-            c_expenses = ['DEDUD', 'CONALM']
-            c_provision = ['EMC', 'DTER']
             # Domain base de los payslips
             domain = [
                 ('company_id','=',wizard.company_id.id),
@@ -78,7 +80,11 @@ class ReportPayrollXlsx(models.AbstractModel):
             ]
             for header in headers:
                 sheet.write(row, column, header, header_base)
-                sheet.set_column(column, column, _calc_col_width(header))
+                if header in ('Período/mes', 'Ref Rol', 'Nombre', 'Cargo', 'Departamento', 'Sección Contable'):
+                    width_col = _calc_col_width(header, min_width=50)
+                else:
+                    width_col = _calc_col_width(header)
+                sheet.set_column(column, column, width_col)
                 column += 1
             # Obtener reglas salariales a visualizar en el reporte
             salary_rules = self.env['hr.salary.rule'].search([('appears_on_payroll_report', '=', True)], order='sequence asc')
@@ -100,9 +106,9 @@ class ReportPayrollXlsx(models.AbstractModel):
                 column += 1
             # Mapear titulos horas extras
             headers_hours = [
-                'NRO H25',
-                'NRO H50',
-                'NRO H10',
+                'NRO H 25%',
+                'NRO H 50%',
+                'NRO H 100%',
             ]
             for header_hour in headers_hours:
                 sheet.write(row, column, header_hour, base)
@@ -138,7 +144,7 @@ class ReportPayrollXlsx(models.AbstractModel):
                 column += 1
                 # Mapear dinamicamente valores de reglas
                 for rule in salary_rules:
-                    sheet.write(row, column, hr_payslip.line_ids.filtered(lambda line, rule=rule: line.salary_rule_id.id == rule.id).amount or 0)
+                    sheet.write(row, column, hr_payslip.line_ids.filtered(lambda line, rule=rule: line.salary_rule_id.id == rule.id).amount or 0, formats['currency'])
                     column += 1
                 # Mapear horas
                 h25 = h50 = h100 = 0
@@ -149,10 +155,10 @@ class ReportPayrollXlsx(models.AbstractModel):
                         h50 += input_line.amount
                     if input_line.code == 'HORA_EXTRA_EXTRAORDINARIA':
                         h100 += input_line.amount
-                sheet.write(row, column, h25)
+                sheet.write(row, column, h25, bold)
                 column += 1
-                sheet.write(row, column, h50)
+                sheet.write(row, column, h50, bold)
                 column += 1
-                sheet.write(row, column, h100)
+                sheet.write(row, column, h100, bold)
                 row += 1
             
