@@ -290,21 +290,6 @@ class HrContract(models.Model):
                 })
 
             self.env['account.move.line'].create(move_lines)
-                    
-    def action_open_add_vacation_wizard(self):
-        """Abre el asistente 'Agregar vacaciones' con el contrato en contexto."""
-        self.ensure_one()
-        return {
-            "type": "ir.actions.act_window",
-            "name": "Ajustar vacaciones",
-            "res_model": "l10n_ec.ptb.add.vacation.wizard",
-            "view_mode": "form",
-            "view_id": self.env.ref("l10n_ec_rrhh_penta.view_l10n_ec_ptb_add_vacation_wizard_form").id,
-            "target": "new",
-            "context": {
-                "default_contract_id": self.id,
-            },
-        }
 
 class HrContractType(models.Model):
     _inherit = "hr.contract.type"
