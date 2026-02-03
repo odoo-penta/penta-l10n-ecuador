@@ -141,18 +141,12 @@ class HrEmployee(models.Model):
                     if dep.disability or (dep.birthdate and (fields.Date.today() - dep.birthdate).days / 365 < 18):
                         count += 1
             emp.children = count
-
+    
     def action_open_contracts(self):
         """Abre los contratos del empleado en una vista de lista/form."""
         self.ensure_one()
-        action = self.env.ref("hr_contract.hr_contract_action").read()[0]
-        # Filtra por empleado actual
-        action["domain"] = [("employee_id", "=", self.id)]
-        # Opcional: contexto por defecto
-        action.setdefault("context", {})
-        action["context"].update({
-            "default_employee_id": self.id,
-        })
+        action = self.env['ir.actions.act_window']._for_xml_id('hr_contract.action_hr_contract')
+        action['domain'] = [('employee_id', '=', self.id)]
         return action
 
     @api.depends("contract_id", "contract_ids.state", "contract_ids.date_start", "contract_ids.date_end")
