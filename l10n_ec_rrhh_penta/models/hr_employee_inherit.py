@@ -103,19 +103,16 @@ class HrEmployee(models.Model):
     )
     # Totales agregados (solo lectura)
     vac_total_entitled = fields.Float(
-        string="Acreditadas", compute="_compute_vacation_totals", store=False
+        related="current_contract_id.vac_total_entitled",
+        string="Acreditadas"
     )
     vac_total_taken = fields.Float(
-        string="Tomadas", compute="_compute_vacation_totals", store=False
+        related="current_contract_id.vac_total_taken",
+        string="Tomadas"
     )
     vac_total_available = fields.Float(
-        string="Disponibles", compute="_compute_vacation_totals", store=False
-    )
-    # Campo editable en lista para RESTAR días; al guardar, consume por FIFO .
-    vac_consume_adjust = fields.Integer(
-        string="Restar (ajuste)",
-        help="Ingrese días a restar; al guardar se consumen por FIFO desde el período más antiguo.",
-        default=0,
+        related="current_contract_id.vac_total_available",
+        string="Disponibles"
     )
 
     @api.constrains("disability_percentage")
@@ -168,92 +165,6 @@ class HrEmployee(models.Model):
                 "|", ("date_end", "=", False), ("date_end", ">=", today),
             ], order="date_start desc", limit=1)
             emp.current_contract_id = contract
-
-    @api.depends("current_contract_id")
-    def _compute_vacation_totals(self):
-        Balance = self.env["l10n_ec.ptb.vacation.balance"].sudo()
-        for emp in self:
-            emp.vac_total_entitled = 0.0
-            emp.vac_total_taken = 0.0
-            emp.vac_total_available = 0.0
-            if not emp.current_contract_id:
-                continue
-            balances = Balance.search(
-                [("contract_id", "=", emp.current_contract_id.id)],
-                order="year_index asc"
-            )
-            if not balances:
-                continue
-            entitled = sum(b.days_entitled for b in balances)
-            taken = sum(
-                sum(m.days for m in b.move_ids if m.state == "done")
-                for b in balances
-            )
-            available = sum(b.days_available for b in balances)
-            emp.vac_total_entitled = entitled
-            emp.vac_total_taken = taken
-            emp.vac_total_available = available
-
-    def write(self, vals):
-        """Interceptamos cuando el usuario escribió vac_consume_adjust en la vista de lista.
-        Si > 0, consumimos por FIFO y luego lo devolvemos a 0 para evitar consumos repetidos.
-        """
-        # Guardamos los pares (emp, qty) que debemos procesar después del write base
-        to_consume = []
-        if "vac_consume_adjust" in vals and vals["vac_consume_adjust"]:
-            # Caso: mismo valor para todos los registros del recordset
-            qty_common = int(vals["vac_consume_adjust"])
-            for emp in self:
-                if qty_common > 0:
-                    to_consume.append((emp, qty_common))
-            # Forzamos a 0 para que no quede persistente
-            vals = vals.copy()
-            vals["vac_consume_adjust"] = 0
-
-        res = super().write(vals)
-
-        if to_consume:
-            Balance = self.env["l10n_ec.ptb.vacation.balance"].sudo()
-            Move = self.env["l10n_ec.ptb.vacation.move"].sudo()
-            for emp, qty in to_consume:
-                if qty <= 0:
-                    continue
-                if not emp.current_contract_id:
-                    # Sin contrato actual, no hay de dónde descontar
-                    continue
-                balances = Balance.search(
-                    [("contract_id", "=", emp.current_contract_id.id)],
-                    order="year_index asc"
-                )
-                remaining = int(qty)
-                for bal in balances:
-                    if remaining <= 0:
-                        break
-                    # tomado actual
-                    taken = sum(m.days for m in bal.move_ids if m.state == "done")
-                    free = bal.days_entitled - taken
-                    if free <= 0:
-                        continue
-                    consume = min(free, remaining)
-                    Move.create({
-                        "name": "Ajuste manual desde lista: consumo FIFO",
-                        "balance_id": bal.id,
-                        "days": float(consume),   # positivo = consumo
-                        "reason": "adjust",
-                        "state": "done",
-                    })
-                    remaining -= consume
-                if remaining > 0:
-                    # No había saldo suficiente; solo se consumió parcialmente
-                    emp.message_post(
-                        body=(f"Intento de consumo {qty} día(s). "
-                              f"Se consumieron {qty-remaining} día(s). "
-                              f"Saldo insuficiente para completar.")
-                    )
-                else:
-                    emp.message_post(body=f"Consumo manual de {qty} día(s) aplicado por FIFO desde lista.")
-        return res
-    
 
     def _get_marital_status_selection(self):
         # Orden y etiquetas pedidas: Soltero(a), Casado(a), Divorciado(a), Viudo(a), Unión de hecho.

@@ -14,7 +14,6 @@
         <field name="vac_total_entitled" readonly="1"/>
         <field name="vac_total_taken" readonly="1"/>
         <field name="vac_total_available" readonly="1"/>
-        <field name="vac_consume_adjust"/>
         <button name="action_open_contracts"
               type="object"
               string="Ver contratos"

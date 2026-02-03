@@ -16,11 +16,6 @@
             </group>
             <group>
               <button name="action_confirm_rebuild_vacation_balances" type="object" class="oe_highlight" string="Recalcular periodos"/>
-              <button name="action_open_add_vacation_wizard"
-                type="object"
-                class="oe_stat_button"
-                icon="fa-plus"
-                string="Agregar vacaciones"/>
             </group>
           </group>
           <group>

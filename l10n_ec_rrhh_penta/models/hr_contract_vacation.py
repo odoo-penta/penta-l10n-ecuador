@@ -140,8 +140,16 @@ class HrContract(models.Model):
                         worked_days = (today - month_start).days + 1
 
                         days_pending = round(
-                            monthly_rate * worked_days / days_in_month, 2
+                            monthly_rate * worked_days / days_in_month, 4
                         )
+                        
+                        if today.day == monthrange(today.year, today.month)[1]:
+                            # FIN DE MES → consolidar
+                            days_entitled += days_pending
+                            days_pending = 0.0
+                        else:
+                            # Día normal → pendiente
+                            days_pending = round(days_pending, 2)
                 else:
                     # Períodos cerrados
                     days_entitled = total_entitlement
