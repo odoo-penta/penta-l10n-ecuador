@@ -7,17 +7,17 @@
     <field name="model">hr.employee</field>
     <field name="arch" type="xml">
       <list string="Control de Vacaciones" editable="bottom" create="0">
-        <field name="name"/>
-        <field name="work_email"/>
-        <field name="department_id"/>
-        <field name="current_contract_id"/>
+        <field name="name" readonly="1"/>
+        <field name="work_email" readonly="1"/>
+        <field name="department_id" readonly="1"/>
+        <field name="current_contract_id" readonly="1"/>
         <field name="vac_total_entitled" readonly="1"/>
         <field name="vac_total_taken" readonly="1"/>
         <field name="vac_total_available" readonly="1"/>
         <button name="action_open_contracts"
-              type="object"
-              string="Ver contratos"
-              icon="fa-file-text-o"/>
+                type="object"
+                string="Ver contratos"
+                icon="fa-file-text-o"/>
       </list>
     </field>
   </record>
@@ -32,10 +32,7 @@
     <field name="domain">[]</field>
     <field name="help" type="html">
       <p class="o_view_nocontent_smiling_face">
-        Administra y ajusta vacaciones por empleado.
-      </p>
-      <p>
-        Edite la columna <b>Restar (ajuste)</b> con los días a consumir; al guardar, se descuenta por FIFO.
+        Vista sencilla de vacaciones por empleado
       </p>
     </field>
   </record>
