@@ -10,7 +10,7 @@ _logger = logging.getLogger(__name__)
 class HrPayslip(models.Model):
     _inherit = 'hr.payslip'
     
-    holidays_days_ec = fields.Float(string='Días Vacaciones', readonly=True)
+    holidays_days_ec = fields.Float(string='Días Vacaciones')
     payslip_days_ec = fields.Float(string='Días Rol', readonly=True, compute='_compute_days_ec', store=True)
     worked_days_ec = fields.Float(string='Días Laborados', readonly=True, compute='_compute_days_ec', store=True)
     days_of_month_ec = fields.Float(string='Días del Mes', readonly=True, compute='_compute_days_ec', store=True)
