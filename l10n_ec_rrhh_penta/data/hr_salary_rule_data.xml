@@ -29,7 +29,7 @@
       <field name="condition_select">none</field>
       <field name="amount_select">code</field>
       <field name="amount_python_compute"><![CDATA[
-result = (contract.wage * payslip.worked_days_ec) / 30
+result = (contract.wage * payslip.payslip_days_ec) / 30
     ]]></field>
     </record>
 
@@ -233,7 +233,7 @@ result = contract.l10n_ec_ptb_fourteenth_fund_paid == 'monthly'
     ]]></field>
       <field name="amount_select">code</field>
       <field name="amount_python_compute"><![CDATA[
-result = (categories['BASICEC']/360)*payslip.worked_days_ec
+result = (categories['BASICEC']/360)*payslip.payslip_days_ec
     ]]></field>
     </record>
 
@@ -700,7 +700,7 @@ result = contract.l10n_ec_ptb_fourteenth_fund_paid == 'accumulated'
       <field name="amount_select">code</field>
       <field name="amount_python_compute"><![CDATA[
 dias_vac = worked_days['VAC'].number_of_days if worked_days.get('VAC') else 0
-dias = min(payslip.worked_days_ec + dias_vac, 30)
+dias = min(payslip.payslip_days_ec + dias_vac, 30)
 result = (categories['BASICEC']/360)*dias
       ]]></field>
     </record>
