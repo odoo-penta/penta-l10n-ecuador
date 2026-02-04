@@ -113,6 +113,7 @@ class ReportPurchaseA2Wizard(models.TransientModel):
         # Mapear titulos
         for col, header in enumerate(headers):
             worksheet.merge_range(row, col, row + 1, col, header, formats['header_bg'])
+        row += 1
         # Mapear datos
         cont = 1
         for invoice in invoices:
