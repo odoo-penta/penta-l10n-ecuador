@@ -53,10 +53,10 @@ class HrPayslip(models.Model):
                     
             # Restar valor migrado
             payslip_days -= payslip.holidays_days_ec
-            
-            payslip.payslip_days_ec = payslip_days
-            payslip.worked_days_ec = worked_days
-            payslip.days_of_month_ec = days_period
+
+            payslip.payslip_days_ec = int(payslip_days)
+            payslip.worked_days_ec = int(worked_days)
+            payslip.days_of_month_ec = int(days_period)
 
     def _get_contract_section(self):
         """Obtiene la sección contable desde el contrato asociado al payslip."""
