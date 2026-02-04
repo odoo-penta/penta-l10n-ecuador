@@ -142,3 +142,11 @@ class HrPayslipRun(models.Model):
 
         # 8. Cerrar lote
         self.action_close()
+    
+    """
+    def action_draft(self):
+        import pdb;pdb.set_trace()
+        if self.move_id:
+            self.move_id.button_draft(self)
+        return super().action_draft(self)
+    """
