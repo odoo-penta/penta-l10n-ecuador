@@ -194,12 +194,12 @@ fondo = categories['GROSS'] * 0.0833
 
 if 366 <= total_dias_trabajados <= 395:
   if ultimo_dia == dia_contrato:
-    result = round(fondo, 2)
+    result = round(fondo, 4)
   else:
     dias_pagables = (ultimo_dia - dia_contrato) + 1
-    result = round((fondo / 30) * dias_pagables, 2)
+    result = round((fondo / 30) * dias_pagables, 4)
 elif total_dias_trabajados > 395:
-  result = round(fondo, 2)
+  result = round(fondo, 4)
     ]]></field>
     </record>
 

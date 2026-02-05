@@ -10,6 +10,7 @@
           <group>
             <group>
               <field name="startup_vacation_days"/>
+              <field name="startup_vacation_amount"/>
               <field name="vac_total_entitled" readonly="1"/>
               <field name="vac_total_taken" readonly="1"/>
               <field name="vac_total_available" readonly="1"/>
@@ -28,6 +29,7 @@
                 <field name="days_pending"/>
                 <field name="days_taken"/>
                 <field name="days_available"/>
+                <field name="provisional_holidays"/>
               </list>
             </field>
           </group>

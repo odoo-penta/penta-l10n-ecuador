@@ -48,7 +48,7 @@ class HrPayslip(models.Model):
             payslip_days = worked_days
             # --- Restar ausencias ---
             for line in payslip.worked_days_line_ids:
-                if line.code in ['LEAVE110', 'VACT', 'ILLNESSIESS50', 'ILLNESSIESS66', 'ILLNESSIESS75']:
+                if line.code in ['LEAVE110', 'VAC', 'ILLNESSIESS50', 'ILLNESSIESS66', 'ILLNESSIESS75']:
                     payslip_days -= line.number_of_days
                     
             # Restar valor migrado
@@ -193,3 +193,30 @@ class HrPayslip(models.Model):
         return self.env.ref(
             'l10n_ec_rrhh_penta.action_report_payslip_penta'
         ).report_action(self)
+        
+    def get_provision_holidays_by_period(self, holidays_days):
+        # Obtener lineas con valor de provision mayor a cero
+        lines = self.env["l10n_ec.ptb.vacation.balance"].search([
+            ('contract_id', '=', self.contract_id.id),
+            ('provisional_holidays', '>', 0.00)
+        ], order="year_index asc")
+        p_value = 0.00
+        # Recorrer lineas
+        for line in lines:
+            available = line.days_available
+            # Considerar entradas de vacaciones
+            entry_vac = self.worked_days_line_ids.filtered(lambda l: (l.code or "").upper() == "VAC")
+            if entry_vac:
+                available += entry_vac.number_of_days
+            # Si los dias disponibles son mayores a los tomados en Liquidacion
+            if available > holidays_days:
+                # Dividir monto por dias
+                per_day = line.provisional_holidays / available
+                p_value += per_day * holidays_days
+                break
+            else:
+                # Tomar toda la provision y restar dias
+                p_value = line.provisional_holidays
+                holidays_days -= available
+        return p_value
+        

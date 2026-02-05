@@ -20,7 +20,7 @@
     'website': 'https://pentalab.tech/',
     "license": "LGPL-3",
     'category': 'Human Resources/Employees',
-    "version": "18.0.9.2.7",
+    "version": "18.0.10.0.0",
     "depends": [
         'analytic',
         'hr_contract',

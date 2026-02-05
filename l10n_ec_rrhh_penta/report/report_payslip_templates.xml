@@ -121,7 +121,7 @@
                             <td t-esc="slip.employee_id.job_id.name"/>
                             <td><strong>Días trabajados:</strong></td>
                             <td>
-                                <span t-esc="min(30, sum(slip.worked_days_line_ids.mapped('number_of_days')))"/>
+                                <span t-esc="slip.worked_days_ec"/>
                             </td>
                         </tr>
                     </table>
