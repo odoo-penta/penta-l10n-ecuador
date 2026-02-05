@@ -113,11 +113,14 @@ result_name = inputs['PL_COMISION'].name
       <field name="category_id" ref="l10n_ec_rrhh_penta.cat_vact"/>
       <field name="condition_select">python</field>
       <field name="condition_python"><![CDATA[
-result = inputs.get('PL_VACACIONES', 0).amount if inputs.get('PL_VACACIONES') else 0
+result = bool(inputs.get('PL_VACACIONES')) or bool(worked_days.get('VAC'))
     ]]></field>
       <field name="amount_select">code</field>
       <field name="amount_python_compute"><![CDATA[
-result = inputs['PL_VACACIONES'].amount
+if inputs.get('PL_VACACIONES'):
+  result = inputs['PL_VACACIONES'].amount
+else:
+  result = payslip.get_provision_holidays_by_period(worked_days.get('VAC').number_of_days)
     ]]></field>
     </record>
 
