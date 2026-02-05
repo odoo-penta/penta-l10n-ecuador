@@ -19,6 +19,7 @@ class VacationBalance(models.Model):
     days_pending = fields.Float(string="Por acreditar", required=True)
     days_taken = fields.Float(string="Tomadas")
     days_available = fields.Float(compute="_compute_days_available", store=False, string="Disponibles")
+    provisional_holidays = fields.Float(string="Provisionado")
 
     def _compute_days_available(self):
         for rec in self:

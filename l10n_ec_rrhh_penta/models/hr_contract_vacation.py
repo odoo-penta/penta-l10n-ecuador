@@ -32,18 +32,23 @@ class HrContract(models.Model):
         string="Días de vacaciones gozadas",
         help="Días de vacaciones iniciales ya consumidos al empleado al crearse el contrato.",
     )
+    # Vacaciones en monto de arranque
+    startup_vacation_amount = fields.Float(
+        string="Total de vacaciones provisionada",
+        help="Total de vacaciones provisionadas",
+    )
     
     @api.model_create_multi
     def create(self, vals_list):
         res = super().create(vals_list)
         for vals in vals_list:
-            if vals.get('startup_vacation_days') or vals.get('date_start'):
+            if vals.get('startup_vacation_days') or vals.get('date_start') or vals.get('date_end') or vals.get('startup_vacation_amount'):
                 res.action_confirm_rebuild_vacation_balances()
         return res
         
     def write(self, vals):
         res = super().write(vals)
-        if vals.get('startup_vacation_days') or vals.get('date_start'):
+        if vals.get('startup_vacation_days') or vals.get('date_start') or vals.get('date_end') or vals.get('startup_vacation_amount'):
             self.action_confirm_rebuild_vacation_balances()
         return res
     
@@ -72,6 +77,8 @@ class HrContract(models.Model):
             total_periods = max(1, years + 1)
             # Obtener días de vacaciones de arranque
             startup_days = contract.startup_vacation_days or 0.0
+            # Obtener monto de vacaciones de arranque
+            startup_amount = contract.startup_vacation_amount or 0.0
             # Obtener vacaciones tomadas en el período del contrato
             leaves_days = sum(self.env['hr.leave'].search([
                 ('employee_id', '=', contract.employee_id.id),
@@ -173,8 +180,11 @@ class HrContract(models.Model):
                     else:
                         balance_line.days_taken = startup_days
                         startup_days = 0.0
-
-                # Verificamos si aun tiene dias disponibles por consumir en este periodo y tiene vacaciones
+                # Asignamos monto de aranque si tiene dias disponibles
+                if balance_line.days_available > 0.00:
+                    balance_line.provisional_holidays = startup_amount
+                    startup_amount = 0.0
+                # Verificamos si aun tiene dias disponibles por consumir en este periodo y tiene vacaciones 
                 if balance_line.days_available > 0.00 and leaves_days:
                     if leaves_days > balance_line.days_available:
                         # Consumir solo los días disponibles en el periodo
@@ -184,6 +194,33 @@ class HrContract(models.Model):
                     else:
                         balance_line.days_taken += leaves_days
                         leaves_days = 0.0
+                # Vamos a sumar las provisiones de vacaciones
+                rule_prov = self.env.ref('l10n_ec_rrhh_penta.rule_vac_prov')  # XML ID de la regla
+                lines = self.env['hr.payslip.line'].search([
+                    ('salary_rule_id', '=', rule_prov.id),
+                    ('contract_id', '=', contract.id),
+                    ('slip_id.state', 'in', ('done', 'paid')),
+                    ('slip_id.date_to', '>=', start_i),
+                    ('slip_id.date_to', '<=', end_i),
+                ])
+                balance_line.provisional_holidays += sum(lines.mapped('total'))
+
+            # Vamos a restar las liquidaciones de vacaciones
+            rule_liq = self.env.ref('l10n_ec_rrhh_penta.rule_vacaciones_tomadas')  # XML ID de la regla
+            lines = self.env['hr.payslip.line'].search([
+                ('salary_rule_id', '=', rule_liq.id),
+                ('slip_id.state', 'in', ('done', 'paid')),
+            ])
+            # Obtener el valor total liquidado
+            total_liq = abs(sum(lines.mapped('total')))
+            p_lines = self.env["l10n_ec.ptb.vacation.balance"].search([
+                ('contract_id', '=', contract.id),
+                ('provisional_holidays', '>', 0.00)
+            ], order="year_index asc")
+            # Recorrer lineas de balance con provision si tenemos valores a liquidar
+            if total_liq:
+                for p_line in p_lines:
+                    p_line.provisional_holidays -= total_liq
 
     # -------------------------------------------------------------------------
     # Nuevo flujo: eliminar todo y recalcular
