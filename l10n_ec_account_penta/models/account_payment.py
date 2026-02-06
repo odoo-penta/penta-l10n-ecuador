@@ -3,7 +3,7 @@
 # © 2025 PentaLab
 # License Odoo Proprietary License v1.0 (https://www.odoo.com/documentation/user/16.0/legal/licenses/licenses.html#odoo-proprietary-license)
 
-from addons.account_payment.controllers import payment
+
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 
