@@ -2,10 +2,6 @@
 from odoo import models, fields, api
 from odoo.tools import float_is_zero
 
-import logging
-
-_logger = logging.getLogger(__name__)
-
 
 class HrPayslip(models.Model):
     _inherit = 'hr.payslip'
@@ -66,7 +62,6 @@ class HrPayslip(models.Model):
     def _get_payslip_account_move_lines(self):
         """Sobrescribe la creación de líneas contables para usar las cuentas
         según la sección contable del contrato."""
-        _logger.info("[DEBUG] Entro al metodo: _get_payslip_account_move_lines")
         if hasattr(super(HrPayslip, self), '_get_payslip_account_move_lines'):
             lines = super()._get_payslip_account_move_lines()
             section = self._get_contract_section()
@@ -80,8 +75,6 @@ class HrPayslip(models.Model):
             for slip_line in self.line_ids:
                 key = (slip_line.name or '').strip()[:128]
                 rule_by_name[key] = slip_line.salary_rule_id
-            _logger.info("[DEBUG] Metodo: _get_payslip_account_move_lines")
-            _logger.info("[DEBUG] Lines: %s" % lines)
             for ml in lines:
                 rule = rule_by_name.get((ml.get('name') or '').strip()[:128])
                 if not rule:
@@ -101,7 +94,6 @@ class HrPayslip(models.Model):
                     ml['account_id'] = debit_acc.id
                 elif ml.get('credit', 0.0) > 0 and credit_acc:
                     ml['account_id'] = credit_acc.id
-                _logger.info("[DEBUG] Agg partner: %s" % partner_employee.name)
                 ml['partner_id'] = partner_employee.id if partner_employee else False
             return lines
 
@@ -208,11 +200,12 @@ class HrPayslip(models.Model):
             entry_vac = self.worked_days_line_ids.filtered(lambda l: (l.code or "").upper() == "VAC")
             if entry_vac:
                 available += entry_vac.number_of_days
+            available = round(available, 2)
             # Si los dias disponibles son mayores a los tomados en Liquidacion
             if available > holidays_days:
                 # Dividir monto por dias
-                per_day = line.provisional_holidays / available
-                p_value += per_day * holidays_days
+                per_day = round(line.provisional_holidays / available, 2)
+                p_value += round(per_day * holidays_days, 2)
                 break
             else:
                 # Tomar toda la provision y restar dias
