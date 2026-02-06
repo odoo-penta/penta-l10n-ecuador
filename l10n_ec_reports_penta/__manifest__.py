@@ -21,7 +21,7 @@
     'website': 'https://pentalab.tech/',
     'license': 'OPL-1',
     "category": "Accounting/Accounting",
-    'version': '18.0.0.0.5',
+    'version': '18.0.0.0.6',
     "depends": [
         'account',
         'report_xlsx',
