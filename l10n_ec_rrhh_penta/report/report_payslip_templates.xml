@@ -149,13 +149,46 @@
 
                             <t t-set="max_lines"
                                 t-value="max(len(ingresos), len(egresos))"/>
-
+                            <!-- Obtener horas extras desde novedades -->
+                            <t t-set="in_noct"
+                                t-value="slip.input_line_ids.filtered(lambda i: i.code == 'PL_HORA_EXTRA_NOCTURNA')"/>
+                            <t t-set="in_comp"
+                                t-value="slip.input_line_ids.filtered(lambda i: i.code == 'PL_HORA_EXTRA_EXTRAORDINARIA')"/>
+                            <t t-set="in_supl"
+                                t-value="slip.input_line_ids.filtered(lambda i: i.code == 'PL_HORA_EXTRA_SUPLEMENTARIA')"/>
+                            
                             <t t-foreach="range(max_lines)" t-as="i">
                                 <tr>
                                     <!-- INGRESOS -->
                                     <td>
                                         <t t-if="i &lt; len(ingresos)">
-                                            <span t-esc="ingresos[i].name"/>
+                                            <t t-set="line" t-value="ingresos[i]"/>
+
+                                            <!-- HORAS NOCTURNAS -->
+                                            <t t-if="line.salary_rule_id.code == 'PL_HORA_EXTRA_NOCTURNA' and in_noct">
+                                                <span>
+                                                    <t t-esc="line.name"/> (<t t-esc="int(in_noct.amount)"/>)
+                                                </span>
+                                            </t>
+
+                                            <!-- HORAS COMPLEMENTARIAS -->
+                                            <t t-elif="line.salary_rule_id.code == 'PL_HORA_EXTRA_EXTRAORDINARIA' and in_comp">
+                                                <span>
+                                                    <t t-esc="line.name"/> (<t t-esc="int(in_comp.amount)"/>)
+                                                </span>
+                                            </t>
+
+                                            <!-- HORAS SUPLEMENTARIAS -->
+                                            <t t-elif="line.salary_rule_id.code == 'PL_HORA_EXTRA_SUPLEMENTARIA' and in_supl">
+                                                <span>
+                                                    <t t-esc="line.name"/> (<t t-esc="int(in_supl.amount)"/>)
+                                                </span>
+                                            </t>
+
+                                            <!-- CUALQUIER OTRO INGRESO -->
+                                            <t t-else="">
+                                                <span t-esc="line.name"/>
+                                            </t>
                                         </t>
                                     </td>
                                     <td class="text-center">
