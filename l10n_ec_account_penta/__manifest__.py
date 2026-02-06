@@ -21,7 +21,7 @@
     ],
     'website': "https://pentalab.tech/",
     'category': 'Accounting',
-    'version': '18.0.2.1.3',
+    'version': '18.0.2.2.3',
     'depends': [
         'account_accountant',
         'account_asset',

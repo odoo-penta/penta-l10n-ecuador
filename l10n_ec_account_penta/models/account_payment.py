@@ -3,6 +3,7 @@
 # © 2025 PentaLab
 # License Odoo Proprietary License v1.0 (https://www.odoo.com/documentation/user/16.0/legal/licenses/licenses.html#odoo-proprietary-license)
 
+from addons.account_payment.controllers import payment
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 
@@ -81,6 +82,17 @@ class AccountPayment(models.Model):
         store=True,
         currency_field='currency_id',
     )
+    internal_transfer_pair_id = fields.Many2one(
+        'account.payment',
+        string='Related Internal Transfer',
+        copy=False,
+    )
+
+    internal_transfer_pair_count = fields.Integer(
+        compute='_compute_internal_transfer_pair_count'
+    )
+    is_internal_transfer_child = fields.Boolean(copy=False)
+    
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -95,6 +107,11 @@ class AccountPayment(models.Model):
                     record['payment_reference'] = record['memo']
                     record['memo'] = False
         return super().create(vals_list)
+    
+
+    def _compute_internal_transfer_pair_count(self):
+        for rec in self:
+            rec.internal_transfer_pair_count = 1 if rec.internal_transfer_pair_id else 0
 
     @api.depends('journal_type')
     def _compute_visibility_flags(self):
@@ -130,6 +147,18 @@ class AccountPayment(models.Model):
         if self.amount != total:
             for expense_line in self.expense_line_ids:
                 expense_line.amount_cash = self.amount
+
+
+    def action_view_internal_transfer_pair(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Related Internal Transfer',
+            'res_model': 'account.payment',
+            'view_mode': 'form',
+            'res_id': self.internal_transfer_pair_id.id,
+            'target': 'current',
+        }
                 
     def action_post(self):
         """Override para generar el asiento contable específico cuando hay líneas de gastos"""
@@ -191,7 +220,6 @@ class AccountPayment(models.Model):
                 # Crear asiento
                 move_vals = {
                     'date': payment.date,
-                    'ref': payment.memo or '',
                     'journal_id': payment.journal_id.id,
                     'line_ids': move_lines,
                     'move_type': 'entry',
@@ -203,61 +231,42 @@ class AccountPayment(models.Model):
                 payment.move_id = move.id
                 return super(AccountPayment, payment).action_post()
             
-            if payment.payment_mode == 'internal' and payment.advanced_payments:
-                    
-                if not payment.destination_journal:
-                    raise ValidationError(_(
-                        "You must select a destination journal to perform the internal transfer."
-                    ))
+            if payment.payment_mode == 'internal' and payment.advanced_payments and payment.partner_type == 'supplier' and not payment.is_internal_transfer_child:
+                company = payment.company_id
+                transfer_account = company.transfer_account_id
+
+                if not transfer_account:
+                    raise ValidationError(_("Configure the Internal Transfer Account in settings."))
+
                 amount = payment.amount
-                # ------------------------------------------------------------
-                # 1) OBTENER MÉTODOS DE PAGO MANUAL IN / MANUAL OUT
-                # ------------------------------------------------------------
-                manual_in = self.env.ref('account.account_payment_method_manual_in', raise_if_not_found=False)
+
+                # ================================
+                # PRIMER ASIENTO (PAGO ORIGEN)
+                # Banco origen → Cuenta transferencia
+                # ================================
                 manual_out = self.env.ref('account.account_payment_method_manual_out', raise_if_not_found=False)
 
-                # ------------------------------------------------------------
-                # 2) EXTRAER LAS LÍNEAS DE MÉTODOS DEL DIARIO ORIGEN
-                # ------------------------------------------------------------
-                origin_in_line = payment.journal_id.inbound_payment_method_line_ids.filtered(
-                    lambda l: l.payment_method_id == manual_in
-                )
                 origin_out_line = payment.journal_id.outbound_payment_method_line_ids.filtered(
                     lambda l: l.payment_method_id == manual_out
                 )
-                dest_in_line = payment.destination_journal.inbound_payment_method_line_ids.filtered(
-                    lambda l: l.payment_method_id == manual_in
-                )
-                dest_out_line = payment.destination_journal.outbound_payment_method_line_ids.filtered(
-                    lambda l: l.payment_method_id == manual_out
-                )
-                if payment.partner_type == 'customer':
-                    # CLIENTE: COBRO
-                    # Débito = Origen → manual IN
-                    # Crédito = Destino → manual OUT
-                    debit_account = origin_in_line.payment_account_id
-                    credit_account = dest_out_line.payment_account_id
 
-                elif payment.partner_type == 'supplier':
-                    # PROVEEDOR: PAGO
-                    # Débito = Destino → manual IN
-                    # Crédito = Origen → manual OUT
-                    debit_account = dest_in_line.payment_account_id
-                    credit_account = origin_out_line.payment_account_id
+                if not origin_out_line:
+                    raise ValidationError(_("The origin journal does not have Manual Out payment method configured."))
+                origin_liquidity_account = origin_out_line.payment_account_id
 
                 move_lines = [
-                    # Débito
+                    # Débito → Cuenta de transferencia interna
                     (0, 0, {
-                        'account_id': debit_account.id,
+                        'account_id': transfer_account.id,
                         'partner_id': payment.partner_id.id,
                         'name': payment.memo or 'Transferencia interna',
                         'debit': amount,
                         'credit': 0.0,
                         'payment_id': payment.id,
                     }),
-                    # Crédito
+                    # Crédito → Banco origen
                     (0, 0, {
-                        'account_id': credit_account.id,
+                        'account_id': origin_liquidity_account.id,
                         'partner_id': payment.partner_id.id,
                         'name': payment.memo or 'Transferencia interna',
                         'debit': 0.0,
@@ -268,7 +277,6 @@ class AccountPayment(models.Model):
 
                 move_vals = {
                     'date': payment.date,
-                    'ref': payment.memo or '',
                     'journal_id': payment.journal_id.id,
                     'line_ids': move_lines,
                     'move_type': 'entry',
@@ -278,8 +286,90 @@ class AccountPayment(models.Model):
                 move.action_post()
 
                 payment.move_id = move.id
-                return super(AccountPayment, payment).action_post()
+
+                # ================================
+                # SEGUNDO PAGO (AUTOMÁTICO)
+                # Cuenta transferencia → Banco destino
+                # ================================
+
+                dest_journal = payment.destination_journal
+                manual_in = self.env.ref('account.account_payment_method_manual_in', raise_if_not_found=False)
+
+                dest_in_line = payment.destination_journal.inbound_payment_method_line_ids.filtered(
+                    lambda l: l.payment_method_id == manual_in
+                )
+
+                if not dest_in_line:
+                    raise ValidationError(_("The destination journal does not have Manual In payment method configured."))
+                dest_liquidity_account = dest_in_line.payment_account_id
+
+                inbound_payment_method = self.env.ref('account.account_payment_method_manual_in')
+
+                incoming_payment_vals = {
+                    'payment_type': 'inbound',
+                    'partner_type': payment.partner_type,
+                    'partner_id': '',
+                    'amount': amount,
+                    'date': payment.date,
+                    'journal_id': dest_journal.id,
+                    'payment_method_id': inbound_payment_method.id,
+                    'payment_mode': 'internal',
+                    'is_internal_transfer_child': True, 
+                }
+
+                incoming_payment = self.env['account.payment'].create(incoming_payment_vals)
+
+                # Forzamos sus cuentas contables
+                incoming_move_lines = [
+                    # Débito → Banco destino
+                    (0, 0, {
+                        'account_id': dest_liquidity_account.id,
+                        'partner_id': payment.partner_id.id,
+                        'name': payment.memo or 'Transferencia interna',
+                        'debit': amount,
+                        'credit': 0.0,
+                        'payment_id': incoming_payment.id,
+                    }),
+                    # Crédito → Cuenta transferencia
+                    (0, 0, {
+                        'account_id': transfer_account.id,
+                        'partner_id': payment.partner_id.id,
+                        'name': payment.memo or 'Transferencia interna',
+                        'debit': 0.0,
+                        'credit': amount,
+                        'payment_id': incoming_payment.id,
+                    }),
+                ]
+
+                incoming_move = self.env['account.move'].create({
+                    'date': payment.date,
+                    'journal_id': dest_journal.id,
+                    'line_ids': incoming_move_lines,
+                    'move_type': 'entry',
+                })
+
+                incoming_move.action_post()
+                incoming_payment.move_id = incoming_move.id
+                incoming_payment.action_post()
+
+                payment.internal_transfer_pair_id = incoming_payment.id
+                incoming_payment.internal_transfer_pair_id = payment.id
                 
+                line_origin = move.line_ids.filtered(
+                    lambda l: l.account_id == transfer_account and not l.reconciled
+                )
+
+                line_dest = incoming_move.line_ids.filtered(
+                    lambda l: l.account_id == transfer_account and not l.reconciled
+                )
+
+                lines_to_reconcile = (line_origin + line_dest).filtered(
+                    lambda l: l.account_id.reconcile and not l.reconciled
+                )
+
+                if lines_to_reconcile:
+                    lines_to_reconcile.reconcile()
+
             return super(AccountPayment, payment).action_post()
         
 class AccountPaymentExpenseLine(models.Model):
