@@ -6,6 +6,17 @@
         <field name="model">account.payment</field>
         <field name="inherit_id" ref="account.view_account_payment_form"/>
         <field name="arch" type="xml">
+
+            <xpath expr="//div[@class='oe_button_box']" position="inside">
+                <button name="action_view_internal_transfer_pair"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-exchange"
+                        invisible="internal_transfer_pair_id == False">
+                    <field name="internal_transfer_pair_count" widget="statinfo"
+                        string="Internal Transfer"/>
+                </button>
+            </xpath>
             <xpath expr="//group[@name='group1']/field[@name='memo']" position="after">
                 <field name="payment_reference"/>
             </xpath>
