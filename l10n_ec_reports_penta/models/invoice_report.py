@@ -76,6 +76,7 @@ class PentalabInvoiceReportLine(models.Model):
 
                 am.ref AS ref,
                 COALESCE(pol_po.po_names, am.invoice_origin) AS purchase_order_name,
+                xi.id AS importacion_id,
                 am.l10n_ec_authorization_number AS auth_number,
                 rp.vat AS partner_vat,
 
@@ -195,6 +196,8 @@ class PentalabInvoiceReportLine(models.Model):
                 GROUP BY pol.id
             ) pol_po ON pol_po.line_id = aml.purchase_line_id
 
+            -- Guia de importacion
+			LEFT JOIN x_import xi ON xi.id = am.id_import
             -- Impuestos (nombres concatenados; soporta jsonb o varchar)
             LEFT JOIN (
                 SELECT rel.account_move_line_id AS line_id,
