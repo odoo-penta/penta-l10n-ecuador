@@ -14,6 +14,7 @@ class PentalabInvoiceReportLine(models.Model):
 
     # Cabecera visibles
     company_name = fields.Char("Empresa", readonly=True)
+    invoice_id = fields.Many2one("account.move", string="Factura", readonly=True)
     invoice_date = fields.Date("Fecha de factura", readonly=True)
     date = fields.Date("Fecha contable", readonly=True)
     move_name = fields.Char("Número", readonly=True)
@@ -21,19 +22,21 @@ class PentalabInvoiceReportLine(models.Model):
     doc_type_name = fields.Char("Tipo de documento", readonly=True)
     ref = fields.Char("Referencia", readonly=True)
     importacion = fields.Boolean("Importación", readonly=True) 
-    purchase_order_name = fields.Char("N° pedido", readonly=True)
-    auth_number = fields.Char("N° autorización", readonly=True)
+    purchase_order_name = fields.Char("N° de pedido", readonly=True)
+    importacion_id = fields.Many2one("x.import", string="Guía de importación", readonly=True)
+    auth_number = fields.Char("N° de autorización", readonly=True)
     partner_vat = fields.Char("Identificación", readonly=True)
     partner_name = fields.Char("Contacto", readonly=True)
     payterm_name = fields.Char("Términos de pago", readonly=True)
-    partner_category = fields.Char("Categoría contacto", readonly=True) 
+    partner_category = fields.Char("Categoría de contacto", readonly=True) 
     paymethod_name = fields.Char("Método de pago", readonly=True)
     line_name = fields.Char("Línea", readonly=True)
 
     # Líneas
-    default_code = fields.Char("Ref. interna", readonly=True)
+    default_code = fields.Char("Referencia interna", readonly=True)
     product_name = fields.Char("Producto", readonly=True)
-    parent_categ_name = fields.Char("Categoría Padre", readonly=True)
+    line_categ = fields.Char("Linea", readonly=True)
+    parent_categ_name = fields.Char("Subcategoría", readonly=True)
     categ_name = fields.Char("Categoría", readonly=True)
     quantity = fields.Float("Cantidad facturada", readonly=True)
     price_unit = fields.Monetary("Precio unitario", currency_field="currency_id", readonly=True)
@@ -62,6 +65,7 @@ class PentalabInvoiceReportLine(models.Model):
                 am.invoice_date AS invoice_date,
                 am.date AS date,
                 am.name AS move_name,
+                am.id AS invoice_id,
 
                 CASE WHEN pg_typeof(j.name)::text = 'jsonb'
                     THEN COALESCE((j.name::jsonb)->>'es_EC', (j.name::jsonb)->>'en_US', j.name::text)
@@ -73,6 +77,7 @@ class PentalabInvoiceReportLine(models.Model):
 
                 am.ref AS ref,
                 COALESCE(pol_po.po_names, am.invoice_origin) AS purchase_order_name,
+                xi.id AS importacion_id,
                 am.l10n_ec_authorization_number AS auth_number,
                 rp.vat AS partner_vat,
 
@@ -88,11 +93,15 @@ class PentalabInvoiceReportLine(models.Model):
                     ELSE apt.name::text END AS payterm_name,
 
                 -- Método de pago desde partner.property_inbound_payment_method_line_id
-                CASE
-                  WHEN pg_typeof(pmline.name)::text = 'jsonb'
-                    THEN COALESCE((pmline.name::jsonb)->>'es_EC', (pmline.name::jsonb)->>'en_US', pmline.name::text)
-                  ELSE pmline.name::text
-                END AS paymethod_name,
+                CASE WHEN pg_typeof(pmline.name)::text = 'jsonb'
+				    THEN COALESCE(
+				        (pmline.name::jsonb)->>'es_EC',
+				        (pmline.name::jsonb)->>'en_US',
+				        pmline.name::text
+				    )
+				  ELSE pmline.name::text
+				END AS paymethod_name,
+
 
                 -- Línea
                 pp.default_code AS default_code,
@@ -100,6 +109,22 @@ class PentalabInvoiceReportLine(models.Model):
                 CASE WHEN pg_typeof(ptmpl.name)::text = 'jsonb'
                     THEN COALESCE((ptmpl.name::jsonb)->>'es_EC', (ptmpl.name::jsonb)->>'en_US', ptmpl.name::text)
                     ELSE ptmpl.name::text END AS product_name,
+
+
+                -- Línea (solo cuando hay 3 niveles)
+                CASE
+                WHEN pc_gparent.id IS NOT NULL THEN
+                    CASE
+                    WHEN pg_typeof(pc_gparent.name)::text = 'jsonb'
+                        THEN COALESCE(
+                            (pc_gparent.name::jsonb)->>'es_EC',
+                            (pc_gparent.name::jsonb)->>'en_US',
+                            pc_gparent.name::text
+                        )
+                    ELSE pc_gparent.name::text
+                    END
+                ELSE NULL
+                END AS line_categ,
 
                 CASE WHEN pg_typeof(pc_parent.name)::text = 'jsonb'
                     THEN COALESCE((pc_parent.name::jsonb)->>'es_EC', (pc_parent.name::jsonb)->>'en_US', pc_parent.name::text)
@@ -135,10 +160,9 @@ class PentalabInvoiceReportLine(models.Model):
             LEFT JOIN res_partner rp            ON rp.id = am.partner_id
             LEFT JOIN account_payment_term apt  ON apt.id = am.invoice_payment_term_id
 
-            -- Método de pago (partner -> inbound payment method line)
+            -- Método de pago (account_move -> inbound payment method line)
             LEFT JOIN account_payment_method_line pmline
-                   ON pmline.id = (rp.property_inbound_payment_method_line_id::jsonb ->> 'id')::integer
-
+      	 			ON pmline.id = am.preferred_payment_method_line_id
             -- Producto y categorías (incluye ancestros para "Línea")
             LEFT JOIN product_product pp        ON pp.id = aml.product_id
             LEFT JOIN product_template ptmpl    ON ptmpl.id = pp.product_tmpl_id
@@ -173,6 +197,8 @@ class PentalabInvoiceReportLine(models.Model):
                 GROUP BY pol.id
             ) pol_po ON pol_po.line_id = aml.purchase_line_id
 
+            -- Guia de importacion
+			LEFT JOIN x_import xi ON xi.id = am.id_import
             -- Impuestos (nombres concatenados; soporta jsonb o varchar)
             LEFT JOIN (
                 SELECT rel.account_move_line_id AS line_id,

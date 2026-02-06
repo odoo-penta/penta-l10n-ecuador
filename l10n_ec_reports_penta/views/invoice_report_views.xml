@@ -29,30 +29,32 @@
     <field name="model">pentalab.invoice.report.line</field>
     <field name="arch" type="xml">
       <list string="Detalle de Compras" create="false" edit="false" delete="false">
-        <field name="company_id"/>
-        <field name="invoice_date"/>
-        <field name="date"/>
-        <field name="move_name"/>
-        <field name="journal_id"/>
-        <field name="doc_type_name"/>
-        <field name="ref"/>
-        <field name="purchase_order_name"/>
-        <field name="auth_number"/>
-        <field name="partner_vat"/>
-        <field name="partner_id"/>
-        <field name="partner_category"/>
-        <field name="payterm_name"/>
-        <field name="paymethod_name"/>
-        <field name="default_code"/>
-        <field name="product_name"/>
-        <field name="parent_categ_name"/>
-        <field name="categ_name"/>
-        <field name="quantity" sum="Cantidad"/>
-        <field name="price_unit"/>
-        <field name="taxes"/>
-        <field name="price_subtotal" sum="Subtotal"/>
-        <field name="price_total" sum="Total"/>
-        <field name="currency_id"/>
+        <field name="company_id" optional="hide"/>
+        <field name="invoice_date" optional="show"/>
+        <field name="date" optional="hide"/>
+        <field name="invoice_id" string="Número" widget="many2one" optional="show"/>
+        <field name="journal_id" optional="show"/>
+        <field name="doc_type_name" optional="show"/>
+        <field name="ref" optional="hide"/>
+        <field name="purchase_order_name" optional="hide"/>
+        <field name="importacion_id" widget="many2one" optional="hide"/>
+        <field name="auth_number" optional="hide"/>
+        <field name="partner_vat" optional="hide"/>
+        <field name="partner_id" optional="show"/>
+        <field name="partner_category" optional="hide"/>
+        <field name="payterm_name" optional="hide"/>
+        <field name="paymethod_name" optional="hide"/>
+        <field name="default_code" optional="show"/>
+        <field name="product_name" optional="show"/>
+        <field name="line_categ" optional="hide"/>
+        <field name="parent_categ_name" optional="hide"/>
+        <field name="categ_name" optional="hide"/>
+        <field name="quantity" sum="Cantidad" optional="show"/>
+        <field name="price_unit" optional="show"/>
+        <field name="taxes" optional="show"/>
+        <field name="price_subtotal" sum="Subtotal" optional="hide"/>
+        <field name="price_total" sum="Total" optional="show"/>
+        <field name="currency_id" optional="hide"/>
       </list>
     </field>
   </record>
@@ -77,6 +79,76 @@
           <button string="Cerrar" special="cancel" class="btn-link"/>
         </footer>
       </form>
+    </field>
+  </record>
+
+  <record id="view_pentalab_invoice_report_line_search" model="ir.ui.view">
+    <field name="name">pentalab.invoice.report.line.search</field>
+    <field name="model">pentalab.invoice.report.line</field>
+    <field name="arch" type="xml">
+        <search string="Buscar Detalle de Compras">
+
+            <!-- Campos de búsqueda -->
+            <field name="invoice_id"/>
+            <field name="invoice_date"/>
+            <field name="journal_id"/>
+            <field name="doc_type_name"/>
+            <field name="partner_id"/>
+            <field name="default_code"/>
+            <field name="product_name"/>
+            <field name="categ_name"/>
+
+            <separator/>
+
+            <!-- Filtros -->
+            <filter string="Con Total > 0"
+                name="total_positive"
+                domain="[('price_total','>',0)]"/>
+
+            <filter string="Con Cantidad > 0"
+                name="qty_positive"
+                domain="[('quantity','>',0)]"/>
+
+            <filter string="Sin Impuestos"
+                name="no_taxes"
+                domain="[('taxes','=',False)]"/>
+
+            <separator/>
+
+            <!-- Agrupadores -->
+            <group expand="0" string="Agrupar por">
+
+                <filter string="Proveedor"
+                    name="group_partner"
+                    context="{'group_by':'partner_id'}"/>
+
+                <filter string="Factura"
+                    name="group_invoice"
+                    context="{'group_by':'invoice_id'}"/>
+
+                <filter string="Fecha Factura"
+                    name="group_invoice_date"
+                    context="{'group_by':'invoice_date'}"/>
+
+                <filter string="Diario"
+                    name="group_journal"
+                    context="{'group_by':'journal_id'}"/>
+
+                <filter string="Tipo Documento"
+                    name="group_doc_type"
+                    context="{'group_by':'doc_type_name'}"/>
+
+                <filter string="Producto"
+                    name="group_product"
+                    context="{'group_by':'product_name'}"/>
+
+                <filter string="Código Producto"
+                    name="group_default_code"
+                    context="{'group_by':'default_code'}"/>
+
+            </group>
+
+        </search>
     </field>
   </record>
 
