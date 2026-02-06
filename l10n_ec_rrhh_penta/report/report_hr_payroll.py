@@ -152,7 +152,7 @@ class ReportPayrollXlsx(models.AbstractModel):
                 for input_line in hr_payslip.input_line_ids:
                     if input_line.code == 'PL_HORA_EXTRA_NOCTURNA':
                         h25 += input_line.amount
-                    if input_line.code == 'PL_HORA_EXTRA_REGULAR':
+                    if input_line.code == 'PL_HORA_EXTRA_SUPLEMENTARIA':
                         h50 += input_line.amount
                     if input_line.code == 'PL_HORA_EXTRA_EXTRAORDINARIA':
                         h100 += input_line.amount
