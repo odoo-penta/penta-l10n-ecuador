@@ -291,7 +291,7 @@ result = worked_days.get('ILLNESSIESS50', 0) if worked_days.get('ILLNESSIESS50')
     ]]></field>
       <field name="amount_select">code</field>
       <field name="amount_python_compute"><![CDATA[
-result=(contract.wage/30)*worked_days.get('ILLNESSIESS50', 0).number_of_days*0.50
+result=float_round(((contract.wage/30)*worked_days.get('ILLNESSIESS50', 0).number_of_days)*0.50, 2)
     ]]></field>
     </record>
 
@@ -308,7 +308,7 @@ result = worked_days.get('ILLNESSIESS66', 0) if worked_days.get('ILLNESSIESS66')
     ]]></field>
       <field name="amount_select">code</field>
       <field name="amount_python_compute"><![CDATA[
-result=float_round((contract.wage/30)*worked_days.get('ILLNESSIESS66', 0).number_of_days*0.66,2)
+result=float_round(((contract.wage/30)*worked_days.get('ILLNESSIESS66', 0).number_of_days)*0.66, 2)
     ]]></field>
     </record>
 
@@ -325,7 +325,109 @@ result = worked_days.get('ILLNESSIESS75', 0) if worked_days.get('ILLNESSIESS75')
     ]]></field>
       <field name="amount_select">code</field>
       <field name="amount_python_compute"><![CDATA[
-result=float_round((contract.wage/30)*worked_days.get('ILLNESSIESS75', 0).number_of_days*0.75,2)
+result=float_round(((contract.wage/30)*worked_days.get('ILLNESSIESS75', 0).number_of_days)*0.75, 2)
+    ]]></field>
+    </record>
+
+    <!-- AUSENCIA ENFERMEDAD IESS (100%) -->
+    <record id="rule_illnessiess100" model="hr.salary.rule">
+      <field name="name">Ausencia Enfermedad (IESS 100%)</field>
+      <field name="code">ILLNESSIESS100</field>
+      <field name="sequence">16</field>
+      <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_employee_ec"/>
+      <field name="category_id" ref="l10n_ec_rrhh_penta.cat_subsidios"/>
+      <field name="condition_select">python</field>
+      <field name="condition_python"><![CDATA[
+result = worked_days.get('ILLNESSIESS100', 0) if worked_days.get('ILLNESSIESS100') else 0
+    ]]></field>
+      <field name="amount_select">code</field>
+      <field name="amount_python_compute"><![CDATA[
+result=float_round((contract.wage/30)*worked_days.get('ILLNESSIESS100', 0).number_of_days, 2)
+    ]]></field>
+    </record>
+
+    <!-- MATERNIDAD (25%) -->
+    <record id="rule_motherhood25" model="hr.salary.rule">
+      <field name="name">Maternidad (25%)</field>
+      <field name="code">MOTHERHOOD25</field>
+      <field name="sequence">16</field>
+      <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_employee_ec"/>
+      <field name="category_id" ref="l10n_ec_rrhh_penta.cat_subsidios"/>
+      <field name="condition_select">python</field>
+      <field name="condition_python"><![CDATA[
+result = worked_days.get('MOTHERHOOD25', 0) if worked_days.get('MOTHERHOOD25') else 0
+    ]]></field>
+      <field name="amount_select">code</field>
+      <field name="amount_python_compute"><![CDATA[
+result=float_round(((contract.wage/30)*worked_days.get('MOTHERHOOD25', 0).number_of_days)*0,25, 2)
+    ]]></field>
+    </record>
+
+    <!-- MATERNIDAD (100%) -->
+    <record id="rule_motherhood100" model="hr.salary.rule">
+      <field name="name">Maternidad (100%)</field>
+      <field name="code">MOTHERHOOD100</field>
+      <field name="sequence">16</field>
+      <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_employee_ec"/>
+      <field name="category_id" ref="l10n_ec_rrhh_penta.cat_subsidios"/>
+      <field name="condition_select">python</field>
+      <field name="condition_python"><![CDATA[
+result = worked_days.get('MOTHERHOOD100', 0) if worked_days.get('MOTHERHOOD100') else 0
+    ]]></field>
+      <field name="amount_select">code</field>
+      <field name="amount_python_compute"><![CDATA[
+result=float_round((contract.wage/30)*worked_days.get('MOTHERHOOD100', 0).number_of_days, 2)
+    ]]></field>
+    </record>
+
+    <!-- PATERNIDAD (100%) -->
+    <record id="rule_fatherhood100" model="hr.salary.rule">
+      <field name="name">Paternidad (100%)</field>
+      <field name="code">FATHERHOOD100</field>
+      <field name="sequence">16</field>
+      <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_employee_ec"/>
+      <field name="category_id" ref="l10n_ec_rrhh_penta.cat_subsidios"/>
+      <field name="condition_select">python</field>
+      <field name="condition_python"><![CDATA[
+result = worked_days.get('FATHERHOOD100', 0) if worked_days.get('FATHERHOOD100') else 0
+    ]]></field>
+      <field name="amount_select">code</field>
+      <field name="amount_python_compute"><![CDATA[
+result=float_round((contract.wage/30)*worked_days.get('FATHERHOOD100', 0).number_of_days, 2)
+    ]]></field>
+    </record>
+
+    <!-- ACCIDENTE DE TRABAJO -->
+    <record id="rule_workaccident" model="hr.salary.rule">
+      <field name="name">Accidente de Trabajo</field>
+      <field name="code">WORKACCIDENT</field>
+      <field name="sequence">16</field>
+      <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_employee_ec"/>
+      <field name="category_id" ref="l10n_ec_rrhh_penta.cat_subsidios"/>
+      <field name="condition_select">python</field>
+      <field name="condition_python"><![CDATA[
+result = worked_days.get('WORKACCIDENT', 0) if worked_days.get('WORKACCIDENT') else 0
+    ]]></field>
+      <field name="amount_select">code</field>
+      <field name="amount_python_compute"><![CDATA[
+result=float_round(((contract.wage/30)*worked_days.get('WORKACCIDENT', 0).number_of_days)*0,25, 2)
+    ]]></field>
+    </record>
+
+    <!-- RIESGO DE TRABAJO -->
+    <record id="rule_workrisk" model="hr.salary.rule">
+      <field name="name">Riesgo de Trabajo</field>
+      <field name="code">WORKRISK</field>
+      <field name="sequence">16</field>
+      <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_employee_ec"/>
+      <field name="category_id" ref="l10n_ec_rrhh_penta.cat_subsidios"/>
+      <field name="condition_select">python</field>
+      <field name="condition_python"><![CDATA[
+result = worked_days.get('WORKRISK', 0) if worked_days.get('WORKRISK') else 0
+    ]]></field>
+      <field name="amount_select">code</field>
+      <field name="amount_python_compute"><![CDATA[
+result=float_round(((contract.wage/30)*worked_days.get('WORKRISK', 0).number_of_days)*0,25, 2)
     ]]></field>
     </record>
 
