@@ -20,7 +20,7 @@
     'website': 'https://pentalab.tech/',
     "license": "LGPL-3",
     'category': 'Human Resources/Employees',
-    "version": "18.0.10.0.4",
+    "version": "18.0.10.1.0",
     "depends": [
         'analytic',
         'hr_contract',
@@ -82,5 +82,5 @@
     "installable": True,
     "application": False,
     "images": ["static/description/icon.svg", "static/description/banner.svg"],
-    "post_init_hook": "post_init_create_calendar_40",
+    #"post_init_hook": "post_init_create_calendar_40",
 }
