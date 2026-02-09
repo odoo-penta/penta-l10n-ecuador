@@ -30,6 +30,7 @@
       <field name="amount_select">code</field>
       <field name="amount_python_compute"><![CDATA[
 result = (contract.wage * payslip.payslip_days_ec) / 30
+result_name = 'Sueldo Contractual'
     ]]></field>
     </record>
 
@@ -141,6 +142,7 @@ else:
 currency = payslip.company_id.currency_id 
 total = currency.round(categories['BASIC']) + currency.round(categories['HOREXS']) + currency.round(categories['VACT']) 
 result = currency.round(total)
+result_name = 'Base imponible IESS'
     ]]></field>
     </record>
 
@@ -308,7 +310,7 @@ result = worked_days.get('ILLNESSIESS66', 0) if worked_days.get('ILLNESSIESS66')
     ]]></field>
       <field name="amount_select">code</field>
       <field name="amount_python_compute"><![CDATA[
-result=float_round(((contract.wage/30)*worked_days.get('ILLNESSIESS66', 0).number_of_days)*0.66, 2)
+result=float_round(((contract.wage/30)*worked_days.get('ILLNESSIESS66', 0).number_of_days)*0.34, 2)
     ]]></field>
     </record>
 
@@ -325,7 +327,7 @@ result = worked_days.get('ILLNESSIESS75', 0) if worked_days.get('ILLNESSIESS75')
     ]]></field>
       <field name="amount_select">code</field>
       <field name="amount_python_compute"><![CDATA[
-result=float_round(((contract.wage/30)*worked_days.get('ILLNESSIESS75', 0).number_of_days)*0.75, 2)
+result=float_round(((contract.wage/30)*worked_days.get('ILLNESSIESS75', 0).number_of_days)*0.25, 2)
     ]]></field>
     </record>
 
@@ -359,7 +361,7 @@ result = worked_days.get('MOTHERHOOD25', 0) if worked_days.get('MOTHERHOOD25') e
     ]]></field>
       <field name="amount_select">code</field>
       <field name="amount_python_compute"><![CDATA[
-result=float_round(((contract.wage/30)*worked_days.get('MOTHERHOOD25', 0).number_of_days)*0,25, 2)
+result=float_round(((contract.wage/30)*worked_days.get('MOTHERHOOD25', 0).number_of_days)*0,75, 2)
     ]]></field>
     </record>
 
@@ -410,7 +412,7 @@ result = worked_days.get('WORKACCIDENT', 0) if worked_days.get('WORKACCIDENT') e
     ]]></field>
       <field name="amount_select">code</field>
       <field name="amount_python_compute"><![CDATA[
-result=float_round(((contract.wage/30)*worked_days.get('WORKACCIDENT', 0).number_of_days)*0,25, 2)
+result=float_round(((contract.wage/30)*worked_days.get('WORKACCIDENT', 0).number_of_days)*0,75, 2)
     ]]></field>
     </record>
 
@@ -427,7 +429,7 @@ result = worked_days.get('WORKRISK', 0) if worked_days.get('WORKRISK') else 0
     ]]></field>
       <field name="amount_select">code</field>
       <field name="amount_python_compute"><![CDATA[
-result=float_round(((contract.wage/30)*worked_days.get('WORKRISK', 0).number_of_days)*0,25, 2)
+result=float_round(((contract.wage/30)*worked_days.get('WORKRISK', 0).number_of_days)*0,75, 2)
     ]]></field>
     </record>
 
@@ -820,26 +822,26 @@ result = (categories['BASICEC']/360)*dias
       <field name="condition_select">none</field>
       <field name="amount_select">code</field>
       <field name="amount_python_compute"><![CDATA[
-total_dias_trabajados = 0
-for c in employee.contract_ids:
-  if not c.date_start or c.date_start > payslip.date_to:
-    continue
-  fecha_inicio = c.date_start
-  fecha_fin = c.date_end if c.date_end and c.date_end <= payslip.date_to else payslip.date_to
-  if fecha_inicio <= fecha_fin:
-    total_dias_trabajados += (fecha_fin - fecha_inicio).days + 1
+#total_dias_trabajados = 0
+#for c in employee.contract_ids:
+#  if not c.date_start or c.date_start > payslip.date_to:
+#    continue
+#  fecha_inicio = c.date_start
+#  fecha_fin = c.date_end if c.date_end and c.date_end <= payslip.date_to else payslip.date_to
+#  if fecha_inicio <= fecha_fin:
+#    total_dias_trabajados += (fecha_fin - fecha_inicio).days + 1
 
-anios_trabajados = total_dias_trabajados // 360
+#anios_trabajados = total_dias_trabajados // 360
 
-if anios_trabajados <= 5:
-  dias_vacaciones = 15
-else:
-  dias_vacaciones = 15 + (anios_trabajados - 5)
+#if anios_trabajados <= 5:
+#  dias_vacaciones = 15
+#else:
+#  dias_vacaciones = 15 + (anios_trabajados - 5)
     
-if dias_vacaciones > 30:
-  dias_vacaciones = 30
+#if dias_vacaciones > 30:
+#  dias_vacaciones = 30
 
-result = categories['GROSS'] * (dias_vacaciones / 360)
+result = categories['GROSS'] / 24
       ]]></field>
     </record>
 

@@ -8,6 +8,7 @@ class HrPayslip(models.Model):
     
     holidays_days_ec = fields.Float(string='Días Vacaciones MIG')
     holidays_ec = fields.Float(string='Días Vacaciones', readonly=True, compute='_compute_days_ec', store=True)
+    subsidies_days_ec = fields.Float(string='Días Subsidios', readonly=True, compute='_compute_days_ec', store=True)
     payslip_days_ec = fields.Float(string='Días Rol', readonly=True, compute='_compute_days_ec', store=True)
     worked_days_ec = fields.Float(string='Días Laborados', readonly=True, compute='_compute_days_ec', store=True)
     days_of_month_ec = fields.Float(string='Días del Mes', readonly=True, compute='_compute_days_ec', store=True)
@@ -43,10 +44,9 @@ class HrPayslip(models.Model):
             worked_days = min(worked_days, 30.0)
             
             payslip_days = worked_days
-            holidays_days = 0.0
-            leave_codes = [
-                'LEAVE110',
-                'VAC',
+            holidays_days = subsidies_days = 0.0
+            # Lista codigos de subsidios
+            subsidie_codes = [
                 'ILLNESSIESS50',
                 'ILLNESSIESS66',
                 'ILLNESSIESS75',
@@ -59,14 +59,19 @@ class HrPayslip(models.Model):
             ]
             # --- Restar ausencias ---
             for line in payslip.worked_days_line_ids:
-                if line.code in leave_codes:
+                if line.code in ['LEAVE110']:
                     payslip_days -= line.number_of_days
+                if line.code in subsidie_codes:
+                    subsidies_days += line.number_of_days
                 if line.code in ['VAC']:
                     holidays_days += line.number_of_days
-                    
             # Restar valor migrado
             payslip_days -= payslip.holidays_days_ec
+            # Sumar subsidios
+            payslip_days += subsidies_days
+            # Definir valores
             payslip.holidays_ec = int(holidays_days)
+            payslip.subsidies_days_ec = int(subsidies_days)
             payslip.payslip_days_ec = int(payslip_days)
             payslip.worked_days_ec = int(worked_days)
             payslip.days_of_month_ec = int(days_period)
