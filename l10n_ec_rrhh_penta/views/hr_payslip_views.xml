@@ -10,6 +10,7 @@
                 <page string="Días trabajados" name="worked_days_input">
                     <group name="worked_days_group">
                         <field name="holidays_days_ec" readonly="1"/>
+                        <field name="holidays_ec" readonly="1"/>
                         <field name="payslip_days_ec" readonly="1"/>
                         <field name="worked_days_ec" readonly="1"/>
                         <field name="days_of_month_ec" readonly="1"/>

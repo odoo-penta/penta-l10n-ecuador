@@ -20,7 +20,7 @@
     'website': 'https://pentalab.tech/',
     "license": "LGPL-3",
     'category': 'Human Resources/Employees',
-    "version": "18.0.10.0.3",
+    "version": "18.0.10.0.4",
     "depends": [
         'analytic',
         'hr_contract',
@@ -34,6 +34,7 @@
         "data/iess_option_data.xml",
         "data/account_section_data.xml",
         "data/payment_mode_data.xml",
+        'data/hr_work_entry_type_data.xml',
         "data/hr_leave_type_data.xml",
         "data/benefit_config_data.xml",
         'data/resource_calendar_data.xml',
