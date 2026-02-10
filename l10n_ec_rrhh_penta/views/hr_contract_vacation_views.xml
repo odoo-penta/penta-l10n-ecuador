@@ -19,20 +19,31 @@
               <button name="action_confirm_rebuild_vacation_balances" type="object" class="oe_highlight" string="Recalcular periodos"/>
             </group>
           </group>
-          <group>
-            <field name="vacation_balance_ids" nolabel="1">
-              <list create="0" edit="0" delete="0">
-                <field name="year_index"/>
-                <field name="period_start"/>
-                <field name="period_end"/>
-                <field name="days_entitled"/>
-                <field name="days_pending"/>
-                <field name="days_taken"/>
-                <field name="days_available"/>
-                <field name="provisional_holidays"/>
-              </list>
-            </field>
-          </group>
+          <notebook>
+            <page string="Actuales" name="penta_actual_vacations">
+              <field name="vacation_balance_ids" nolabel="1">
+                <list create="0" edit="0" delete="0">
+                  <field name="year_index"/>
+                  <field name="period_start"/>
+                  <field name="period_end"/>
+                  <field name="days_entitled"/>
+                  <field name="days_pending"/>
+                  <field name="days_taken"/>
+                  <field name="days_available"/>
+                  <field name="provisional_holidays"/>
+                </list>
+              </field>
+            </page>
+            <page string="Anteriores" name="penta_anterior_vacations">
+              <field name="vacation_balance_mg_ids" nolabel="1">
+                <list create="0" edit="0" delete="0">
+                  <field name="year_index"/>
+                  <field name="days_taken"/>
+                  <field name="provisional_holidays"/>
+                </list>
+              </field>
+            </page>
+          </notebook>
         </page>
       </xpath>
     </field>
