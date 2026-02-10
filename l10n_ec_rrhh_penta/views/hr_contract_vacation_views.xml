@@ -47,6 +47,8 @@
               <field name="vacation_balance_mg_ids" nolabel="1">
                 <list editable="bottom">
                   <field name="year_index"/>
+                  <field name="period_start"/>
+                  <field name="period_end"/>
                   <field name="days_taken"/>
                   <field name="provisional_holidays"/>
                 </list>

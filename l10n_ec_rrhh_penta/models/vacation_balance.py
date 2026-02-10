@@ -50,6 +50,24 @@ class VacationBalanceMigration(models.Model):
         required=True,
         help="Ejemplo: 1, 2, 3..."
     )
+    balance_id = fields.Many2one(
+        "l10n_ec.ptb.vacation.balance",
+        compute="_compute_balance_id",
+        store=False,
+        string="Balance relacionado",
+    )
+    period_start = fields.Date(
+        related="balance_id.period_start",
+        string="Inicio",
+        store=False,
+        readonly=True,
+    )
+    period_end = fields.Date(
+        related="balance_id.period_end",
+        string="Fin",
+        store=False,
+        readonly=True,
+    )
     days_taken = fields.Float(
         string="Vacaciones tomadas",
         digits=(16, 4),
@@ -60,3 +78,11 @@ class VacationBalanceMigration(models.Model):
         digits=(16, 2),
         required=True,
     )
+    
+    @api.depends("contract_id", "year_index")
+    def _compute_balance_id(self):
+        for rec in self:
+            rec.balance_id = self.env["l10n_ec.ptb.vacation.balance"].search([
+                ("contract_id", "=", rec.contract_id.id),
+                ("year_index", "=", rec.year_index),
+            ], limit=1)
