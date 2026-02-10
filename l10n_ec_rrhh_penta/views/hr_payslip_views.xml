@@ -8,13 +8,37 @@
         <field name="arch" type="xml">
             <xpath expr="//page[@name='worked_days_input']" position="replace">
                 <page string="Días trabajados" name="worked_days_input">
-                    <group name="worked_days_group">
-                        <field name="holidays_days_ec" readonly="1"/>
-                        <field name="holidays_ec" readonly="1"/>
-                        <field name="subsidies_days_ec" readonly="1"/>
-                        <field name="payslip_days_ec" readonly="1"/>
-                        <field name="worked_days_ec" readonly="1"/>
-                        <field name="days_of_month_ec" readonly="1"/>
+                    <group name="penta_vac_box" colspan="4" class="penta-vac-box">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <div class="o_form_label text-uppercase small text-muted">Días del mes</div>
+                                <field name="days_of_month_ec" nolabel="1" readonly="1" class="o_stat_value fs-4 fw-bold"/>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="o_form_label text-uppercase small text-muted">Días Laborados</div>
+                                <field name="worked_days_ec" nolabel="1" readonly="1" class="o_stat_value fs-4 fw-bold"/>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="o_form_label text-uppercase small text-muted">Días Rol</div>
+                                <field name="payslip_days_ec" nolabel="1" readonly="1" class="o_stat_value fs-4 fw-bold"/>
+                            </div>
+                        </div>
+                    </group>
+                    <group name="penta_vac_box" colspan="4" class="penta-vac-box">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <div class="o_form_label text-uppercase small text-muted">Días Subsidios</div>
+                                <field name="subsidies_days_ec" nolabel="1" readonly="1" class="o_stat_value fs-4 fw-bold"/>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="o_form_label text-uppercase small text-muted">Días Vacaciones</div>
+                                <field name="holidays_ec" nolabel="1" readonly="1" class="o_stat_value fs-4 fw-bold"/>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="o_form_label text-uppercase small text-muted">Días Vacaciones MIG</div>
+                                <field name="holidays_days_ec" nolabel="1" readonly="1" class="o_stat_value fs-4 fw-bold"/>
+                            </div>
+                        </div>
                     </group>
                 </page>
                 <page string="Entradas" name="worked_days_input" class="o_hr_payroll_worked_days_input">
