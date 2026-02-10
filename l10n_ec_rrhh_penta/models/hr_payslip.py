@@ -62,13 +62,13 @@ class HrPayslip(models.Model):
                 if line.code in ['LEAVE110']:
                     payslip_days -= line.number_of_days
                 if line.code in subsidie_codes:
-                    subsidies_days += line.number_of_days
+                    subsidies_days += 30 if line.number_of_days > 30 else line.number_of_days
                 if line.code in ['VAC']:
                     holidays_days += line.number_of_days
             # Restar valor migrado
             payslip_days -= payslip.holidays_days_ec
-            # Sumar subsidios
-            payslip_days += subsidies_days
+            # Restar subsidios
+            payslip_days -= subsidies_days
             # Definir valores
             payslip.holidays_ec = int(holidays_days)
             payslip.subsidies_days_ec = int(subsidies_days)

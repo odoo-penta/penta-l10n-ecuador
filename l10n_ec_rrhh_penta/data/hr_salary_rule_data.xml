@@ -146,6 +146,25 @@ result_name = 'Base imponible IESS'
     ]]></field>
     </record>
 
+    <!-- BASE IMPONIBLE SUBSIDIOS -->
+    <record id="rule_gross_subside" model="hr.salary.rule">
+      <field name="name">Base imponible Subsidios</field>
+      <field name="code">GROSSUBSIDIO</field>
+      <field name="sequence">8</field>
+      <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_employee_ec"/>
+      <field name="category_id" ref="l10n_ec_rrhh_penta.cat_gross"/>
+      <field name="condition_select">python</field>
+      <field name="condition_python"><![CDATA[
+result = worked_days.get('MOTHERHOOD25', 0) if worked_days.get('MOTHERHOOD25') else 0
+    ]]></field>
+      <field name="amount_select">code</field>
+      <field name="amount_python_compute"><![CDATA[
+currency = payslip.company_id.currency_id 
+dias_maternidad = 30 if worked_days.get('MOTHERHOOD25', 0).number_of_days > 30 else worked_days.get('MOTHERHOOD25', 0).number_of_days
+result = ((contract.wage * 30) / dias_maternidad) + currency.round(categories['HOREXS']) + currency.round(categories['VACT'])
+    ]]></field>
+    </record>
+
     <!-- ========================= -->
     <!-- BENEFICIOS SOCIALES -->
     <!-- ========================= -->
@@ -361,7 +380,7 @@ result = worked_days.get('MOTHERHOOD25', 0) if worked_days.get('MOTHERHOOD25') e
     ]]></field>
       <field name="amount_select">code</field>
       <field name="amount_python_compute"><![CDATA[
-result=float_round(((contract.wage/30)*worked_days.get('MOTHERHOOD25', 0).number_of_days)*0,75, 2)
+result=float_round((((contract.wage / 30) * 30 if worked_days.get('MOTHERHOOD25', 0).number_of_days > 30 else worked_days.get('MOTHERHOOD25', 0).number_of_days) * 0.25), 2)
     ]]></field>
     </record>
 
@@ -412,7 +431,7 @@ result = worked_days.get('WORKACCIDENT', 0) if worked_days.get('WORKACCIDENT') e
     ]]></field>
       <field name="amount_select">code</field>
       <field name="amount_python_compute"><![CDATA[
-result=float_round(((contract.wage/30)*worked_days.get('WORKACCIDENT', 0).number_of_days)*0,75, 2)
+result=float_round(((contract.wage/30)*worked_days.get('WORKACCIDENT', 0).number_of_days)*0.75, 2)
     ]]></field>
     </record>
 
@@ -429,7 +448,7 @@ result = worked_days.get('WORKRISK', 0) if worked_days.get('WORKRISK') else 0
     ]]></field>
       <field name="amount_select">code</field>
       <field name="amount_python_compute"><![CDATA[
-result=float_round(((contract.wage/30)*worked_days.get('WORKRISK', 0).number_of_days)*0,75, 2)
+result=float_round(((contract.wage/30)*worked_days.get('WORKRISK', 0).number_of_days)*0.75, 2)
     ]]></field>
     </record>
 
@@ -482,7 +501,10 @@ result = categories['BENEFICIOS']
       <field name="amount_select">code</field>
       <field name="amount_python_compute"><![CDATA[
 currency = payslip.company_id.currency_id
-total = currency.round(categories['GROSS']) + currency.round(categories['BONO']) + currency.round(categories['BENEFICIOS']) + currency.round(categories['BENFSO'])
+if worked_days.get('MOTHERHOOD25'):
+    total = currency.round(categories['SUBSIDIOS']) + currency.round(categories['BONO']) + currency.round(categories['BENEFICIOS']) + currency.round(categories['BENFSO'])
+else:
+    total = currency.round(categories['GROSS']) + currency.round(categories['BONO']) + currency.round(categories['BENEFICIOS']) + currency.round(categories['BENFSO'])
 result = currency.round(total)
     ]]></field>
     </record>
@@ -863,14 +885,44 @@ for c in employee.contract_ids:
   if fecha_inicio <= fecha_fin:
     total_dias_trabajados += (fecha_fin - fecha_inicio).days + 1
 
+# Activar fondo de reserva acumulado si corresponde
 result = contract.l10n_ec_ptb_reserve_fund_periodicity == 'accumulated' and total_dias_trabajados >= 366
     ]]></field>
       <field name="amount_select">code</field>
       <field name="amount_python_compute"><![CDATA[
-if (payslip.date_to-contract.date_start).days >= 366 and (payslip.date_to-contract.date_start).days <=395 : #del treceavo mes en adelante
-  result =  ((categories['GROSS']/30)* ((30-contract.date_start.day  * 1)+1))  * 0.0833
-elif (payslip.date_to-contract.date_start).days > 395:
-  result =  ((categories['GROSS']/30)* ((30* 1)))  * 0.0833
+result = 0.0
+
+# Paso 1
+total_dias_trabajados = 0
+fecha_primer_contrato = False
+
+for c in employee.contract_ids:
+  if not c.date_start or c.date_start > payslip.date_to:
+    continue
+
+  fecha_inicio = c.date_start
+  fecha_fin = c.date_end if c.date_end and c.date_end <= payslip.date_to else payslip.date_to
+
+  if fecha_inicio <= fecha_fin:
+    dias = (fecha_fin - fecha_inicio).days + 1
+    total_dias_trabajados += dias
+
+    if not fecha_primer_contrato or fecha_inicio < fecha_primer_contrato:
+      fecha_primer_contrato = fecha_inicio
+
+# Paso 2
+ultimo_dia = payslip.date_to.day
+dia_contrato = fecha_primer_contrato.day
+fondo = categories['GROSS'] * 0.0833
+
+if 366 <= total_dias_trabajados <= 395:
+  if ultimo_dia == dia_contrato:
+    result = round(fondo, 4)
+  else:
+    dias_pagables = (ultimo_dia - dia_contrato) + 1
+    result = round((fondo / 30) * dias_pagables, 4)
+elif total_dias_trabajados > 395:
+  result = round(fondo, 4)
       ]]></field>
     </record>
 

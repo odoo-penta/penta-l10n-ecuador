@@ -24,3 +24,39 @@ class VacationBalance(models.Model):
     def _compute_days_available(self):
         for rec in self:
             rec.days_available = max(rec.days_entitled - rec.days_taken, 0.0)
+            
+class VacationBalanceMigration(models.Model):
+    _name = "l10n_ec.ptb.vacation.migration"
+    _description = "Migración de saldos de vacaciones por período"
+    _order = "contract_id, year_index"
+
+    _sql_constraints = [
+        (
+            "uniq_contract_period",
+            "unique(contract_id, year_index)",
+            "Ya existe un registro de migración para este contrato y período."
+        )
+    ]
+    
+    contract_id = fields.Many2one(
+        "hr.contract",
+        string="Contrato",
+        required=True,
+        ondelete="cascade",
+        index=True,
+    )
+    year_index = fields.Integer(
+        string="Período (index)",
+        required=True,
+        help="Ejemplo: 1, 2, 3..."
+    )
+    days_taken = fields.Float(
+        string="Vacaciones tomadas",
+        digits=(16, 4),
+        required=True,
+    )
+    provisional_holidays = fields.Float(
+        string="Monto vacaciones provisionadas",
+        digits=(16, 2),
+        required=True,
+    )
