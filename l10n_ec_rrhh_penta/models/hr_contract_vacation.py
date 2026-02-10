@@ -31,28 +31,18 @@ class HrContract(models.Model):
     vac_total_available = fields.Float(
         compute="_compute_vacation_totals", string="Vacaciones disponibles (total)", store=False
     )
-    # Vacaciones de arranque
-    startup_vacation_days = fields.Float(
-        string="Días de vacaciones gozadas",
-        help="Días de vacaciones iniciales ya consumidos al empleado al crearse el contrato.",
-    )
-    # Vacaciones en monto de arranque
-    startup_vacation_amount = fields.Float(
-        string="Total de vacaciones provisionada",
-        help="Total de vacaciones provisionadas",
-    )
     
     @api.model_create_multi
     def create(self, vals_list):
         res = super().create(vals_list)
         for vals in vals_list:
-            if vals.get('startup_vacation_days') or vals.get('date_start') or vals.get('date_end') or vals.get('startup_vacation_amount'):
+            if vals.get('vacation_balance_mg_ids') or vals.get('date_start') or vals.get('date_end'):
                 res.action_confirm_rebuild_vacation_balances()
         return res
         
     def write(self, vals):
         res = super().write(vals)
-        if vals.get('startup_vacation_days') or vals.get('date_start') or vals.get('date_end') or vals.get('startup_vacation_amount'):
+        if vals.get('vacation_balance_mg_ids') or vals.get('date_start') or vals.get('date_end'):
             self.action_confirm_rebuild_vacation_balances()
         return res
     
@@ -85,10 +75,6 @@ class HrContract(models.Model):
             end_marker = contract.date_end or date.today()
             years = relativedelta(end_marker, contract.date_start).years
             total_periods = max(1, years + 1)
-            # Obtener días de vacaciones de arranque
-            startup_days = contract.startup_vacation_days or 0.0
-            # Obtener monto de vacaciones de arranque
-            startup_amount = contract.startup_vacation_amount or 0.0
             # Obtener vacaciones tomadas en el período del contrato
             leaves_days = sum(self.env['hr.leave'].search([
                 ('employee_id', '=', contract.employee_id.id),
