@@ -11,6 +11,11 @@ class VacationBalance(models.Model):
     ]
 
     contract_id = fields.Many2one("hr.contract", string="Archivo Excel a importar", required=True, ondelete="cascade")
+    currency_id = fields.Many2one(
+        "res.currency",
+        default=lambda self: self.env.company.currency_id,
+        required=True
+    )
     year_index = fields.Integer(string="Index",required=True, help="1 = primer año laboral desde date_start")
     period_start = fields.Date(string="Inicio",required=True)
     period_end = fields.Date(string="Fin",required=True)
@@ -19,7 +24,7 @@ class VacationBalance(models.Model):
     days_pending = fields.Float(string="Por acreditar", required=True)
     days_taken = fields.Float(string="Tomadas")
     days_available = fields.Float(compute="_compute_days_available", store=False, string="Disponibles")
-    provisional_holidays = fields.Float(string="Provisionado")
+    provisional_holidays = fields.Monetary(string="Provisionado", currency_field="currency_id",)
 
     def _compute_days_available(self):
         for rec in self:
@@ -38,6 +43,11 @@ class VacationBalanceMigration(models.Model):
         )
     ]
     
+    currency_id = fields.Many2one(
+        "res.currency",
+        default=lambda self: self.env.company.currency_id,
+        required=True
+    )
     contract_id = fields.Many2one(
         "hr.contract",
         string="Contrato",
@@ -71,12 +81,10 @@ class VacationBalanceMigration(models.Model):
     days_taken = fields.Float(
         string="Vacaciones tomadas",
         digits=(16, 4),
-        required=True,
     )
-    provisional_holidays = fields.Float(
-        string="Monto vacaciones provisionadas",
-        digits=(16, 2),
-        required=True,
+    provisional_holidays = fields.Monetary(
+        string="Provisionado",
+        currency_field="currency_id",
     )
     
     @api.depends("contract_id", "year_index")
