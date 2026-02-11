@@ -32,6 +32,7 @@
             <page string="Actuales" name="penta_actual_vacations">
               <field name="vacation_balance_ids" nolabel="1">
                 <list create="0" edit="0" delete="0">
+                  <field name="currency_id" column_invisible="1"/>
                   <field name="year_index"/>
                   <field name="period_start"/>
                   <field name="period_end"/>
@@ -39,18 +40,19 @@
                   <field name="days_pending"/>
                   <field name="days_taken"/>
                   <field name="days_available"/>
-                  <field name="provisional_holidays"/>
+                  <field name="provisional_holidays" sum="Total" widget="monetary"/>
                 </list>
               </field>
             </page>
             <page string="Anteriores" name="penta_anterior_vacations_admin">
               <field name="vacation_balance_mg_ids" nolabel="1">
                 <list editable="bottom">
+                  <field name="currency_id" column_invisible="1"/>
                   <field name="year_index"/>
                   <field name="period_start"/>
                   <field name="period_end"/>
                   <field name="days_taken"/>
-                  <field name="provisional_holidays"/>
+                  <field name="provisional_holidays" sum="Total" widget="monetary"/>
                 </list>
               </field>
             </page>
