@@ -22,6 +22,11 @@ class HrContract(models.Model):
         "l10n_ec.ptb.vacation.migration", "contract_id", string="Saldos Anteriores de Vacaciones",
         help="Resumen por período (año laboral) del contrato."
     )
+    currency_id = fields.Many2one(
+        "res.currency",
+        default=lambda self: self.env.company.currency_id,
+        required=True
+    )
     vac_total_entitled = fields.Float(
         compute="_compute_vacation_totals", string="Vacaciones acreditadas (total)", store=False
     )
@@ -30,6 +35,9 @@ class HrContract(models.Model):
     )
     vac_total_available = fields.Float(
         compute="_compute_vacation_totals", string="Vacaciones disponibles (total)", store=False
+    )
+    vac_total_provisioned = fields.Monetary(
+        compute="_compute_vacation_totals", string="Provisionado (total)", store=True, urrency_field="currency_id"
     )
     
     @api.model_create_multi
@@ -46,14 +54,16 @@ class HrContract(models.Model):
             self.action_confirm_rebuild_vacation_balances()
         return res
     
-    @api.depends("vacation_balance_ids.days_entitled", "vacation_balance_ids.days_taken")
+    @api.depends("vacation_balance_ids.days_entitled", "vacation_balance_ids.days_taken", "vacation_balance_ids.provisional_holidays")
     def _compute_vacation_totals(self):
         for rec in self:
             entitled = sum(rec.vacation_balance_ids.mapped("days_entitled"))
             taken = sum(rec.vacation_balance_ids.mapped("days_taken"))
+            provisioned = sum(rec.vacation_balance_ids.mapped("provisional_holidays"))
             rec.vac_total_entitled = entitled
             rec.vac_total_taken = taken
             rec.vac_total_available = max(entitled - taken, 0.0)
+            rec.vac_total_provisioned = provisioned
 
     # -------------------------------------------------------------------------
     # Recalcular saldos (ya existente)
