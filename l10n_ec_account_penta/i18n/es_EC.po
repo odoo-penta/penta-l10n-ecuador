@@ -1087,3 +1087,9 @@ msgstr "El diario '%s' no tiene una cuenta predeterminada configurada."
 msgid "There is no manual payment method (OUT) in the system."
 msgstr "No hay ningún método de pago manual (OUT) en el sistema."
 
+#. module: l10n_ec_account_penta
+#. odoo-python
+#: code:addons/l10n_ec_account_penta/models/account_payment.py:0
+#, python-format
+msgid "Internal transfers are only allowed for supplier payments."
+msgstr "Las transferencias internas solo se permiten para pagos a proveedores."

@@ -20,19 +20,21 @@
             <xpath expr="//group[@name='group1']/field[@name='memo']" position="after">
                 <field name="payment_reference"/>
             </xpath>
-            <!-- <xpath expr="//field[@name='destination_account_id']" position="attributes">
-                <attribute name="attrs">
-                    {'readonly': [('user_has_group', '!=', 'l10n_ec_account_penta.group_advanced_payment_admin')]}
+            <!-- <xpath expr="//group[@name='group1']/field[@name='partner_id'][2]" position="attributes">
+                <attribute name="invisible">
+                    partner_type != 'supplier' or payment_mode == 'internal'
                 </attribute>
             </xpath> -->
             <xpath expr="//field[@name='partner_bank_id']" position="before">
                   <field name="destination_account_id"
-                        groups="l10n_ec_account_penta.group_advanced_payment_admin"/>
+                        groups="l10n_ec_account_penta.group_advanced_payment_admin"
+                        invisible="payment_mode == 'internal'"/>
 
                     <!-- Readonly para los demás -->
                     <field name="destination_account_id"
                         readonly="1"
-                        groups="!l10n_ec_account_penta.group_advanced_payment_admin"/>
+                        groups="!l10n_ec_account_penta.group_advanced_payment_admin"
+                        invisible="payment_mode == 'internal'"/>
             </xpath>
             <xpath expr="//group[@name='group2']" position="inside">
                 <separator/>
@@ -97,6 +99,21 @@
                 <field name="destination_journal" readonly="state != 'draft'" invisible="payment_mode != 'internal'"/>
             </xpath>
            
+        </field>
+    </record>
+
+    <!-- Vista depende del modulo import el campo guia de importación -->
+    <record id="view_account_payment_custom_form_import_module" model="ir.ui.view">
+        <field name="name">account.payment.custom.import.module.form</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="import_module.view_account_payment_form_inherit_import"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='id_import']" position="attributes">
+                <attribute name="invisible">
+                    payment_type != 'outbound' or payment_mode == 'internal'
+                </attribute>
+            </xpath>
+
         </field>
     </record>
 

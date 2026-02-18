@@ -108,10 +108,25 @@ class AccountPayment(models.Model):
                     record['memo'] = False
         return super().create(vals_list)
     
+    @api.constrains('payment_mode', 'partner_type')
+    def _check_internal_transfer_only_supplier(self):
+        for rec in self:
+            if rec.payment_mode == 'internal' and rec.partner_type == 'customer':
+                raise ValidationError(_(
+                    "Internal transfers are only allowed for supplier payments."
+                ))
+    
 
     def _compute_internal_transfer_pair_count(self):
         for rec in self:
             rec.internal_transfer_pair_count = 1 if rec.internal_transfer_pair_id else 0
+
+    @api.onchange('payment_mode')
+    def _onchange_payment_mode_internal(self):
+        for rec in self:
+            if rec.payment_mode == 'internal':
+                rec.partner_id = False
+                rec.destination_account_id = False
 
     @api.depends('journal_type')
     def _compute_visibility_flags(self):
