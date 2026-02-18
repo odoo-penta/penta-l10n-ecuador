@@ -48,6 +48,11 @@
       <field name="code">GROSS</field>
     </record>
 
+    <record id="cat_gross_subside" model="hr.salary.rule.category">
+      <field name="name">SUELDO IMPONIBLE SUBSIDIOS</field>
+      <field name="code">GROSSUBSIDIO</field>
+    </record>
+
     <!-- ========================= -->
     <!-- BENEFICIOS SOCIALES -->
     <!-- ========================= -->

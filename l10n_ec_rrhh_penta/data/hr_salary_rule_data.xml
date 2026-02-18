@@ -154,16 +154,18 @@ result_name = 'Base imponible IESS'
       <field name="code">GROSSUBSIDIO</field>
       <field name="sequence">8</field>
       <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_employee_ec"/>
-      <field name="category_id" ref="l10n_ec_rrhh_penta.cat_gross"/>
+      <field name="category_id" ref="l10n_ec_rrhh_penta.cat_gross_subside"/>
       <field name="condition_select">python</field>
       <field name="condition_python"><![CDATA[
-result = worked_days.get('MOTHERHOOD25', 0) if worked_days.get('MOTHERHOOD25') else 0
+result = worked_days.get('MOTHERHOOD25', 0)
     ]]></field>
       <field name="amount_select">code</field>
       <field name="amount_python_compute"><![CDATA[
-currency = payslip.company_id.currency_id 
-dias_maternidad = 30 if worked_days.get('MOTHERHOOD25', 0).number_of_days > 30 else worked_days.get('MOTHERHOOD25', 0).number_of_days
-result = ((contract.wage * 30) / dias_maternidad) + currency.round(categories['HOREXS']) + currency.round(categories['VACT'])
+currency = payslip.company_id.currency_id
+wd = worked_days.get('MOTHERHOOD25')
+days = wd.number_of_days if wd else 0
+dias_maternidad = min(days, 30)
+result = ((contract.wage / 30) * dias_maternidad)
     ]]></field>
     </record>
 
@@ -277,7 +279,7 @@ result = contract.l10n_ec_ptb_thirteenth_fund_paid == 'monthly'
     ]]></field>
       <field name="amount_select">code</field>
       <field name="amount_python_compute"><![CDATA[
-result = categories['GROSS']/12
+result = (categories['GROSS'] + categories['GROSSUBSIDIO'])/12
     ]]></field>
     </record>
 
@@ -379,11 +381,14 @@ result = float_round((contract.wage/30)*worked_days.get('ILLNESSIESS100', 0).num
       <field name="category_id" ref="l10n_ec_rrhh_penta.cat_subsidios"/>
       <field name="condition_select">python</field>
       <field name="condition_python"><![CDATA[
-result = worked_days.get('MOTHERHOOD25', 0) if worked_days.get('MOTHERHOOD25') else 0
+result = worked_days.get('MOTHERHOOD25', 0)
     ]]></field>
       <field name="amount_select">code</field>
       <field name="amount_python_compute"><![CDATA[
-result = float_round((((contract.wage / 30) * 30 if worked_days.get('MOTHERHOOD25', 0).number_of_days > 30 else worked_days.get('MOTHERHOOD25', 0).number_of_days) * 0.25), 2)
+wd = worked_days.get('MOTHERHOOD25')
+days = wd.number_of_days if wd else 0
+days = min(days, 30)
+result = float_round((((contract.wage / 30) * days) * 0.25), 2)
     ]]></field>
     </record>
 
@@ -396,11 +401,14 @@ result = float_round((((contract.wage / 30) * 30 if worked_days.get('MOTHERHOOD2
       <field name="category_id" ref="l10n_ec_rrhh_penta.cat_subsidios"/>
       <field name="condition_select">python</field>
       <field name="condition_python"><![CDATA[
-result = worked_days.get('MOTHERHOOD100', 0) if worked_days.get('MOTHERHOOD100') else 0
+result = worked_days.get('MOTHERHOOD100', 0)
     ]]></field>
       <field name="amount_select">code</field>
       <field name="amount_python_compute"><![CDATA[
-result = float_round((contract.wage/30)*worked_days.get('MOTHERHOOD100', 0).number_of_days, 2)
+wd = worked_days.get('MOTHERHOOD100')
+days = wd.number_of_days if wd else 0
+days = min(days, 30)
+result = float_round((((contract.wage / 30) * days) * 0.25), 2)
     ]]></field>
     </record>
 
@@ -504,10 +512,7 @@ result = categories['BENEFICIOS']
       <field name="amount_select">code</field>
       <field name="amount_python_compute"><![CDATA[
 currency = payslip.company_id.currency_id
-if worked_days.get('MOTHERHOOD25'):
-  total = currency.round(categories['SUBSIDIOS']) + currency.round(categories['BONO']) + currency.round(categories['BENEFICIOS']) + currency.round(categories['BENFSO'])
-else:
-  total = currency.round(categories['GROSS']) + currency.round(categories['BONO']) + currency.round(categories['BENEFICIOS']) + currency.round(categories['BENFSO'])
+total = currency.round(categories['GROSS']) + currency.round(categories['SUBSIDIOS']) + currency.round(categories['BONO']) + currency.round(categories['BENEFICIOS']) + currency.round(categories['BENFSO'])
 result = currency.round(total)
     ]]></field>
     </record>
@@ -529,7 +534,7 @@ result= (payslip.date_from.day >= 1 and payslip.date_to.day > 1 and (payslip.dat
     ]]></field>
       <field name="amount_select">code</field>
       <field name="amount_python_compute"><![CDATA[
-result = float_round(categories['GROSS']*(float(contract.iess_personal_id.percentage)* 0.01),2)
+result = float_round((categories['GROSS'] + categories['GROSSUBSIDIO'])*(float(contract.iess_personal_id.percentage)* 0.01),2)
     ]]></field>
     </record>
 
@@ -797,7 +802,7 @@ result= (payslip.date_from.day >= 1 and payslip.date_to.day > 1 and (payslip.dat
     ]]></field>
       <field name="amount_select">code</field>
       <field name="amount_python_compute"><![CDATA[
-result = float_round(categories['GROSS']*(float(contract.iess_patronal_id.percentage)* 0.01),2)
+result = float_round((categories['GROSS'] + categories['GROSSUBSIDIO'])*(float(contract.iess_patronal_id.percentage)* 0.01),2)
     ]]></field>
     </record>
 
@@ -814,7 +819,7 @@ result = contract.l10n_ec_ptb_thirteenth_fund_paid == 'accumulated'
       ]]></field>
       <field name="amount_select">code</field>
       <field name="amount_python_compute"><![CDATA[
-result = categories['GROSS']/12
+result = (categories['GROSS'] + categories['GROSSUBSIDIO'])/12
       ]]></field>
     </record>
 
@@ -847,7 +852,7 @@ result = (categories['BASICEC']/360)*dias
       <field name="condition_select">none</field>
       <field name="amount_select">code</field>
       <field name="amount_python_compute"><![CDATA[
-result = categories['GROSS'] / 24
+result = (categories['GROSS'] + categories['GROSSUBSIDIO']) / 24
       ]]></field>
     </record>
 
