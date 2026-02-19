@@ -37,7 +37,6 @@
         <field name="doc_type_name" optional="show"/>
         <field name="ref" optional="hide"/>
         <field name="purchase_order_name" optional="hide"/>
-        <field name="importacion_id" widget="many2one" optional="hide"/>
         <field name="auth_number" optional="hide"/>
         <field name="partner_vat" optional="hide"/>
         <field name="partner_id" optional="show"/>
