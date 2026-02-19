@@ -157,15 +157,66 @@ result_name = 'Base imponible IESS'
       <field name="category_id" ref="l10n_ec_rrhh_penta.cat_gross_subside"/>
       <field name="condition_select">python</field>
       <field name="condition_python"><![CDATA[
-result = worked_days.get('MOTHERHOOD25', 0)
+result = (
+    worked_days.get('MOTHERHOOD25', 0) or
+    worked_days.get('MOTHERHOOD100', 0) or
+    worked_days.get('FATHERHOOD100', 0) or
+    worked_days.get('ILLNESSIESS50', 0) or
+    worked_days.get('ILLNESSIESS66', 0) or
+    worked_days.get('ILLNESSIESS75', 0) or
+    worked_days.get('ILLNESSIESS100', 0) or
+    worked_days.get('WORKACCIDENT', 0) or
+    worked_days.get('WORKRISK', 0)
+    )
     ]]></field>
       <field name="amount_select">code</field>
       <field name="amount_python_compute"><![CDATA[
 currency = payslip.company_id.currency_id
-wd = worked_days.get('MOTHERHOOD25')
-days = wd.number_of_days if wd else 0
-dias_maternidad = min(days, 30)
-result = ((contract.wage / 30) * dias_maternidad)
+
+mh25 = worked_days.get('MOTHERHOOD25')
+mh100 = worked_days.get('MOTHERHOOD100')
+fh100 = worked_days.get('FATHERHOOD100')
+ill50 = worked_days.get('ILLNESSIESS50')
+ill66 = worked_days.get('ILLNESSIESS66')
+ill75 = worked_days.get('ILLNESSIESS75')
+ill100 = worked_days.get('ILLNESSIESS100')
+wa = worked_days.get('WORKACCIDENT')
+wr = worked_days.get('WORKRISK')
+
+days_mh25 = mh25.number_of_days if mh25 else 0
+days_mh100 = mh100.number_of_days if mh100 else 0
+days_fh100 = fh100.number_of_days if fh100 else 0
+days_ill50 = ill50.number_of_days if ill50 else 0
+days_ill66 = ill66.number_of_days if ill66 else 0
+days_ill75 = ill75.number_of_days if ill75 else 0
+days_ill100 = ill100.number_of_days if ill100 else 0
+days_wa = wa.number_of_days if wa else 0
+days_wr = wr.number_of_days if wr else 0
+
+dias_maternidad25 = min(days_mh25, 30)
+dias_maternidad100 = min(days_mh100, 30)
+dias_paternidad100 = min(days_fh100, 30)
+
+dias_enfermedad50 = min(days_ill50, 30)
+dias_enfermedad66 = min(days_ill66, 30)
+dias_enfermedad75 = min(days_ill75, 30)
+dias_enfermedad100 = min(days_ill100, 30)
+dias_accidente = min(days_wa, 30)
+dias_riesgo = min(days_wr, 30)
+
+salario_diario = contract.wage / 30
+
+result = (
+    (salario_diario * dias_maternidad25) +
+    (salario_diario * dias_maternidad100) +
+    (salario_diario * dias_paternidad100) +
+    (salario_diario * dias_enfermedad50) +
+    (salario_diario * dias_enfermedad66) +
+    (salario_diario * dias_enfermedad75) +
+    (salario_diario * dias_enfermedad100) +
+    (salario_diario * dias_accidente) +
+    (salario_diario * dias_riesgo)
+)
     ]]></field>
     </record>
 
@@ -219,7 +270,7 @@ for c in employee.contract_ids:
 # Paso 2
 ultimo_dia = payslip.date_to.day
 dia_contrato = fecha_primer_contrato.day
-fondo = categories['GROSS'] * 0.0833
+fondo = (categories['GROSS'] + categories['GROSSUBSIDIO']) * 0.0833
 
 if 366 <= total_dias_trabajados <= 395:
   if ultimo_dia == dia_contrato:
@@ -313,11 +364,14 @@ result = inputs['PL_OTROS_INGRESOS'].amount
       <field name="category_id" ref="l10n_ec_rrhh_penta.cat_subsidios"/>
       <field name="condition_select">python</field>
       <field name="condition_python"><![CDATA[
-result = worked_days.get('ILLNESSIESS50', 0) if worked_days.get('ILLNESSIESS50') else 0
+result = worked_days.get('ILLNESSIESS50', 0)
     ]]></field>
       <field name="amount_select">code</field>
       <field name="amount_python_compute"><![CDATA[
-result = float_round(((contract.wage/30)*worked_days.get('ILLNESSIESS50', 0).number_of_days)*0.50, 2)
+wd = worked_days.get('ILLNESSIESS50')
+days = wd.number_of_days if wd else 0
+days = min(days, 30)
+result = float_round((((contract.wage / 30) * days) * 0.5), 2)
     ]]></field>
     </record>
 
@@ -330,11 +384,14 @@ result = float_round(((contract.wage/30)*worked_days.get('ILLNESSIESS50', 0).num
       <field name="category_id" ref="l10n_ec_rrhh_penta.cat_subsidios"/>
       <field name="condition_select">python</field>
       <field name="condition_python"><![CDATA[
-result = worked_days.get('ILLNESSIESS66', 0) if worked_days.get('ILLNESSIESS66') else 0
+result = worked_days.get('ILLNESSIESS66', 0)
     ]]></field>
       <field name="amount_select">code</field>
       <field name="amount_python_compute"><![CDATA[
-result = float_round(((contract.wage/30)*worked_days.get('ILLNESSIESS66', 0).number_of_days)*0.34, 2)
+wd = worked_days.get('ILLNESSIESS66')
+days = wd.number_of_days if wd else 0
+days = min(days, 30)
+result = float_round((((contract.wage / 30) * days) * 0.34), 2)
     ]]></field>
     </record>
 
@@ -347,11 +404,14 @@ result = float_round(((contract.wage/30)*worked_days.get('ILLNESSIESS66', 0).num
       <field name="category_id" ref="l10n_ec_rrhh_penta.cat_subsidios"/>
       <field name="condition_select">python</field>
       <field name="condition_python"><![CDATA[
-result = worked_days.get('ILLNESSIESS75', 0) if worked_days.get('ILLNESSIESS75') else 0
+result = worked_days.get('ILLNESSIESS75', 0)
     ]]></field>
       <field name="amount_select">code</field>
       <field name="amount_python_compute"><![CDATA[
-result = float_round(((contract.wage/30)*worked_days.get('ILLNESSIESS75', 0).number_of_days)*0.25, 2)
+wd = worked_days.get('ILLNESSIESS75')
+days = wd.number_of_days if wd else 0
+days = min(days, 30)
+result = float_round((((contract.wage / 30) * days) * 0.25), 2)
     ]]></field>
     </record>
 
@@ -364,11 +424,14 @@ result = float_round(((contract.wage/30)*worked_days.get('ILLNESSIESS75', 0).num
       <field name="category_id" ref="l10n_ec_rrhh_penta.cat_subsidios"/>
       <field name="condition_select">python</field>
       <field name="condition_python"><![CDATA[
-result = worked_days.get('ILLNESSIESS100', 0) if worked_days.get('ILLNESSIESS100') else 0
+result = worked_days.get('ILLNESSIESS100', 0)
     ]]></field>
       <field name="amount_select">code</field>
       <field name="amount_python_compute"><![CDATA[
-result = float_round((contract.wage/30)*worked_days.get('ILLNESSIESS100', 0).number_of_days, 2)
+wd = worked_days.get('MOTHERHOOD100')
+days = wd.number_of_days if wd else 0
+days = min(days, 30)
+result = float_round((((contract.wage / 30) * days)), 2)
     ]]></field>
     </record>
 
@@ -421,11 +484,14 @@ result = float_round((((contract.wage / 30) * days) * 0.25), 2)
       <field name="category_id" ref="l10n_ec_rrhh_penta.cat_subsidios"/>
       <field name="condition_select">python</field>
       <field name="condition_python"><![CDATA[
-result = worked_days.get('FATHERHOOD100', 0) if worked_days.get('FATHERHOOD100') else 0
+result = worked_days.get('FATHERHOOD100', 0)
     ]]></field>
       <field name="amount_select">code</field>
       <field name="amount_python_compute"><![CDATA[
-result = float_round((contract.wage/30)*worked_days.get('FATHERHOOD100', 0).number_of_days, 2)
+wd = worked_days.get('FATHERHOOD100')
+days = wd.number_of_days if wd else 0
+days = min(days, 30)
+result = float_round((((contract.wage / 30) * days)), 2)
     ]]></field>
     </record>
 
@@ -438,11 +504,14 @@ result = float_round((contract.wage/30)*worked_days.get('FATHERHOOD100', 0).numb
       <field name="category_id" ref="l10n_ec_rrhh_penta.cat_subsidios"/>
       <field name="condition_select">python</field>
       <field name="condition_python"><![CDATA[
-result = worked_days.get('WORKACCIDENT', 0) if worked_days.get('WORKACCIDENT') else 0
+result = worked_days.get('WORKACCIDENT', 0)
     ]]></field>
       <field name="amount_select">code</field>
       <field name="amount_python_compute"><![CDATA[
-result = float_round(((contract.wage/30)*worked_days.get('WORKACCIDENT', 0).number_of_days)*0.75, 2)
+wd = worked_days.get('WORKACCIDENT')
+days = wd.number_of_days if wd else 0
+days = min(days, 30)
+result = float_round((((contract.wage / 30) * days) * 0.75), 2)
     ]]></field>
     </record>
 
@@ -455,11 +524,14 @@ result = float_round(((contract.wage/30)*worked_days.get('WORKACCIDENT', 0).numb
       <field name="category_id" ref="l10n_ec_rrhh_penta.cat_subsidios"/>
       <field name="condition_select">python</field>
       <field name="condition_python"><![CDATA[
-result = worked_days.get('WORKRISK', 0) if worked_days.get('WORKRISK') else 0
+result = worked_days.get('WORKRISK', 0)
     ]]></field>
       <field name="amount_select">code</field>
       <field name="amount_python_compute"><![CDATA[
-result = float_round(((contract.wage/30)*worked_days.get('WORKRISK', 0).number_of_days)*0.75, 2)
+wd = worked_days.get('WORKRISK')
+days = wd.number_of_days if wd else 0
+days = min(days, 30)
+result = float_round((((contract.wage / 30) * days) * 0.75), 2)
     ]]></field>
     </record>
 
@@ -902,7 +974,7 @@ for c in employee.contract_ids:
 # Paso 2
 ultimo_dia = payslip.date_to.day
 dia_contrato = fecha_primer_contrato.day
-fondo = categories['GROSS'] * 0.0833
+fondo = (categories['GROSS'] + categories['GROSSUBSIDIO']) * 0.0833
 
 if 366 <= total_dias_trabajados <= 395:
   if ultimo_dia == dia_contrato:
