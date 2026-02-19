@@ -47,6 +47,13 @@ class HrPayslipRun(models.Model):
             'company_id': self.env.user.company_id.id
         })
         return wizard.action_confirm()
+    
+    def action_export_thirteenth_xlsx(self):
+        self.ensure_one()
+        if not self.slip_ids:
+            raise UserError(_("No hay nóminas (hr.payslip) en este lote para exportar."))
+        action = self.env.ref('l10n_ec_rrhh_penta.report_thirteenth_xlsx').report_action(self)
+        return action
         
     def action_export_monthly_inputs_xlsx(self):
         self.ensure_one()

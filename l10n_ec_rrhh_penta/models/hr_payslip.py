@@ -234,4 +234,39 @@ class HrPayslip(models.Model):
                 p_value = line.provisional_holidays
                 holidays_days -= available
         return p_value
+    
+    def get_value_thirteenth(self):
+        monthly = self.env['hr.payslip.line'].search([
+            ('employee_id', '=', self.employee_id.id),
+            ('date_from', '>=', self.date_from),
+            ('date_to', '<=', self.date_to),
+            ('code', '=', 'DTERMEN')
+        ])
+        provision = self.env['hr.payslip.line'].search([
+            ('employee_id', '=', self.employee_id.id),
+            ('date_from', '>=', self.date_from),
+            ('date_to', '<=', self.date_to),
+            ('code', '=', 'DTERPRO')
+        ])
+        return {
+            'monthly': monthly.amount if monthly else 0.00,
+            'provision': provision.amount if provision else 0.00,
+        }
         
+    def get_value_fourteenth(self):
+        monthly = self.env['hr.payslip.line'].search([
+            ('employee_id', '=', self.employee_id.id),
+            ('date_from', '>=', self.date_from),
+            ('date_to', '<=', self.date_to),
+            ('code', '=', 'DCUARMEN')
+        ])
+        provision = self.env['hr.payslip.line'].search([
+            ('employee_id', '=', self.employee_id.id),
+            ('date_from', '>=', self.date_from),
+            ('date_to', '<=', self.date_to),
+            ('code', '=', 'DCUARPRO')
+        ])
+        return {
+            'monthly': monthly.amount if monthly else 0.00,
+            'provision': provision.amount if provision else 0.00,
+        }

@@ -32,4 +32,13 @@
         <field name="attachment_use">False</field>
     </record>
 
+    <record id="report_thirteenth_xlsx" model="ir.actions.report">
+        <field name="name">Reporte Décimo Tercero</field>
+        <field name="model">hr.payslip.run</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">l10n_ec_rrhh_penta.report_thirteenth_xlsx</field>
+        <field name="report_file">l10n_ec_rrhh_penta.report_thirteenth_xlsx</field>
+        <field name="attachment_use">False</field>
+    </record>
+
 </odoo>

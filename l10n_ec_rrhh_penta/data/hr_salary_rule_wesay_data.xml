@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data noupdate="1">
+
+    <!-- ========================= -->
+    <!-- DECIMO TERCERO -->
+    <!-- ========================= -->
+
+    <!-- ACUMULADO -->
+    <record id="rule_dter_acum" model="hr.salary.rule">
+      <field name="name">Décimo Tercero Acumulado</field>
+      <field name="code">DTERACU</field>
+      <field name="sequence">1</field>
+      <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_employee_ec_decimo_tercero"/>
+      <field name="category_id" ref="l10n_ec_rrhh_penta.cat_thirteenth_provision"/>
+      <field name="condition_select">none</field>
+      <field name="amount_select">code</field>
+      <field name="amount_python_compute"><![CDATA[
+amount = payslip.get_value_thirteenth()['provision']
+if inputs.get('PL_DECIMO_TERCERO_ACUMULADO_ANTERIORES'):
+  result = inputs['PL_DECIMO_TERCERO_ACUMULADO_ANTERIORES'].amount + amount
+else:
+  result = amount
+    ]]></field>
+    </record>
+
+    <!-- MENSUALIZADO -->
+    <record id="rule_dter_men" model="hr.salary.rule">
+      <field name="name">Décimo Tercero Mensualizado</field>
+      <field name="code">DTERMENSU</field>
+      <field name="sequence">2</field>
+      <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_employee_ec_decimo_tercero"/>
+      <field name="category_id" ref="l10n_ec_rrhh_penta.cat_thirteenth_monthly"/>
+      <field name="condition_select">none</field>
+      <field name="amount_select">code</field>
+      <field name="amount_python_compute"><![CDATA[
+amount = payslip.get_value_thirteenth()['monthly']
+if inputs.get('PL_DECIMO_TERCERO_MENSUALIZADO_ANTERIORES'):
+  result = inputs['PL_DECIMO_TERCERO_MENSUALIZADO_ANTERIORES'].amount + amount
+else:
+  result = amount
+    ]]></field>
+    </record>
+
+    <!-- NETO A RECIBIR -->
+    <record id="rule_dter_net" model="hr.salary.rule">
+      <field name="name">Décimo Neto a Recibir</field>
+      <field name="code">DTERNETO</field>
+      <field name="sequence">3</field>
+      <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_employee_ec_decimo_tercero"/>
+      <field name="category_id" ref="l10n_ec_rrhh_penta.cat_thirteenth_net"/>
+      <field name="condition_select">none</field>
+      <field name="amount_select">code</field>
+      <field name="amount_python_compute"><![CDATA[
+result = categories['THIRTEENTH_ACCUMULATED'] - categories['THIRTEENTH_MONTHLY']
+    ]]></field>
+    </record>
+
+  </data>
+</odoo>

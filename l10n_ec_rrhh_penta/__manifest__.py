@@ -20,7 +20,7 @@
     'website': 'https://pentalab.tech/',
     "license": "LGPL-3",
     'category': 'Human Resources/Employees',
-    "version": "18.0.10.2.7",
+    "version": "18.0.10.2.8",
     "depends": [
         'analytic',
         'hr_contract',
@@ -43,6 +43,7 @@
         "data/hr_salary_rule_category_data.xml",
         "data/hr_payslip_input_type_data.xml",
         "data/hr_salary_rule_data.xml",
+        "data/hr_salary_rule_wesay_data.xml",
         "data/ir_cron.xml",
         
         "security/ir.model.access.csv",
