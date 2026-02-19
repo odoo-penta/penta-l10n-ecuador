@@ -21,7 +21,7 @@
     ],
     'website': "https://pentalab.tech/",
     'category': 'Accounting',
-    'version': '18.0.2.2.4',
+    'version': '18.0.2.2.5',
     'depends': [
         'account',
         'account_accountant',
@@ -31,7 +31,6 @@
         'account_reports',
         'product_brand',
         'penta_base',
-        'import_module'
     ],
     'data': [
         'data/account_cards_data.xml',
