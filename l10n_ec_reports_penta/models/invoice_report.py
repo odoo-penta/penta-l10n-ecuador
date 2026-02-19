@@ -23,7 +23,6 @@ class PentalabInvoiceReportLine(models.Model):
     ref = fields.Char("Referencia", readonly=True)
     importacion = fields.Boolean("Importación", readonly=True) 
     purchase_order_name = fields.Char("N° de pedido", readonly=True)
-    importacion_id = fields.Many2one("x.import", string="Guía de importación", readonly=True)
     auth_number = fields.Char("N° de autorización", readonly=True)
     partner_vat = fields.Char("Identificación", readonly=True)
     partner_name = fields.Char("Contacto", readonly=True)
@@ -77,7 +76,6 @@ class PentalabInvoiceReportLine(models.Model):
 
                 am.ref AS ref,
                 COALESCE(pol_po.po_names, am.invoice_origin) AS purchase_order_name,
-                xi.id AS importacion_id,
                 am.l10n_ec_authorization_number AS auth_number,
                 rp.vat AS partner_vat,
 
@@ -197,8 +195,6 @@ class PentalabInvoiceReportLine(models.Model):
                 GROUP BY pol.id
             ) pol_po ON pol_po.line_id = aml.purchase_line_id
 
-            -- Guia de importacion
-			LEFT JOIN x_import xi ON xi.id = am.id_import
             -- Impuestos (nombres concatenados; soporta jsonb o varchar)
             LEFT JOIN (
                 SELECT rel.account_move_line_id AS line_id,
