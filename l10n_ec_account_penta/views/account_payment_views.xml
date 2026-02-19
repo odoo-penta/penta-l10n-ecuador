@@ -102,21 +102,6 @@
         </field>
     </record>
 
-    <!-- Vista depende del modulo import el campo guia de importación -->
-    <record id="view_account_payment_custom_form_import_module" model="ir.ui.view">
-        <field name="name">account.payment.custom.import.module.form</field>
-        <field name="model">account.payment</field>
-        <field name="inherit_id" ref="import_module.view_account_payment_form_inherit_import"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='id_import']" position="attributes">
-                <attribute name="invisible">
-                    payment_type != 'outbound' or payment_mode == 'internal'
-                </attribute>
-            </xpath>
-
-        </field>
-    </record>
-
     <record id="view_account_payment_expense_line_form" model="ir.ui.view">
         <field name="name">account.payment.expense.line.form</field>
         <field name="model">account.payment.expense.line</field>
