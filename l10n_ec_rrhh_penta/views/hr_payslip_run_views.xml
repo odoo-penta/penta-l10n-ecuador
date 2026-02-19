@@ -19,7 +19,12 @@
                   type="object"
                   string="Generar reporte de nómina"
                   class="btn-primary oe_highlight"
-                  invisible="state != 'close' or payslip_count == 0"/>
+                  invisible="state != 'close' or payslip_count == 0 or penta_benefit_key == '13th'"/>
+          <button name="action_export_thirteenth_xlsx"
+                  type="object"
+                  string="Reporte décimo tercero"
+                  class="btn-primary oe_highlight"
+                  invisible="state != 'close' or payslip_count == 0 or penta_benefit_key != '13th'"/>
         </xpath>
       </field>
     </record>

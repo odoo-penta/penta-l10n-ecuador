@@ -3,9 +3,8 @@
   <data noupdate="1">
 
     <!-- ================================= -->
-    <!-- ESTRUCTURA SALARIAL -->
+    <!-- ROL DE PAGOS -->
     <!-- ================================= -->
-
     <record id="structure_employee_ec" model="hr.payroll.structure">
       <!-- Nombre -->
       <field name="name">Rol de pagos EC</field>
@@ -21,6 +20,26 @@
       <field name="use_worked_day_lines">True</field>
       <!-- Cálculo acumulado anual -->
       <field name="ytd_computation">False</field>
+    </record>
+
+    <!-- ================================= -->
+    <!-- DECIMO TERCERO -->
+    <!-- ================================= -->
+    <record id="structure_employee_ec_decimo_tercero" model="hr.payroll.structure">
+      <!-- Nombre -->
+      <field name="name">Décimo Tercero</field>
+      <!-- Tipo de estructura -->
+      <field name="type_id" ref="l10n_ec_rrhh_penta.structure_type_ec_employees"/>
+      <!-- País -->
+      <field name="country_id" ref="base.ec"/>
+      <!-- Activa -->
+      <field name="active">True</field>
+      <!-- Periodicidad -->
+      <field name="schedule_pay">annually</field>
+      <!-- Usar líneas de días trabajados -->
+      <field name="use_worked_day_lines">True</field>
+      <!-- Cálculo acumulado anual -->
+      <field name="ytd_computation">True</field>
     </record>
   
   </data>

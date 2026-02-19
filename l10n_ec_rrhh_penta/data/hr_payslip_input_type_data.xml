@@ -2,6 +2,9 @@
 <odoo>
   <data noupdate="1">
 
+    <!-- ================================= -->
+    <!-- ROL DE PAGOS -->
+    <!-- ================================= -->
     <record id="input_type_hora_nocturna" model="hr.payslip.input.type">
       <field name="name">Número Horas Nocturnas 25%</field>
       <field name="code">PL_HORA_EXTRA_NOCTURNA</field>
@@ -108,6 +111,27 @@
       <field name="name">Vacaciones</field>
       <field name="code">PL_VACACIONES</field>
       <field name="struct_ids" eval="[(4, ref('l10n_ec_rrhh_penta.structure_employee_ec'))]"/>
+    </record>
+
+    <!-- ================================= -->
+    <!-- DECIMO TERCERO -->
+    <!-- ================================= -->
+    <record id="input_type_decimo_tercero_men_anteriores" model="hr.payslip.input.type">
+      <field name="name">Décimo Tercero Mensualizado Anteriores</field>
+      <field name="code">PL_DECIMO_TERCERO_MENSUALIZADO_ANTERIORES</field>
+      <field name="struct_ids" eval="[(4, ref('l10n_ec_rrhh_penta.structure_employee_ec_decimo_tercero'))]"/>
+    </record>
+
+    <record id="input_type_decimo_tercero_acc_anteriores" model="hr.payslip.input.type">
+      <field name="name">Décimo Tercero Acumulado Anteriores</field>
+      <field name="code">PL_DECIMO_TERCERO_ACUMULADO_ANTERIORES</field>
+      <field name="struct_ids" eval="[(4, ref('l10n_ec_rrhh_penta.structure_employee_ec_decimo_tercero'))]"/>
+    </record>
+
+    <record id="input_type_dias_trabajados_anteriores" model="hr.payslip.input.type">
+      <field name="name">Días Trabajados Anteriores</field>
+      <field name="code">PL_DIAS_TRABAJADOS_ANTERIORES</field>
+      <field name="struct_ids" eval="[(4, ref('l10n_ec_rrhh_penta.structure_employee_ec_decimo_tercero'))]"/>
     </record>
 
   </data>

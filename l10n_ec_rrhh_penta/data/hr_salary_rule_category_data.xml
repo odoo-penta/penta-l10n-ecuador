@@ -5,7 +5,6 @@
     <!-- ========================= -->
     <!-- INGRESOS -->
     <!-- ========================= -->
-
     <record id="cat_basic" model="hr.salary.rule.category">
       <field name="name">INGRESOS (GENERA BENEFICIOS SOCIALES)</field>
       <field name="code">BASIC</field>
@@ -42,7 +41,6 @@
     <!-- ========================= -->
     <!-- BASE IMPONIBLE -->
     <!-- ========================= -->
-
     <record id="cat_gross" model="hr.salary.rule.category">
       <field name="name">SUELDO IMPONIBLE</field>
       <field name="code">GROSS</field>
@@ -56,7 +54,6 @@
     <!-- ========================= -->
     <!-- BENEFICIOS SOCIALES -->
     <!-- ========================= -->
-
     <record id="cat_benfso" model="hr.salary.rule.category">
       <field name="name">BENEFICIOS SOCIALES</field>
       <field name="code">BENFSO</field>
@@ -65,7 +62,6 @@
     <!-- ========================= -->
     <!-- SUBSIDIOS IESS -->
     <!-- ========================= -->
-
     <record id="cat_subsidios" model="hr.salary.rule.category">
       <field name="name">SUBSIDIOS IESS</field>
       <field name="code">SUBSIDIOS</field>
@@ -79,7 +75,6 @@
     <!-- ========================= -->
     <!-- DEDUCCIONES -->
     <!-- ========================= -->
-
     <record id="cat_dedud" model="hr.salary.rule.category">
       <field name="name">DEDUCCIONES</field>
       <field name="code">DEDUD</field>
@@ -89,7 +84,6 @@
     <!-- ========================= -->
     <!-- CONSUMOS DEL EMPLEADO -->
     <!-- ========================= -->
-
     <record id="cat_conalm" model="hr.salary.rule.category">
       <field name="name">CONSUMOS DEL EMPLEADO</field>
       <field name="code">CONALM</field>
@@ -98,7 +92,6 @@
     <!-- ========================= -->
     <!-- TOTALES -->
     <!-- ========================= -->
-
     <record id="cat_totingotros" model="hr.salary.rule.category">
       <field name="name">TOTAL OTROS INGRESOS</field>
       <field name="code">TOTINGOTROS</field>
@@ -127,7 +120,6 @@
     <!-- ========================= -->
     <!-- PROVISIONES PATRONALES -->
     <!-- ========================= -->
-
     <record id="cat_emc" model="hr.salary.rule.category">
       <field name="name">APORTES PATRONALES</field>
       <field name="code">EMC</field>
@@ -141,6 +133,24 @@
     <record id="cat_totpro" model="hr.salary.rule.category">
       <field name="name">TOTAL PROVISIONES</field>
       <field name="code">TOTPRO</field>
+    </record>
+
+    <!-- ========================= -->
+    <!-- DECIMO TERCERO -->
+    <!-- ========================= -->
+    <record id="cat_thirteenth_provision" model="hr.salary.rule.category">
+      <field name="name">DÉCIMO TERCERO ACUMULADO</field>
+      <field name="code">THIRTEENTH_ACCUMULATED</field>
+    </record>
+
+    <record id="cat_thirteenth_monthly" model="hr.salary.rule.category">
+      <field name="name">DÉCIMO TERCERO MENSUALIZADO</field>
+      <field name="code">THIRTEENTH_MONTHLY</field>
+    </record>
+
+    <record id="cat_thirteenth_net" model="hr.salary.rule.category">
+      <field name="name">DÉCIMO TERCERO NETO</field>
+      <field name="code">THIRTEENTH_NET</field>
     </record>
 
   </data>

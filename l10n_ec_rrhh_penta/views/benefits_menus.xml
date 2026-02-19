@@ -1,25 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-  <!-- Carpeta de menús dentro de Nómina 
-  <record id="view_hr_payslip_run_form_inherit_generar_btn" model="ir.ui.view">
-    <field name="name">hr.payslip.run.form.inherit.generar.btn</field>
+  <record id="hr_payslip_run_form_inherit_thirteenth" model="ir.ui.view">
+    <field name="name">hr.payslip.run.form.inherit.thirteenth</field>
     <field name="model">hr.payslip.run</field>
-   
     <field name="inherit_id" ref="hr_payroll.hr_payslip_run_form"/>
     <field name="arch" type="xml">
-      <xpath expr="//form/header/button[@type='action' and @name='786' and contains(@class,'btn-primary')]" position="attributes">
-        <attribute name="string">Generar roles</attribute>
+      <!-- Modificar botón primario existente -->
+      <xpath expr="//button[@name='%(hr_payroll.action_hr_payslip_by_employees)d' and contains(@class, 'btn-primary')]" position="attributes">
+        <attribute name="invisible">
+          state != 'draft' or payslip_count != 0 or penta_benefit_key == '13th'
+        </attribute>
       </xpath>
-
-    
-      <xpath expr="//form/header/button[@type='action' and @name='786' and contains(@class,'btn-secondary')]" position="attributes">
-        <attribute name="string">Generar roles</attribute>
+      <!-- Modificar botón secundario existente -->
+      <xpath expr="//button[@name='%(hr_payroll.action_hr_payslip_by_employees)d' and contains(@class, 'btn-secondary')]" position="attributes">
+        <attribute name="invisible">
+          state != 'draft' or payslip_count == 0 or penta_benefit_key == '13th'
+        </attribute>
       </xpath>
-
+      <!-- Agregar botón primario alterno -->
+      <xpath expr="//button[@name='%(hr_payroll.action_hr_payslip_by_employees)d' and contains(@class, 'btn-primary')]" position="after">
+        <button string="Generate Thirteenth"
+                name="%(hr_payroll.action_hr_payslip_by_employees)d"
+                type="action"
+                class="btn-primary"
+                invisible="state != 'draft' or payslip_count != 0 or penta_benefit_key != '13th'"/>
+      </xpath>
+      <!-- Agregar botón secundario alterno -->
+      <xpath expr="//button[@name='%(hr_payroll.action_hr_payslip_by_employees)d' and contains(@class, 'btn-secondary')]" position="after">
+        <button string="Generate Thirteenth"
+                name="%(hr_payroll.action_hr_payslip_by_employees)d"
+                type="action"
+                class="btn-secondary"
+                invisible="state != 'draft' or payslip_count == 0 or penta_benefit_key != '13th'"/>
+      </xpath>
+      <!-- Ocultar boton de crear reporte de pago -->
+      <xpath expr="//button[@name='action_payment_report']" position="attributes">
+        <attribute name="invisible">
+          state != 'close' or penta_benefit_key == '13th'
+        </attribute>
+      </xpath>
     </field>
   </record>
-   -->
   
   <menuitem id="menu_penta_benefits_root"
             name="Beneficios sociales"
