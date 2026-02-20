@@ -249,8 +249,8 @@ class HrPayslip(models.Model):
             ('code', '=', 'DTERPRO')
         ])
         return {
-            'monthly': monthly.amount if monthly else 0.00,
-            'provision': provision.amount if provision else 0.00,
+            'monthly': sum(monthly.mapped('amount')),
+            'provision': sum(provision.mapped('amount')),
         }
         
     def get_advance_value_thirteenth(self):
@@ -260,7 +260,7 @@ class HrPayslip(models.Model):
             ('date_to', '<=', self.date_to),
             ('code', '=', 'ADVDTER')
         ])
-        return advance.amount if advance else 0.00
+        return sum(advance.mapped('amount'))
         
     def get_value_fourteenth(self):
         monthly = self.env['hr.payslip.line'].search([
@@ -276,6 +276,6 @@ class HrPayslip(models.Model):
             ('code', '=', 'DCUARPRO')
         ])
         return {
-            'monthly': monthly.amount if monthly else 0.00,
-            'provision': provision.amount if provision else 0.00,
+            'monthly': sum(monthly.mapped('amount')),
+            'provision': sum(provision.mapped('amount')),
         }
