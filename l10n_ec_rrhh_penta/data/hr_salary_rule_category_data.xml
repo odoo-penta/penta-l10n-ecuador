@@ -148,6 +148,11 @@
       <field name="code">THIRTEENTH_MONTHLY</field>
     </record>
 
+    <record id="cat_advance_thirteenth" model="hr.salary.rule.category">
+      <field name="name">ANTICIPO DÉCIMO TERCERO</field>
+      <field name="code">THIRTEENTH_ADVANCE</field>
+    </record>
+
     <record id="cat_thirteenth_net" model="hr.salary.rule.category">
       <field name="name">DÉCIMO TERCERO NETO</field>
       <field name="code">THIRTEENTH_NET</field>

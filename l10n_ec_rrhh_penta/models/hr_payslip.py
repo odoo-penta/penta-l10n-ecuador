@@ -253,6 +253,15 @@ class HrPayslip(models.Model):
             'provision': provision.amount if provision else 0.00,
         }
         
+    def get_advance_value_thirteenth(self):
+        advance = self.env['hr.payslip.line'].search([
+            ('employee_id', '=', self.employee_id.id),
+            ('date_from', '>=', self.date_from),
+            ('date_to', '<=', self.date_to),
+            ('code', '=', 'ADVDTER')
+        ])
+        return advance.amount if advance else 0.00
+        
     def get_value_fourteenth(self):
         monthly = self.env['hr.payslip.line'].search([
             ('employee_id', '=', self.employee_id.id),
