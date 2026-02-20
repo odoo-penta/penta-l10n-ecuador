@@ -236,18 +236,14 @@ class HrPayslip(models.Model):
         return p_value
     
     def get_value_thirteenth(self):
-        monthly = self.env['hr.payslip.line'].search([
+        domain = [
             ('employee_id', '=', self.employee_id.id),
-            ('date_from', '>=', self.date_from),
-            ('date_to', '<=', self.date_to),
-            ('code', '=', 'DTERMEN')
-        ])
-        provision = self.env['hr.payslip.line'].search([
-            ('employee_id', '=', self.employee_id.id),
-            ('date_from', '>=', self.date_from),
-            ('date_to', '<=', self.date_to),
-            ('code', '=', 'DTERPRO')
-        ])
+            ('date_from', '<=', self.date_to),
+            ('date_to', '>=', self.date_from),
+            ('slip_id.state', 'in', ['done', 'paid']),
+        ]
+        monthly = self.env['hr.payslip.line'].search(domain + [('code', '=', 'DTERMEN')])
+        provision = self.env['hr.payslip.line'].search(domain + [('code', '=', 'DTERPRO')])
         return {
             'monthly': sum(monthly.mapped('amount')),
             'provision': sum(provision.mapped('amount')),
@@ -256,25 +252,22 @@ class HrPayslip(models.Model):
     def get_advance_value_thirteenth(self):
         advance = self.env['hr.payslip.line'].search([
             ('employee_id', '=', self.employee_id.id),
-            ('date_from', '>=', self.date_from),
-            ('date_to', '<=', self.date_to),
-            ('code', '=', 'ADVDTER')
+            ('date_from', '<=', self.date_to),
+            ('date_to', '>=', self.date_from),
+            ('slip_id.state', 'in', ['done', 'paid']),
+            ('code', '=', 'ADVDTER'),
         ])
         return sum(advance.mapped('amount'))
         
     def get_value_fourteenth(self):
-        monthly = self.env['hr.payslip.line'].search([
+        domain = [
             ('employee_id', '=', self.employee_id.id),
-            ('date_from', '>=', self.date_from),
-            ('date_to', '<=', self.date_to),
-            ('code', '=', 'DCUARMEN')
-        ])
-        provision = self.env['hr.payslip.line'].search([
-            ('employee_id', '=', self.employee_id.id),
-            ('date_from', '>=', self.date_from),
-            ('date_to', '<=', self.date_to),
-            ('code', '=', 'DCUARPRO')
-        ])
+            ('date_from', '<=', self.date_to),
+            ('date_to', '>=', self.date_from),
+            ('slip_id.state', 'in', ['done', 'paid']),
+        ]
+        monthly = self.env['hr.payslip.line'].search(domain + [('code', '=', 'DCUARMEN')])
+        provision = self.env['hr.payslip.line'].search(domain + [('code', '=', 'DCUARPRO')])
         return {
             'monthly': sum(monthly.mapped('amount')),
             'provision': sum(provision.mapped('amount')),
