@@ -37,7 +37,7 @@ class HrContract(models.Model):
         compute="_compute_vacation_totals", string="Vacaciones disponibles (total)", store=False
     )
     vac_total_provisioned = fields.Monetary(
-        compute="_compute_vacation_totals", string="Provisionado (total)", store=True, urrency_field="currency_id"
+        compute="_compute_vacation_totals", string="Provisionado (total)", store=True, currency_field="currency_id"
     )
     
     @api.model_create_multi

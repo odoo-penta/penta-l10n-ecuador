@@ -100,6 +100,12 @@
       <field name="code">PL_ATRASOS_MULTAS</field>
       <field name="struct_ids" eval="[(4, ref('l10n_ec_rrhh_penta.structure_employee_ec'))]"/>
     </record>
+
+    <record id="input_type_anticipo_decimotercero" model="hr.payslip.input.type">
+      <field name="name">Anticipo Décimo Tercero</field>
+      <field name="code">PL_ANTICIPO_DECIMO_TERCERO</field>
+      <field name="struct_ids" eval="[(4, ref('l10n_ec_rrhh_penta.structure_employee_ec'))]"/>
+    </record>
     
     <record id="input_type_otros_ingresos" model="hr.payslip.input.type">
       <field name="name">Otros ingresos</field>
@@ -125,6 +131,12 @@
     <record id="input_type_decimo_tercero_acc_anteriores" model="hr.payslip.input.type">
       <field name="name">Décimo Tercero Acumulado Anteriores</field>
       <field name="code">PL_DECIMO_TERCERO_ACUMULADO_ANTERIORES</field>
+      <field name="struct_ids" eval="[(4, ref('l10n_ec_rrhh_penta.structure_employee_ec_decimo_tercero'))]"/>
+    </record>
+
+    <record id="input_type_decimo_tercero_anticipo_anteriores" model="hr.payslip.input.type">
+      <field name="name">Anticipo Décimo Tercero Anteriores</field>
+      <field name="code">PL_ANTICIPO_DECIMO_TERCERO_ANTERIORES</field>
       <field name="struct_ids" eval="[(4, ref('l10n_ec_rrhh_penta.structure_employee_ec_decimo_tercero'))]"/>
     </record>
 
