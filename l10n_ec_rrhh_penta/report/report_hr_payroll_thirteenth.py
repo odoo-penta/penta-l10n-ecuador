@@ -19,16 +19,7 @@ class ReportThirteenthXlsx(models.AbstractModel):
         # Formatos
         formats = get_xlsx_formats(workbook)
         header_base = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter', 'border': 1, 'font_color': '#FFFFFF', 'bg_color': '#242d6e', 'text_wrap': True})
-        header_bold = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter', 'border': 1, 'bg_color': '#e8c3e7', 'text_wrap': True})
         bold = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter', 'border': 1})
-        # Formato titulos ingresos/gastos
-        header_fmt_income = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter', 'border': 1, 'bg_color': '#98a0d4', 'text_wrap': True})
-        header_fmt_expense = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter', 'border': 1, 'bg_color': '#bdbdbd', 'text_wrap': True})
-        header_fmt_provision = workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter', 'border': 1, 'bg_color': '#aed4a5', 'text_wrap': True})
-        # Codigos categorias ingresos/gastos
-        c_incomes = ['BASICEC', 'BASIC', 'HOREXS', 'VACT', 'GROSS', 'BENFSO', 'BONO', 'COMSD', 'SUBSIDIOS', 'SUBT_SUBSIDIOS', 'TOTINGOTROS']
-        c_expenses = ['DEDUD', 'CONALM']
-        c_provision = ['EMC', 'DTER']
      
         for payslip_run in payslip_runs:
             # Crear la hoja de Excel
@@ -59,7 +50,7 @@ class ReportThirteenthXlsx(models.AbstractModel):
                 'Sección Contable',
                 'Tipo de pago',
                 'Décimo Tercero Provisionado',
-                'Décimo Tercero Provisionado',
+                'Base impobles IESS',
                 'Valor décimo',
                 'Décimo Tercer Mensualizado',
                 'Anticipo Décimo Tercero',
@@ -67,12 +58,59 @@ class ReportThirteenthXlsx(models.AbstractModel):
             ]
             for header in headers:
                 sheet.write(row, column, header, header_base)
-                if header in ('Nombre', 'Cargo', 'Departamento', 'Sección Contable'):
+                if header in ('Apellidos y Nombres', 'Puesto de trabajo', 'Departamento', 'Sección Contable'):
                     width_col = _calc_col_width(header, min_width=50)
-                elif header in ('Nro días trabajados'):
+                elif header in ('Fecha de contrato', 'Sueldo EC', 'Dias Laborados'):
                     width_col = _calc_col_width(header, max_width=10)
                 else:
                     width_col = _calc_col_width(header)
                 sheet.set_column(column, column, width_col)
                 column += 1
+                
+            for payslip in hr_payslips:
+                row += 1
+                column = 0
+                # Obtener datos del empleado
+                employee = payslip.employee_id
+                contract = payslip.contract_id
+                if contract.l10n_ec_ptb_thirteenth_fund_paid == 'accumulated':
+                    thirteenth_fund_paid = 'Acumulado'
+                elif contract.l10n_ec_ptb_thirteenth_fund_paid == 'monthly':
+                    thirteenth_fund_paid = 'Mensualizado'
+                else:
+                    thirteenth_fund_paid = 'No definido'
+                thirteenth_accumulated = payslip.line_ids.filtered(lambda l: l.code == 'DTERACU').amount
+                thirteenth_monthly = payslip.line_ids.filtered(lambda l: l.code == 'DTERMENSU').amount
+                thirteenth_advance = payslip.line_ids.filtered(lambda l: l.code == 'THIRTEENTH_ADVANCE').amount
+                thirteenth_net = payslip.line_ids.filtered(lambda l: l.code == 'DTERNETO').amount
+                # Datos básicos
+                sheet.write(row, column, employee.identification_id or '', bold)
+                column += 1
+                sheet.write(row, column, employee.name or '', bold)
+                column += 1
+                sheet.write(row, column, contract.date_start.strftime(date_format) if contract.date_start else '', bold)
+                column += 1
+                sheet.write(row, column, contract.wage or 0.0, formats['number'])
+                column += 1
+                sheet.write(row, column, min(payslip.days_of_month_ec, 360), formats['number'])
+                column += 1
+                sheet.write(row, column, contract.job_id.name or '', bold)
+                column += 1
+                sheet.write(row, column, contract.department_id.name or '', bold)
+                column += 1
+                sheet.write(row, column, contract.account_section_id.name or '', bold)
+                column += 1
+                sheet.write(row, column, thirteenth_fund_paid, bold)
+                column += 1
+                sheet.write(row, column, thirteenth_accumulated, formats['number'])
+                column += 1
+                sheet.write(row, column, thirteenth_accumulated + thirteenth_monthly, formats['number'])
+                column += 1
+                sheet.write(row, column, (thirteenth_accumulated + thirteenth_monthly)/12, formats['number'])
+                column += 1
+                sheet.write(row, column, thirteenth_monthly, formats['number'])
+                column += 1
+                sheet.write(row, column, thirteenth_advance, formats['number'])
+                column += 1
+                sheet.write(row, column, thirteenth_net, formats['number'])
             
