@@ -335,7 +335,7 @@ result = (categories['GROSS'] + categories['GROSSUBSIDIO'])/12
     </record>
 
     <!-- ANTICIPO DECIMO TERCERO -->
-    <record id="rule_advance_dter" model="hr.salary.rule">
+    <record id="rule_dter_advance" model="hr.salary.rule">
       <field name="name">Anticipo Décimo Tercero</field>
       <field name="code">ADVDTER</field>
       <field name="sequence">12</field>
