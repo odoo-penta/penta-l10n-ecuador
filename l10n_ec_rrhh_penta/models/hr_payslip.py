@@ -249,6 +249,16 @@ class HrPayslip(models.Model):
             'provision': sum(provision.mapped('amount')),
         }
         
+    def get_gross_value_thirteenth(self):
+        gross = self.env['hr.payslip.line'].search([
+            ('employee_id', '=', self.employee_id.id),
+            ('date_from', '<=', self.date_to),
+            ('date_to', '>=', self.date_from),
+            ('slip_id.state', 'in', ['done', 'paid']),
+            ('code', 'in', ['GROSSUBSIDIO', 'GROSS']),
+        ])
+        return sum(gross.mapped('amount'))
+        
     def get_advance_value_thirteenth(self):
         advance = self.env['hr.payslip.line'].search([
             ('employee_id', '=', self.employee_id.id),

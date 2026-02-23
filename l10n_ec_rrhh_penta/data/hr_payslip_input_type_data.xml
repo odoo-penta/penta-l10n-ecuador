@@ -122,6 +122,12 @@
     <!-- ================================= -->
     <!-- DECIMO TERCERO -->
     <!-- ================================= -->
+    <record id="input_type_base_decimo_tercero_anteriores" model="hr.payslip.input.type">
+      <field name="name">Base Imponible Décimo Tercero Anteriores</field>
+      <field name="code">PL_BASE_IMPONIBLE_DECIMO_TERCERO_ANTERIORES</field>
+      <field name="struct_ids" eval="[(4, ref('l10n_ec_rrhh_penta.structure_employee_ec_decimo_tercero'))]"/>
+    </record>
+
     <record id="input_type_decimo_tercero_men_anteriores" model="hr.payslip.input.type">
       <field name="name">Décimo Tercero Mensualizado Anteriores</field>
       <field name="code">PL_DECIMO_TERCERO_MENSUALIZADO_ANTERIORES</field>
