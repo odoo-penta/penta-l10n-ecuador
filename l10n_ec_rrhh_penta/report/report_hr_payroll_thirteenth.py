@@ -79,9 +79,10 @@ class ReportThirteenthXlsx(models.AbstractModel):
                     thirteenth_fund_paid = 'Mensualizado'
                 else:
                     thirteenth_fund_paid = 'No definido'
+                thirteenth_base = payslip.line_ids.filtered(lambda l: l.code == 'GROSSDTER').amount
                 thirteenth_accumulated = payslip.line_ids.filtered(lambda l: l.code == 'DTERACU').amount
                 thirteenth_monthly = payslip.line_ids.filtered(lambda l: l.code == 'DTERMENSU').amount
-                thirteenth_advance = payslip.line_ids.filtered(lambda l: l.code == 'THIRTEENTH_ADVANCE').amount
+                thirteenth_advance = payslip.line_ids.filtered(lambda l: l.code == 'ADVDTER').amount
                 thirteenth_net = payslip.line_ids.filtered(lambda l: l.code == 'DTERNETO').amount
                 # Datos básicos
                 sheet.write(row, column, employee.identification_id or '', bold)
@@ -104,7 +105,7 @@ class ReportThirteenthXlsx(models.AbstractModel):
                 column += 1
                 sheet.write(row, column, thirteenth_accumulated, formats['number'])
                 column += 1
-                sheet.write(row, column, thirteenth_accumulated + thirteenth_monthly, formats['number'])
+                sheet.write(row, column, thirteenth_base, formats['number'])
                 column += 1
                 sheet.write(row, column, (thirteenth_accumulated + thirteenth_monthly)/12, formats['number'])
                 column += 1
