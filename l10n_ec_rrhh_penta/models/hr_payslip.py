@@ -240,7 +240,8 @@ class HrPayslip(models.Model):
             ('employee_id', '=', self.employee_id.id),
             ('date_from', '<=', self.date_to),
             ('date_to', '>=', self.date_from),
-            ('slip_id.state', 'in', ['done', 'paid']),
+            ('slip_id.move_id', '!=', False),
+            ('slip_id.move_id.state', '=', 'posted'),
         ]
         monthly = self.env['hr.payslip.line'].search(domain + [('code', '=', 'DTERMEN')])
         provision = self.env['hr.payslip.line'].search(domain + [('code', '=', 'DTERPRO')])
@@ -254,7 +255,8 @@ class HrPayslip(models.Model):
             ('employee_id', '=', self.employee_id.id),
             ('date_from', '<=', self.date_to),
             ('date_to', '>=', self.date_from),
-            ('slip_id.state', 'in', ['done', 'paid']),
+            ('slip_id.move_id', '!=', False),
+            ('slip_id.move_id.state', '=', 'posted'),
             ('code', 'in', ['GROSSUBSIDIO', 'GROSS']),
         ])
         return sum(gross.mapped('amount'))
@@ -264,7 +266,8 @@ class HrPayslip(models.Model):
             ('employee_id', '=', self.employee_id.id),
             ('date_from', '<=', self.date_to),
             ('date_to', '>=', self.date_from),
-            ('slip_id.state', 'in', ['done', 'paid']),
+            ('slip_id.move_id', '!=', False),
+            ('slip_id.move_id.state', '=', 'posted'),
             ('code', '=', 'ADVDTER'),
         ])
         return sum(advance.mapped('amount'))
@@ -274,7 +277,8 @@ class HrPayslip(models.Model):
             ('employee_id', '=', self.employee_id.id),
             ('date_from', '<=', self.date_to),
             ('date_to', '>=', self.date_from),
-            ('slip_id.state', 'in', ['done', 'paid']),
+            ('slip_id.move_id', '!=', False),
+            ('slip_id.move_id.state', '=', 'posted'),
         ]
         monthly = self.env['hr.payslip.line'].search(domain + [('code', '=', 'DCUARMEN')])
         provision = self.env['hr.payslip.line'].search(domain + [('code', '=', 'DCUARPRO')])
