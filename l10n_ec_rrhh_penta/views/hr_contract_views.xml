@@ -15,6 +15,7 @@
               <field name="l10n_ec_ptb_sectoral_code_iess"/>
               <field name="l10n_ec_ptb_code_mrl"/>
               <field name="code_iess"/>
+              <field name="employment_relationship_id" options="{'no_open': True, 'no_create': True}"/>
             </group>
             <group string="Documentos / Valores">
               <field name="l10n_ec_ptb_fortnight"/>
