@@ -6,11 +6,29 @@
     <!-- DECIMO TERCERO -->
     <!-- ========================= -->
 
+    <!-- BASE IMPONIBLES IESS DECIMO TERCERO -->
+    <record id="rule_base_dter" model="hr.salary.rule">
+      <field name="name">Base Imponible IESS Décimo Tercero</field>
+      <field name="code">GROSSDTER</field>
+      <field name="sequence">1</field>
+      <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_employee_ec_decimo_tercero"/>
+      <field name="category_id" ref="l10n_ec_rrhh_penta.cat_thirteenth_base"/>
+      <field name="condition_select">none</field>
+      <field name="amount_select">code</field>
+      <field name="amount_python_compute"><![CDATA[
+amount = payslip.get_gross_value_thirteenth()
+if inputs.get('PL_BASE_IMPONIBLE_DECIMO_TERCERO_ANTERIORES'):
+  result = inputs['PL_BASE_IMPONIBLE_DECIMO_TERCERO_ANTERIORES'].amount + amount
+else:
+  result = amount
+    ]]></field>
+    </record>
+
     <!-- ACUMULADO -->
     <record id="rule_dter_acum" model="hr.salary.rule">
       <field name="name">Décimo Tercero Acumulado</field>
       <field name="code">DTERACU</field>
-      <field name="sequence">1</field>
+      <field name="sequence">2</field>
       <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_employee_ec_decimo_tercero"/>
       <field name="category_id" ref="l10n_ec_rrhh_penta.cat_thirteenth_provision"/>
       <field name="condition_select">none</field>
@@ -28,7 +46,7 @@ else:
     <record id="rule_dter_men" model="hr.salary.rule">
       <field name="name">Décimo Tercero Mensualizado</field>
       <field name="code">DTERMENSU</field>
-      <field name="sequence">2</field>
+      <field name="sequence">3</field>
       <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_employee_ec_decimo_tercero"/>
       <field name="category_id" ref="l10n_ec_rrhh_penta.cat_thirteenth_monthly"/>
       <field name="condition_select">none</field>
@@ -46,7 +64,7 @@ else:
     <record id="rule_advance_dter" model="hr.salary.rule">
       <field name="name">Anticipo Décimo Tercero</field>
       <field name="code">ADVDTER</field>
-      <field name="sequence">3</field>
+      <field name="sequence">4</field>
       <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_employee_ec_decimo_tercero"/>
       <field name="category_id" ref="l10n_ec_rrhh_penta.cat_advance_thirteenth"/>
       <field name="condition_select">none</field>
@@ -64,7 +82,7 @@ else:
     <record id="rule_dter_net" model="hr.salary.rule">
       <field name="name">Décimo Neto a Recibir</field>
       <field name="code">DTERNETO</field>
-      <field name="sequence">4</field>
+      <field name="sequence">5</field>
       <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_employee_ec_decimo_tercero"/>
       <field name="category_id" ref="l10n_ec_rrhh_penta.cat_thirteenth_net"/>
       <field name="condition_select">none</field>
