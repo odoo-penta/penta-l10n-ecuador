@@ -163,5 +163,43 @@
       <field name="code">THIRTEENTH_NET</field>
     </record>
 
+    <!-- ========================= -->
+    <!-- DECIMO CUARTO -->
+    <!-- ========================= -->
+    <record id="cat_fourteenth_base" model="hr.salary.rule.category">
+      <field name="name">BASE DÉCIMO CUARTO</field>
+      <field name="code">FOURTEENTH_BASE</field>
+    </record>
+
+    <record id="cat_fourteenth_provision" model="hr.salary.rule.category">
+      <field name="name">DÉCIMO CUARTO ACUMULADO</field>
+      <field name="code">FOURTEENTH_ACCUMULATED</field>
+    </record>
+
+    <record id="cat_fourteenth_monthly" model="hr.salary.rule.category">
+      <field name="name">DÉCIMO CUARTO MENSUALIZADO</field>
+      <field name="code">FOURTEENTH_MONTHLY</field>
+    </record>
+
+    <record id="cat_advance_fourteenth" model="hr.salary.rule.category">
+      <field name="name">ANTICIPO DÉCIMO CUARTO</field>
+      <field name="code">FOURTEENTH_ADVANCE</field>
+    </record>
+
+    <record id="cat_fourteenth_value" model="hr.salary.rule.category">
+      <field name="name">VALOR DÉCIMO CUARTO</field>
+      <field name="code">FOURTEENTH_VALUE</field>
+    </record>
+
+    <record id="cat_fourteenth_adjust" model="hr.salary.rule.category">
+      <field name="name">AJUSTE DÉCIMO CUARTO</field>
+      <field name="code">FOURTEENTH_ADJUST</field>
+    </record>
+
+    <record id="cat_fourteenth_net" model="hr.salary.rule.category">
+      <field name="name">DÉCIMO CUARTO NETO</field>
+      <field name="code">FOURTEENTH_NET</field>
+    </record>
+
   </data>
 </odoo>

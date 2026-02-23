@@ -13,10 +13,37 @@ class HrPayslip(models.Model):
     worked_days_ec = fields.Float(string='Días Laborados', readonly=True, compute='_compute_days_ec', store=True)
     days_of_month_ec = fields.Float(string='Días del Mes', readonly=True, compute='_compute_days_ec', store=True)
 
-    @api.depends('employee_id', 'contract_id', 'payslip_run_id', 'struct_id', 'date_from', 'date_to', 'worked_days_line_ids', 'holidays_days_ec')
+    @api.depends('employee_id', 'contract_id', 'payslip_run_id', 'struct_id', 'date_from', 'date_to', 'worked_days_line_ids', 'input_line_ids', 'holidays_days_ec')
     def _compute_days_ec(self):
         """Calcula los días laborados para el payslip."""
         for payslip in self:
+            # Setear valores en cero
+            payslip.worked_days_ec = 0.0
+            payslip.holidays_ec = 0.0
+            payslip.subsidies_days_ec = 0.0
+            payslip.payslip_days_ec = 0.0
+            payslip.days_of_month_ec = 0.0
+            # Considera si es decimo tercero o cuarto
+            if payslip.payslip_run_id.penta_benefit_key in ('13th', '14th'):
+                domain = [
+                    ('employee_id', '=', payslip.employee_id.id),
+                    ('date_from', '>=', payslip.payslip_run_id.date_start),
+                    ('date_to', '<=', payslip.payslip_run_id.date_end),
+                    ('payslip_run_id.penta_benefit_key', 'not in', ('13th', '14th')),
+                    ('state', 'in', ('done', 'paid')),
+                ]
+                other_slips = self.search(domain)
+                for other in other_slips:
+                    payslip.worked_days_ec += other.worked_days_ec
+                    payslip.holidays_ec += other.holidays_ec
+                    payslip.subsidies_days_ec += other.subsidies_days_ec
+                    payslip.payslip_days_ec += other.payslip_days_ec
+                    payslip.days_of_month_ec += other.days_of_month_ec
+                # Considerar valor migrado anteriores
+                previous_days = payslip.input_line_ids.filtered(lambda l: l.code == 'PL_DIAS_TRABAJADOS_ANTERIORES')
+                if previous_days:
+                    payslip.worked_days_ec += sum(previous_days.mapped('amount'))
+                continue
             contract = payslip.contract_id
             if not contract:
                 payslip.worked_days_ec = 0.0
@@ -286,3 +313,32 @@ class HrPayslip(models.Model):
             'monthly': sum(monthly.mapped('amount')),
             'provision': sum(provision.mapped('amount')),
         }
+        
+    def get_gross_value_fourteenth(self):
+        gross = self.env['hr.payslip.line'].search([
+            ('employee_id', '=', self.employee_id.id),
+            ('date_from', '<=', self.date_to),
+            ('date_to', '>=', self.date_from),
+            ('slip_id.move_id', '!=', False),
+            ('slip_id.move_id.state', '=', 'posted'),
+            ('code', 'in', ['BASICEC']),
+        ])
+        return sum(gross.mapped('amount'))
+    
+    def get_advance_value_fourteenth(self):
+        advance = self.env['hr.payslip.line'].search([
+            ('employee_id', '=', self.employee_id.id),
+            ('date_from', '<=', self.date_to),
+            ('date_to', '>=', self.date_from),
+            ('slip_id.move_id', '!=', False),
+            ('slip_id.move_id.state', '=', 'posted'),
+            ('code', '=', 'ADVDCUAR'),
+        ])
+        return sum(advance.mapped('amount'))
+    
+    def get_basicec_amount(self):
+        rule = self.env['hr.salary.rule'].search([
+            ('code', '=', 'BASICEC')
+        ], limit=1)
+
+        return rule.amount_fix if rule else 0.0
