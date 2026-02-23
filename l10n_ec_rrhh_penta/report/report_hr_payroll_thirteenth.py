@@ -93,7 +93,7 @@ class ReportThirteenthXlsx(models.AbstractModel):
                 column += 1
                 sheet.write(row, column, contract.wage or 0.0, formats['number'])
                 column += 1
-                sheet.write(row, column, min(payslip.days_of_month_ec, 360), formats['number'])
+                sheet.write(row, column, payslip.worked_days_ec, formats['number'])
                 column += 1
                 sheet.write(row, column, contract.job_id.name or '', bold)
                 column += 1

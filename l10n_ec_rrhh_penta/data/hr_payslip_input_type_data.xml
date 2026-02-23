@@ -152,5 +152,38 @@
       <field name="struct_ids" eval="[(4, ref('l10n_ec_rrhh_penta.structure_employee_ec_decimo_tercero'))]"/>
     </record>
 
+    <!-- ================================= -->
+    <!-- DECIMO CUARTO -->
+    <!-- ================================= -->
+    <record id="input_type_base_decimo_cuarto_anteriores" model="hr.payslip.input.type">
+      <field name="name">Base Imponible Décimo Cuarto Anteriores</field>
+      <field name="code">PL_BASE_IMPONIBLE_DECIMO_CUARTO_ANTERIORES</field>
+      <field name="struct_ids" eval="[(4, ref('l10n_ec_rrhh_penta.structure_employee_ec_decimo_cuarto'))]"/>
+    </record>
+
+    <record id="input_type_decimo_cuarto_men_anteriores" model="hr.payslip.input.type">
+      <field name="name">Décimo Cuarto Mensualizado Anteriores</field>
+      <field name="code">PL_DECIMO_CUARTO_MENSUALIZADO_ANTERIORES</field>
+      <field name="struct_ids" eval="[(4, ref('l10n_ec_rrhh_penta.structure_employee_ec_decimo_cuarto'))]"/>
+    </record>
+
+    <record id="input_type_decimo_cuarto_acc_anteriores" model="hr.payslip.input.type">
+      <field name="name">Décimo Cuarto Acumulado Anteriores</field>
+      <field name="code">PL_DECIMO_CUARTO_ACUMULADO_ANTERIORES</field>
+      <field name="struct_ids" eval="[(4, ref('l10n_ec_rrhh_penta.structure_employee_ec_decimo_cuarto'))]"/>
+    </record>
+
+    <record id="input_type_decimo_cuarto_anticipo_anteriores" model="hr.payslip.input.type">
+      <field name="name">Anticipo Décimo Cuarto Anteriores</field>
+      <field name="code">PL_ANTICIPO_DECIMO_CUARTO_ANTERIORES</field>
+      <field name="struct_ids" eval="[(4, ref('l10n_ec_rrhh_penta.structure_employee_ec_decimo_cuarto'))]"/>
+    </record>
+
+    <record id="input_type_dias_trabajados_anteriores" model="hr.payslip.input.type">
+      <field name="name">Días Trabajados Anteriores</field>
+      <field name="code">PL_DIAS_TRABAJADOS_ANTERIORES</field>
+      <field name="struct_ids" eval="[(4, ref('l10n_ec_rrhh_penta.structure_employee_ec_decimo_cuarto'))]"/>
+    </record>
+
   </data>
 </odoo>

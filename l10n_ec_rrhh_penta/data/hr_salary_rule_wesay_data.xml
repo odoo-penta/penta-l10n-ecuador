@@ -92,5 +92,126 @@ result = (categories['THIRTEENTH_BASE']/12) - (categories['THIRTEENTH_MONTHLY'] 
     ]]></field>
     </record>
 
+    <!-- ========================= -->
+    <!-- DECIMO CUARTO -->
+    <!-- ========================= -->
+
+    <!-- BASE IMPONIBLES IESS DECIMO CUARTO -->
+    <record id="rule_base_dcuar" model="hr.salary.rule">
+      <field name="name">Base Imponible IESS Décimo Cuarto</field>
+      <field name="code">GROSSDCUAR</field>
+      <field name="sequence">1</field>
+      <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_employee_ec_decimo_cuarto"/>
+      <field name="category_id" ref="l10n_ec_rrhh_penta.cat_fourteenth_base"/>
+      <field name="condition_select">none</field>
+      <field name="amount_select">code</field>
+      <field name="amount_python_compute"><![CDATA[
+amount = payslip.get_gross_value_fourteenth()
+if inputs.get('PL_BASE_IMPONIBLE_DECIMO_CUARTO_ANTERIORES'):
+  result = inputs['PL_BASE_IMPONIBLE_DECIMO_CUARTO_ANTERIORES'].amount + amount
+else:
+  result = amount
+    ]]></field>
+    </record>
+
+    <!-- ACUMULADO -->
+    <record id="rule_dcuar_acum" model="hr.salary.rule">
+      <field name="name">Décimo Cuarto Acumulado</field>
+      <field name="code">DCUARACU</field>
+      <field name="sequence">2</field>
+      <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_employee_ec_decimo_cuarto"/>
+      <field name="category_id" ref="l10n_ec_rrhh_penta.cat_fourteenth_provision"/>
+      <field name="condition_select">none</field>
+      <field name="amount_select">code</field>
+      <field name="amount_python_compute"><![CDATA[
+amount = payslip.get_value_fourteenth()['provision']
+if inputs.get('PL_DECIMO_CUARTO_ACUMULADO_ANTERIORES'):
+  result = inputs['PL_DECIMO_CUARTO_ACUMULADO_ANTERIORES'].amount + amount
+else:
+  result = amount
+    ]]></field>
+    </record>
+
+    <!-- MENSUALIZADO -->
+    <record id="rule_dcuar_men" model="hr.salary.rule">
+      <field name="name">Décimo Cuarto Mensualizado</field>
+      <field name="code">DCUARMENSU</field>
+      <field name="sequence">3</field>
+      <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_employee_ec_decimo_cuarto"/>
+      <field name="category_id" ref="l10n_ec_rrhh_penta.cat_fourteenth_monthly"/>
+      <field name="condition_select">none</field>
+      <field name="amount_select">code</field>
+      <field name="amount_python_compute"><![CDATA[
+amount = payslip.get_value_fourteenth()['monthly']
+if inputs.get('PL_DECIMO_CUARTO_MENSUALIZADO_ANTERIORES'):
+  result = inputs['PL_DECIMO_CUARTO_MENSUALIZADO_ANTERIORES'].amount + amount
+else:
+  result = amount
+    ]]></field>
+    </record>
+
+    <!-- ANTICIPO -->
+    <record id="rule_advance_dcuar" model="hr.salary.rule">
+      <field name="name">Anticipo Décimo Cuarto</field>
+      <field name="code">ADVDCUAR</field>
+      <field name="sequence">4</field>
+      <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_employee_ec_decimo_cuarto"/>
+      <field name="category_id" ref="l10n_ec_rrhh_penta.cat_advance_fourteenth"/>
+      <field name="condition_select">none</field>
+      <field name="amount_select">code</field>
+      <field name="amount_python_compute"><![CDATA[
+amount = payslip.get_advance_value_fourteenth()
+if inputs.get('PL_ANTICIPO_DECIMO_CUARTO_ANTERIORES'):
+  result = inputs['PL_ANTICIPO_DECIMO_CUARTO_ANTERIORES'].amount + amount
+else:
+  result = amount
+    ]]></field>
+    </record>
+
+    <!-- VALOR DECIMO -->
+    <record id="rule_value_dcuar" model="hr.salary.rule">
+      <field name="name">Valor Décimo Cuarto</field>
+      <field name="code">VALDCUAR</field>
+      <field name="sequence">5</field>
+      <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_employee_ec_decimo_cuarto"/>
+      <field name="category_id" ref="l10n_ec_rrhh_penta.cat_fourteenth_value"/>
+      <field name="condition_select">none</field>
+      <field name="amount_select">code</field>
+      <field name="amount_python_compute"><![CDATA[
+result = (payslip.get_basicec_amount()*payslip.worked_days_ec)/360
+    ]]></field>
+    </record>
+
+    <!-- AJUSTE DECIMO -->
+    <record id="rule_adjust_dcuar" model="hr.salary.rule">
+      <field name="name">Ajuste Décimo Cuarto</field>
+      <field name="code">ADJDCUAR</field>
+      <field name="sequence">6</field>
+      <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_employee_ec_decimo_cuarto"/>
+      <field name="category_id" ref="l10n_ec_rrhh_penta.cat_fourteenth_adjust"/>
+      <field name="condition_select">none</field>
+      <field name="amount_select">code</field>
+      <field name="amount_python_compute"><![CDATA[
+if payslip.get_basicec_amount() != categories['FOURTEENTH_VALUE']:
+  result = (payslip.get_basicec_amount() - categories['FOURTEENTH_VALUE'])
+else:
+  result = 0.0
+    ]]></field>
+    </record>
+
+    <!-- NETO A RECIBIR -->
+    <record id="rule_dcuar_net" model="hr.salary.rule">
+      <field name="name">Décimo Cuarto Neto a Recibir</field>
+      <field name="code">DCUARNETO</field>
+      <field name="sequence">7</field>
+      <field name="struct_id" ref="l10n_ec_rrhh_penta.structure_employee_ec_decimo_cuarto"/>
+      <field name="category_id" ref="l10n_ec_rrhh_penta.cat_fourteenth_net"/>
+      <field name="condition_select">none</field>
+      <field name="amount_select">code</field>
+      <field name="amount_python_compute"><![CDATA[
+result = (categories['FOURTEENTH_BASE']/12) - (categories['FOURTEENTH_MONTHLY'] + categories['FOURTEENTH_ADVANCE'])
+    ]]></field>
+    </record>
+
   </data>
 </odoo>
