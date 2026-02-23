@@ -138,6 +138,11 @@
     <!-- ========================= -->
     <!-- DECIMO TERCERO -->
     <!-- ========================= -->
+    <record id="cat_thirteenth_base" model="hr.salary.rule.category">
+      <field name="name">BASE DÉCIMO TERCERO</field>
+      <field name="code">THIRTEENTH_BASE</field>
+    </record>
+
     <record id="cat_thirteenth_provision" model="hr.salary.rule.category">
       <field name="name">DÉCIMO TERCERO ACUMULADO</field>
       <field name="code">THIRTEENTH_ACCUMULATED</field>
