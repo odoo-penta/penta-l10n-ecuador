@@ -34,7 +34,6 @@ class HrIessOption(models.Model):
          "Ya existe esta opción con el mismo tipo."),
     ]
 
-
 class HrAccountSection(models.Model):
     _name = "hr.account.section"
     _description = "Sección contable para nómina"
@@ -48,7 +47,29 @@ class HrAccountSection(models.Model):
     _sql_constraints = [
         ("hr_account_section_name_uniq", "unique(name)", "El nombre de la sección debe ser único."),
     ]
+    
+class HrEmploymentRelationship(models.Model):
+    _name = "hr.employment.relationship"
+    _description = "Relación laboral"
+    _order = "code"
+    _rec_name = "display_name"
+    
+    _sql_constraints = [
+        ("hr_employment_relationship_code_name_uniq", "unique(code,name)", "El código y nombre de la relación laboral debe ser único."),
+    ]
 
+    code = fields.Char(string="Código", required=True)
+    name = fields.Char(string="Nombre", required=True)
+    display_name = fields.Char(
+        string="Descripción",
+        compute="_compute_display_name",
+        store=True
+    )
+
+    @api.depends("code", "name")
+    def _compute_display_name(self):
+        for record in self:
+            record.display_name = f"{record.code} - {record.name}"
 
 class HrContract(models.Model):
     _inherit = "hr.contract"
@@ -154,6 +175,7 @@ class HrContract(models.Model):
     )
     reason_end = fields.Many2one('hr.departure.reason', string="Motivo salida legal")
     code_iess = fields.Char(string="Código novedad IESS", help="Aviso de entrada")
+    employment_relationship_id = fields.Many2one('hr.employment.relationship', string="Relación laboral")
     
     @api.model
     def default_get(self, fields_list):
