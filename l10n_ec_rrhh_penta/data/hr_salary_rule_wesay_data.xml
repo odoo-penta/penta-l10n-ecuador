@@ -88,7 +88,7 @@ else:
       <field name="condition_select">none</field>
       <field name="amount_select">code</field>
       <field name="amount_python_compute"><![CDATA[
-result = categories['THIRTEENTH_ACCUMULATED'] - categories['THIRTEENTH_MONTHLY']
+result = categories['THIRTEENTH_ACCUMULATED'] - (categories['THIRTEENTH_MONTHLY'] + categories['THIRTEENTH_ADVANCE'])
     ]]></field>
     </record>
 
