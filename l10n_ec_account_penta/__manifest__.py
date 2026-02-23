@@ -49,6 +49,7 @@
         'views/account_asset_template_views.xml',
         'views/res_config_settings_views.xml',
         'views/l10n_latam_document_type_views.xml',
+        'views/res_partner_category_views.xml',
     ],
     'license': 'OPL-1',
 }
