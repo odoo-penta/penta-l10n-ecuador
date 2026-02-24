@@ -20,8 +20,9 @@
         'AntonyPineda <vini16.av@gmail.com>'
     ],
     'website': "https://pentalab.tech/",
-    'category': 'Accounting',
-    'version': '18.0.2.2.6',
+    "license": "LGPL-3",
+    'category': 'Penta Localización Ecuador',
+    'version': '18.0.2.2.5',
     'depends': [
         'account',
         'account_accountant',
@@ -51,6 +52,7 @@
         'views/l10n_latam_document_type_views.xml',
         'views/res_partner_category_views.xml',
     ],
-    'license': 'OPL-1',
+    "installable": True,
+    "application": True,
 }
 

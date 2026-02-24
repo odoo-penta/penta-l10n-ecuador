@@ -19,8 +19,8 @@
     'maintainer': 'PentaLab',
     'contributors': ['AntonyPineda <vini16.av@gmail.com>'],
     'website': 'https://pentalab.tech/',
-    'license': 'OPL-1',
-    "category": "Accounting/Accounting",
+    "license": "LGPL-3",
+    "category": "Penta Localización Ecuador",
     'version': '18.0.0.0.7',
     "depends": [
         'account',
@@ -70,7 +70,6 @@
         'views/report_payment_receipt_inherit_auth.xml',
         
     ],
-    "installable": True,
-    'application': False,
-    "auto_install": False,
+    'installable': True,
+    'application': True,
 }
