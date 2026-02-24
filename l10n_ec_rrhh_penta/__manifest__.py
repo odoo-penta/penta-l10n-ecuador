@@ -19,7 +19,7 @@
     'contributors': ['AntonyPineda <vini16.av@gmail.com>'],
     'website': 'https://pentalab.tech/',
     "license": "LGPL-3",
-    'category': 'Human Resources/Employees',
+    'category': 'Penta Localización Ecuador',
     "version": "18.0.10.4.0",
     "depends": [
         'analytic',
@@ -82,6 +82,6 @@
         
     ],
     "installable": True,
-    "application": False,
+    "application": True,
     "images": ["static/description/icon.svg", "static/description/banner.svg"],
 }

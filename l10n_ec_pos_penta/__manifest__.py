@@ -19,8 +19,8 @@
     'maintainer': 'PentaLab',
     'contributors': ['AntonyPineda <vini16.av@gmail.com>'],
     'website': 'https://pentalab.tech/',
-    'license': 'OPL-1',
-    'category': 'Sales/Sales',
+    "license": "LGPL-3",
+    'category': 'Penta Localización Ecuador',
     'version': '18.0.4.0.8',
     'depends': [
         'accountant',

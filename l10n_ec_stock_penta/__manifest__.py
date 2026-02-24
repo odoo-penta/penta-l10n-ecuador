@@ -19,7 +19,8 @@
         'AntonyPineda <vini16.av@gmail.com>'
     ],
     'website': "https://pentalab.tech/",
-    'category': 'Inventory/Inventory',
+    "license": "LGPL-3",
+    'category': 'Penta Localización Ecuador',
     'version': '18.0.2.1.1',
     'depends': [
         'stock',
@@ -28,6 +29,7 @@
         'views/stock_picking_views.xml',
         'views/report_stockpicking_operations.xml',
     ],
-    'license': 'OPL-1',
+    "installable": True,
+    "application": True,
 }
 
