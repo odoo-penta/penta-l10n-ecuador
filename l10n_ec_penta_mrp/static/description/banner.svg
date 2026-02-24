@@ -13,7 +13,7 @@
   <rect width="1280" height="360" rx="24" fill="url(#bg)"/>
   
   <!-- Left icon (five rounded squares forming a pentagon) -->
-  <g transform="translate(80,90)" filter="url(#soft)">
+  <g transform="translate(80,58)" filter="url(#soft)">
     <rect x="116" y="0" width="64" height="64" rx="16" fill="#F2A59B"/>
     <rect x="12" y="60" width="64" height="64" rx="16" transform="rotate(-20 44 92)" fill="#F2A59B"/>
     <rect x="200" y="60" width="64" height="64" rx="16" transform="rotate(20 232 92)" fill="#F2A59B"/>
