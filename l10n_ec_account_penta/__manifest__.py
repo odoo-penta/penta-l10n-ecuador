@@ -22,7 +22,7 @@
     'website': "https://pentalab.tech/",
     "license": "LGPL-3",
     'category': 'Penta Localización Ecuador',
-    'version': '18.0.2.2.5',
+    'version': '18.0.2.2.6',
     'depends': [
         'account',
         'account_accountant',
