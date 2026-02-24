@@ -67,8 +67,8 @@ class HrLeave(models.Model):
                     'warning': {
                         'title': "Vacaciones insuficientes",
                         'message': (
-                            f"Estás solicitando {r.number_of_days:.2f} días y solo tienes "
-                            f"{r.vacation_remaining:.2f} días restantes."
+                            f"Estás solicitando {leave.number_of_days:.2f} días y solo tienes "
+                            f"{leave.vacation_remaining:.2f} días restantes."
                         ),
                     }
                 }
