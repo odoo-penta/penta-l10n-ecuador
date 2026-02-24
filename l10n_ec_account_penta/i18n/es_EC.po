@@ -255,7 +255,7 @@ msgid "Config Settings"
 msgstr "Ajustes de configuración"
 
 #. module: l10n_ec_account_penta
-#: model_terms:ir.ui.view,arch_db:l10n_ec_account_penta.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_account_penta.res_config_settings_view_form_penta
 msgid "Configurations for the Assets"
 msgstr "Configuraciones para los activos"
 
@@ -638,7 +638,7 @@ msgstr ""
 "nombre de archivo, etc."
 
 #. module: l10n_ec_account_penta
-#: model_terms:ir.ui.view,arch_db:l10n_ec_account_penta.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_account_penta.res_config_settings_view_form_penta
 msgid "Reports"
 msgstr "Reportes"
 
@@ -819,7 +819,7 @@ msgid "Document Types"
 msgstr "Tipos de Documento"
 
 #. module: l10n_ec_account_penta
-#: model_terms:ir.ui.view,arch_db:l10n_ec_account_penta.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_account_penta.res_config_settings_view_form_penta
 msgid "Enables advanced payment management"
 msgstr "Permite una gestión avanzada de los pagos."
 
@@ -952,7 +952,7 @@ msgstr "Opciones avanzadas"
 #: model:ir.model.fields,field_description:l10n_ec_account_penta.field_account_payment__advanced_payments
 #: model:ir.model.fields,field_description:l10n_ec_account_penta.field_res_company__advanced_payments
 #: model:ir.model.fields,field_description:l10n_ec_account_penta.field_res_config_settings__advanced_payments
-#: model_terms:ir.ui.view,arch_db:l10n_ec_account_penta.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:l10n_ec_account_penta.res_config_settings_view_form_penta
 msgid "Advanced Payments"
 msgstr "Pagos Avanzados"
 
