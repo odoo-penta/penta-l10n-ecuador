@@ -49,7 +49,12 @@
             <xpath expr="//form" position="inside">
                 <app data-string="Penta" string="Penta" name="l10n_ec_account_penta">
                     <block title="Configuración contabilidad penta" id="account_penta_configuration">
-
+                        <setting string="Advanced Payments" company_dependent="1" help="Enables advanced payment management">
+                            <field name="advanced_payments"  class="oe_inline"/>
+                        </setting>
+                        <setting string="Reports" help="Configurations for the Assets">
+                            <field name="asset_template_id"/>
+                        </setting>
                     </block>
                 </app>
             </xpath>
