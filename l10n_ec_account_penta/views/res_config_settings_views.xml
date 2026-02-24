@@ -20,5 +20,24 @@
             </block>
         </field>
     </record>
+    <record id="res_config_settings_view_form_penta" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.account.penta
+        </field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="60"/>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app data-string="Penta" string="Penta" name="l10n_ec_account_penta">
+                    <block title="Configuración contabilidad penta" id="account_penta_configuration">
 
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+    <menuitem
+            id="menu_penta_module_root"
+            name="Penta"
+            web_icon="l10n_ec_account_penta,static/description/icon.png"/>
 </odoo>
