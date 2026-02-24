@@ -9,7 +9,7 @@
 #
 #################################################################################
 {
-    "name": "Penta Localización MRP",
+    "name": "PentaLab Localización MRP",
     "summary": "Adaptaciones MRP: Configuración de parámetros, Cálculo de costos.",
     "description": """
         Adaptaciones MRP: Configuración de parámetros, Cálculo de costos.
@@ -25,7 +25,8 @@
         'mrp',
     ],
     "data": [
-        
+        "views/account_account_views.xml",
+        "views/mrp_bom_views.xml",
     ],
     "installable": True,
     "application": True,
