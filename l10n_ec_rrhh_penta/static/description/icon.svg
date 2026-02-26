@@ -1,0 +1,18 @@
+<svg width="900" height="300" viewBox="0 0 900 300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="300" fill="none"/>
+  <g transform="translate(40,30)">
+    <rect x="116" y="0" width="72" height="72" rx="18" fill="#F2A59B"/>
+    <rect x="16" y="66" width="72" height="72" rx="18" transform="rotate(-20 52 102)" fill="#F2A59B"/>
+    <rect x="200" y="66" width="72" height="72" rx="18" transform="rotate(20 236 102)" fill="#F2A59B"/>
+    <rect x="44" y="190" width="72" height="72" rx="18" transform="rotate(40 80 226)" fill="#F2A59B"/>
+    <rect x="188" y="190" width="72" height="72" rx="18" transform="rotate(-40 224 226)" fill="#F2A59B"/>
+  </g>
+  <g transform="translate(360,94)">
+    <text x="0" y="0" font-family="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif" font-size="96" font-weight="900" fill="#1F5964">
+      PENTA
+    </text>
+    <text x="540" y="36" font-family="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif" font-size="48" font-weight="800" fill="#1F5964">
+      LAB
+    </text>
+  </g>
+</svg>

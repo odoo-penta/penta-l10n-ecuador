@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+
+    <record id="view_hr_payslip_run_form_export_xlsx" model="ir.ui.view">
+      <field name="name">hr.payslip.run.form.export.xlsx</field>
+      <field name="model">hr.payslip.run</field>
+      <field name="inherit_id" ref="hr_payroll.hr_payslip_run_form"/>
+      <field name="arch" type="xml">
+        <xpath expr="//form/header/field[@name='state']" position="before">
+          <!--
+          <button name="action_publish_payslips"
+                  type="object"
+                  string="Publicar Asientos"
+                  class="btn-primary oe_highlight"
+                  invisible="state != 'close'"/>
+          -->
+          <button name="action_export_payroll_xlsx"
+                  type="object"
+                  string="Generar reporte de nómina"
+                  class="btn-primary oe_highlight"
+                  invisible="state != 'close' or payslip_count == 0 or penta_benefit_key == '13th'"/>
+          <button name="action_export_thirteenth_xlsx"
+                  type="object"
+                  string="Reporte décimo tercero"
+                  class="btn-primary oe_highlight"
+                  invisible="state != 'close' or payslip_count == 0 or penta_benefit_key != '13th'"/>
+        </xpath>
+      </field>
+    </record>
+
+    <record id="hr_payroll.action_hr_payslip_run_tree" model="ir.actions.act_window">
+      <field name="domain">[('penta_benefit_key', '=', False)]</field>
+    </record>
+
+  </data>
+</odoo>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+
+    <record id="view_import_monthly_inputs_wizard_form" model="ir.ui.view">
+      <field name="name">pentalab.import.monthly.inputs.wizard.form</field>
+      <field name="model">pentalab.import.monthly.inputs.wizard</field>
+      <field name="arch" type="xml">
+        <form string="Importar novedades mensuales">
+          <group>
+            <field name="run_id" readonly="1"/>
+            <field name="file" filename="filename"/>
+            <field name="filename" readonly="1"/>
+            <div class="oe_grey">
+              Use el archivo generado por <b>Exportar novedades mensuales</b>.
+              Encabezados fijos: Cédula, Empleado, Departamento, Cargo, Días trabajados.
+            </div>
+          </group>
+          <footer>
+            <button string="Importar" type="object" name="action_import" class="btn-primary"/>
+            <button string="Cancelar" special="cancel" class="btn-secondary"/>
+          </footer>
+        </form>
+      </field>
+    </record>
+
+  </data>
+</odoo>
