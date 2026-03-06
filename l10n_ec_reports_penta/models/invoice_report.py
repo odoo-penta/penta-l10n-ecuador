@@ -15,7 +15,6 @@ class PentalabInvoiceReportLine(models.Model):
     # Cabecera visibles
     company_name = fields.Char("Empresa", readonly=True)
     invoice_id = fields.Many2one("account.move", string="Factura", readonly=True)
-    invoice_id = fields.Many2one("account.move", string="Factura", readonly=True)
     invoice_date = fields.Date("Fecha de factura", readonly=True)
     date = fields.Date("Fecha contable", readonly=True)
     move_name = fields.Char("Número", readonly=True)

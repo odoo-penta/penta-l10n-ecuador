@@ -165,7 +165,7 @@ class HrContract(models.Model):
     # Distribucion analitica
     analytic_distribution = fields.Json(
         string="Distribución Analítica",
-        required=True,
+        required=False,
         help="Define la distribución de costos en diferentes cuentas analíticas."
     ) 
     analytic_precision = fields.Integer(
